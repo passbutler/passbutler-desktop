@@ -38,7 +38,7 @@ dependencies {
     implementation "no.tornado:tornadofx:1.7.20"
 }
 
-mainClassName = "de.sicherheitskritisch.app.Passbutler"
+mainClassName = "de.passbutler.desktop.PassButlerApp"
 
 defaultTasks "run"
 

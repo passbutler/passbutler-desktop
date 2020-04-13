@@ -1,4 +1,4 @@
-package de.sicherheitskritisch.app
+package de.passbutler.desktop.ui
 
 import javafx.scene.text.FontWeight
 import tornadofx.*

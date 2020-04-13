@@ -1,7 +1,7 @@
-package de.sicherheitskritisch.view
+package de.passbutler.desktop
 
 import de.passbutler.common.crypto.RandomGenerator
-import de.sicherheitskritisch.app.Styles
+import de.passbutler.desktop.ui.Styles
 import kotlinx.coroutines.runBlocking
 import tornadofx.*
 
