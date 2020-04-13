@@ -26,6 +26,8 @@ repositories {
 }
 
 dependencies {
+    implementation project(':PassButlerCommon')
+
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
 
