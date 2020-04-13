@@ -17,3 +17,6 @@ build/
 
 ## MacOS meta files
 .DS_Store
+
+## Tornado component configurations
+/conf/

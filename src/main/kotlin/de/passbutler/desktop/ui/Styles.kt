@@ -1,18 +1,17 @@
 package de.passbutler.desktop.ui
 
-import javafx.scene.text.FontWeight
 import tornadofx.*
 
 class Styles : Stylesheet() {
     companion object {
-        val heading by cssclass()
+        val loginScreen by cssclass()
     }
 
     init {
-        label and heading {
-            padding = box(10.px)
-            fontSize = 20.px
-            fontWeight = FontWeight.BOLD
+        loginScreen {
+            padding = box(15.px)
+            vgap = 7.px
+            hgap = 10.px
         }
     }
 }
