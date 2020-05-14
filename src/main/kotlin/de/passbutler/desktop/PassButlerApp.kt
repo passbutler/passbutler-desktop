@@ -9,6 +9,10 @@ class PassButlerApp : App(LoginScreen::class, Styles::class) {
 
     override fun start(stage: Stage) {
         super.start(stage)
+
+        // TODO: Init logger
+        // TODO: Init database
+
         loginController.init()
     }
 }
