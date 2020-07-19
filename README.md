@@ -1,20 +1,15 @@
 # Pass Butler desktop client
 
-## Development setup (tested on Ubuntu 16.04)
+## Development setup (tested with Ubuntu 20.04)
 
-Install OpenJDK and JavaFX
+IntelliJ IDEA 2020.1.3 Community
 
-    $ sudo apt install openjdk-8-jdk openjfx
+Required plugin:
+* TornadoFX (https://plugins.jetbrains.com/plugin/8339-tornadofx)
 
-Install OpenJDK and JavaFX sources (optional)
+Recommend plugin:
+* SQLDelight (https://plugins.jetbrains.com/plugin/8191-sqldelight)
 
-    $ sudo apt install openjdk-8-jdk-source openjfx-source
+Install OpenJDK and sources (optional):
 
-Add libraries to project
-
-File > Project Structure > Platform Settings > SDKs > 1.8 > Classpath:
-
-- /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar
-- /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jfxswt.jar
-- /usr/lib/jvm/java-8-openjdk-amd64/lib/ant-javafx.jar
-- /usr/lib/jvm/java-8-openjdk-amd64/lib/javafx-mx.jar
+    $ sudo apt install openjdk-8-jdk openjdk-8-jdk-source
