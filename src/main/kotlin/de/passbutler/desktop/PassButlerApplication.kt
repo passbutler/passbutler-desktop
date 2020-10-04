@@ -14,8 +14,6 @@ import tornadofx.launch
 import java.util.*
 
 class PassButlerApplication : App(RootScreen::class, Styles::class) {
-    lateinit var userManager: UserManager
-
     override fun start(stage: Stage) {
         super.start(stage)
 
@@ -70,6 +68,11 @@ class PassButlerApplication : App(RootScreen::class, Styles::class) {
             appendln("Locale:      ${Locale.getDefault()}")
             appendln("--------------------------------------------------------------------------------")
         }.toString()
+    }
+
+    companion object {
+        lateinit var userManager: UserManager
+            private set
     }
 }
 

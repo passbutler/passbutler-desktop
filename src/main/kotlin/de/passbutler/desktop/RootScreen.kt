@@ -1,23 +1,41 @@
 package de.passbutler.desktop
 
+import de.passbutler.desktop.base.CoroutineScopedView
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.layout.Priority
+import kotlinx.coroutines.launch
+import org.tinylog.kotlin.Logger
 import tornadofx.*
 
-class RootScreen : View() {
+class RootScreen : CoroutineScopedView() {
 
-    val vm : RootViewModel by inject()
+    val viewModel: RootViewModel by inject()
+
+    override fun onDock() {
+        super.onDock()
+
+        launch {
+            viewModel.restoreLoggedInUser()
+        }
+    }
+
+    override fun onUndock() {
+        super.onUndock()
+        viewModel.onCleared()
+
+        Logger.debug("RootScreen was undocked")
+    }
 
     override val root = form {
         fieldset {
             field("Data") {
-                textfield(vm.data)
+                // textfield(vm.data)
             }
         }
         button("Save") {
             action {
-                vm.save()
+                //vm.save()
             }
         }
 
