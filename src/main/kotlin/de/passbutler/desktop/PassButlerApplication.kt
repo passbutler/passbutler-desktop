@@ -15,6 +15,9 @@ import java.util.*
 
 class PassButlerApplication : App(LoginScreen::class, Styles::class) {
     override fun start(stage: Stage) {
+        stage.minWidth = 800.0
+        stage.minHeight = 600.0
+
         super.start(stage)
 
         setupLogger()

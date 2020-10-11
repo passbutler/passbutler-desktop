@@ -9,6 +9,7 @@ import tornadofx.pt
 
 abstract class BaseTheme : Stylesheet() {
     abstract val colorBackground: Color
+    abstract val colorSurface: Color
 
     abstract val colorPrimary: Color
     abstract val colorPrimaryDark: Color
@@ -46,6 +47,12 @@ abstract class BaseTheme : Stylesheet() {
 
         textField {
             textFill = textColor
+            minHeight = 25.pt
+
+        }
+
+        checkBox {
+            textFill = textColor
         }
 
         button {
@@ -54,7 +61,7 @@ abstract class BaseTheme : Stylesheet() {
 
             fontFamily = fontMedium
 
-            minWidth = 100.pt
+            minHeight = 25.pt
             padding = box(marginS, marginM)
         }
     }
@@ -62,6 +69,7 @@ abstract class BaseTheme : Stylesheet() {
 
 class LightTheme : BaseTheme() {
     override val colorBackground = whiteMedium
+    override val colorSurface = whiteMedium
     override val colorPrimary = wineRed
     override val colorPrimaryDark = wineRedDark
     override val colorSecondary = pointRed
@@ -78,6 +86,7 @@ class LightTheme : BaseTheme() {
 
 class DarkTheme : BaseTheme() {
     override val colorBackground = greyMedium
+    override val colorSurface = greyMedium
     override val colorPrimary = wineRedLight
     override val colorPrimaryDark = wineRed
     override val colorSecondary = pointRed

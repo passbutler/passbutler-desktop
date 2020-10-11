@@ -1,66 +1,84 @@
 package de.passbutler.desktop
 
 import com.jfoenix.controls.JFXButton
-import de.passbutler.desktop.ui.DarkTheme
-import de.passbutler.desktop.ui.LightTheme
-import org.tinylog.kotlin.Logger
+import de.passbutler.desktop.ui.*
+import javafx.geometry.Orientation
+import javafx.geometry.Pos
+import javafx.scene.layout.BackgroundRepeat
+import javafx.scene.layout.BackgroundSize
+import javafx.scene.paint.Color
 import tornadofx.*
+import java.net.URI
 
 class LoginScreen : View("Login") {
 
     private var light = true
 
-
-    override val root = form {
+    override val root = hbox(alignment = Pos.CENTER) {
         importStylesheet(LightTheme::class)
 
-        fieldset {
-            field("Username") {
-                textfield("") {
-//                    required()
-                    textProperty().addListener { obs, old, new ->
-                        println("You typed: " + new)
+        style {
+            backgroundImage += URI("/drawables/background.jpg")
+            backgroundSize += BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
+            backgroundRepeat += BackgroundRepeat.NO_REPEAT to BackgroundRepeat.NO_REPEAT
+        }
+
+        onLeftClick {
+            requestFocus()
+        }
+
+        group {
+            form {
+                style {
+                    backgroundColor += Color.web(whiteMedium.css, 0.40)
+                    backgroundRadius = multi(box(4.pt))
+                    paddingAll = marginM.value
+                }
+
+                text("Melden Sie sich bei Pass Butler an")
+
+                fieldset(labelPosition = Orientation.VERTICAL) {
+                    paddingTop = marginM.value
+                    spacing = marginS.value
+
+                    field("Username") {
+                        textfield("") {
+                            whenDocked {
+                                requestFocus()
+                            }
+                        }
                     }
+                    field("Password") {
+                        passwordfield("") {
+                        }
+                    }
+                    field {
+                        checkbox("Remember me")
+                    }
+                }
 
-                    whenDocked { requestFocus() }
+                // TODO: Use extention
+                this += JFXButton("Anmelden".toUpperCase()).apply {
+                    useMaxWidth = true
+                    isDefaultButton = true
+                    buttonType = JFXButton.ButtonType.RAISED
+
+                    action {
+                        println("Login pressed light = $light")
+
+                        if (light) {
+
+                            removeStylesheet(LightTheme::class)
+                            importStylesheet(DarkTheme::class)
+                        } else {
+                            removeStylesheet(DarkTheme::class)
+                            importStylesheet(LightTheme::class)
+                        }
+
+                        light = !light
+                    }
                 }
-            }
-            field("Password") {
-                passwordfield("") {
-//                    required()
-                }
-            }
-            field("Remember me") {
-                checkbox()
             }
         }
-
-        this += JFXButton("Anmelden".toUpperCase()).apply {
-            isDefaultButton = true
-            buttonType = JFXButton.ButtonType.RAISED
-
-            action {
-                Logger.debug("Login pressed")
-                println("Login pressed light = $light")
-                if (light) {
-                    removeStylesheet(LightTheme::class)
-                    importStylesheet(DarkTheme::class)
-                } else {
-                    removeStylesheet(DarkTheme::class)
-                    importStylesheet(LightTheme::class)
-                }
-
-                light = !light
-            }
-        }
-//        button("Login") {
-//            isDefaultButton = true
-//
-//            action {
-//                Logger.debug("Login pressed")
-//                importStylesheet(LightTheme::class)
-//
-//            }
-//        }
     }
 }
