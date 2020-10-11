@@ -1,7 +1,6 @@
 package de.passbutler.desktop.ui
 
 import javafx.scene.paint.Color
-import javafx.scene.text.FontPosture
 import tornadofx.Stylesheet
 import tornadofx.box
 import tornadofx.loadFont
@@ -48,7 +47,6 @@ abstract class BaseTheme : Stylesheet() {
         textField {
             textFill = textColor
             minHeight = 25.pt
-
         }
 
         checkBox {

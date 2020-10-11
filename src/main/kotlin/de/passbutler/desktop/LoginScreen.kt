@@ -39,26 +39,28 @@ class LoginScreen : View("Login") {
 
                 fieldset(labelPosition = Orientation.VERTICAL) {
                     paddingTop = marginM.value
+                    paddingBottom = marginM.value
+
                     spacing = marginS.value
 
-                    field("Username") {
-                        textfield("") {
+                    field(messages["login_username_hint"]) {
+                        textfield() {
                             whenDocked {
                                 requestFocus()
                             }
                         }
                     }
-                    field("Password") {
-                        passwordfield("") {
+                    field(messages["login_master_password_hint"]) {
+                        passwordfield() {
                         }
                     }
                     field {
-                        checkbox("Remember me")
+                        checkbox(messages["login_local_login_label"])
                     }
                 }
 
                 // TODO: Use extention
-                this += JFXButton("Anmelden".toUpperCase()).apply {
+                this += JFXButton(messages["login_button_text"].toUpperCase()).apply {
                     useMaxWidth = true
                     isDefaultButton = true
                     buttonType = JFXButton.ButtonType.RAISED
@@ -67,7 +69,6 @@ class LoginScreen : View("Login") {
                         println("Login pressed light = $light")
 
                         if (light) {
-
                             removeStylesheet(LightTheme::class)
                             importStylesheet(DarkTheme::class)
                         } else {
