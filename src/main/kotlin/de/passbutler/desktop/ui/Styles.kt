@@ -1,17 +1,20 @@
 package de.passbutler.desktop.ui
 
-import tornadofx.*
+import tornadofx.Stylesheet
+import tornadofx.box
+import tornadofx.cssclass
+import tornadofx.pt
 
 class Styles : Stylesheet() {
     companion object {
-        val loginScreen by cssclass()
+        val STYLE_LOGIN_SCREEN by cssclass()
     }
 
     init {
-        loginScreen {
-            padding = box(15.px)
-            vgap = 7.px
-            hgap = 10.px
+        STYLE_LOGIN_SCREEN {
+            padding = box(15.pt)
+            vgap = 7.pt
+            hgap = 10.pt
         }
     }
 }

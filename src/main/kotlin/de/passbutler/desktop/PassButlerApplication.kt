@@ -13,7 +13,7 @@ import tornadofx.App
 import tornadofx.launch
 import java.util.*
 
-class PassButlerApplication : App(RootScreen::class, Styles::class) {
+class PassButlerApplication : App(LoginScreen::class, Styles::class) {
     override fun start(stage: Stage) {
         super.start(stage)
 
