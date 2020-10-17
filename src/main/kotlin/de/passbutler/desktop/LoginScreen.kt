@@ -1,6 +1,5 @@
 package de.passbutler.desktop
 
-import com.jfoenix.controls.JFXButton
 import de.passbutler.desktop.ui.*
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
@@ -29,12 +28,14 @@ class LoginScreen : View("Login") {
             form {
 
                 style {
+                    // TODO: Use theme attribute
                     backgroundColor += Color.web(whiteMedium.css, 0.40)
-                    backgroundRadius = multi(box(4.pt))
+                    backgroundRadius = multi(box(4.dp))
                     paddingAll = marginM.value
+                    minWidth = 180.pt
                 }
 
-                text("Melden Sie sich bei Pass Butler an")
+                text(messages["login_description"])
 
                 fieldset(labelPosition = Orientation.VERTICAL) {
                     paddingTop = marginM.value
@@ -58,11 +59,8 @@ class LoginScreen : View("Login") {
                     }
                 }
 
-                // TODO: Create extention
-                this += JFXButton(messages["login_button_text"].toUpperCase()).apply {
-                    useMaxWidth = true
+                jfxButtonRaised(messages["login_button_text"]) {
                     isDefaultButton = true
-                    buttonType = JFXButton.ButtonType.RAISED
 
                     action {
                         println("Login pressed light = $light")
