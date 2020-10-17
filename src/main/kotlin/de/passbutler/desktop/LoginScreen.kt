@@ -3,22 +3,14 @@ package de.passbutler.desktop
 import de.passbutler.desktop.ui.*
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
-import javafx.scene.layout.BackgroundRepeat
-import javafx.scene.layout.BackgroundSize
-import javafx.scene.paint.Color
 import tornadofx.*
-import java.net.URI
 
 class LoginScreen : View("Login") {
 
     private var light = true
 
     override val root = hbox(alignment = Pos.CENTER) {
-        style {
-            backgroundImage += URI("/drawables/background.jpg")
-            backgroundSize += BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
-            backgroundRepeat += Pair(BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT)
-        }
+        addClass(BaseTheme.abstractBackgroundStyle)
 
         onLeftClick {
             requestFocus()
@@ -26,11 +18,9 @@ class LoginScreen : View("Login") {
 
         group {
             form {
+                addClass(BaseTheme.cardViewBackgroundStyle)
 
                 style {
-                    // TODO: Use theme attribute
-                    backgroundColor += Color.web(whiteMedium.css, 0.40)
-                    backgroundRadius = multi(box(4.dp))
                     paddingAll = marginM.value
                     minWidth = 180.pt
                 }

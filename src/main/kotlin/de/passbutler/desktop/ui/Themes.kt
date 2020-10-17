@@ -1,7 +1,10 @@
 package de.passbutler.desktop.ui
 
+import javafx.scene.layout.BackgroundRepeat
+import javafx.scene.layout.BackgroundSize
 import javafx.scene.paint.Color
 import tornadofx.*
+import java.net.URI
 
 abstract class BaseTheme : Stylesheet() {
     abstract val colorBackground: Color
@@ -41,9 +44,14 @@ abstract class BaseTheme : Stylesheet() {
             textFill = textColor
         }
 
+        // TODO: not working
+        text {
+            textFill = textColor
+        }
+
         textField {
             textFill = textColor
-            minHeight = 25.pt
+            minHeight = 25.dp
         }
 
         checkBox {
@@ -56,9 +64,25 @@ abstract class BaseTheme : Stylesheet() {
 
             fontFamily = fontMedium
 
-            minHeight = 25.pt
+            minHeight = 25.dp
             padding = box(marginS, marginM)
         }
+
+        abstractBackgroundStyle {
+            backgroundImage += URI("/drawables/background.jpg")
+            backgroundSize += BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
+            backgroundRepeat += Pair(BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT)
+        }
+
+        cardViewBackgroundStyle {
+            backgroundColor += Color.web(colorBackground.css, 0.65)
+            backgroundRadius = multi(box(4.dp))
+        }
+    }
+
+    companion object {
+        val abstractBackgroundStyle by cssclass()
+        val cardViewBackgroundStyle by cssclass()
     }
 }
 

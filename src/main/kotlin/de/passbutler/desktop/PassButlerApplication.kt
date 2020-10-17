@@ -5,26 +5,21 @@ import de.passbutler.desktop.base.BuildConfig
 import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.database.createLocalRepository
 import de.passbutler.desktop.ui.LightTheme
-import de.passbutler.desktop.ui.Styles
-import de.passbutler.desktop.ui.Theme
-import de.passbutler.desktop.ui.ThemeManager
 import javafx.stage.Stage
 import kotlinx.coroutines.runBlocking
 import org.tinylog.configuration.Configuration
 import org.tinylog.kotlin.Logger
 import tornadofx.App
-import tornadofx.importStylesheet
 import tornadofx.launch
 import java.util.*
 
-class PassButlerApplication : App(LoginScreen::class, Styles::class) {
+class PassButlerApplication : App(LoginScreen::class, LightTheme::class) {
     override fun start(stage: Stage) {
         stage.minWidth = 800.0
         stage.minHeight = 600.0
         super.start(stage)
 
         setupLogger()
-        setupTheme()
 
         userManager = createUserManager()
     }
@@ -36,10 +31,6 @@ class PassButlerApplication : App(LoginScreen::class, Styles::class) {
 
         val loggingHeader = createLoggingHeader()
         Logger.debug("Started Pass Butler\n$loggingHeader")
-    }
-
-    private fun setupTheme() {
-        ThemeManager.changeTheme(Theme.LIGHT)
     }
 
     private fun createLoggerConfiguration(): Map<String, String> {
