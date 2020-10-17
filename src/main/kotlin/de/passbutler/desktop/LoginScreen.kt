@@ -20,15 +20,17 @@ class LoginScreen : View("Login") {
         style {
             backgroundImage += URI("/drawables/background.jpg")
             backgroundSize += BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
-            backgroundRepeat += BackgroundRepeat.NO_REPEAT to BackgroundRepeat.NO_REPEAT
+            backgroundRepeat += Pair(BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT)
         }
 
         onLeftClick {
             requestFocus()
         }
 
+
         group {
             form {
+
                 style {
                     backgroundColor += Color.web(whiteMedium.css, 0.40)
                     backgroundRadius = multi(box(4.pt))
