@@ -1,10 +1,7 @@
 package de.passbutler.desktop.ui
 
 import javafx.scene.paint.Color
-import tornadofx.Stylesheet
-import tornadofx.box
-import tornadofx.loadFont
-import tornadofx.pt
+import tornadofx.*
 
 abstract class BaseTheme : Stylesheet() {
     abstract val colorBackground: Color
@@ -97,4 +94,30 @@ class DarkTheme : BaseTheme() {
     init {
         applyStyles()
     }
+}
+
+object ThemeManager {
+
+    var theme: Theme = Theme.LIGHT
+        private set
+
+    fun changeTheme(newTheme: Theme) {
+        theme = newTheme
+
+        when (newTheme) {
+            Theme.LIGHT -> {
+                removeStylesheet(DarkTheme::class)
+                importStylesheet(LightTheme::class)
+            }
+            Theme.DARK -> {
+                removeStylesheet(LightTheme::class)
+                importStylesheet(DarkTheme::class)
+            }
+        }
+    }
+}
+
+enum class Theme {
+    LIGHT,
+    DARK
 }

@@ -15,8 +15,6 @@ class LoginScreen : View("Login") {
     private var light = true
 
     override val root = hbox(alignment = Pos.CENTER) {
-        importStylesheet(LightTheme::class)
-
         style {
             backgroundImage += URI("/drawables/background.jpg")
             backgroundSize += BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
@@ -26,7 +24,6 @@ class LoginScreen : View("Login") {
         onLeftClick {
             requestFocus()
         }
-
 
         group {
             form {
@@ -61,7 +58,7 @@ class LoginScreen : View("Login") {
                     }
                 }
 
-                // TODO: Use extention
+                // TODO: Create extention
                 this += JFXButton(messages["login_button_text"].toUpperCase()).apply {
                     useMaxWidth = true
                     isDefaultButton = true
@@ -71,11 +68,9 @@ class LoginScreen : View("Login") {
                         println("Login pressed light = $light")
 
                         if (light) {
-                            removeStylesheet(LightTheme::class)
-                            importStylesheet(DarkTheme::class)
+                            ThemeManager.changeTheme(Theme.DARK)
                         } else {
-                            removeStylesheet(DarkTheme::class)
-                            importStylesheet(LightTheme::class)
+                            ThemeManager.changeTheme(Theme.LIGHT)
                         }
 
                         light = !light
