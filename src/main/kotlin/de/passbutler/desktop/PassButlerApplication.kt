@@ -4,7 +4,7 @@ import de.passbutler.common.UserManager
 import de.passbutler.desktop.base.BuildConfig
 import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.database.createLocalRepository
-import de.passbutler.desktop.ui.LightTheme
+import de.passbutler.desktop.ui.ThemeManager
 import javafx.stage.Stage
 import kotlinx.coroutines.runBlocking
 import org.tinylog.configuration.Configuration
@@ -13,7 +13,7 @@ import tornadofx.App
 import tornadofx.launch
 import java.util.*
 
-class PassButlerApplication : App(LoginScreen::class, LightTheme::class) {
+class PassButlerApplication : App(LoginScreen::class, ThemeManager.theme.kotlinClass) {
     override fun start(stage: Stage) {
         stage.minWidth = 800.0
         stage.minHeight = 600.0

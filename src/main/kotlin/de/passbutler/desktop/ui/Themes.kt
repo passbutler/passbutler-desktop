@@ -5,6 +5,7 @@ import javafx.scene.layout.BackgroundSize
 import javafx.scene.paint.Color
 import tornadofx.*
 import java.net.URI
+import kotlin.reflect.KClass
 
 abstract class BaseTheme : Stylesheet() {
     abstract val colorBackground: Color
@@ -136,7 +137,7 @@ object ThemeManager {
     }
 }
 
-enum class Theme {
-    LIGHT,
-    DARK
+enum class Theme(val kotlinClass: KClass<out BaseTheme>) {
+    LIGHT(LightTheme::class),
+    DARK(DarkTheme::class)
 }
