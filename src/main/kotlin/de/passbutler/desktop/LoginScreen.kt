@@ -1,26 +1,37 @@
 package de.passbutler.desktop
 
+import com.jfoenix.controls.JFXSnackbar
+import de.passbutler.common.database.RequestUnauthorizedException
+import de.passbutler.desktop.base.RequestSending
+import de.passbutler.desktop.base.launchRequestSending
 import de.passbutler.desktop.ui.*
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.layout.StackPane
 import tornadofx.*
+import tornadofx.FX.Companion.messages
 
-class LoginScreen : View("Login") {
+class LoginScreen : CoroutineScopedView(messages["login_title"]), RequestSending {
 
-    override val root = hbox(alignment = Pos.CENTER)
+    override val root = StackPane()
+    override var progressView: Node? = null
+    override var bannerView: JFXSnackbar? = null
 
     private val viewModel: LoginViewModel by inject()
 
     private var serverUrlField: Field? = null
 
-    private var light = true
-
     init {
         with(root) {
-            setupForegroundContainer()
+            hbox(alignment = Pos.CENTER) {
+                setupForegroundContainer()
+            }
+
+            setupBannerView()
+            setupProgressView()
         }
     }
 
@@ -113,20 +124,37 @@ class LoginScreen : View("Login") {
             isDefaultButton = true
 
             action {
-                viewModel.validate()
-
-                if (viewModel.valid.value) {
-                    // TODO: Start request sending with viewModel.loginUser()
-                }
-
-                if (light) {
-                    ThemeManager.changeTheme(Theme.DARK)
-                } else {
-                    ThemeManager.changeTheme(Theme.LIGHT)
-                }
-
-                light = !light
+                loginClicked()
             }
+        }
+    }
+
+    private fun loginClicked() {
+        viewModel.validate()
+
+        if (viewModel.valid.value) {
+            val isLocalLogin = viewModel.isLocalLoginProperty.value
+
+            val serverUrl = viewModel.serverUrlProperty.value?.takeIf { !isLocalLogin }
+            val username = viewModel.usernameProperty.value
+            val masterPassword = viewModel.passwordProperty.value
+            loginUser(serverUrl, username, masterPassword)
+        }
+    }
+
+    private fun loginUser(serverUrl: String?, username: String, masterPassword: String) {
+        launchRequestSending(
+                handleFailure = {
+                    val errorStringResourceId = when (it) {
+                        is RequestUnauthorizedException -> "login_failed_unauthorized_title"
+                        else -> "login_failed_general_title"
+                    }
+
+                    showError(messages[errorStringResourceId])
+                },
+                isCancellable = false
+        ) {
+            viewModel.loginUser(serverUrl, username, masterPassword)
         }
     }
 }

@@ -1,12 +1,13 @@
 package de.passbutler.desktop.ui
 
+import javafx.scene.Node
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import tornadofx.View
 import kotlin.coroutines.CoroutineContext
 
-abstract class CoroutineScopedView : View(), CoroutineScope {
+abstract class CoroutineScopedView(title: String? = null, icon: Node? = null) : View(title, icon), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + coroutineJob
 

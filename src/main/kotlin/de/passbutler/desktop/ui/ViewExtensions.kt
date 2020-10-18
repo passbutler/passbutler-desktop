@@ -1,8 +1,11 @@
 package de.passbutler.desktop.ui
 
 import com.jfoenix.controls.JFXButton
+import com.jfoenix.controls.JFXSnackbar
+import com.jfoenix.controls.JFXSpinner
 import javafx.event.EventTarget
 import javafx.scene.Node
+import javafx.scene.layout.Pane
 import tornadofx.Dimension
 import tornadofx.attachTo
 import tornadofx.useMaxWidth
@@ -21,3 +24,6 @@ fun EventTarget.jfxButtonRaised(text: String = "", graphic: Node? = null, op: JF
     buttonType = JFXButton.ButtonType.RAISED
     op.invoke(this)
 }
+
+fun EventTarget.jfxSpinner(op: JFXSpinner.() -> Unit = {}) = JFXSpinner().attachTo(this, op)
+fun EventTarget.jfxSnackbar(snackbarContainer: Pane, op: JFXSnackbar.() -> Unit = {}) = JFXSnackbar(snackbarContainer).attachTo(this, op)

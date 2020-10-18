@@ -72,11 +72,16 @@ abstract class BaseTheme : Stylesheet() {
             backgroundColor += Color.web(colorBackground.css, 0.65)
             backgroundRadius = multi(box(4.dp))
         }
+
+        scrimForegroundStyle {
+            backgroundColor += Color.web(colorBackground.css, 0.65)
+        }
     }
 
     companion object {
         val abstractBackgroundStyle by cssclass()
         val cardViewBackgroundStyle by cssclass()
+        val scrimForegroundStyle by cssclass()
     }
 }
 
