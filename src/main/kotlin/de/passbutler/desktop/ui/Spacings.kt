@@ -1,9 +1,7 @@
 package de.passbutler.desktop.ui
 
-import tornadofx.pt
-
-val marginXS = 2.pt
-val marginS = 4.pt
-val marginM = 16.pt
-val marginL = 32.pt
-val marginXL = 48.pt
+val marginXS = 2.dp
+val marginS = 4.dp
+val marginM = 16.dp
+val marginL = 32.dp
+val marginXL = 48.dp

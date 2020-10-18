@@ -42,7 +42,7 @@ class LoginScreen : View("Login") {
 
             style {
                 paddingAll = marginM.value
-                minWidth = 180.pt
+                minWidth = 180.dp
             }
 
             label(messages["login_description"])
