@@ -21,14 +21,22 @@ abstract class BaseTheme : Stylesheet() {
     abstract val colorOnPrimary: Color
     abstract val colorOnSecondary: Color
 
+    abstract val colorBackgroundImageTint: Color
+
     abstract val textColor: Color
 
-    protected val fontMedium = loadFont("/fonts/roboto/Roboto-Medium.ttf", textSizeMedium.value)!!.family
-    protected val fontRegular = loadFont("/fonts/roboto/Roboto-Regular.ttf", textSizeMedium.value)!!.family
-    protected val fontLight = loadFont("/fonts/roboto/Roboto-Light.ttf", textSizeMedium.value)!!.family
-    protected val fontBold = loadFont("/fonts/roboto/Roboto-Bold.ttf", textSizeMedium.value)!!.family
+    private val fontMedium = loadFont("/fonts/roboto/Roboto-Medium.ttf", textSizeMedium.value)!!.family
+    private val fontRegular = loadFont("/fonts/roboto/Roboto-Regular.ttf", textSizeMedium.value)!!.family
+    private val fontLight = loadFont("/fonts/roboto/Roboto-Light.ttf", textSizeMedium.value)!!.family
+    private val fontBold = loadFont("/fonts/roboto/Roboto-Bold.ttf", textSizeMedium.value)!!.family
+
+    private lateinit var colorBackgroundTransparent: Color
+    private lateinit var colorSurfaceTransparent: Color
 
     protected fun applyStyles() {
+        colorBackgroundTransparent = Color.web(colorBackground.css, 0.65)
+        colorSurfaceTransparent = Color.web(colorSurface.css, 0.65)
+
         root {
             backgroundColor += colorBackground
             baseColor = colorBackground
@@ -68,18 +76,23 @@ abstract class BaseTheme : Stylesheet() {
             backgroundRepeat += Pair(BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT)
         }
 
+        abstractBackgroundImageStyle {
+            backgroundColor += colorBackgroundImageTint
+        }
+
         cardViewBackgroundStyle {
-            backgroundColor += Color.web(colorBackground.css, 0.65)
+            backgroundColor += colorSurfaceTransparent
             backgroundRadius = multi(box(4.dp))
         }
 
         scrimForegroundStyle {
-            backgroundColor += Color.web(colorBackground.css, 0.65)
+            backgroundColor += colorBackgroundTransparent
         }
     }
 
     companion object {
         val abstractBackgroundStyle by cssclass()
+        val abstractBackgroundImageStyle by cssclass()
         val cardViewBackgroundStyle by cssclass()
         val scrimForegroundStyle by cssclass()
     }
@@ -94,6 +107,7 @@ class LightTheme : BaseTheme() {
     override val colorAccent = pointRed
     override val colorOnPrimary = white
     override val colorOnSecondary = white
+    override val colorBackgroundImageTint = Color.web("#000000", 0.0)
     override val textColor = black
 
     init {
@@ -110,6 +124,7 @@ class DarkTheme : BaseTheme() {
     override val colorAccent = pointRed
     override val colorOnPrimary = white
     override val colorOnSecondary = white
+    override val colorBackgroundImageTint = Color.web("#000000", 0.3)
     override val textColor = white
 
     init {

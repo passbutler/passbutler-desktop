@@ -6,17 +6,14 @@ import de.passbutler.desktop.base.RequestSending
 import de.passbutler.desktop.base.launchRequestSending
 import de.passbutler.desktop.ui.*
 import javafx.geometry.Orientation
-import javafx.geometry.Pos
-import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.control.Button
-import javafx.scene.layout.StackPane
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
 class LoginScreen : CoroutineScopedView(messages["login_title"]), RequestSending {
 
-    override val root = StackPane()
+    override val root = stackpane()
     override var progressView: Node? = null
     override var bannerView: JFXSnackbar? = null
 
@@ -26,52 +23,57 @@ class LoginScreen : CoroutineScopedView(messages["login_title"]), RequestSending
 
     init {
         with(root) {
-            hbox(alignment = Pos.CENTER) {
-                setupForegroundContainer()
-            }
-
+            setupContentView()
             setupBannerView()
             setupProgressView()
         }
     }
 
-    private fun Node.setupForegroundContainer(): Group {
-        addClass(BaseTheme.abstractBackgroundStyle)
+    private fun Node.setupContentView() {
+        stackpane {
+            pane {
+                addClass(BaseTheme.abstractBackgroundStyle)
+            }
 
-        onLeftClick {
-            requestFocus()
-        }
+            pane {
+                addClass(BaseTheme.abstractBackgroundImageStyle)
+            }
 
-        return group {
-            setupForm()
+            onLeftClick {
+                requestFocus()
+            }
+
+            setupCardViewContent()
         }
     }
 
-    private fun Node.setupForm() {
-        form {
-            addClass(BaseTheme.cardViewBackgroundStyle)
+    private fun Node.setupCardViewContent() {
+        group {
+            form {
+                addClass(BaseTheme.cardViewBackgroundStyle)
 
-            style {
-                paddingAll = marginM.value
-                minWidth = 180.dp
+                style {
+                    paddingAll = marginM.value
+                    minWidth = 180.dp
+                }
+
+                label(messages["login_description"])
+
+                fieldset(labelPosition = Orientation.VERTICAL) {
+                    paddingTop = marginM.value
+                    paddingBottom = marginM.value
+
+                    spacing = marginS.value
+
+                    serverUrlField = createServerUrlField()
+
+                    createUsernameUrlField()
+                    createPasswordUrlField()
+                    createLocalLoginCheckbox()
+                }
+
+                createLoginButton()
             }
-
-            label(messages["login_description"])
-
-            fieldset(labelPosition = Orientation.VERTICAL) {
-                paddingTop = marginM.value
-                paddingBottom = marginM.value
-
-                spacing = marginS.value
-
-                serverUrlField = createServerUrlField()
-
-                createUsernameUrlField()
-                createPasswordUrlField()
-                createLocalLoginCheckbox()
-            }
-
-            createLoginButton()
         }
     }
 
