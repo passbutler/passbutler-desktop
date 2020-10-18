@@ -1,9 +1,9 @@
 package de.passbutler.desktop
 
 import com.jfoenix.controls.JFXSnackbar
+import de.passbutler.common.base.BuildType
 import de.passbutler.common.database.RequestUnauthorizedException
-import de.passbutler.desktop.base.RequestSending
-import de.passbutler.desktop.base.launchRequestSending
+import de.passbutler.desktop.base.*
 import de.passbutler.desktop.ui.*
 import javafx.geometry.Orientation
 import javafx.scene.Node
@@ -84,12 +84,12 @@ class LoginScreen : CoroutineScopedView(messages["login_title"]), RequestSending
                     requestFocus()
                 }
 
-                validator {
-                    if (!viewModel.isLocalLoginProperty.value && it.isNullOrBlank()) {
-                        error(viewModelBundle["required"])
-                    } else {
-                        null
-                    }
+                validatorWithRules {
+                    listOfNotNull(
+                            FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_serverurl_validation_error_empty"]),
+                            FormFieldValidatorRule({ !isNetworkUrl(it) }, messages["form_serverurl_validation_error_invalid"]),
+                            FormFieldValidatorRule({ !isHttpsUrl(it) }, messages["form_serverurl_validation_error_invalid_scheme"]).takeIf { BuildInformationProvider.buildType == BuildType.Release }
+                    ).takeIf { !viewModel.isLocalLoginProperty.value }
                 }
             }
         }
@@ -98,7 +98,11 @@ class LoginScreen : CoroutineScopedView(messages["login_title"]), RequestSending
     private fun Fieldset.createUsernameUrlField(): Field {
         return field(messages["login_username_hint"]) {
             textfield(viewModel.usernameProperty) {
-                required()
+                validatorWithRules {
+                    listOf(
+                            FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["login_username_validation_error_empty"])
+                    )
+                }
             }
         }
     }
@@ -106,7 +110,11 @@ class LoginScreen : CoroutineScopedView(messages["login_title"]), RequestSending
     private fun Fieldset.createPasswordUrlField(): Field {
         return field(messages["login_master_password_hint"]) {
             passwordfield(viewModel.passwordProperty) {
-                required()
+                validatorWithRules {
+                    listOf(
+                            FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_master_password_validation_error_empty"])
+                    )
+                }
             }
         }
     }
