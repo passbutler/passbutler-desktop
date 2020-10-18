@@ -1,4 +1,4 @@
-package de.passbutler.desktop.base
+package de.passbutler.desktop.ui
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

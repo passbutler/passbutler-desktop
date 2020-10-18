@@ -1,6 +1,6 @@
 package de.passbutler.desktop
 
-import de.passbutler.desktop.base.CoroutineScopedView
+import de.passbutler.desktop.ui.CoroutineScopedView
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.layout.Priority
