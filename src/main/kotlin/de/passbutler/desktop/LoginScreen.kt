@@ -25,7 +25,7 @@ class LoginScreen : View("Login") {
                     minWidth = 180.pt
                 }
 
-                text(messages["login_description"])
+                label(messages["login_description"])
 
                 fieldset(labelPosition = Orientation.VERTICAL) {
                     paddingTop = marginM.value
@@ -34,14 +34,14 @@ class LoginScreen : View("Login") {
                     spacing = marginS.value
 
                     field(messages["login_username_hint"]) {
-                        textfield() {
+                        textfield {
                             whenDocked {
                                 requestFocus()
                             }
                         }
                     }
                     field(messages["login_master_password_hint"]) {
-                        passwordfield() {
+                        passwordfield {
                         }
                     }
                     field {

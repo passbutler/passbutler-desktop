@@ -44,11 +44,6 @@ abstract class BaseTheme : Stylesheet() {
             textFill = textColor
         }
 
-        // TODO: not working
-        text {
-            textFill = textColor
-        }
-
         textField {
             textFill = textColor
             minHeight = 25.dp
