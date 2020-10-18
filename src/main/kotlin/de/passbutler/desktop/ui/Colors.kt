@@ -15,10 +15,7 @@ val black = Color.web("#000000")
 val transparent = Color.web("#000000", 0.0)
 
 val whiteMedium = Color.web("#FAFAFA")
-val whiteMediumTransparent = Color.web("#FAFAFA", 0.5)
-
 val greyMedium = Color.web("#313131")
-val greyMediumTransparent = Color.web("#313131", 0.5)
 
 // Colors used for debugging only
 val magenta = Color.web("#FF00FF")

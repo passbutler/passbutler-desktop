@@ -18,8 +18,6 @@ abstract class BaseTheme : Stylesheet() {
 
     abstract val colorAccent: Color
 
-    abstract val scrimBackground: Color
-
     abstract val colorOnPrimary: Color
     abstract val colorOnSecondary: Color
 
@@ -89,7 +87,6 @@ class LightTheme : BaseTheme() {
     override val colorPrimaryDark = wineRedDark
     override val colorSecondary = pointRed
     override val colorAccent = pointRed
-    override val scrimBackground = whiteMediumTransparent
     override val colorOnPrimary = white
     override val colorOnSecondary = white
     override val textColor = black
@@ -106,7 +103,6 @@ class DarkTheme : BaseTheme() {
     override val colorPrimaryDark = wineRed
     override val colorSecondary = pointRed
     override val colorAccent = pointRed
-    override val scrimBackground = greyMediumTransparent
     override val colorOnPrimary = white
     override val colorOnSecondary = white
     override val textColor = white
