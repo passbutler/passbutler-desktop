@@ -62,7 +62,7 @@ javafx {
     modules = ["javafx.controls", "javafx.fxml"]
 }
 
-mainClassName = "de.passbutler.desktop.PassButlerApp"
+mainClassName = "de.passbutler.desktop.PassButlerApplication"
 defaultTasks "run"
 
 jar {
