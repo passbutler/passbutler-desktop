@@ -11,7 +11,7 @@ import javafx.scene.control.Button
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class LoginScreen : CoroutineScopedView(messages["login_title"]), RequestSending {
+class LoginScreen : CoroutineScopedFragment(messages["login_title"]), RequestSending {
 
     override val root = stackpane()
     override var progressView: Node? = null

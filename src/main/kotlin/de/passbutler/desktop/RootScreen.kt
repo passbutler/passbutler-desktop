@@ -1,19 +1,26 @@
 package de.passbutler.desktop
 
+import de.passbutler.common.base.BindableObserver
 import de.passbutler.desktop.ui.CoroutineScopedView
-import javafx.geometry.Insets
-import javafx.geometry.Pos
-import javafx.scene.layout.Priority
+import javafx.util.Duration
 import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
 import tornadofx.*
 
 class RootScreen : CoroutineScopedView() {
 
-    val viewModel: RootViewModel by inject()
+    override val root = stackpane()
+
+    private val viewModel: RootViewModel by inject()
+
+    private val rootScreenStateObserver: BindableObserver<RootViewModel.RootScreenState?> = {
+        showRootScreen()
+    }
 
     override fun onDock() {
         super.onDock()
+
+        viewModel.rootScreenState.addObserver(this, false, rootScreenStateObserver)
 
         launch {
             viewModel.restoreLoggedInUser()
@@ -22,25 +29,44 @@ class RootScreen : CoroutineScopedView() {
 
     override fun onUndock() {
         super.onUndock()
+
+        viewModel.rootScreenState.removeObserver(rootScreenStateObserver)
         viewModel.onCleared()
 
         Logger.debug("RootScreen was undocked")
     }
 
-    override val root = form {
-        fieldset {
-            field("Data") {
-                // textfield(vm.data)
-            }
-        }
-        button("Save") {
-            action {
-                //vm.save()
-            }
-        }
+    private fun showRootScreen() {
+        val rootScreenState = viewModel.rootScreenState.value
+        Logger.debug("Show screen state '$rootScreenState'")
 
-        padding = Insets(10.0)
-        vgrow = Priority.ALWAYS
-        alignment = Pos.CENTER_LEFT
+        when (rootScreenState) {
+            is RootViewModel.RootScreenState.LoggedIn -> showLoggedInState()
+            is RootViewModel.RootScreenState.LoggedOut -> showLoggedOutState()
+        }
+    }
+
+    private fun showLoggedInState() {
+        val overview = find(OverviewScreen::class)
+        replaceView(overview)
+    }
+
+    private fun showLoggedOutState() {
+        val login = find(LoginScreen::class)
+        replaceView(login)
+    }
+
+    private fun replaceView(component: UIComponent) {
+        root.getChildList()?.apply {
+            title = component.title
+
+            val existingView = getOrNull(0)
+
+            if (existingView != null) {
+                existingView.replaceWith(component.root, ViewTransition.Slide(Duration(500.0)))
+            } else {
+                add(component.root)
+            }
+        }
     }
 }

@@ -13,7 +13,7 @@ import tornadofx.App
 import tornadofx.launch
 import java.util.*
 
-class PassButlerApplication : App(LoginScreen::class, ThemeManager.theme.kotlinClass) {
+class PassButlerApplication : App(RootScreen::class, ThemeManager.theme.kotlinClass) {
     override fun start(stage: Stage) {
         stage.minWidth = 800.0
         stage.minHeight = 600.0
