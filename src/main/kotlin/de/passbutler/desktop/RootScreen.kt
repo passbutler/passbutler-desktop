@@ -60,7 +60,7 @@ class RootScreen : CoroutineScopedView() {
         root.getChildList()?.apply {
             title = component.title
 
-            val existingView = getOrNull(0)
+            val existingView = firstOrNull()
 
             if (existingView != null) {
                 existingView.replaceWith(component.root, ViewTransition.Slide(Duration(500.0)))
