@@ -79,11 +79,9 @@ class LoginScreen : CoroutineScopedFragment(messages["login_title"]), RequestSen
 
     private fun Fieldset.createServerUrlField(): Field {
         return field(messages["login_serverurl_hint"]) {
-            textfield(viewModel.serverUrlProperty) {
-                whenDocked {
-                    requestFocus()
-                }
+            isVisible = !viewModel.isLocalLoginProperty.value
 
+            textfield(viewModel.serverUrlProperty) {
                 validatorWithRules {
                     listOfNotNull(
                             FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_serverurl_validation_error_empty"]),
@@ -98,6 +96,10 @@ class LoginScreen : CoroutineScopedFragment(messages["login_title"]), RequestSen
     private fun Fieldset.createUsernameUrlField(): Field {
         return field(messages["login_username_hint"]) {
             textfield(viewModel.usernameProperty) {
+                whenDocked {
+                    requestFocus()
+                }
+
                 validatorWithRules {
                     listOf(
                             FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["login_username_validation_error_empty"])
