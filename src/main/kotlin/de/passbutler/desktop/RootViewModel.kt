@@ -7,7 +7,6 @@ import de.passbutler.common.base.MutableBindable
 import de.passbutler.desktop.base.CoroutineScopedViewModel
 import de.passbutler.desktop.base.ViewLifecycledViewModel
 import kotlinx.coroutines.launch
-import org.tinylog.kotlin.Logger
 
 class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserViewModelUsingViewModel {
 

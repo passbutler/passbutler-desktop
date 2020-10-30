@@ -70,3 +70,5 @@ interface UserViewModelUsingViewModel {
     val userManager: UserManager
         get() = userViewModelProvidingViewModel.userManager
 }
+
+object LoggedInUserViewModelUninitializedException : IllegalStateException("The logged-in UserViewModel is null!")

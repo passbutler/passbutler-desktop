@@ -1,6 +1,5 @@
 package de.passbutler.desktop
 
-import com.jfoenix.controls.JFXSnackbar
 import de.passbutler.common.base.BuildType
 import de.passbutler.common.database.RequestUnauthorizedException
 import de.passbutler.desktop.base.*
@@ -11,11 +10,9 @@ import javafx.scene.control.Button
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
-class LoginScreen : CoroutineScopedFragment(messages["login_title"]), RequestSending {
+class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
 
     override val root = stackpane()
-    override var progressView: Node? = null
-    override var bannerView: JFXSnackbar? = null
 
     private val viewModel: LoginViewModel by inject()
 
@@ -24,8 +21,6 @@ class LoginScreen : CoroutineScopedFragment(messages["login_title"]), RequestSen
     init {
         with(root) {
             setupContentView()
-            setupBannerView()
-            setupProgressView()
         }
     }
 
@@ -84,9 +79,9 @@ class LoginScreen : CoroutineScopedFragment(messages["login_title"]), RequestSen
             textfield(viewModel.serverUrlProperty) {
                 validatorWithRules {
                     listOfNotNull(
-                            FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_serverurl_validation_error_empty"]),
-                            FormFieldValidatorRule({ !isNetworkUrl(it) }, messages["form_serverurl_validation_error_invalid"]),
-                            FormFieldValidatorRule({ !isHttpsUrl(it) }, messages["form_serverurl_validation_error_invalid_scheme"]).takeIf { BuildInformationProvider.buildType == BuildType.Release }
+                        FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_serverurl_validation_error_empty"]),
+                        FormFieldValidatorRule({ !isNetworkUrl(it) }, messages["form_serverurl_validation_error_invalid"]),
+                        FormFieldValidatorRule({ !isHttpsUrl(it) }, messages["form_serverurl_validation_error_invalid_scheme"]).takeIf { BuildInformationProvider.buildType == BuildType.Release }
                     ).takeIf { !viewModel.isLocalLoginProperty.value }
                 }
             }
@@ -102,7 +97,7 @@ class LoginScreen : CoroutineScopedFragment(messages["login_title"]), RequestSen
 
                 validatorWithRules {
                     listOf(
-                            FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["login_username_validation_error_empty"])
+                        FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["login_username_validation_error_empty"])
                     )
                 }
             }
@@ -114,7 +109,7 @@ class LoginScreen : CoroutineScopedFragment(messages["login_title"]), RequestSen
             passwordfield(viewModel.passwordProperty) {
                 validatorWithRules {
                     listOf(
-                            FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_master_password_validation_error_empty"])
+                        FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_master_password_validation_error_empty"])
                     )
                 }
             }
@@ -156,15 +151,15 @@ class LoginScreen : CoroutineScopedFragment(messages["login_title"]), RequestSen
 
     private fun loginUser(serverUrl: String?, username: String, masterPassword: String) {
         launchRequestSending(
-                handleFailure = {
-                    val errorStringResourceId = when (it) {
-                        is RequestUnauthorizedException -> "login_failed_unauthorized_title"
-                        else -> "login_failed_general_title"
-                    }
+            handleFailure = {
+                val errorStringResourceId = when (it) {
+                    is RequestUnauthorizedException -> "login_failed_unauthorized_title"
+                    else -> "login_failed_general_title"
+                }
 
-                    showError(messages[errorStringResourceId])
-                },
-                isCancellable = false
+                showError(messages[errorStringResourceId])
+            },
+            isCancellable = false
         ) {
             viewModel.loginUser(serverUrl, username, masterPassword)
         }

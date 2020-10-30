@@ -1,15 +1,33 @@
 package de.passbutler.desktop
 
+import com.jfoenix.controls.JFXSnackbar
 import de.passbutler.common.base.BindableObserver
-import de.passbutler.desktop.ui.CoroutineScopedView
-import javafx.util.Duration
+import de.passbutler.desktop.ui.*
+import javafx.geometry.Pos
+import javafx.scene.Node
+import javafx.scene.layout.Pane
 import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
-import tornadofx.*
+import tornadofx.addClass
+import tornadofx.hbox
+import tornadofx.stackpane
 
-class RootScreen : CoroutineScopedView() {
+class RootScreen : BaseView() {
 
-    override val root = stackpane()
+    override val root = stackpane {
+        contentContainer = stackpane()
+        progressView = createProgressView()
+        bannerView = createBannerView()
+    }
+
+    var contentContainer: Node? = null
+        private set
+
+    var progressView: Node? = null
+        private set
+
+    var bannerView: JFXSnackbar? = null
+        private set
 
     private val viewModel: RootViewModel by inject()
 
@@ -19,6 +37,8 @@ class RootScreen : CoroutineScopedView() {
 
     override fun onDock() {
         super.onDock()
+
+        uiPresentingDelegate = UIPresenter(this)
 
         viewModel.rootScreenState.addObserver(this, false, rootScreenStateObserver)
 
@@ -47,26 +67,23 @@ class RootScreen : CoroutineScopedView() {
     }
 
     private fun showLoggedInState() {
-        val overview = find(OverviewScreen::class)
-        replaceView(overview)
+        showScreen(OverviewScreen::class)
     }
 
     private fun showLoggedOutState() {
-        val login = find(LoginScreen::class)
-        replaceView(login)
+        showScreen(LoginScreen::class)
     }
+}
 
-    private fun replaceView(component: UIComponent) {
-        root.getChildList()?.apply {
-            title = component.title
+private fun Pane.createProgressView(): Pane {
+    return hbox(alignment = Pos.CENTER) {
+        addClass(BaseTheme.scrimForegroundStyle)
 
-            val existingView = firstOrNull()
-
-            if (existingView != null) {
-                existingView.replaceWith(component.root, ViewTransition.Slide(Duration(500.0)))
-            } else {
-                add(component.root)
-            }
-        }
+        jfxSpinner()
+        isVisible = false
     }
+}
+
+private fun Pane.createBannerView(): JFXSnackbar {
+    return jfxSnackbar(this)
 }

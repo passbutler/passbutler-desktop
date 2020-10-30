@@ -3,20 +3,20 @@ package de.passbutler.desktop.base
 import de.passbutler.common.base.Failure
 import de.passbutler.common.base.Result
 import de.passbutler.common.base.Success
-import de.passbutler.desktop.ui.BannerPresentingView
-import de.passbutler.desktop.ui.ProgressPresentingView
+import de.passbutler.desktop.ui.BannerPresenting
+import de.passbutler.desktop.ui.ProgressPresenting
 import kotlinx.coroutines.*
 import org.tinylog.kotlin.Logger
 import kotlin.coroutines.EmptyCoroutineContext
 
-interface RequestSending : CoroutineScope, ProgressPresentingView, BannerPresentingView
+interface RequestSending : CoroutineScope, ProgressPresenting, BannerPresenting
 
 fun RequestSending.launchRequestSending(
-        handleSuccess: (() -> Unit)? = null,
-        handleFailure: ((error: Throwable) -> Unit)? = null,
-        handleLoadingChanged: ((isLoading: Boolean) -> Unit)? = blockingProgressScreen(),
-        isCancellable: Boolean = true,
-        block: suspend () -> Result<*>
+    handleSuccess: (() -> Unit)? = null,
+    handleFailure: ((error: Throwable) -> Unit)? = null,
+    handleLoadingChanged: ((isLoading: Boolean) -> Unit)? = blockingProgressScreen(),
+    isCancellable: Boolean = true,
+    block: suspend () -> Result<*>
 ): Job {
     val viewClassName = javaClass.simpleName
 
@@ -50,7 +50,7 @@ fun RequestSending.launchRequestSending(
     }
 }
 
-private fun ProgressPresentingView.blockingProgressScreen(): (Boolean) -> Unit {
+private fun ProgressPresenting.blockingProgressScreen(): (Boolean) -> Unit {
     return { isLoading ->
         if (isLoading) {
             showProgress()
