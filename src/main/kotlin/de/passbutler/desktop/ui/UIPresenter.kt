@@ -72,7 +72,7 @@ class UIPresenter(
     }
 }
 
-fun TransitionType.createViewTransition(): ViewTransition? {
+private fun TransitionType.createViewTransition(): ViewTransition? {
     return when (this) {
         TransitionType.MODAL -> {
             // Not supported at the moment
@@ -86,6 +86,6 @@ fun TransitionType.createViewTransition(): ViewTransition? {
 
 typealias JavaDuration = java.time.Duration
 
-fun JavaDuration.toJavaFxDuration(): Duration {
+private fun JavaDuration.toJavaFxDuration(): Duration {
     return Duration(toMillis().toDouble())
 }
