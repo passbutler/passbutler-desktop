@@ -1,7 +1,7 @@
 package de.passbutler.desktop
 
-import de.passbutler.desktop.base.RequestSending
-import de.passbutler.desktop.base.launchRequestSending
+import de.passbutler.common.ui.RequestSending
+import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.BaseFragment
 import tornadofx.FX.Companion.messages
 import tornadofx.action

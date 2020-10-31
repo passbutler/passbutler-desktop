@@ -1,5 +1,6 @@
 package de.passbutler.desktop.ui
 
+import de.passbutler.common.ui.TransitionType
 import javafx.scene.Node
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
