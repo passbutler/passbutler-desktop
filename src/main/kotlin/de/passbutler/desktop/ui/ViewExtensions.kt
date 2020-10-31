@@ -34,6 +34,7 @@ fun EventTarget.jfxSpinner(op: JFXSpinner.() -> Unit = {}) = JFXSpinner().attach
 fun EventTarget.jfxSnackbar(snackbarContainer: Pane, op: JFXSnackbar.() -> Unit = {}) = JFXSnackbar(snackbarContainer).attachTo(this, op)
 
 fun Node.showFadeInOutAnimation(shouldShow: Boolean) {
+    // TODO: Cancel previous animation if any is running to avoid produce out-of-sync view state
     if (shouldShow) {
         isVisible = true
         opacity = 0.0
