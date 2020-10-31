@@ -122,7 +122,8 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
         return field {
             checkbox(messages["login_local_login_label"], viewModel.isLocalLoginProperty) {
                 action {
-                    serverUrlField?.isVisible = !viewModel.isLocalLoginProperty.value
+                    val shouldShow = !viewModel.isLocalLoginProperty.value
+                    serverUrlField?.showFadeInOutAnimation(shouldShow)
                 }
             }
         }

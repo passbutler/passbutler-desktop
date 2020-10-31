@@ -3,12 +3,17 @@ package de.passbutler.desktop.ui
 import com.jfoenix.controls.JFXButton
 import com.jfoenix.controls.JFXSnackbar
 import com.jfoenix.controls.JFXSpinner
+import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import javafx.event.EventTarget
 import javafx.scene.Node
 import javafx.scene.layout.Pane
 import tornadofx.Dimension
 import tornadofx.attachTo
+import tornadofx.fade
 import tornadofx.useMaxWidth
+
+typealias JavaTimeDuration = java.time.Duration
+typealias JavaFxDuration = javafx.util.Duration
 
 val Number.dp: Dimension<Dimension.LinearUnits>
     get() = Dimension(this.toDouble(), Dimension.LinearUnits.pt)
@@ -27,3 +32,20 @@ fun EventTarget.jfxButtonRaised(text: String = "", graphic: Node? = null, op: JF
 
 fun EventTarget.jfxSpinner(op: JFXSpinner.() -> Unit = {}) = JFXSpinner().attachTo(this, op)
 fun EventTarget.jfxSnackbar(snackbarContainer: Pane, op: JFXSnackbar.() -> Unit = {}) = JFXSnackbar(snackbarContainer).attachTo(this, op)
+
+fun Node.showFadeInOutAnimation(shouldShow: Boolean) {
+    if (shouldShow) {
+        isVisible = true
+        opacity = 0.0
+        fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 1.0).onFinished = null
+    } else {
+        opacity = 1.0
+        fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 0.0).setOnFinished {
+            isVisible = false
+        }
+    }
+}
+
+fun JavaTimeDuration.toJavaFxDuration(): JavaFxDuration {
+    return JavaFxDuration(toMillis().toDouble())
+}

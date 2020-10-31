@@ -46,20 +46,11 @@ class UIPresenter(
     }
 
     override fun showProgress() {
-        rootScreen.progressView?.apply {
-            isVisible = true
-            opacity = 0.0
-            fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 1.0).onFinished = null
-        }
+        rootScreen.progressView?.showFadeInOutAnimation(true)
     }
 
     override fun hideProgress() {
-        rootScreen.progressView?.apply {
-            opacity = 1.0
-            fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 0).setOnFinished {
-                isVisible = false
-            }
-        }
+        rootScreen.progressView?.showFadeInOutAnimation(false)
     }
 
     override fun showInformation(message: String) {
@@ -82,10 +73,4 @@ private fun TransitionType.createViewTransition(): ViewTransition? {
         TransitionType.FADE -> ViewTransition.Fade(FADE_TRANSITION_DURATION.toJavaFxDuration())
         TransitionType.NONE -> null
     }
-}
-
-typealias JavaDuration = java.time.Duration
-
-private fun JavaDuration.toJavaFxDuration(): Duration {
-    return Duration(toMillis().toDouble())
 }
