@@ -77,7 +77,7 @@ class RootScreen : BaseView() {
 
 private fun Pane.createProgressView(): Pane {
     return hbox(alignment = Pos.CENTER) {
-        addClass(BaseTheme.scrimForegroundStyle)
+        addClass(BaseTheme.scrimBackgroundStyle)
 
         jfxSpinner()
         isVisible = false

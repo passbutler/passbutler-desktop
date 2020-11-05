@@ -3,6 +3,7 @@ package de.passbutler.desktop.ui
 import javafx.scene.layout.BackgroundRepeat
 import javafx.scene.layout.BackgroundSize
 import javafx.scene.paint.Color
+import javafx.scene.text.FontWeight
 import tornadofx.*
 import java.net.URI
 import kotlin.reflect.KClass
@@ -25,10 +26,10 @@ abstract class BaseTheme : Stylesheet() {
 
     abstract val textColor: Color
 
-    private val fontMedium = loadFont("/fonts/roboto/Roboto-Medium.ttf", textSizeMedium.value)!!.family
-    private val fontRegular = loadFont("/fonts/roboto/Roboto-Regular.ttf", textSizeMedium.value)!!.family
-    private val fontLight = loadFont("/fonts/roboto/Roboto-Light.ttf", textSizeMedium.value)!!.family
-    private val fontBold = loadFont("/fonts/roboto/Roboto-Bold.ttf", textSizeMedium.value)!!.family
+    private val fontMedium = loadFontFamily("/fonts/roboto/Roboto-Medium.ttf")
+    private val fontRegular = loadFontFamily("/fonts/roboto/Roboto-Regular.ttf")
+    private val fontLight = loadFontFamily("/fonts/roboto/Roboto-Light.ttf")
+    private val fontBold = loadFontFamily("/fonts/roboto/Roboto-Bold.ttf")
 
     private lateinit var colorBackgroundTransparent: Color
     private lateinit var colorSurfaceTransparent: Color
@@ -38,37 +39,68 @@ abstract class BaseTheme : Stylesheet() {
         colorSurfaceTransparent = Color.web(colorSurface.css, 0.65)
 
         root {
-            backgroundColor += colorBackground
+            backgroundColor = multi(colorBackground)
             baseColor = colorBackground
             accentColor = colorAccent
             focusColor = colorAccent
             faintFocusColor = transparent
 
             fontFamily = fontRegular
+            fontWeight = FontWeight.NORMAL
+
+            fontSize = BASE_FONT_SIZE.px
         }
+
+        /**
+         * Text styles
+         */
 
         label {
             textFill = textColor
+            fontSize = textSizeMedium
         }
+
+        textHeadline1Style {
+            fontFamily = fontLight
+            textFill = Color.web("#6C5F5D")
+            fontWeight = FontWeight.LIGHT
+            fontSize = textSizeLarge
+        }
+
+        textBody1Style {
+            fontWeight = FontWeight.NORMAL
+        }
+
+        /**
+         * Input styles
+         */
 
         textField {
             textFill = textColor
-            minHeight = 25.dp
+            fontSize = textSizeMedium
+
+            minHeight = 36.px
         }
 
         checkBox {
             textFill = textColor
+            fontSize = textSizeMedium
         }
 
         button {
-            backgroundColor += colorPrimary
+            backgroundColor = multi(colorPrimary)
             textFill = colorOnPrimary
 
             fontFamily = fontMedium
 
-            minHeight = 25.dp
+            minHeight = 36.px
             padding = box(marginS, marginM)
+            fontSize = textSizeMedium
         }
+
+        /**
+         * Background styles
+         */
 
         abstractBackgroundStyle {
             backgroundImage += URI("/drawables/background.jpg")
@@ -77,16 +109,16 @@ abstract class BaseTheme : Stylesheet() {
         }
 
         abstractBackgroundImageStyle {
-            backgroundColor += colorBackgroundImageTint
+            backgroundColor = multi(colorBackgroundImageTint)
         }
 
         cardViewBackgroundStyle {
-            backgroundColor += colorSurfaceTransparent
-            backgroundRadius = multi(box(4.dp))
+            backgroundColor = multi(colorSurfaceTransparent)
+            backgroundRadius = multi(box(6.px))
         }
 
-        scrimForegroundStyle {
-            backgroundColor += colorBackgroundTransparent
+        scrimBackgroundStyle {
+            backgroundColor = multi(colorBackgroundTransparent)
         }
     }
 
@@ -94,8 +126,16 @@ abstract class BaseTheme : Stylesheet() {
         val abstractBackgroundStyle by cssclass()
         val abstractBackgroundImageStyle by cssclass()
         val cardViewBackgroundStyle by cssclass()
-        val scrimForegroundStyle by cssclass()
+        val scrimBackgroundStyle by cssclass()
+
+        val textHeadline1Style by cssclass()
+        val textBody1Style by cssclass()
     }
+}
+
+private fun loadFontFamily(fontPath: String): String {
+    // Do not set proper font size because we only care about the family name
+    return loadFont(fontPath, 0)!!.family
 }
 
 class LightTheme : BaseTheme() {

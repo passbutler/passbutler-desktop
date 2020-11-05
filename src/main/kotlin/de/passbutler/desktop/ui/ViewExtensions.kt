@@ -6,17 +6,15 @@ import com.jfoenix.controls.JFXSpinner
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import javafx.event.EventTarget
 import javafx.scene.Node
+import javafx.scene.control.Label
 import javafx.scene.layout.Pane
-import tornadofx.Dimension
 import tornadofx.attachTo
 import tornadofx.fade
+import tornadofx.label
 import tornadofx.useMaxWidth
 
 typealias JavaTimeDuration = java.time.Duration
 typealias JavaFxDuration = javafx.util.Duration
-
-val Number.dp: Dimension<Dimension.LinearUnits>
-    get() = Dimension(this.toDouble(), Dimension.LinearUnits.pt)
 
 fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = JFXButton(text.toUpperCase()).attachTo(this, {
     useMaxWidth = true
@@ -32,6 +30,11 @@ fun EventTarget.jfxButtonRaised(text: String = "", graphic: Node? = null, op: JF
 
 fun EventTarget.jfxSpinner(op: JFXSpinner.() -> Unit = {}) = JFXSpinner().attachTo(this, op)
 fun EventTarget.jfxSnackbar(snackbarContainer: Pane, op: JFXSnackbar.() -> Unit = {}) = JFXSnackbar(snackbarContainer).attachTo(this, op)
+
+fun EventTarget.textLabelWrapped(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = label(text, graphic) {
+    isWrapText = true
+    op.invoke(this)
+}
 
 fun Node.showFadeInOutAnimation(shouldShow: Boolean) {
     // TODO: Cancel previous animation if any is running to avoid produce out-of-sync view state

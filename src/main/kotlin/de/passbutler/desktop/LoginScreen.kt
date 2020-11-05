@@ -4,11 +4,16 @@ import de.passbutler.common.base.BuildType
 import de.passbutler.common.database.RequestUnauthorizedException
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
-import de.passbutler.desktop.base.*
+import de.passbutler.desktop.base.BuildInformationProvider
+import de.passbutler.desktop.base.isHttpsUrl
+import de.passbutler.desktop.base.isNetworkUrl
 import de.passbutler.desktop.ui.*
 import javafx.geometry.Orientation
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.image.Image
+import javafx.scene.text.TextAlignment
 import tornadofx.*
 import tornadofx.FX.Companion.messages
 
@@ -50,14 +55,29 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
                 addClass(BaseTheme.cardViewBackgroundStyle)
 
                 style {
+                    alignment = Pos.CENTER
                     paddingAll = marginM.value
-                    minWidth = 180.dp
+                    prefWidth = 320.px
                 }
 
-                label(messages["login_description"])
+                imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.0, true, true))
+
+                textLabelWrapped(messages["login_headline"]) {
+                    addClass(BaseTheme.textHeadline1Style)
+
+                    paddingTop = marginM.value
+                    textAlignment = TextAlignment.CENTER
+                }
+
+                textLabelWrapped(messages["login_description"]) {
+                    addClass(BaseTheme.textBody1Style)
+
+                    paddingTop = marginS.value
+                    textAlignment = TextAlignment.CENTER
+                }
 
                 fieldset(labelPosition = Orientation.VERTICAL) {
-                    paddingTop = marginM.value
+                    paddingTop = marginS.value
                     paddingBottom = marginM.value
 
                     spacing = marginS.value

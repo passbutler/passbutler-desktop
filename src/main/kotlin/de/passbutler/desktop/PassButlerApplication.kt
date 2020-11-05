@@ -11,12 +11,13 @@ import org.tinylog.configuration.Configuration
 import org.tinylog.kotlin.Logger
 import tornadofx.App
 import tornadofx.launch
+import tornadofx.px
 import java.util.*
 
 class PassButlerApplication : App(RootScreen::class, ThemeManager.theme.kotlinClass) {
     override fun start(stage: Stage) {
-        stage.minWidth = 800.0
-        stage.minHeight = 600.0
+        stage.minWidth = 800.px.value
+        stage.minHeight = 600.px.value
         super.start(stage)
 
         setupLogger()
