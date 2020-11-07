@@ -37,6 +37,9 @@ interface BaseUIComponent : UIPresenting {
     }
 }
 
+/**
+ * A screen view that have only a single instance (the same instance will be used always if shown).
+ */
 abstract class BaseView(title: String? = null, icon: Node? = null) : View(title, icon), BaseUIComponent, CoroutineScope {
 
     override var transitionType = TransitionType.NONE
@@ -53,6 +56,9 @@ abstract class BaseView(title: String? = null, icon: Node? = null) : View(title,
     }
 }
 
+/**
+ * A screen view that can have multiple instances (a new instance will be created always if shown).
+ */
 abstract class BaseFragment(title: String? = null, icon: Node? = null) : Fragment(title, icon), BaseUIComponent, CoroutineScope {
 
     override var transitionType = TransitionType.NONE
