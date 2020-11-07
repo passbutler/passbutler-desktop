@@ -6,7 +6,7 @@ import tornadofx.ViewModel
 
 class OverviewViewModel : ViewModel(), UserViewModelUsingViewModel {
 
-    override val userViewModelProvidingViewModel by inject<UserViewModelProvidingViewModel>()
+    override val userViewModelProvidingViewModel by injectUserViewModelProvidingViewModel()
 
     suspend fun logoutUser(): Result<Unit> {
         // Some artificial delay to look flow more natural

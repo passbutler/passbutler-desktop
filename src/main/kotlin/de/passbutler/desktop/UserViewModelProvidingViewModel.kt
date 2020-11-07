@@ -8,6 +8,10 @@ import de.passbutler.desktop.base.CoroutineScopedViewModel
 import de.passbutler.desktop.base.ViewLifecycledViewModel
 import de.passbutler.desktop.crypto.BiometricsProvider
 import kotlinx.coroutines.launch
+import tornadofx.Component
+import tornadofx.FX
+
+// TODO: Put classes to common module?
 
 class UserViewModelProvidingViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel {
 
@@ -73,3 +77,9 @@ interface UserViewModelUsingViewModel {
         get() = userViewModelProvidingViewModel.userManager
 }
 
+/**
+ * Injects the `UserViewModelProvidingViewModel` with global scope to ensure it is always the same shared instance.
+ */
+inline fun <reified T> T.injectUserViewModelProvidingViewModel()
+    where T : UserViewModelUsingViewModel,
+          T : Component = inject<UserViewModelProvidingViewModel>(FX.defaultScope)

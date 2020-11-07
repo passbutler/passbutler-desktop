@@ -12,7 +12,7 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
 
     val rootScreenState = MutableBindable<RootScreenState?>(null)
 
-    override val userViewModelProvidingViewModel by inject<UserViewModelProvidingViewModel>()
+    override val userViewModelProvidingViewModel by injectUserViewModelProvidingViewModel()
 
     private val loggedInUserResultObserver = LoggedInUserResultObserver()
 
