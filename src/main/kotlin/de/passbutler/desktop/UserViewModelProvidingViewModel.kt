@@ -61,6 +61,8 @@ class UserViewModelProvidingViewModel : CoroutineScopedViewModel(), ViewLifecycl
     }
 }
 
+object LoggedInUserViewModelUninitializedException : IllegalStateException("The logged-in UserViewModel is null!")
+
 interface UserViewModelUsingViewModel {
     val userViewModelProvidingViewModel: UserViewModelProvidingViewModel
 
@@ -71,4 +73,3 @@ interface UserViewModelUsingViewModel {
         get() = userViewModelProvidingViewModel.userManager
 }
 
-object LoggedInUserViewModelUninitializedException : IllegalStateException("The logged-in UserViewModel is null!")
