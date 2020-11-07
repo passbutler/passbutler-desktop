@@ -29,7 +29,7 @@ class RootScreen : BaseView() {
     var bannerView: JFXSnackbar? = null
         private set
 
-    private val viewModel: RootViewModel by inject()
+    private val viewModel by injectWithPrivateScope<RootViewModel>()
 
     private val rootScreenStateObserver: BindableObserver<RootViewModel.RootScreenState?> = {
         showRootScreen()

@@ -21,7 +21,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
 
     override val root = stackpane()
 
-    private val viewModel: LoginViewModel by inject()
+    private val viewModel by injectWithPrivateScope<LoginViewModel>()
 
     private var serverUrlField: Field? = null
 

@@ -3,6 +3,7 @@ package de.passbutler.desktop
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.BaseFragment
+import de.passbutler.desktop.ui.injectWithPrivateScope
 import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.button
@@ -13,7 +14,7 @@ class OverviewScreen : BaseFragment(messages["app_name"]), RequestSending {
 
     override val root = stackpane()
 
-    private val viewModel: OverviewViewModel by inject()
+    private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 
     init {
         with(root) {

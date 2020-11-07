@@ -5,9 +5,7 @@ import javafx.scene.Node
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import tornadofx.Fragment
-import tornadofx.UIComponent
-import tornadofx.View
+import tornadofx.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 
@@ -74,3 +72,10 @@ abstract class BaseFragment(title: String? = null, icon: Node? = null) : Fragmen
         coroutineJob.cancel()
     }
 }
+
+/**
+ * Injects a `ViewModel` with private scope to ensure it is always a non-shared instance.
+ */
+inline fun <reified T> Component.injectWithPrivateScope()
+    where T : ViewModel,
+          T : ScopedInstance = inject<T>(Scope())
