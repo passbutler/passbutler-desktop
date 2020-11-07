@@ -5,7 +5,13 @@ import javafx.scene.Node
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import tornadofx.*
+import tornadofx.Component
+import tornadofx.Fragment
+import tornadofx.Scope
+import tornadofx.ScopedInstance
+import tornadofx.UIComponent
+import tornadofx.View
+import tornadofx.ViewModel
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 

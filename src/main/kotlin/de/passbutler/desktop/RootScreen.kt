@@ -2,7 +2,12 @@ package de.passbutler.desktop
 
 import com.jfoenix.controls.JFXSnackbar
 import de.passbutler.common.base.BindableObserver
-import de.passbutler.desktop.ui.*
+import de.passbutler.desktop.ui.BaseTheme
+import de.passbutler.desktop.ui.BaseView
+import de.passbutler.desktop.ui.UIPresenter
+import de.passbutler.desktop.ui.injectWithPrivateScope
+import de.passbutler.desktop.ui.jfxSnackbar
+import de.passbutler.desktop.ui.jfxSpinner
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.layout.Pane

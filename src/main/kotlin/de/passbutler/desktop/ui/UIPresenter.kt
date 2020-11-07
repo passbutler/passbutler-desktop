@@ -7,9 +7,12 @@ import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import de.passbutler.common.ui.SLIDE_TRANSITION_DURATION
 import de.passbutler.common.ui.TransitionType
 import de.passbutler.desktop.RootScreen
-import javafx.util.Duration
 import org.tinylog.kotlin.Logger
-import tornadofx.*
+import tornadofx.UIComponent
+import tornadofx.ViewTransition
+import tornadofx.find
+import tornadofx.getChildList
+import tornadofx.replaceWith
 import java.time.Instant
 import kotlin.reflect.KClass
 
