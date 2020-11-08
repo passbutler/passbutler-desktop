@@ -11,7 +11,11 @@ val pointRedLight = Color.web("#FF7F7A")
 val pointRedDark = Color.web("#981926")
 
 val white = Color.web("#FFFFFF")
+val whiteTransparent = Color.web("#FFFFFF", 0.65)
+
 val black = Color.web("#000000")
+val blackTransparent = Color.web("#000000", 0.65)
+
 val transparent = Color.web("#000000", 0.0)
 
 val whiteMedium = Color.web("#FAFAFA")

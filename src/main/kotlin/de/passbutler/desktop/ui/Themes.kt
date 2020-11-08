@@ -34,6 +34,7 @@ interface ThemeColors {
     val colorBackgroundImageTint: Color
 
     val textColorPrimary: Color
+    val textColorSecondary: Color
 }
 
 abstract class Theme : Stylesheet(), ThemeColors {
@@ -86,7 +87,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         textHeadline1Style {
             fontFamily = fontLight
-            textFill = Color.web("#6C5F5D") // TODO: Create theme color
+            textFill = textColorSecondary
             fontWeight = FontWeight.LIGHT
             fontSize = textSizeLarge
         }
@@ -205,6 +206,7 @@ class LightTheme : Theme(), ThemeColors by LightTheme.Companion {
         override val colorOnSecondary = white
         override val colorBackgroundImageTint = Color.web("#000000", 0.0)
         override val textColorPrimary = black
+        override val textColorSecondary = blackTransparent
     }
 }
 
@@ -225,6 +227,7 @@ class DarkTheme : Theme(), ThemeColors by DarkTheme.Companion {
         override val colorOnSecondary = white
         override val colorBackgroundImageTint = Color.web("#000000", 0.3)
         override val textColorPrimary = white
+        override val textColorSecondary = whiteTransparent
     }
 }
 
