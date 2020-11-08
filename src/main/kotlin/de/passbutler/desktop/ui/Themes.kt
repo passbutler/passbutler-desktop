@@ -69,10 +69,6 @@ abstract class BaseTheme : Stylesheet(), ThemeColors {
 
         menuBar {
             backgroundColor = multi(colorBackground)
-
-            label {
-                textFill = textColor
-            }
         }
 
         contextMenu {
@@ -152,6 +148,28 @@ abstract class BaseTheme : Stylesheet(), ThemeColors {
         scrimBackgroundStyle {
             backgroundColor = multi(colorBackgroundTransparent)
         }
+
+        /**
+         * Image
+         */
+
+        imageTint {
+            fill = textColor
+        }
+
+        /**
+         * Navigation drawer
+         */
+
+        navigationView {
+            backgroundImage += URI("/drawables/background.jpg")
+            backgroundSize += BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
+            backgroundRepeat += Pair(BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT)
+
+            spacing = marginS
+            prefWidth = 200.px
+            padding = box(marginM)
+        }
     }
 
     companion object {
@@ -163,6 +181,9 @@ abstract class BaseTheme : Stylesheet(), ThemeColors {
         val textHeadline1Style by cssclass()
         val textBody1Style by cssclass()
         val textBody2Style by cssclass()
+
+        val imageTint by cssclass()
+        val navigationView by cssclass()
     }
 }
 

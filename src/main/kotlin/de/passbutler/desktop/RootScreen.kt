@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXSnackbar
 import de.passbutler.common.base.BindableObserver
 import de.passbutler.desktop.ui.BaseTheme
 import de.passbutler.desktop.ui.BaseView
+import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.UIPresenter
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxSnackbar
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
 import tornadofx.action
 import tornadofx.addClass
+import tornadofx.addStylesheet
 import tornadofx.borderpane
 import tornadofx.center
 import tornadofx.get
@@ -49,6 +51,9 @@ class RootScreen : BaseView() {
         with(root) {
             top {
                 menubar {
+                    // Enforce dark theme to menu view because it should look always dark
+                    addStylesheet(DarkTheme::class)
+
                     menu(messages["app_name"]) {
                         item(messages["menu_create_container"]).action {
                             // TODO
