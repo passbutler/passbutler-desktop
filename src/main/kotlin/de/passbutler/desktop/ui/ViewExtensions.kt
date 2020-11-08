@@ -8,9 +8,13 @@ import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import javafx.event.EventTarget
 import javafx.scene.Node
 import javafx.scene.control.Label
+import javafx.scene.effect.DropShadow
+import javafx.scene.effect.Effect
 import javafx.scene.layout.Pane
+import javafx.scene.paint.Color
 import tornadofx.addClass
 import tornadofx.attachTo
+import tornadofx.css
 import tornadofx.fade
 import tornadofx.label
 import tornadofx.useMaxWidth
@@ -73,4 +77,14 @@ fun Node.showFadeInOutAnimation(shouldShow: Boolean) {
 
 fun JavaTimeDuration.toJavaFxDuration(): JavaFxDuration {
     return JavaFxDuration(toMillis().toDouble())
+}
+
+fun dropShadow(): Effect {
+    return DropShadow().apply {
+        radius = 2.0
+        offsetY = 1.0
+
+        // TODO: Better use theme attribute
+        color = Color.web(greyDark.css, 0.5)
+    }
 }

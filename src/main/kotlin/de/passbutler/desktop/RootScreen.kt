@@ -2,10 +2,11 @@ package de.passbutler.desktop
 
 import com.jfoenix.controls.JFXSnackbar
 import de.passbutler.common.base.BindableObserver
-import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.BaseView
 import de.passbutler.desktop.ui.DarkTheme
+import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.UIPresenter
+import de.passbutler.desktop.ui.dropShadow
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxSnackbar
 import de.passbutler.desktop.ui.jfxSpinner
@@ -49,10 +50,20 @@ class RootScreen : BaseView() {
 
     init {
         with(root) {
+            center {
+                stackpane {
+                    contentContainer = stackpane()
+                    progressView = createProgressView()
+                    bannerView = createBannerView()
+                }
+            }
+
             top {
                 menubar {
                     // Enforce dark theme to menu view because it should look always dark
                     addStylesheet(DarkTheme::class)
+
+                    effect = dropShadow()
 
                     menu(messages["app_name"]) {
                         item(messages["menu_create_container"]).action {
@@ -65,14 +76,6 @@ class RootScreen : BaseView() {
                             closeApplicationClicked()
                         }
                     }
-                }
-            }
-
-            center {
-                stackpane {
-                    contentContainer = stackpane()
-                    progressView = createProgressView()
-                    bannerView = createBannerView()
                 }
             }
         }
