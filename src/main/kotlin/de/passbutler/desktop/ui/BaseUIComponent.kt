@@ -24,6 +24,10 @@ interface BaseUIComponent : UIPresenting {
         uiPresentingDelegate?.showScreen(screenClass, debounce, transitionType)
     }
 
+    override fun <T : UIComponent> isScreenShown(screenClass: KClass<T>): Boolean {
+        return uiPresentingDelegate?.isScreenShown(screenClass) ?: false
+    }
+
     override fun showProgress() {
         uiPresentingDelegate?.showProgress()
     }

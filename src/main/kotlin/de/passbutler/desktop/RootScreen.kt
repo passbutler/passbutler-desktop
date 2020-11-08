@@ -96,11 +96,15 @@ class RootScreen : BaseView() {
     }
 
     private fun showLoggedInState() {
-        showScreen(OverviewScreen::class)
+        if (!isScreenShown(OverviewScreen::class)) {
+            showScreen(OverviewScreen::class)
+        }
     }
 
     private fun showLoggedOutState() {
-        showScreen(LoginScreen::class)
+        if (!isScreenShown(LoginScreen::class)) {
+            showScreen(LoginScreen::class)
+        }
     }
 }
 

@@ -32,13 +32,17 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
 
                 label("Vault") {
                     onLeftClick {
-                        showScreenFaded(OverviewScreen::class)
+                        if (!isScreenShown(OverviewScreen::class)) {
+                            showScreenFaded(OverviewScreen::class)
+                        }
                     }
                 }
 
                 label("About") {
                     onLeftClick {
-                        showScreenFaded(AboutScreen::class)
+                        if (!isScreenShown(AboutScreen::class)) {
+                            showScreenFaded(AboutScreen::class)
+                        }
                     }
                 }
             }

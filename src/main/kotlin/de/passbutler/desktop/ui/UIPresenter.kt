@@ -22,6 +22,8 @@ class UIPresenter(
 
     override var lastViewTransactionTime: Instant? = null
 
+    private var shownScreenClass: KClass<out UIComponent>? = null
+
     override fun <T : UIComponent> showScreen(screenClass: KClass<T>, debounce: Boolean, transitionType: TransitionType) {
         val debouncedViewTransactionEnsured = ensureDebouncedViewTransaction().takeIf { debounce } ?: true
 
@@ -42,10 +44,16 @@ class UIPresenter(
                 } else {
                     add(screenInstance.root)
                 }
+
+                shownScreenClass = screenClass
             }
         } else {
             Logger.warn("The view transaction was ignored because a recent transaction was already done!")
         }
+    }
+
+    override fun <T : UIComponent> isScreenShown(screenClass: KClass<T>): Boolean {
+        return shownScreenClass == screenClass
     }
 
     override fun showProgress() {
