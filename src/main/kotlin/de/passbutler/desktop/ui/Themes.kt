@@ -16,24 +16,27 @@ import tornadofx.removeStylesheet
 import java.net.URI
 import kotlin.reflect.KClass
 
-abstract class BaseTheme : Stylesheet() {
-    abstract val colorBackground: Color
+interface ThemeColors {
+    val colorBackground: Color
 
-    abstract val colorSurface: Color
+    val colorSurface: Color
 
-    abstract val colorPrimary: Color
-    abstract val colorPrimaryDark: Color
+    val colorPrimary: Color
+    val colorPrimaryDark: Color
 
-    abstract val colorSecondary: Color
+    val colorSecondary: Color
 
-    abstract val colorAccent: Color
+    val colorAccent: Color
 
-    abstract val colorOnPrimary: Color
-    abstract val colorOnSecondary: Color
+    val colorOnPrimary: Color
+    val colorOnSecondary: Color
 
-    abstract val colorBackgroundImageTint: Color
+    val colorBackgroundImageTint: Color
 
-    abstract val textColor: Color
+    val textColor: Color
+}
+
+abstract class BaseTheme : Stylesheet(), ThemeColors {
 
     private val fontMedium = loadFontFamily("/fonts/roboto/Roboto-Medium.ttf")
     private val fontRegular = loadFontFamily("/fonts/roboto/Roboto-Regular.ttf")
@@ -168,37 +171,43 @@ private fun loadFontFamily(fontPath: String): String {
     return loadFont(fontPath, 0)!!.family
 }
 
-class LightTheme : BaseTheme() {
-    override val colorBackground = whiteMedium
-    override val colorSurface = whiteMedium
-    override val colorPrimary = wineRed
-    override val colorPrimaryDark = wineRedDark
-    override val colorSecondary = pointRed
-    override val colorAccent = pointRed
-    override val colorOnPrimary = white
-    override val colorOnSecondary = white
-    override val colorBackgroundImageTint = Color.web("#000000", 0.0)
-    override val textColor = black
+class LightTheme : BaseTheme(), ThemeColors by LightTheme.Companion {
 
     init {
         applyStyles()
     }
+
+    companion object : ThemeColors {
+        override val colorBackground = whiteMedium
+        override val colorSurface = whiteMedium
+        override val colorPrimary = wineRed
+        override val colorPrimaryDark = wineRedDark
+        override val colorSecondary = pointRed
+        override val colorAccent = pointRed
+        override val colorOnPrimary = white
+        override val colorOnSecondary = white
+        override val colorBackgroundImageTint = Color.web("#000000", 0.0)
+        override val textColor = black
+    }
 }
 
-class DarkTheme : BaseTheme() {
-    override val colorBackground = greyMedium
-    override val colorSurface = greyMedium
-    override val colorPrimary = wineRedLight
-    override val colorPrimaryDark = wineRed
-    override val colorSecondary = pointRed
-    override val colorAccent = pointRed
-    override val colorOnPrimary = white
-    override val colorOnSecondary = white
-    override val colorBackgroundImageTint = Color.web("#000000", 0.3)
-    override val textColor = white
+class DarkTheme : BaseTheme(), ThemeColors by DarkTheme.Companion {
 
     init {
         applyStyles()
+    }
+
+    companion object : ThemeColors {
+        override val colorBackground = greyMedium
+        override val colorSurface = greyMedium
+        override val colorPrimary = wineRedLight
+        override val colorPrimaryDark = wineRed
+        override val colorSecondary = pointRed
+        override val colorAccent = pointRed
+        override val colorOnPrimary = white
+        override val colorOnSecondary = white
+        override val colorBackgroundImageTint = Color.web("#000000", 0.3)
+        override val textColor = white
     }
 }
 
