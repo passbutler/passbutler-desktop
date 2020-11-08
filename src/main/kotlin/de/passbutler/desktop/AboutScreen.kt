@@ -8,7 +8,7 @@ import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelBody2
 import de.passbutler.desktop.ui.textLabelHeadline
-import javafx.scene.layout.Pane
+import javafx.scene.Node
 import tornadofx.FX.Companion.messages
 import tornadofx.get
 import tornadofx.paddingAll
@@ -18,7 +18,7 @@ import java.time.Instant
 
 class AboutScreen : NavigationMenuScreen(messages["about_title"]) {
 
-    override fun Pane.createMainContent() {
+    override fun Node.createMainContent() {
         vbox {
             paddingAll = marginM.value
 

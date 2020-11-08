@@ -8,8 +8,8 @@ import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.base.isHttpsUrl
 import de.passbutler.desktop.base.isNetworkUrl
 import de.passbutler.desktop.ui.BaseFragment
-import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.FormFieldValidatorRule
+import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
@@ -70,7 +70,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
             }
 
             pane {
-                addClass(Theme.abstractBackgroundImageStyle)
+                addClass(Theme.abstractBackgroundOverlayStyle)
             }
 
             onLeftClick {

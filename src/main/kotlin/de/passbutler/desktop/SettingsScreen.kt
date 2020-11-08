@@ -5,7 +5,7 @@ import de.passbutler.desktop.ui.ThemeManager
 import de.passbutler.desktop.ui.ThemeType
 import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
-import javafx.scene.layout.Pane
+import javafx.scene.Node
 import tornadofx.FX.Companion.messages
 import tornadofx.get
 import tornadofx.onLeftClick
@@ -14,7 +14,7 @@ import tornadofx.vbox
 
 class SettingsScreen : NavigationMenuScreen(messages["settings_title"]) {
 
-    override fun Pane.createMainContent() {
+    override fun Node.createMainContent() {
         vbox {
             paddingAll = marginM.value
 

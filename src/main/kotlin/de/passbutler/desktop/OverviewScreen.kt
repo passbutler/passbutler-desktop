@@ -9,7 +9,7 @@ import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline
 import javafx.geometry.Pos
-import javafx.scene.layout.Pane
+import javafx.scene.Node
 import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.button
@@ -22,7 +22,7 @@ class OverviewScreen : NavigationMenuScreen(messages["app_name"]), RequestSendin
 
     private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 
-    override fun Pane.createMainContent() {
+    override fun Node.createMainContent() {
         vbox {
             paddingAll = marginM.value
             alignment = Pos.CENTER

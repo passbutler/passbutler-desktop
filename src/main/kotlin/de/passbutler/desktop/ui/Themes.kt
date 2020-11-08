@@ -136,7 +136,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
             backgroundRepeat += Pair(BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT)
         }
 
-        abstractBackgroundImageStyle {
+        abstractBackgroundOverlayStyle {
             backgroundColor = multi(colorBackgroundImageTint)
         }
 
@@ -162,10 +162,6 @@ abstract class Theme : Stylesheet(), ThemeColors {
          */
 
         navigationView {
-            backgroundImage += URI("/drawables/background.jpg")
-            backgroundSize += BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
-            backgroundRepeat += Pair(BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT)
-
             spacing = marginS
             prefWidth = 200.px
             padding = box(marginM)
@@ -174,7 +170,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
     companion object {
         val abstractBackgroundStyle by cssclass()
-        val abstractBackgroundImageStyle by cssclass()
+        val abstractBackgroundOverlayStyle by cssclass()
         val cardViewBackgroundStyle by cssclass()
         val scrimBackgroundStyle by cssclass()
 

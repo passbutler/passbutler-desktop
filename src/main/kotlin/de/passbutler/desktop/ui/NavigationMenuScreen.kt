@@ -4,7 +4,6 @@ import de.passbutler.desktop.AboutScreen
 import de.passbutler.desktop.OverviewScreen
 import de.passbutler.desktop.SettingsScreen
 import javafx.scene.Node
-import javafx.scene.layout.Pane
 import tornadofx.UIComponent
 import tornadofx.addClass
 import tornadofx.addStylesheet
@@ -16,6 +15,8 @@ import tornadofx.label
 import tornadofx.left
 import tornadofx.onLeftClick
 import tornadofx.paddingLeft
+import tornadofx.pane
+import tornadofx.stackpane
 import tornadofx.svgpath
 import tornadofx.vbox
 import kotlin.reflect.KClass
@@ -36,20 +37,30 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
         }
     }
 
-    private fun Pane.createNavigationMenu() {
-        vbox {
-            // Enforce dark theme to navigation view because it has dark background
-            addStylesheet(DarkTheme::class)
+    private fun Node.createNavigationMenu() {
+        stackpane {
+            pane {
+                addClass(Theme.abstractBackgroundStyle)
+            }
 
-            addClass(Theme.navigationView)
+            pane {
+                addClass(Theme.abstractBackgroundOverlayStyle)
+            }
 
-            createNavigationItem(messages["drawer_menu_item_overview"], Drawables.ICON_HOME, OverviewScreen::class)
-            createNavigationItem(messages["drawer_menu_item_settings"], Drawables.ICON_SETTINGS, SettingsScreen::class)
-            createNavigationItem(messages["drawer_menu_item_about"], Drawables.ICON_INFO, AboutScreen::class)
+            vbox {
+                // Enforce dark theme to navigation view because it has dark background
+                addStylesheet(DarkTheme::class)
+
+                addClass(Theme.navigationView)
+
+                createNavigationItem(messages["drawer_menu_item_overview"], Drawables.ICON_HOME, OverviewScreen::class)
+                createNavigationItem(messages["drawer_menu_item_settings"], Drawables.ICON_SETTINGS, SettingsScreen::class)
+                createNavigationItem(messages["drawer_menu_item_about"], Drawables.ICON_INFO, AboutScreen::class)
+            }
         }
     }
 
-    private fun Pane.createNavigationItem(title: String, icon: Drawable, screenClass: KClass<out UIComponent>) {
+    private fun Node.createNavigationItem(title: String, icon: Drawable, screenClass: KClass<out UIComponent>) {
         hbox {
             svgpath(icon.svgPath) {
                 addClass(Theme.imageTint)
@@ -73,5 +84,5 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
         }
     }
 
-    abstract fun Pane.createMainContent()
+    abstract fun Node.createMainContent()
 }
