@@ -19,6 +19,8 @@ object BuildInformationProvider : BuildInformationProviding {
 object BuildConfig {
     const val APPLICATION_ID = "de.passbutler.desktop.debug"
     const val BUILD_TYPE = "debug"
+    const val BUILD_TIMESTAMP = 0L
+    const val BUILD_REVISION_HASH = "-"
     const val VERSION_CODE = 1
     const val VERSION_NAME = "1.0.0"
 }

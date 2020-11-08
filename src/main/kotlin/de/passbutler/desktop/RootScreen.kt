@@ -8,21 +8,45 @@ import de.passbutler.desktop.ui.UIPresenter
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxSnackbar
 import de.passbutler.desktop.ui.jfxSpinner
+import javafx.application.Platform
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.layout.Pane
 import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
+import tornadofx.action
 import tornadofx.addClass
+import tornadofx.borderpane
+import tornadofx.center
 import tornadofx.hbox
+import tornadofx.item
+import tornadofx.menu
+import tornadofx.menubar
 import tornadofx.stackpane
+import tornadofx.top
 
 class RootScreen : BaseView() {
 
-    override val root = stackpane {
-        contentContainer = stackpane()
-        progressView = createProgressView()
-        bannerView = createBannerView()
+    override val root = borderpane {
+        top {
+            menubar {
+                menu("Pass Butler") {
+                    item("Create new vault")
+                    item("Open existing vault")
+                    item("Close").action {
+                        Platform.exit()
+                    }
+                }
+            }
+        }
+
+        center {
+            stackpane {
+                contentContainer = stackpane()
+                progressView = createProgressView()
+                bannerView = createBannerView()
+            }
+        }
     }
 
     var contentContainer: Node? = null

@@ -2,26 +2,29 @@ package de.passbutler.desktop
 
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
-import de.passbutler.desktop.ui.BaseFragment
+import de.passbutler.desktop.ui.BaseTheme
+import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
+import de.passbutler.desktop.ui.textLabelWrapped
+import javafx.scene.layout.Pane
 import tornadofx.FX.Companion.messages
 import tornadofx.action
+import tornadofx.addClass
 import tornadofx.button
 import tornadofx.get
-import tornadofx.stackpane
 
-class OverviewScreen : BaseFragment(messages["app_name"]), RequestSending {
-
-    override val root = stackpane()
+class OverviewScreen : NavigationMenuScreen(messages["app_name"]), RequestSending {
 
     private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 
-    init {
-        with(root) {
-            button("logout") {
-                action {
-                    logoutUser()
-                }
+    override fun Pane.createMainContent() {
+        textLabelWrapped("Willkommen bei Pass Butler") {
+            addClass(BaseTheme.textHeadline1Style)
+        }
+
+        button("logout") {
+            action {
+                logoutUser()
             }
         }
     }
@@ -35,3 +38,4 @@ class OverviewScreen : BaseFragment(messages["app_name"]), RequestSending {
         }
     }
 }
+
