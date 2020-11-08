@@ -18,7 +18,7 @@ import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.vbox
 
-class OverviewScreen : NavigationMenuScreen(messages["app_name"]), RequestSending {
+class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), RequestSending {
 
     private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 
