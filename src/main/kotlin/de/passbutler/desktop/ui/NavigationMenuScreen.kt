@@ -41,6 +41,8 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
         stackpane {
             pane {
                 addClass(Theme.abstractBackgroundStyle)
+
+                effect = endDropShadow()
             }
 
             pane {

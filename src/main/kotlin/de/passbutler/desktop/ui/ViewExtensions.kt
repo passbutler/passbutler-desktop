@@ -80,7 +80,19 @@ fun JavaTimeDuration.toJavaFxDuration(): JavaFxDuration {
     return JavaFxDuration(toMillis().toDouble())
 }
 
-fun dropShadow(): Effect {
+fun bottomDropShadow(): Effect {
+    return dropShadow().apply {
+        offsetY = 1.0
+    }
+}
+
+fun endDropShadow(): Effect {
+    return dropShadow().apply {
+        offsetX = 1.0
+    }
+}
+
+private fun dropShadow(): DropShadow {
     return DropShadow().apply {
         radius = 2.0
         offsetY = 1.0
