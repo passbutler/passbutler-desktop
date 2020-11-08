@@ -1,8 +1,8 @@
 package de.passbutler.desktop
 
 import de.passbutler.desktop.ui.NavigationMenuScreen
-import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.ThemeManager
+import de.passbutler.desktop.ui.ThemeType
 import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
 import javafx.scene.layout.Pane
@@ -19,15 +19,13 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"]) {
             paddingAll = marginM.value
 
             jfxToggleButton(messages["settings_dark_theme_setting_title"]) {
-                isSelected = (ThemeManager.theme == Theme.DARK)
+                isSelected = (ThemeManager.themeType == ThemeType.DARK)
 
                 onLeftClick {
-                    val newTheme = when (ThemeManager.theme) {
-                        Theme.LIGHT -> Theme.DARK
-                        Theme.DARK -> Theme.LIGHT
+                    ThemeManager.themeType = when (ThemeManager.themeType) {
+                        ThemeType.LIGHT -> ThemeType.DARK
+                        ThemeType.DARK -> ThemeType.LIGHT
                     }
-
-                    ThemeManager.changeTheme(newTheme)
                 }
             }
         }

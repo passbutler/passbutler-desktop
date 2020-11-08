@@ -234,26 +234,24 @@ class DarkTheme : BaseTheme(), ThemeColors by DarkTheme.Companion {
 
 object ThemeManager {
 
-    var theme: Theme = Theme.LIGHT
-        private set
+    var themeType: ThemeType = ThemeType.LIGHT
+        set(value) {
+            field = value
 
-    fun changeTheme(newTheme: Theme) {
-        theme = newTheme
-
-        when (newTheme) {
-            Theme.LIGHT -> {
-                removeStylesheet(DarkTheme::class)
-                importStylesheet(LightTheme::class)
-            }
-            Theme.DARK -> {
-                removeStylesheet(LightTheme::class)
-                importStylesheet(DarkTheme::class)
+            when (value) {
+                ThemeType.LIGHT -> {
+                    removeStylesheet(DarkTheme::class)
+                    importStylesheet(LightTheme::class)
+                }
+                ThemeType.DARK -> {
+                    removeStylesheet(LightTheme::class)
+                    importStylesheet(DarkTheme::class)
+                }
             }
         }
-    }
 }
 
-enum class Theme(val kotlinClass: KClass<out BaseTheme>) {
+enum class ThemeType(val kotlinClass: KClass<out BaseTheme>) {
     LIGHT(LightTheme::class),
     DARK(DarkTheme::class)
 }
