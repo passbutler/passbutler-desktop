@@ -66,6 +66,8 @@ abstract class BaseTheme : Stylesheet() {
          * Menu
          */
 
+        // TODO: Should be always dark
+
         menuBar {
             backgroundColor = multi(colorBackgroundInverted)
 

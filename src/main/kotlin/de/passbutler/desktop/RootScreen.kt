@@ -18,6 +18,7 @@ import tornadofx.action
 import tornadofx.addClass
 import tornadofx.borderpane
 import tornadofx.center
+import tornadofx.get
 import tornadofx.hbox
 import tornadofx.item
 import tornadofx.menu
@@ -27,27 +28,7 @@ import tornadofx.top
 
 class RootScreen : BaseView() {
 
-    override val root = borderpane {
-        top {
-            menubar {
-                menu("Pass Butler") {
-                    item("Create new vault")
-                    item("Open existing vault")
-                    item("Close").action {
-                        Platform.exit()
-                    }
-                }
-            }
-        }
-
-        center {
-            stackpane {
-                contentContainer = stackpane()
-                progressView = createProgressView()
-                bannerView = createBannerView()
-            }
-        }
-    }
+    override val root = borderpane()
 
     var contentContainer: Node? = null
         private set
@@ -62,6 +43,38 @@ class RootScreen : BaseView() {
 
     private val rootScreenStateObserver: BindableObserver<RootViewModel.RootScreenState?> = {
         showRootScreen()
+    }
+
+    init {
+        with(root) {
+            top {
+                menubar {
+                    menu(messages["app_name"]) {
+                        item(messages["menu_create_container"]).action {
+                            // TODO
+                        }
+                        item(messages["menu_open_container"]).action {
+                            // TODO
+                        }
+                        item(messages["menu_close_application"]).action {
+                            closeApplicationClicked()
+                        }
+                    }
+                }
+            }
+
+            center {
+                stackpane {
+                    contentContainer = stackpane()
+                    progressView = createProgressView()
+                    bannerView = createBannerView()
+                }
+            }
+        }
+    }
+
+    private fun closeApplicationClicked() {
+        Platform.exit()
     }
 
     override fun onDock() {

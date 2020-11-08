@@ -3,6 +3,7 @@ package de.passbutler.desktop.ui
 import com.jfoenix.controls.JFXButton
 import com.jfoenix.controls.JFXSnackbar
 import com.jfoenix.controls.JFXSpinner
+import com.jfoenix.controls.JFXToggleButton
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import javafx.event.EventTarget
 import javafx.scene.Node
@@ -31,6 +32,10 @@ fun EventTarget.jfxButtonRaised(text: String = "", graphic: Node? = null, op: JF
 
 fun EventTarget.jfxSpinner(op: JFXSpinner.() -> Unit = {}) = JFXSpinner().attachTo(this, op)
 fun EventTarget.jfxSnackbar(snackbarContainer: Pane, op: JFXSnackbar.() -> Unit = {}) = JFXSnackbar(snackbarContainer).attachTo(this, op)
+fun EventTarget.jfxToggleButton(text: String, op: JFXToggleButton.() -> Unit = {}) = JFXToggleButton().attachTo(this) {
+    this.text = text
+    op.invoke(this)
+}
 
 fun EventTarget.textLabelWrapped(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = label(text, graphic) {
     isWrapText = true
