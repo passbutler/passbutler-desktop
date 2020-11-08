@@ -204,7 +204,7 @@ class LightTheme : Theme(), ThemeColors by LightTheme.Companion {
         override val colorAccent = pointRed
         override val colorOnPrimary = white
         override val colorOnSecondary = white
-        override val colorBackgroundImageTint = Color.web("#000000", 0.0)
+        override val colorBackgroundImageTint = Color.web(black.css, 0.0)
         override val textColorPrimary = black
         override val textColorSecondary = blackTransparent
     }
@@ -225,7 +225,7 @@ class DarkTheme : Theme(), ThemeColors by DarkTheme.Companion {
         override val colorAccent = pointRed
         override val colorOnPrimary = white
         override val colorOnSecondary = white
-        override val colorBackgroundImageTint = Color.web("#000000", 0.3)
+        override val colorBackgroundImageTint = Color.web(black.css, 0.3)
         override val textColorPrimary = white
         override val textColorSecondary = whiteTransparent
     }
