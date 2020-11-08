@@ -2,7 +2,7 @@ package de.passbutler.desktop
 
 import com.jfoenix.controls.JFXSnackbar
 import de.passbutler.common.base.BindableObserver
-import de.passbutler.desktop.ui.BaseTheme
+import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.BaseView
 import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.UIPresenter
@@ -128,7 +128,7 @@ class RootScreen : BaseView() {
 
 private fun Pane.createProgressView(): Pane {
     return hbox(alignment = Pos.CENTER) {
-        addClass(BaseTheme.scrimBackgroundStyle)
+        addClass(Theme.scrimBackgroundStyle)
 
         jfxSpinner()
         isVisible = false

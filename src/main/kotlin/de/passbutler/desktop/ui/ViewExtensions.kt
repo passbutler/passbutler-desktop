@@ -43,17 +43,17 @@ fun EventTarget.textLabelWrapped(text: String = "", graphic: Node? = null, op: L
 }
 
 fun EventTarget.textLabelHeadline(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
-    addClass(BaseTheme.textHeadline1Style)
+    addClass(Theme.textHeadline1Style)
     op.invoke(this)
 }
 
 fun EventTarget.textLabelBody1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
-    addClass(BaseTheme.textBody1Style)
+    addClass(Theme.textBody1Style)
     op.invoke(this)
 }
 
 fun EventTarget.textLabelBody2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
-    addClass(BaseTheme.textBody2Style)
+    addClass(Theme.textBody2Style)
     op.invoke(this)
 }
 

@@ -41,7 +41,7 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
             // Enforce dark theme to navigation view because it has dark background
             addStylesheet(DarkTheme::class)
 
-            addClass(BaseTheme.navigationView)
+            addClass(Theme.navigationView)
 
             createNavigationItem(messages["drawer_menu_item_overview"], Drawables.ICON_HOME, OverviewScreen::class)
             createNavigationItem(messages["drawer_menu_item_settings"], Drawables.ICON_SETTINGS, SettingsScreen::class)
@@ -52,7 +52,7 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
     private fun Pane.createNavigationItem(title: String, icon: Drawable, screenClass: KClass<out UIComponent>) {
         hbox {
             svgpath(icon.svgPath) {
-                addClass(BaseTheme.imageTint)
+                addClass(Theme.imageTint)
 
                 val originalWidth = prefWidth(-1.0)
                 val originalHeight = prefHeight(originalWidth)

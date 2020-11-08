@@ -36,7 +36,7 @@ interface ThemeColors {
     val textColor: Color
 }
 
-abstract class BaseTheme : Stylesheet(), ThemeColors {
+abstract class Theme : Stylesheet(), ThemeColors {
 
     private val fontMedium = loadFontFamily("/fonts/roboto/Roboto-Medium.ttf")
     private val fontRegular = loadFontFamily("/fonts/roboto/Roboto-Regular.ttf")
@@ -192,7 +192,7 @@ private fun loadFontFamily(fontPath: String): String {
     return loadFont(fontPath, 0)!!.family
 }
 
-class LightTheme : BaseTheme(), ThemeColors by LightTheme.Companion {
+class LightTheme : Theme(), ThemeColors by LightTheme.Companion {
 
     init {
         applyStyles()
@@ -212,7 +212,7 @@ class LightTheme : BaseTheme(), ThemeColors by LightTheme.Companion {
     }
 }
 
-class DarkTheme : BaseTheme(), ThemeColors by DarkTheme.Companion {
+class DarkTheme : Theme(), ThemeColors by DarkTheme.Companion {
 
     init {
         applyStyles()
@@ -251,7 +251,7 @@ object ThemeManager {
         }
 }
 
-enum class ThemeType(val kotlinClass: KClass<out BaseTheme>) {
+enum class ThemeType(val kotlinClass: KClass<out Theme>) {
     LIGHT(LightTheme::class),
     DARK(DarkTheme::class)
 }
