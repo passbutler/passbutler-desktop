@@ -65,11 +65,7 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
             svgpath(icon.svgPath) {
                 addClass(Theme.imageTint)
 
-                val originalWidth = prefWidth(-1.0)
-                val originalHeight = prefHeight(originalWidth)
-
-                scaleX = 18.0 / originalWidth
-                scaleY = 18.0 / originalHeight
+                scaleToSize(18.0, 18.0)
             }
 
             label(title) {

@@ -12,6 +12,7 @@ import javafx.scene.effect.DropShadow
 import javafx.scene.effect.Effect
 import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
+import javafx.scene.shape.SVGPath
 import tornadofx.addClass
 import tornadofx.attachTo
 import tornadofx.css
@@ -87,4 +88,12 @@ fun dropShadow(): Effect {
         // TODO: Better use theme attribute
         color = Color.web(greyDark.css, 0.5)
     }
+}
+
+fun SVGPath.scaleToSize(width: Double, height: Double) {
+    val originalWidth = prefWidth(-1.0)
+    val originalHeight = prefHeight(originalWidth)
+
+    scaleX = width / originalWidth
+    scaleY = height / originalHeight
 }
