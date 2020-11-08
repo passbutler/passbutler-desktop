@@ -18,7 +18,6 @@ import kotlin.reflect.KClass
 
 abstract class BaseTheme : Stylesheet() {
     abstract val colorBackground: Color
-    abstract val colorBackgroundInverted: Color
 
     abstract val colorSurface: Color
 
@@ -35,7 +34,6 @@ abstract class BaseTheme : Stylesheet() {
     abstract val colorBackgroundImageTint: Color
 
     abstract val textColor: Color
-    abstract val textColorInverted: Color
 
     private val fontMedium = loadFontFamily("/fonts/roboto/Roboto-Medium.ttf")
     private val fontRegular = loadFontFamily("/fonts/roboto/Roboto-Regular.ttf")
@@ -66,18 +64,16 @@ abstract class BaseTheme : Stylesheet() {
          * Menu
          */
 
-        // TODO: Should be always dark
-
         menuBar {
-            backgroundColor = multi(colorBackgroundInverted)
+            backgroundColor = multi(colorBackground)
 
             label {
-                textFill = textColorInverted
+                textFill = textColor
             }
         }
 
         contextMenu {
-            backgroundColor = multi(colorBackgroundInverted)
+            backgroundColor = multi(colorBackground)
         }
 
         /**
@@ -174,7 +170,6 @@ private fun loadFontFamily(fontPath: String): String {
 
 class LightTheme : BaseTheme() {
     override val colorBackground = whiteMedium
-    override val colorBackgroundInverted = greyMedium
     override val colorSurface = whiteMedium
     override val colorPrimary = wineRed
     override val colorPrimaryDark = wineRedDark
@@ -184,7 +179,6 @@ class LightTheme : BaseTheme() {
     override val colorOnSecondary = white
     override val colorBackgroundImageTint = Color.web("#000000", 0.0)
     override val textColor = black
-    override val textColorInverted = white
 
     init {
         applyStyles()
@@ -193,7 +187,6 @@ class LightTheme : BaseTheme() {
 
 class DarkTheme : BaseTheme() {
     override val colorBackground = greyMedium
-    override val colorBackgroundInverted = whiteMedium
     override val colorSurface = greyMedium
     override val colorPrimary = wineRedLight
     override val colorPrimaryDark = wineRed
@@ -203,7 +196,6 @@ class DarkTheme : BaseTheme() {
     override val colorOnSecondary = white
     override val colorBackgroundImageTint = Color.web("#000000", 0.3)
     override val textColor = white
-    override val textColorInverted = black
 
     init {
         applyStyles()
