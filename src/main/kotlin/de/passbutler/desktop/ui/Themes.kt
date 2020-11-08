@@ -33,7 +33,7 @@ interface ThemeColors {
 
     val colorBackgroundImageTint: Color
 
-    val textColor: Color
+    val textColorPrimary: Color
 }
 
 abstract class Theme : Stylesheet(), ThemeColors {
@@ -80,7 +80,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
          */
 
         label {
-            textFill = textColor
+            textFill = textColorPrimary
             fontSize = textSizeMedium
         }
 
@@ -104,14 +104,14 @@ abstract class Theme : Stylesheet(), ThemeColors {
          */
 
         textField {
-            textFill = textColor
+            textFill = textColorPrimary
             fontSize = textSizeMedium
 
             minHeight = 36.px
         }
 
         checkBox {
-            textFill = textColor
+            textFill = textColorPrimary
             fontSize = textSizeMedium
         }
 
@@ -154,7 +154,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
          */
 
         imageTint {
-            fill = textColor
+            fill = textColorPrimary
         }
 
         /**
@@ -204,7 +204,7 @@ class LightTheme : Theme(), ThemeColors by LightTheme.Companion {
         override val colorOnPrimary = white
         override val colorOnSecondary = white
         override val colorBackgroundImageTint = Color.web("#000000", 0.0)
-        override val textColor = black
+        override val textColorPrimary = black
     }
 }
 
@@ -224,7 +224,7 @@ class DarkTheme : Theme(), ThemeColors by DarkTheme.Companion {
         override val colorOnPrimary = white
         override val colorOnSecondary = white
         override val colorBackgroundImageTint = Color.web("#000000", 0.3)
-        override val textColor = white
+        override val textColorPrimary = white
     }
 }
 
