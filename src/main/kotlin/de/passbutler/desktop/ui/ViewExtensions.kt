@@ -8,6 +8,7 @@ import javafx.event.EventTarget
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.layout.Pane
+import tornadofx.addClass
 import tornadofx.attachTo
 import tornadofx.fade
 import tornadofx.label
@@ -33,6 +34,21 @@ fun EventTarget.jfxSnackbar(snackbarContainer: Pane, op: JFXSnackbar.() -> Unit 
 
 fun EventTarget.textLabelWrapped(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = label(text, graphic) {
     isWrapText = true
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelHeadline(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
+    addClass(BaseTheme.textHeadline1Style)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelBody1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
+    addClass(BaseTheme.textBody1Style)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelBody2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
+    addClass(BaseTheme.textBody2Style)
     op.invoke(this)
 }
 

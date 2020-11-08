@@ -95,7 +95,11 @@ abstract class BaseTheme : Stylesheet() {
         }
 
         textBody1Style {
-            fontWeight = FontWeight.NORMAL
+            fontSize = textSizeMedium
+        }
+
+        textBody2Style {
+            fontSize = textSizeSmall
         }
 
         /**
@@ -157,6 +161,7 @@ abstract class BaseTheme : Stylesheet() {
 
         val textHeadline1Style by cssclass()
         val textBody1Style by cssclass()
+        val textBody2Style by cssclass()
     }
 }
 

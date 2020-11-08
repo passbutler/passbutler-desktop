@@ -15,7 +15,8 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showFadeInOutAnimation
-import de.passbutler.desktop.ui.textLabelWrapped
+import de.passbutler.desktop.ui.textLabelBody1
+import de.passbutler.desktop.ui.textLabelHeadline
 import de.passbutler.desktop.ui.validatorWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
@@ -93,16 +94,12 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
 
                 imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.0, true, true))
 
-                textLabelWrapped(messages["login_headline"]) {
-                    addClass(BaseTheme.textHeadline1Style)
-
+                textLabelHeadline(messages["login_headline"]) {
                     paddingTop = marginM.value
                     textAlignment = TextAlignment.CENTER
                 }
 
-                textLabelWrapped(messages["login_description"]) {
-                    addClass(BaseTheme.textBody1Style)
-
+                textLabelBody1(messages["login_description"]) {
                     paddingTop = marginS.value
                     textAlignment = TextAlignment.CENTER
                 }
