@@ -10,14 +10,6 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
-
-        maven(url = "https://plugins.gradle.org/m2/")
-    }
-
-    dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
-        classpath("org.junit.platform:junit-platform-gradle-plugin:1.1.0")
-        classpath("org.openjfx:javafx-plugin:0.0.9")
     }
 }
 
