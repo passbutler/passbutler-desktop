@@ -2,12 +2,12 @@
 
 ## Development setup (tested with Ubuntu 20.04)
 
-IntelliJ IDEA 2020.1.3 Community
+IntelliJ IDEA 2020.2.2 (Community Edition)
 
 Required plugin:
 * TornadoFX (https://plugins.jetbrains.com/plugin/8339-tornadofx)
 
-Recommend plugin:
+Recommended plugin:
 * SQLDelight (https://plugins.jetbrains.com/plugin/8191-sqldelight)
 
 Install OpenJDK and sources (optional):
