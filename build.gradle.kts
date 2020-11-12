@@ -15,6 +15,12 @@ buildscript {
     }
 }
 
+version = "1.0.0"
+group = "de.passbutler.desktop"
+
+// TODO: Use proper configuration
+val buildType = "debug"
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -82,23 +88,22 @@ task("generateBuildConfig") {
 }
 
 fun generateBuildConfig() {
-    val applicationId = "de.passbutler.desktop"
-    val buildType = "debug"
-    val versionName = "1.0.0"
-
+    val applicationId = group.toString()
     val buildTimestamp = System.currentTimeMillis()
     val gitCommitHashShort = "git rev-parse --short HEAD".executeCommand()
+    val versionName = version
     val gitCommitCount = "git rev-list HEAD --count".executeCommand()
 
     val buildConfigTemplate = buildString {
         appendln("package $applicationId")
+        appendln("")
         appendln("object BuildConfig {")
-        appendln("const val APPLICATION_ID = \"$applicationId\"")
-        appendln("const val BUILD_TYPE = \"$buildType\"")
-        appendln("const val BUILD_TIMESTAMP = $buildTimestamp")
-        appendln("const val BUILD_REVISION_HASH = \"$gitCommitHashShort\"")
-        appendln("const val VERSION_CODE = $gitCommitCount")
-        appendln("const val VERSION_NAME = \"$versionName\"")
+        appendlnIndented("const val APPLICATION_ID = \"$applicationId\"")
+        appendlnIndented("const val BUILD_TYPE = \"$buildType\"")
+        appendlnIndented("const val BUILD_TIMESTAMP = $buildTimestamp")
+        appendlnIndented("const val BUILD_REVISION_HASH = \"$gitCommitHashShort\"")
+        appendlnIndented("const val VERSION_NAME = \"$versionName\"")
+        appendlnIndented("const val VERSION_CODE = $gitCommitCount")
         appendln("}")
     }
 
@@ -121,4 +126,8 @@ fun String.executeCommand(workingDir: File = file("./")): String {
     commandProcess.waitFor(5, TimeUnit.SECONDS)
 
     return commandProcess.inputStream.bufferedReader().readText().trim()
+}
+
+fun StringBuilder.appendlnIndented(value: String, indentCount: Int = 4): StringBuilder {
+    return appendln(value.prependIndent(" ".repeat(indentCount)))
 }
