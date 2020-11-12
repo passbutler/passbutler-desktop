@@ -1,7 +1,6 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.UserManager
-import de.passbutler.desktop.base.BuildConfig
 import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.database.createLocalRepository
 import de.passbutler.desktop.ui.ThemeManager

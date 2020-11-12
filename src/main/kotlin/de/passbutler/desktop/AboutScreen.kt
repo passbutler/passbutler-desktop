@@ -1,6 +1,5 @@
 package de.passbutler.desktop
 
-import de.passbutler.desktop.base.BuildConfig
 import de.passbutler.desktop.base.formattedDateTime
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.marginM

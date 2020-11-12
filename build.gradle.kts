@@ -50,11 +50,17 @@ javafx {
     modules("javafx.controls", "javafx.fxml")
 }
 
+sourceSets.all {
+    java.srcDir("./build/generated/source/")
+}
+
 tasks {
     val mainClass = "de.passbutler.desktop.PassButlerApplication"
 
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
+
+        dependsOn("generateBuildConfig")
     }
 
     application {
@@ -69,4 +75,50 @@ tasks {
     }
 
     defaultTasks("run")
+}
+
+task("generateBuildConfig") {
+    generateBuildConfig()
+}
+
+fun generateBuildConfig() {
+    val applicationId = "de.passbutler.desktop"
+    val buildType = "debug"
+    val versionName = "1.0.0"
+
+    val buildTimestamp = System.currentTimeMillis()
+    val gitCommitHashShort = "git rev-parse --short HEAD".executeCommand()
+    val gitCommitCount = "git rev-list HEAD --count".executeCommand()
+
+    val buildConfigTemplate = buildString {
+        appendln("package $applicationId")
+        appendln("object BuildConfig {")
+        appendln("const val APPLICATION_ID = \"$applicationId\"")
+        appendln("const val BUILD_TYPE = \"$buildType\"")
+        appendln("const val BUILD_TIMESTAMP = $buildTimestamp")
+        appendln("const val BUILD_REVISION_HASH = \"$gitCommitHashShort\"")
+        appendln("const val VERSION_CODE = $gitCommitCount")
+        appendln("const val VERSION_NAME = \"$versionName\"")
+        appendln("}")
+    }
+
+    val packagePath = applicationId.replace(".", "/")
+    val generatedDirectory = file("./build/generated/source/$packagePath")
+    generatedDirectory.mkdirs()
+
+    val buildConfigPath = "${generatedDirectory.path}/BuildConfig.kt"
+    file(buildConfigPath).writeText(buildConfigTemplate)
+}
+
+fun String.executeCommand(workingDir: File = file("./")): String {
+    val commandParts = split(" ")
+    val commandProcess = ProcessBuilder(*commandParts.toTypedArray())
+        .directory(workingDir)
+        .redirectOutput(ProcessBuilder.Redirect.PIPE)
+        .redirectError(ProcessBuilder.Redirect.PIPE)
+        .start()
+
+    commandProcess.waitFor(5, TimeUnit.SECONDS)
+
+    return commandProcess.inputStream.bufferedReader().readText().trim()
 }
