@@ -2,6 +2,7 @@ package de.passbutler.desktop
 
 import de.passbutler.common.UserManager
 import de.passbutler.desktop.base.BuildInformationProvider
+import de.passbutler.desktop.base.formattedDateTime
 import de.passbutler.desktop.database.createLocalRepository
 import de.passbutler.desktop.ui.ThemeManager
 import javafx.stage.Stage
@@ -11,6 +12,7 @@ import org.tinylog.kotlin.Logger
 import tornadofx.App
 import tornadofx.launch
 import tornadofx.px
+import java.time.Instant
 import java.util.*
 
 class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotlinClass) {
@@ -63,13 +65,15 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
     private fun createLoggingHeader(): String {
         val versionName = BuildConfig.VERSION_NAME
         val versionCode = BuildConfig.VERSION_CODE
+        val formattedBuildTime = Instant.ofEpochMilli(BuildConfig.BUILD_TIMESTAMP).formattedDateTime
+        val gitShortHash = BuildConfig.BUILD_REVISION_HASH
 
-        return StringBuilder().apply {
+        return buildString {
             appendln("--------------------------------------------------------------------------------")
-            appendln("App:         ${BuildConfig.APPLICATION_ID} $versionName-$versionCode")
+            appendln("App:         ${BuildConfig.APPLICATION_ID} $versionName-$versionCode (build on $formattedBuildTime from $gitShortHash)")
             appendln("Locale:      ${Locale.getDefault()}")
             appendln("--------------------------------------------------------------------------------")
-        }.toString()
+        }
     }
 
     companion object {
