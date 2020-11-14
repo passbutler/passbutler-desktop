@@ -2,7 +2,7 @@ package de.passbutler.desktop
 
 import de.passbutler.common.UserManager
 import de.passbutler.desktop.base.BuildInformationProvider
-import de.passbutler.desktop.base.formattedDateTime
+import de.passbutler.common.base.formattedDateTime
 import de.passbutler.desktop.database.createLocalRepository
 import de.passbutler.desktop.ui.ThemeManager
 import javafx.stage.Stage
