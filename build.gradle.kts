@@ -31,7 +31,7 @@ dependencies {
 
     // Kotlin
     val kotlinVersion = "1.4.10"
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     // Kotlin Coroutines for JavaFX
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.4.1")
