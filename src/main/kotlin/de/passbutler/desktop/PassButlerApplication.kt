@@ -1,8 +1,8 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.UserManager
-import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.common.base.formattedDateTime
+import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.database.createLocalRepository
 import de.passbutler.desktop.ui.ThemeManager
 import javafx.stage.Stage
@@ -69,10 +69,10 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         val gitShortHash = BuildConfig.BUILD_REVISION_HASH
 
         return buildString {
-            appendln("--------------------------------------------------------------------------------")
-            appendln("App:         ${BuildConfig.APPLICATION_ID} $versionName-$versionCode (build on $formattedBuildTime from $gitShortHash)")
-            appendln("Locale:      ${Locale.getDefault()}")
-            appendln("--------------------------------------------------------------------------------")
+            appendLine("--------------------------------------------------------------------------------")
+            appendLine("App:         ${BuildConfig.APPLICATION_ID} $versionName-$versionCode (build on $formattedBuildTime from $gitShortHash)")
+            appendLine("Locale:      ${Locale.getDefault()}")
+            appendLine("--------------------------------------------------------------------------------")
         }
     }
 

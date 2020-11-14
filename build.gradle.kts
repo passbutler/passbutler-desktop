@@ -1,5 +1,5 @@
 plugins {
-    val kotlinVersion = "1.3.72"
+    val kotlinVersion = "1.4.10"
     id("org.jetbrains.kotlin.jvm") version kotlinVersion
 
     id("org.gradle.application")
@@ -30,14 +30,14 @@ dependencies {
     implementation(project(":PassButlerCommon"))
 
     // Kotlin
-    val kotlinVersion = "1.3.72"
+    val kotlinVersion = "1.4.10"
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
 
     // Kotlin Coroutines for JavaFX
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.3.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.4.1")
 
     // TinyLog logger
-    val tinylogVersion = "2.1.2"
+    val tinylogVersion = "2.2.0"
     implementation("org.tinylog:tinylog-api-kotlin:$tinylogVersion")
     implementation("org.tinylog:tinylog-impl:$tinylogVersion")
 
@@ -45,7 +45,7 @@ dependencies {
     implementation("no.tornado:tornadofx:1.7.20")
 
     // SQLDelight
-    implementation("com.squareup.sqldelight:sqlite-driver:1.3.0")
+    implementation("com.squareup.sqldelight:sqlite-driver:1.4.4")
 
     // JFoenix
     implementation("com.jfoenix:jfoenix:9.0.10")
