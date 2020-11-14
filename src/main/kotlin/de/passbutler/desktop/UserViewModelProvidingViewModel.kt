@@ -11,8 +11,6 @@ import kotlinx.coroutines.launch
 import tornadofx.Component
 import tornadofx.FX
 
-// TODO: Put classes to common module?
-
 class UserViewModelProvidingViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel {
 
     var loggedInUserViewModel: UserViewModel? = null
