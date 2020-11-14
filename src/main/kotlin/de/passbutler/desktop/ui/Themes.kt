@@ -31,6 +31,7 @@ interface ThemeColors {
     val colorOnPrimary: Color
     val colorOnSecondary: Color
 
+    val scrimBackground: Color
     val colorBackgroundImageTint: Color
 
     val textColorPrimary: Color
@@ -44,11 +45,9 @@ abstract class Theme : Stylesheet(), ThemeColors {
     private val fontLight = loadFontFamily("/fonts/roboto/Roboto-Light.ttf")
     private val fontBold = loadFontFamily("/fonts/roboto/Roboto-Bold.ttf")
 
-    private lateinit var colorBackgroundTransparent: Color
     private lateinit var colorSurfaceTransparent: Color
 
     protected fun applyStyles() {
-        colorBackgroundTransparent = Color.web(colorBackground.css, 0.65)
         colorSurfaceTransparent = Color.web(colorSurface.css, 0.65)
 
         root {
@@ -147,7 +146,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         scrimBackgroundStyle {
-            backgroundColor = multi(colorBackgroundTransparent)
+            backgroundColor = multi(scrimBackground)
         }
 
         /**
@@ -204,6 +203,7 @@ class LightTheme : Theme(), ThemeColors by Companion {
         override val colorAccent = pointRed
         override val colorOnPrimary = white
         override val colorOnSecondary = white
+        override val scrimBackground = whiteMediumTransparent
         override val colorBackgroundImageTint = Color.web(black.css, 0.0)
         override val textColorPrimary = black
         override val textColorSecondary = blackTransparent
@@ -225,6 +225,7 @@ class DarkTheme : Theme(), ThemeColors by Companion {
         override val colorAccent = pointRed
         override val colorOnPrimary = white
         override val colorOnSecondary = white
+        override val scrimBackground = greyMediumTransparent
         override val colorBackgroundImageTint = Color.web(black.css, 0.3)
         override val textColorPrimary = white
         override val textColorSecondary = whiteTransparent
