@@ -4,8 +4,7 @@ plugins {
 
     id("org.gradle.application")
 
-    // Version "0.0.9" seems not working properly (`JavaFXOptions` reference issue)
-    id("org.openjfx.javafxplugin") version "0.0.8"
+    id("org.openjfx.javafxplugin") version "0.0.9"
 }
 
 buildscript {
