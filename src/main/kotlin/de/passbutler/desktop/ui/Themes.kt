@@ -189,7 +189,7 @@ private fun loadFontFamily(fontPath: String): String {
     return loadFont(fontPath, 0)!!.family
 }
 
-class LightTheme : Theme(), ThemeColors by LightTheme.Companion {
+class LightTheme : Theme(), ThemeColors by Companion {
 
     init {
         applyStyles()
@@ -210,7 +210,7 @@ class LightTheme : Theme(), ThemeColors by LightTheme.Companion {
     }
 }
 
-class DarkTheme : Theme(), ThemeColors by DarkTheme.Companion {
+class DarkTheme : Theme(), ThemeColors by Companion {
 
     init {
         applyStyles()
