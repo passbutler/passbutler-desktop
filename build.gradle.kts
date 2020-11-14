@@ -44,6 +44,9 @@ dependencies {
     // TornadoFX
     implementation("no.tornado:tornadofx:1.7.20")
 
+    // TornadoFX depends on old version - explicitly use version matching the Kotlin version
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+
     // SQLDelight
     implementation("com.squareup.sqldelight:sqlite-driver:1.4.4")
 
