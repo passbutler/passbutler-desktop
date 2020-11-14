@@ -61,7 +61,7 @@ sourceSets.all {
 }
 
 tasks {
-    val mainClass = "de.passbutler.desktop.PassButlerApplication"
+    val mainClassPath = "de.passbutler.desktop.PassButlerApplication"
 
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
@@ -70,13 +70,13 @@ tasks {
     }
 
     application {
-        mainClassName = mainClass
+        mainClass.set(mainClassPath)
     }
 
     jar {
         manifest {
             attributes["Class-Path"] = configurations.compile.get().all.joinToString(" ") { it.name }
-            attributes["Main-Class"] = mainClass
+            attributes["Main-Class"] = mainClassPath
         }
     }
 
