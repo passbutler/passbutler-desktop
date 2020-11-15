@@ -37,7 +37,7 @@ import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
-import tornadofx.group
+import tornadofx.hbox
 import tornadofx.imageview
 import tornadofx.onLeftClick
 import tornadofx.paddingAll
@@ -50,6 +50,7 @@ import tornadofx.stackpane
 import tornadofx.style
 import tornadofx.textfield
 import tornadofx.useMaxWidth
+import tornadofx.vbox
 import tornadofx.whenDocked
 
 class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
@@ -80,50 +81,52 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
                 requestFocus()
             }
 
-            setupCardViewContent()
+            hbox(alignment = Pos.CENTER) {
+                vbox(alignment = Pos.CENTER) {
+                    setupCardViewContent()
+                }
+            }
         }
     }
 
     private fun Node.setupCardViewContent() {
-        group {
-            form {
-                addClass(Theme.cardViewBackgroundStyle)
+        form {
+            addClass(Theme.cardViewBackgroundStyle)
 
-                style {
-                    alignment = Pos.CENTER
-                    paddingAll = marginM.value
-                    prefWidth = 320.px
-                }
-
-                imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.0, true, true)) {
-                    setupDebugPresetsButton()
-                }
-
-                textLabelHeadline(messages["login_headline"]) {
-                    paddingTop = marginM.value
-                    textAlignment = TextAlignment.CENTER
-                }
-
-                textLabelBody1(messages["login_description"]) {
-                    paddingTop = marginS.value
-                    textAlignment = TextAlignment.CENTER
-                }
-
-                fieldset(labelPosition = Orientation.VERTICAL) {
-                    paddingTop = marginS.value
-                    paddingBottom = marginM.value
-
-                    spacing = marginS.value
-
-                    serverUrlField = createServerUrlField()
-
-                    createUsernameUrlField()
-                    createPasswordUrlField()
-                    createLocalLoginCheckbox()
-                }
-
-                createLoginButton()
+            style {
+                alignment = Pos.CENTER
+                paddingAll = marginM.value
+                prefWidth = 320.px
             }
+
+            imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.0, true, true)) {
+                setupDebugPresetsButton()
+            }
+
+            textLabelHeadline(messages["login_headline"]) {
+                paddingTop = marginM.value
+                textAlignment = TextAlignment.CENTER
+            }
+
+            textLabelBody1(messages["login_description"]) {
+                paddingTop = marginS.value
+                textAlignment = TextAlignment.CENTER
+            }
+
+            fieldset(labelPosition = Orientation.VERTICAL) {
+                paddingTop = marginS.value
+                paddingBottom = marginM.value
+
+                spacing = marginS.value
+
+                serverUrlField = createServerUrlField()
+
+                createUsernameUrlField()
+                createPasswordUrlField()
+                createLocalLoginCheckbox()
+            }
+
+            createLoginButton()
         }
     }
 
