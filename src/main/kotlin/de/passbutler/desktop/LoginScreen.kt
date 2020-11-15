@@ -49,6 +49,7 @@ import tornadofx.px
 import tornadofx.stackpane
 import tornadofx.style
 import tornadofx.textfield
+import tornadofx.useMaxWidth
 import tornadofx.whenDocked
 
 class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
@@ -194,6 +195,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
 
     private fun Form.createLoginButton(): Button {
         return jfxButtonRaised(messages["login_button_text"]) {
+            useMaxWidth = true
             isDefaultButton = true
 
             action {

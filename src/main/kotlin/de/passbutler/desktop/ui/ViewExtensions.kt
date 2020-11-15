@@ -18,13 +18,14 @@ import tornadofx.attachTo
 import tornadofx.css
 import tornadofx.fade
 import tornadofx.label
+import tornadofx.px
 import tornadofx.useMaxWidth
 
 typealias JavaTimeDuration = java.time.Duration
 typealias JavaFxDuration = javafx.util.Duration
 
 fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = JFXButton(text.toUpperCase()).attachTo(this, {
-    useMaxWidth = true
+    minWidth = 150.px.value
     op.invoke(this)
 }) {
     if (graphic != null) it.graphic = graphic
