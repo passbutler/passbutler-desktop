@@ -83,20 +83,20 @@ fun JavaTimeDuration.toJavaFxDuration(): JavaFxDuration {
 
 fun bottomDropShadow(): Effect {
     return dropShadow().apply {
-        offsetY = 1.0
+        offsetY = 1.px.value
     }
 }
 
 fun endDropShadow(): Effect {
     return dropShadow().apply {
-        offsetX = 1.0
+        offsetX = 1.px.value
     }
 }
 
 private fun dropShadow(): DropShadow {
     return DropShadow().apply {
-        radius = 2.0
-        offsetY = 1.0
+        radius = 2.px.value
+        offsetY = 1.px.value
 
         // TODO: Better use theme attribute
         color = Color.web(greyDark.css, 0.5)

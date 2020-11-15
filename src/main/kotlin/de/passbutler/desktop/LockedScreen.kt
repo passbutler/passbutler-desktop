@@ -91,7 +91,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), RequestSendi
                 prefWidth = 320.px
             }
 
-            imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.0, true, true)) {
+            imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.px.value, true, true)) {
                 setupDebugPresetsButton()
             }
 
