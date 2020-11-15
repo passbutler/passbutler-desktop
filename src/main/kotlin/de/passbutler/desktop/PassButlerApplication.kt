@@ -38,15 +38,20 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
     private fun createLoggerConfiguration(): Map<String, String> {
         // TODO: Do not hardcode
         val logFilePath = "/home/bastian/Desktop/passbutler-debug.log"
+        val logFormat = "{date} {level} {class-name}.{method}() [{thread}]: {message}"
 
         return mapOf(
-            "writer1" to "file",
-            "writer1.level" to "debug",
-            "writer1.format" to "{date} {level} {class-name}.{method}() [{thread}]: {message}",
-            "writer1.file" to logFilePath,
-            "writer1.charset" to "UTF-8",
-            "writer1.append" to "true",
-            "writer1.buffered" to "true",
+            "writer1" to "console",
+            "writer1.level" to "trace",
+            "writer1.format" to logFormat,
+
+            "writer2" to "file",
+            "writer2.level" to "debug",
+            "writer2.format" to logFormat,
+            "writer2.file" to logFilePath,
+            "writer2.charset" to "UTF-8",
+            "writer2.append" to "true",
+            "writer2.buffered" to "true",
 
             "writingthread" to "true"
         )
