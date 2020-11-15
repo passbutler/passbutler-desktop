@@ -16,6 +16,7 @@ import tornadofx.left
 import tornadofx.onLeftClick
 import tornadofx.paddingLeft
 import tornadofx.pane
+import tornadofx.px
 import tornadofx.stackpane
 import tornadofx.svgpath
 import tornadofx.vbox
@@ -67,7 +68,7 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
             svgpath(icon.svgPath) {
                 addClass(Theme.imageTint)
 
-                scaleToSize(18.0, 18.0)
+                scaleToSize(18.px.value, 18.px.value)
             }
 
             label(title) {
