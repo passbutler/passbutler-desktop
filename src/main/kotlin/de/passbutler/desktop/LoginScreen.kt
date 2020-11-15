@@ -5,6 +5,7 @@ import de.passbutler.common.database.RequestUnauthorizedException
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.base.BuildInformationProvider
+import de.passbutler.desktop.base.DebugConstants
 import de.passbutler.desktop.base.isHttpsUrl
 import de.passbutler.desktop.base.isNetworkUrl
 import de.passbutler.desktop.ui.BaseFragment
@@ -23,6 +24,7 @@ import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.image.Image
+import javafx.scene.image.ImageView
 import javafx.scene.text.TextAlignment
 import tornadofx.FX.Companion.messages
 import tornadofx.Field
@@ -92,7 +94,9 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
                     prefWidth = 320.px
                 }
 
-                imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.0, true, true))
+                imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.0, true, true)) {
+                    setupDebugPresetsButton()
+                }
 
                 textLabelHeadline(messages["login_headline"]) {
                     paddingTop = marginM.value
@@ -118,6 +122,17 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
                 }
 
                 createLoginButton()
+            }
+        }
+    }
+
+    private fun ImageView.setupDebugPresetsButton() {
+        if (BuildInformationProvider.buildType == BuildType.Debug) {
+            onLeftClick {
+                viewModel.serverUrlProperty.set(DebugConstants.TEST_SERVERURL)
+                viewModel.usernameProperty.set(DebugConstants.TEST_USERNAME)
+                viewModel.passwordProperty.set(DebugConstants.TEST_PASSWORD)
+                viewModel.isLocalLoginProperty.set(false)
             }
         }
     }
