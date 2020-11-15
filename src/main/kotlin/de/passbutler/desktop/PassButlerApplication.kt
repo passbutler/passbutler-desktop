@@ -40,15 +40,15 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         val logFilePath = "/home/bastian/Desktop/passbutler-debug.log"
 
         return mapOf(
-                "writer1" to "file",
-                "writer1.level" to "debug",
-                "writer1.format" to "{date} {level} {class-name}.{method}() [{thread}]: {message}",
-                "writer1.file" to logFilePath,
-                "writer1.charset" to "UTF-8",
-                "writer1.append" to "true",
-                "writer1.buffered" to "true",
+            "writer1" to "file",
+            "writer1.level" to "debug",
+            "writer1.format" to "{date} {level} {class-name}.{method}() [{thread}]: {message}",
+            "writer1.file" to logFilePath,
+            "writer1.charset" to "UTF-8",
+            "writer1.append" to "true",
+            "writer1.buffered" to "true",
 
-                "writingthread" to "true"
+            "writingthread" to "true"
         )
     }
 
