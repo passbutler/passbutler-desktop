@@ -47,20 +47,20 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]) {
                 vbox(alignment = Pos.CENTER) {
                     spacing = marginM.value
 
-                    createOpenVaultCardView()
                     createCreateVaultCardView()
+                    createOpenVaultCardView()
                 }
             }
         }
     }
 
-    private fun Node.createOpenVaultCardView() {
+    private fun Node.createCreateVaultCardView() {
         createCardView(messages["welcome_create_vault_headline"], messages["welcome_create_vault_description"], messages["welcome_create_vault_button_text"]) {
             // TODO
         }
     }
 
-    private fun Node.createCreateVaultCardView() {
+    private fun Node.createOpenVaultCardView() {
         createCardView(messages["welcome_open_vault_headline"], messages["welcome_open_vault_description"], messages["welcome_open_vault_button_text"]) {
             // TODO
         }
