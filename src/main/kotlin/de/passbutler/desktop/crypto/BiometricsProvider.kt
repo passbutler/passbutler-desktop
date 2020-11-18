@@ -6,7 +6,10 @@ import javax.crypto.Cipher
 
 class BiometricsProvider : BiometricsProviding {
     override val isBiometricAvailable: Boolean
-        get() = TODO("Not yet implemented")
+        get() {
+            // Not yet implemented
+            return false
+        }
 
     override fun obtainKeyInstance(): Result<Cipher> {
         TODO("Not yet implemented")
