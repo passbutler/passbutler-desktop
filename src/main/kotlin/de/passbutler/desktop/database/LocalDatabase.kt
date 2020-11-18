@@ -11,6 +11,7 @@ suspend fun createLocalRepository(databasePath: String): LocalRepository {
     return withContext(Dispatchers.IO) {
         val driver = JdbcSqliteDriver("jdbc:sqlite:$databasePath")
 
+        // TODO: create schema only if needed
         PassButlerDatabase.Schema.create(driver)
         driver.execute(null, LOCAL_DATABASE_SQL_FOREIGN_KEYS_ENABLE, 0)
 

@@ -42,10 +42,14 @@ class RootScreen : BaseView() {
     var bannerView: JFXSnackbar? = null
         private set
 
-    private val viewModel by injectWithPrivateScope<RootViewModel>()
+    private val viewModel by inject<RootViewModel>()
 
     private val rootScreenStateObserver: BindableObserver<RootViewModel.RootScreenState?> = {
-        showRootScreen()
+        updateRootScreen()
+    }
+
+    private val lockScreenStateObserver: BindableObserver<RootViewModel.LockScreenState?> = {
+        updateRootScreen()
     }
 
     init {
@@ -67,10 +71,10 @@ class RootScreen : BaseView() {
 
                     menu(messages["app_name"]) {
                         item(messages["menu_create_container"]).action {
-                            // TODO
+                            // TODO close vault, show file chooser and create file
                         }
                         item(messages["menu_open_container"]).action {
-                            // TODO
+                            // TODO close vault, show file chooser and open file
                         }
                         item(messages["menu_close_application"]).action {
                             closeApplicationClicked()
@@ -91,9 +95,10 @@ class RootScreen : BaseView() {
         uiPresentingDelegate = UIPresenter(this)
 
         viewModel.rootScreenState.addObserver(this, false, rootScreenStateObserver)
+        viewModel.lockScreenState.addObserver(this, false, lockScreenStateObserver)
 
         launch {
-            viewModel.restoreLoggedInUser()
+            viewModel.openRecentVault()
         }
     }
 
@@ -101,18 +106,34 @@ class RootScreen : BaseView() {
         super.onUndock()
 
         viewModel.rootScreenState.removeObserver(rootScreenStateObserver)
+        viewModel.lockScreenState.removeObserver(lockScreenStateObserver)
         viewModel.onCleared()
 
         Logger.debug("RootScreen was undocked")
     }
 
-    private fun showRootScreen() {
+    private fun updateRootScreen() {
         val rootScreenState = viewModel.rootScreenState.value
-        Logger.debug("Show screen state '$rootScreenState'")
+        val lockScreenState = viewModel.lockScreenState.value
+        Logger.debug("Show screen state '$rootScreenState' with lock screen state '$lockScreenState'")
 
         when (rootScreenState) {
-            is RootViewModel.RootScreenState.LoggedIn -> showLoggedInState()
-            is RootViewModel.RootScreenState.LoggedOut -> showLoggedOutState()
+            is RootViewModel.RootScreenState.LoggedIn -> {
+                when (lockScreenState) {
+                    RootViewModel.LockScreenState.Locked -> showLockedState()
+                    RootViewModel.LockScreenState.Unlocked -> showLoggedInState()
+                }
+            }
+            is RootViewModel.RootScreenState.LoggedOut -> {
+                // TODO: login/welcome selection
+                showLoggedOutState()
+            }
+        }
+    }
+
+    private fun showLockedState() {
+        if (!isScreenShown(LockedScreen::class)) {
+            showScreen(LockedScreen::class)
         }
     }
 
@@ -123,8 +144,8 @@ class RootScreen : BaseView() {
     }
 
     private fun showLoggedOutState() {
-        if (!isScreenShown(LoginScreen::class)) {
-            showScreen(LoginScreen::class)
+        if (!isScreenShown(WelcomeScreen::class)) {
+            showScreen(WelcomeScreen::class)
         }
     }
 }

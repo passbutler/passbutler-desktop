@@ -4,45 +4,82 @@ import de.passbutler.common.LoggedInUserResult
 import de.passbutler.common.UserManager
 import de.passbutler.common.UserViewModel
 import de.passbutler.common.base.BindableObserver
+import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.base.CoroutineScopedViewModel
-import de.passbutler.desktop.base.ViewLifecycledViewModel
 import de.passbutler.desktop.crypto.BiometricsProvider
+import de.passbutler.desktop.database.createLocalRepository
 import kotlinx.coroutines.launch
 import tornadofx.Component
 import tornadofx.FX
+import java.io.File
 
-class UserViewModelProvidingViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel {
+class UserViewModelProvidingViewModel : CoroutineScopedViewModel() {
+
+    var userManager: UserManager? = null
+        private set
 
     var loggedInUserViewModel: UserViewModel? = null
         private set
 
-    val userManager
-        get() = PassButlerApplication.userManager
-
     private val loggedInUserResultObserver = LoggedInUserResultObserver()
 
-    init {
+
+
+
+
+
+
+
+
+
+
+
+    // TODO: When call `cancelJobs()`?
+
+    suspend fun initializeUserManager(vaultFile: File) {
+        unregisterLoggedInUserResultObserver()
+        userManager = createUserManager(vaultFile)
         registerLoggedInUserResultObserver()
     }
 
-    override fun onCleared() {
-        unregisterLoggedInUserResultObserver()
-        cancelJobs()
+    private suspend fun createUserManager(vaultFile: File): UserManager {
+        val databasePath = vaultFile.absolutePath
+        val localRepository = createLocalRepository(databasePath)
+
+        // TODO: Exception handling
+        return UserManager(localRepository, BuildInformationProvider)
     }
 
     private fun registerLoggedInUserResultObserver() {
         // Initially notify observer to be sure, the `loggedInUserViewModel` is restored immediately
-        userManager.loggedInUserResult.addObserver(this, true, loggedInUserResultObserver)
+        userManager?.loggedInUserResult?.addObserver(this, true, loggedInUserResultObserver)
     }
 
     private fun unregisterLoggedInUserResultObserver() {
-        userManager.loggedInUserResult.removeObserver(loggedInUserResultObserver)
+        userManager?.loggedInUserResult?.removeObserver(loggedInUserResultObserver)
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private inner class LoggedInUserResultObserver : BindableObserver<LoggedInUserResult?> {
         private val biometricsProvider = BiometricsProvider()
 
         override fun invoke(loggedInUserResult: LoggedInUserResult?) {
+            val userManager = userManager ?: throw UserManagerUninitializedException
+
             when (loggedInUserResult) {
                 is LoggedInUserResult.LoggedIn.PerformedLogin -> {
                     loggedInUserViewModel = UserViewModel(userManager, biometricsProvider, loggedInUserResult.loggedInUser, loggedInUserResult.masterPassword)
@@ -63,6 +100,7 @@ class UserViewModelProvidingViewModel : CoroutineScopedViewModel(), ViewLifecycl
     }
 }
 
+object UserManagerUninitializedException : IllegalStateException("The UserManager is null!")
 object LoggedInUserViewModelUninitializedException : IllegalStateException("The logged-in UserViewModel is null!")
 
 interface UserViewModelUsingViewModel {
@@ -71,7 +109,7 @@ interface UserViewModelUsingViewModel {
     val loggedInUserViewModel: UserViewModel?
         get() = userViewModelProvidingViewModel.loggedInUserViewModel
 
-    val userManager: UserManager
+    val userManager: UserManager?
         get() = userViewModelProvidingViewModel.userManager
 }
 

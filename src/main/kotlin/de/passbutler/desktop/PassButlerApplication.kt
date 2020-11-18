@@ -1,12 +1,8 @@
 package de.passbutler.desktop
 
-import de.passbutler.common.UserManager
 import de.passbutler.common.base.formattedDateTime
-import de.passbutler.desktop.base.BuildInformationProvider
-import de.passbutler.desktop.database.createLocalRepository
 import de.passbutler.desktop.ui.ThemeManager
 import javafx.stage.Stage
-import kotlinx.coroutines.runBlocking
 import org.tinylog.configuration.Configuration
 import org.tinylog.kotlin.Logger
 import tornadofx.App
@@ -16,14 +12,13 @@ import java.time.Instant
 import java.util.*
 
 class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotlinClass) {
+
     override fun start(stage: Stage) {
         stage.minWidth = 800.px.value
         stage.minHeight = 600.px.value
         super.start(stage)
 
         setupLogger()
-
-        userManager = createUserManager()
     }
 
     private fun setupLogger() {
@@ -57,16 +52,6 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         )
     }
 
-    private fun createUserManager(): UserManager {
-        val localRepository = runBlocking {
-            // TODO: Do not hardcode
-            val databasePath = "/home/bastian/Desktop/PassButlerDatabase.sqlite"
-            createLocalRepository(databasePath)
-        }
-
-        return UserManager(localRepository, BuildInformationProvider)
-    }
-
     private fun createLoggingHeader(): String {
         val versionName = BuildConfig.VERSION_NAME
         val versionCode = BuildConfig.VERSION_CODE
@@ -79,11 +64,6 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
             appendLine("Locale:      ${Locale.getDefault()}")
             appendLine("--------------------------------------------------------------------------------")
         }
-    }
-
-    companion object {
-        lateinit var userManager: UserManager
-            private set
     }
 }
 
