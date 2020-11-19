@@ -26,16 +26,7 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
         cancelJobs()
     }
 
-
-
-
-
-
-
-
-
-
-    suspend fun openRecentVault() {
+    suspend fun restoreRecentVault() {
         // TODO: Do not hardcode
         val recentVaultFilePath = "/home/bastian/Desktop/PassButlerDatabase.sqlite"
 
@@ -47,37 +38,39 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
     }
 
     // TODO: close previous
-    suspend fun createVault(selectedFile: File) {
-        val selectedFileName = selectedFile.name
-
-        val vaultFile = if (selectedFileName.endsWith(".$VAULT_FILE_EXTENSION")) {
-            selectedFile
-        } else {
-            // TODO: IO
-            File("$selectedFileName.$VAULT_FILE_EXTENSION")
-        }
-
-        // TODO: Create file?
-        vaultFile.createNewFile()
-
-        initializeUserManager(vaultFile)
-
-        rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
-
-        // TODO: save as recent
-    }
-
-    // TODO: close previous
     suspend fun openVault(selectedFile: File) {
         if (selectedFile.exists()) {
             initializeUserManager(selectedFile)
 
             userManager?.restoreLoggedInUser()
 
+            // TODO: check if successful
+
             // TODO: save as recent
         } else {
             rootScreenState.value = RootScreenState.LoggedOut.Welcome
         }
+    }
+
+    // TODO: close previous
+    suspend fun createVault(selectedFile: File) {
+        val vaultFile = if (selectedFile.name.endsWith(".$VAULT_FILE_EXTENSION")) {
+            selectedFile
+        } else {
+            // TODO: IO
+            File("${selectedFile.absolutePath}.$VAULT_FILE_EXTENSION")
+        }
+
+        // TODO: Ensure `vaultFile` does not exists
+
+        // TODO: Create file?
+        vaultFile.createNewFile()
+
+        initializeUserManager(vaultFile)
+
+        // TODO: save as recent
+
+        rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
     }
 
     private suspend fun initializeUserManager(vaultFile: File) {
@@ -94,49 +87,6 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
     private fun unregisterLoggedInUserResultObserver() {
         userManager?.loggedInUserResult?.removeObserver(loggedInUserResultObserver)
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     sealed class RootScreenState {
         sealed class LoggedIn : RootScreenState() {

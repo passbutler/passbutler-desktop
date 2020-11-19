@@ -113,7 +113,7 @@ class RootScreen : BaseView() {
         viewModel.rootScreenState.addObserver(this, false, rootScreenStateObserver)
 
         launch {
-            viewModel.openRecentVault()
+            viewModel.restoreRecentVault()
         }
     }
 
