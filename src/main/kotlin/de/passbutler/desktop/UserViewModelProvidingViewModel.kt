@@ -16,63 +16,30 @@ import java.io.File
 class UserViewModelProvidingViewModel : CoroutineScopedViewModel() {
 
     var userManager: UserManager? = null
-        private set
+        private set(value) {
+            if (value != field) {
+                // Unregister observer from old `UserManager` instance if existing
+                field?.loggedInUserResult?.removeObserver(loggedInUserResultObserver)
+
+                field = value
+
+                // Initially notify observer to be sure, the `loggedInUserViewModel` is restored immediately
+                field?.loggedInUserResult?.addObserver(this, true, loggedInUserResultObserver)
+            }
+        }
 
     var loggedInUserViewModel: UserViewModel? = null
         private set
 
     private val loggedInUserResultObserver = LoggedInUserResultObserver()
 
-
-
-
-
-
-
-
-
-
-
-
-    // TODO: When call `cancelJobs()`?
-
     suspend fun initializeUserManager(vaultFile: File) {
-        unregisterLoggedInUserResultObserver()
-        userManager = createUserManager(vaultFile)
-        registerLoggedInUserResultObserver()
-    }
-
-    private suspend fun createUserManager(vaultFile: File): UserManager {
         val databasePath = vaultFile.absolutePath
         val localRepository = createLocalRepository(databasePath)
 
-        // TODO: Exception handling
-        return UserManager(localRepository, BuildInformationProvider)
+        // TODO: Exception handling if file is corrupt etc.
+        userManager = UserManager(localRepository, BuildInformationProvider)
     }
-
-    private fun registerLoggedInUserResultObserver() {
-        // Initially notify observer to be sure, the `loggedInUserViewModel` is restored immediately
-        userManager?.loggedInUserResult?.addObserver(this, true, loggedInUserResultObserver)
-    }
-
-    private fun unregisterLoggedInUserResultObserver() {
-        userManager?.loggedInUserResult?.removeObserver(loggedInUserResultObserver)
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private inner class LoggedInUserResultObserver : BindableObserver<LoggedInUserResult?> {
         private val biometricsProvider = BiometricsProvider()

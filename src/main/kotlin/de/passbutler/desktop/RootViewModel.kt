@@ -22,6 +22,7 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
 
     override fun onCleared() {
         unregisterLoggedInUserResultObserver()
+        userViewModelProvidingViewModel.cancelJobs()
         cancelJobs()
     }
 
