@@ -8,12 +8,13 @@ import de.passbutler.desktop.base.ViewLifecycledViewModel
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import tornadofx.Component
+import tornadofx.FX
 import java.io.File
 
 class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserViewModelUsingViewModel {
 
     val rootScreenState = MutableBindable<RootScreenState?>(null)
-    val lockScreenState = MutableBindable<LockScreenState?>(null)
 
     override val userViewModelProvidingViewModel by injectUserViewModelProvidingViewModel()
 
@@ -58,9 +59,9 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
         // TODO: Create file?
         vaultFile.createNewFile()
 
-        unregisterLoggedInUserResultObserver()
-        userViewModelProvidingViewModel.initializeUserManager(vaultFile)
-        registerLoggedInUserResultObserver()
+        initializeUserManager(vaultFile)
+
+        rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
 
         // TODO: save as recent
     }
@@ -68,17 +69,20 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
     // TODO: close previous
     suspend fun openVault(selectedFile: File) {
         if (selectedFile.exists()) {
-            unregisterLoggedInUserResultObserver()
-            userViewModelProvidingViewModel.initializeUserManager(selectedFile)
-            registerLoggedInUserResultObserver()
+            initializeUserManager(selectedFile)
 
             userManager?.restoreLoggedInUser()
 
             // TODO: save as recent
         } else {
-            rootScreenState.value = RootScreenState.LoggedOut
-            lockScreenState.value = null
+            rootScreenState.value = RootScreenState.LoggedOut.Welcome
         }
+    }
+
+    private suspend fun initializeUserManager(vaultFile: File) {
+        unregisterLoggedInUserResultObserver()
+        userViewModelProvidingViewModel.initializeUserManager(vaultFile)
+        registerLoggedInUserResultObserver()
     }
 
     private fun registerLoggedInUserResultObserver() {
@@ -134,31 +138,36 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
 
 
     sealed class RootScreenState {
-        object LoggedIn : RootScreenState()
-        object LoggedOut : RootScreenState()
-    }
+        sealed class LoggedIn : RootScreenState() {
+            object Locked : LoggedIn()
+            object Unlocked : LoggedIn()
+        }
 
-    sealed class LockScreenState {
-        object Locked : LockScreenState()
-        object Unlocked : LockScreenState()
+        sealed class LoggedOut : RootScreenState() {
+            object OpeningVault : LoggedOut()
+            object Welcome : LoggedOut()
+        }
     }
 
     private inner class LoggedInUserResultObserver : BindableObserver<LoggedInUserResult?> {
         override fun invoke(loggedInUserResult: LoggedInUserResult?) {
             when (loggedInUserResult) {
                 is LoggedInUserResult.LoggedIn.PerformedLogin -> {
-                    rootScreenState.value = RootScreenState.LoggedIn
-                    lockScreenState.value = LockScreenState.Unlocked
+                    rootScreenState.value = RootScreenState.LoggedIn.Unlocked
                 }
                 is LoggedInUserResult.LoggedIn.RestoredLogin -> {
-                    rootScreenState.value = RootScreenState.LoggedIn
-                    lockScreenState.value = LockScreenState.Locked
+                    rootScreenState.value = RootScreenState.LoggedIn.Locked
                 }
                 is LoggedInUserResult.LoggedOut -> {
-                    rootScreenState.value = RootScreenState.LoggedOut
-                    lockScreenState.value = null
+                    rootScreenState.value = RootScreenState.LoggedOut.Welcome
                 }
             }
         }
     }
 }
+
+/**
+ * Injects the `RootViewModel` with global scope to ensure it is always the same shared instance.
+ */
+inline fun <reified T> T.injectRootViewModel()
+    where T : Component = inject<RootViewModel>(FX.defaultScope)

@@ -7,14 +7,16 @@ import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.UIPresenter
 import de.passbutler.desktop.ui.bottomDropShadow
-import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxSnackbar
 import de.passbutler.desktop.ui.jfxSpinner
+import de.passbutler.desktop.ui.showOpenVaultFileChooser
+import de.passbutler.desktop.ui.showSaveVaultFileChooser
 import javafx.application.Platform
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.layout.Pane
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.tinylog.kotlin.Logger
 import tornadofx.action
 import tornadofx.addClass
@@ -42,13 +44,9 @@ class RootScreen : BaseView() {
     var bannerView: JFXSnackbar? = null
         private set
 
-    private val viewModel by inject<RootViewModel>()
+    private val viewModel by injectRootViewModel()
 
     private val rootScreenStateObserver: BindableObserver<RootViewModel.RootScreenState?> = {
-        updateRootScreen()
-    }
-
-    private val lockScreenStateObserver: BindableObserver<RootViewModel.LockScreenState?> = {
         updateRootScreen()
     }
 
@@ -71,16 +69,34 @@ class RootScreen : BaseView() {
 
                     menu(messages["app_name"]) {
                         item(messages["menu_create_container"]).action {
-                            // TODO close vault, show file chooser and create file
+                            createVaultClicked()
                         }
                         item(messages["menu_open_container"]).action {
-                            // TODO close vault, show file chooser and open file
+                            openVaultClicked()
                         }
                         item(messages["menu_close_application"]).action {
                             closeApplicationClicked()
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun createVaultClicked() {
+        showSaveVaultFileChooser(messages["menu_create_container"]) { choosenFile ->
+            // TODO: Not blocking -> request sending
+            runBlocking {
+                viewModel.createVault(choosenFile)
+            }
+        }
+    }
+
+    private fun openVaultClicked() {
+        showOpenVaultFileChooser(messages["menu_open_container"]) { choosenFile ->
+            // TODO: Not blocking -> request sending
+            runBlocking {
+                viewModel.openVault(choosenFile)
             }
         }
     }
@@ -95,7 +111,6 @@ class RootScreen : BaseView() {
         uiPresentingDelegate = UIPresenter(this)
 
         viewModel.rootScreenState.addObserver(this, false, rootScreenStateObserver)
-        viewModel.lockScreenState.addObserver(this, false, lockScreenStateObserver)
 
         launch {
             viewModel.openRecentVault()
@@ -106,7 +121,6 @@ class RootScreen : BaseView() {
         super.onUndock()
 
         viewModel.rootScreenState.removeObserver(rootScreenStateObserver)
-        viewModel.lockScreenState.removeObserver(lockScreenStateObserver)
         viewModel.onCleared()
 
         Logger.debug("RootScreen was undocked")
@@ -114,38 +128,37 @@ class RootScreen : BaseView() {
 
     private fun updateRootScreen() {
         val rootScreenState = viewModel.rootScreenState.value
-        val lockScreenState = viewModel.lockScreenState.value
-        Logger.debug("Show screen state '$rootScreenState' with lock screen state '$lockScreenState'")
+        Logger.debug("Show screen state '$rootScreenState'")
 
         when (rootScreenState) {
-            is RootViewModel.RootScreenState.LoggedIn -> {
-                when (lockScreenState) {
-                    RootViewModel.LockScreenState.Locked -> showLockedState()
-                    RootViewModel.LockScreenState.Unlocked -> showLoggedInState()
-                }
-            }
-            is RootViewModel.RootScreenState.LoggedOut -> {
-                // TODO: login/welcome selection
-                showLoggedOutState()
-            }
+            is RootViewModel.RootScreenState.LoggedIn.Locked -> showLockedScreen()
+            is RootViewModel.RootScreenState.LoggedIn.Unlocked -> showOverviewScreen()
+            is RootViewModel.RootScreenState.LoggedOut.Welcome -> showWelcomeScreen()
+            is RootViewModel.RootScreenState.LoggedOut.OpeningVault -> showLoginScreen()
         }
     }
 
-    private fun showLockedState() {
+    private fun showLockedScreen() {
         if (!isScreenShown(LockedScreen::class)) {
             showScreen(LockedScreen::class)
         }
     }
 
-    private fun showLoggedInState() {
+    private fun showOverviewScreen() {
         if (!isScreenShown(OverviewScreen::class)) {
             showScreen(OverviewScreen::class)
         }
     }
 
-    private fun showLoggedOutState() {
+    private fun showWelcomeScreen() {
         if (!isScreenShown(WelcomeScreen::class)) {
             showScreen(WelcomeScreen::class)
+        }
+    }
+
+    private fun showLoginScreen() {
+        if (!isScreenShown(LoginScreen::class)) {
+            showScreen(LoginScreen::class)
         }
     }
 }

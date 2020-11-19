@@ -13,12 +13,11 @@ import tornadofx.ViewModel
 
 class LockedScreenViewModel : ViewModel(), UserViewModelUsingViewModel {
 
+    val passwordProperty = bind { SimpleStringProperty() }
+
     override val userViewModelProvidingViewModel by injectUserViewModelProvidingViewModel()
 
-    // TODO: Not optimal
-    private val rootViewModel by inject<RootViewModel>(FX.defaultScope)
-
-    val passwordProperty = bind { SimpleStringProperty() }
+    private val rootViewModel by injectRootViewModel()
 
     suspend fun unlockScreenWithPassword(masterPassword: String): Result<Unit> {
         val loggedInUserViewModel = loggedInUserViewModel ?: throw LoggedInUserViewModelUninitializedException
@@ -30,7 +29,7 @@ class LockedScreenViewModel : ViewModel(), UserViewModelUsingViewModel {
                 restoreWebservices(loggedInUserViewModel, masterPassword)
             }
 
-            rootViewModel.lockScreenState.value = RootViewModel.LockScreenState.Unlocked
+            rootViewModel.rootScreenState.value = RootViewModel.RootScreenState.LoggedIn.Unlocked
 
             Success(Unit)
         } catch (exception: Exception) {

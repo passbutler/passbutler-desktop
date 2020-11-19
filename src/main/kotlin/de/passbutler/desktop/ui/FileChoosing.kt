@@ -8,13 +8,19 @@ import tornadofx.get
 import java.io.File
 
 fun showOpenVaultFileChooser(title: String, chosenFileBlock: (File) -> Unit) {
-    chooseFile(title, createFileChooserExtensionFilter(), mode = FileChooserMode.Single).firstOrNull()?.let {
+    // TODO: Extract
+    val homeDirectory = System.getProperty("user.home")
+
+    chooseFile(title, createFileChooserExtensionFilter(), initialDirectory = File(homeDirectory), mode = FileChooserMode.Single).firstOrNull()?.let {
         chosenFileBlock(it)
     }
 }
 
 fun showSaveVaultFileChooser(title: String, chosenFileBlock: (File) -> Unit) {
-    chooseFile(title, createFileChooserExtensionFilter(), mode = FileChooserMode.Save).firstOrNull()?.let {
+    // TODO: Extract
+    val homeDirectory = System.getProperty("user.home")
+
+    chooseFile(title, createFileChooserExtensionFilter(), initialDirectory = File(homeDirectory), mode = FileChooserMode.Save).firstOrNull()?.let {
         chosenFileBlock(it)
     }
 }
