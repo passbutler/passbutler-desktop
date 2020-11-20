@@ -5,15 +5,14 @@ import de.passbutler.common.UserManager
 import de.passbutler.common.UserViewModel
 import de.passbutler.common.base.BindableObserver
 import de.passbutler.desktop.base.BuildInformationProvider
-import de.passbutler.desktop.base.CoroutineScopedViewModel
 import de.passbutler.desktop.crypto.BiometricsProvider
 import de.passbutler.desktop.database.createLocalRepository
-import kotlinx.coroutines.launch
 import tornadofx.Component
 import tornadofx.FX
+import tornadofx.ViewModel
 import java.io.File
 
-class UserViewModelProvidingViewModel : CoroutineScopedViewModel() {
+class UserViewModelProvidingViewModel : ViewModel() {
 
     var userManager: UserManager? = null
         private set(value) {
@@ -24,7 +23,7 @@ class UserViewModelProvidingViewModel : CoroutineScopedViewModel() {
                 field = value
 
                 // Initially notify observer to be sure, the `loggedInUserViewModel` is restored immediately
-                field?.loggedInUserResult?.addObserver(this, true, loggedInUserResultObserver)
+                field?.loggedInUserResult?.addObserver(null, true, loggedInUserResultObserver)
             }
         }
 
@@ -56,11 +55,9 @@ class UserViewModelProvidingViewModel : CoroutineScopedViewModel() {
                 }
                 is LoggedInUserResult.LoggedOut -> {
                     // Finally clear crypto resources and reset related jobs
-                    launch {
-                        loggedInUserViewModel?.clearSensibleData()
-                        loggedInUserViewModel?.cancelJobs()
-                        loggedInUserViewModel = null
-                    }
+                    loggedInUserViewModel?.clearSensibleData()
+                    loggedInUserViewModel?.cancelJobs()
+                    loggedInUserViewModel = null
                 }
             }
         }
