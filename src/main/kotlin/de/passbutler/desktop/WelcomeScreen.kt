@@ -1,5 +1,7 @@
 package de.passbutler.desktop
 
+import de.passbutler.common.ui.RequestSending
+import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.BaseFragment
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.jfxButtonRaised
@@ -11,7 +13,6 @@ import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline
 import javafx.geometry.Pos
 import javafx.scene.Node
-import kotlinx.coroutines.runBlocking
 import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.addClass
@@ -26,7 +27,7 @@ import tornadofx.stackpane
 import tornadofx.style
 import tornadofx.vbox
 
-class WelcomeScreen : BaseFragment(messages["welcome_title"]) {
+class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
 
     override val root = stackpane()
 
@@ -67,8 +68,10 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]) {
 
     private fun createVaultClicked() {
         showSaveVaultFileChooser(messages["welcome_create_vault_headline"]) { choosenFile ->
-            // TODO: Not blocking -> request sending
-            runBlocking {
+            launchRequestSending(
+                handleFailure = { showError(messages["general_create_vault_failed_title"]) },
+                isCancellable = false
+            ) {
                 viewModel.createVault(choosenFile)
             }
         }
@@ -82,8 +85,10 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]) {
 
     private fun openVaultClicked() {
         showOpenVaultFileChooser(messages["welcome_open_vault_headline"]) { choosenFile ->
-            // TODO: Not blocking -> request sending
-            runBlocking {
+            launchRequestSending(
+                handleFailure = { showError(messages["general_open_vault_failed_title"]) },
+                isCancellable = false
+            ) {
                 viewModel.openVault(choosenFile)
             }
         }
