@@ -3,10 +3,13 @@ package de.passbutler.desktop
 import de.passbutler.common.LoggedInUserResult
 import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.base.MutableBindable
+import de.passbutler.common.base.Result
+import de.passbutler.common.base.Success
 import de.passbutler.desktop.base.CoroutineScopedViewModel
 import de.passbutler.desktop.base.ViewLifecycledViewModel
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import tornadofx.Component
 import tornadofx.FX
@@ -38,7 +41,7 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
     }
 
     // TODO: close previous
-    suspend fun openVault(selectedFile: File) {
+    suspend fun openVault(selectedFile: File): Result<Unit> {
         if (selectedFile.exists()) {
             initializeUserManager(selectedFile)
 
@@ -50,10 +53,12 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
         } else {
             rootScreenState.value = RootScreenState.LoggedOut.Welcome
         }
+
+        return Success(Unit)
     }
 
     // TODO: close previous
-    suspend fun createVault(selectedFile: File) {
+    suspend fun createVault(selectedFile: File): Result<Unit> {
         val vaultFile = if (selectedFile.name.endsWith(".$VAULT_FILE_EXTENSION")) {
             selectedFile
         } else {
@@ -71,6 +76,8 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
         // TODO: save as recent
 
         rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
+
+        return Success(Unit)
     }
 
     private suspend fun initializeUserManager(vaultFile: File) {
@@ -86,6 +93,14 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
 
     private fun unregisterLoggedInUserResultObserver() {
         userManager?.loggedInUserResult?.removeObserver(loggedInUserResultObserver)
+    }
+
+    suspend fun closeVault(): Result<Unit> {
+        // Some artificial delay to look flow more natural
+        delay(500)
+
+        val loggedInUserViewModel = loggedInUserViewModel ?: throw LoggedInUserViewModelUninitializedException
+        return loggedInUserViewModel.logout()
     }
 
     sealed class RootScreenState {

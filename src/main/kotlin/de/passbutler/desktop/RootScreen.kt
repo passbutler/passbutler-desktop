@@ -2,6 +2,8 @@ package de.passbutler.desktop
 
 import com.jfoenix.controls.JFXSnackbar
 import de.passbutler.common.base.BindableObserver
+import de.passbutler.common.ui.RequestSending
+import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.BaseView
 import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.Theme
@@ -14,9 +16,9 @@ import de.passbutler.desktop.ui.showSaveVaultFileChooser
 import javafx.application.Platform
 import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.control.Menu
 import javafx.scene.layout.Pane
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.tinylog.kotlin.Logger
 import tornadofx.action
 import tornadofx.addClass
@@ -31,7 +33,7 @@ import tornadofx.menubar
 import tornadofx.stackpane
 import tornadofx.top
 
-class RootScreen : BaseView() {
+class RootScreen : BaseView(), RequestSending {
 
     override val root = borderpane()
 
@@ -44,9 +46,12 @@ class RootScreen : BaseView() {
     var bannerView: JFXSnackbar? = null
         private set
 
+    private var menuView: Menu? = null
+
     private val viewModel by injectRootViewModel()
 
     private val rootScreenStateObserver: BindableObserver<RootViewModel.RootScreenState?> = {
+        updateMenu()
         updateRootScreen()
     }
 
@@ -67,42 +72,11 @@ class RootScreen : BaseView() {
 
                     effect = bottomDropShadow()
 
-                    menu(messages["app_name"]) {
-                        item(messages["menu_create_container"]).action {
-                            createVaultClicked()
-                        }
-                        item(messages["menu_open_container"]).action {
-                            openVaultClicked()
-                        }
-                        item(messages["menu_close_application"]).action {
-                            closeApplicationClicked()
-                        }
-                    }
+                    menuView = menu(messages["app_name"])
+                    updateMenu()
                 }
             }
         }
-    }
-
-    private fun createVaultClicked() {
-        showSaveVaultFileChooser(messages["menu_create_container"]) { choosenFile ->
-            // TODO: Not blocking -> request sending
-            runBlocking {
-                viewModel.createVault(choosenFile)
-            }
-        }
-    }
-
-    private fun openVaultClicked() {
-        showOpenVaultFileChooser(messages["menu_open_container"]) { choosenFile ->
-            // TODO: Not blocking -> request sending
-            runBlocking {
-                viewModel.openVault(choosenFile)
-            }
-        }
-    }
-
-    private fun closeApplicationClicked() {
-        Platform.exit()
     }
 
     override fun onDock() {
@@ -124,6 +98,65 @@ class RootScreen : BaseView() {
         viewModel.onCleared()
 
         Logger.debug("RootScreen was undocked")
+    }
+
+    private fun updateMenu() {
+        menuView?.apply {
+            items.clear()
+
+            item(messages["menu_create_vault"]).action {
+                createVaultClicked()
+            }
+
+            item(messages["menu_open_vault"]).action {
+                openVaultClicked()
+            }
+
+            if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn) {
+                item(messages["menu_close_vault"]).action {
+                    closeVaultClicked()
+                }
+            }
+
+            item(messages["menu_close_application"]).action {
+                closeApplicationClicked()
+            }
+        }
+    }
+
+    private fun createVaultClicked() {
+        showSaveVaultFileChooser(messages["menu_create_vault"]) { choosenFile ->
+            launchRequestSending(
+                handleFailure = { showError(messages["root_create_vault_failed_title"]) },
+                isCancellable = false
+            ) {
+                viewModel.createVault(choosenFile)
+            }
+        }
+    }
+
+    private fun openVaultClicked() {
+        showOpenVaultFileChooser(messages["menu_open_vault"]) { choosenFile ->
+            launchRequestSending(
+                handleFailure = { showError(messages["root_open_vault_failed_title"]) },
+                isCancellable = false
+            ) {
+                viewModel.openVault(choosenFile)
+            }
+        }
+    }
+
+    private fun closeVaultClicked() {
+        launchRequestSending(
+            handleFailure = { showError(messages["root_logout_failed_title"]) },
+            isCancellable = false
+        ) {
+            viewModel.closeVault()
+        }
+    }
+
+    private fun closeApplicationClicked() {
+        Platform.exit()
     }
 
     private fun updateRootScreen() {

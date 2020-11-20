@@ -59,13 +59,19 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
                 createNavigationItem(messages["drawer_menu_item_overview"], Drawables.ICON_HOME, OverviewScreen::class)
                 createNavigationItem(messages["drawer_menu_item_settings"], Drawables.ICON_SETTINGS, SettingsScreen::class)
                 createNavigationItem(messages["drawer_menu_item_about"], Drawables.ICON_INFO, AboutScreen::class)
-
-                // TODO: Add close vault item
             }
         }
     }
 
-    private fun Node.createNavigationItem(title: String, icon: Drawable, screenClass: KClass<out UIComponent>) {
+    protected fun Node.createNavigationItem(title: String, icon: Drawable, screenClass: KClass<out UIComponent>) {
+        createNavigationItem(title, icon) {
+            if (!isScreenShown(screenClass)) {
+                showScreenUnanimated(screenClass)
+            }
+        }
+    }
+
+    private fun Node.createNavigationItem(title: String, icon: Drawable, clickedAction: () -> Unit) {
         hbox {
             svgpath(icon.svgPath) {
                 addClass(Theme.imageTint)
@@ -77,11 +83,7 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
                 paddingLeft = marginS.value
             }
 
-            onLeftClick {
-                if (!isScreenShown(screenClass)) {
-                    showScreenUnanimated(screenClass)
-                }
-            }
+            onLeftClick(action = clickedAction)
         }
     }
 
