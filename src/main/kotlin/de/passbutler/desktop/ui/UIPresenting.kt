@@ -11,14 +11,14 @@ interface UIPresenting : ProgressPresenting, BannerPresenting {
     fun <T : UIComponent> isScreenShown(screenClass: KClass<T>): Boolean
 }
 
-fun <T : UIComponent> UIPresenting.showScreenUnanimated(screenClass: KClass<T>) {
-    showScreen(screenClass, transitionType = TransitionType.NONE)
+fun <T : UIComponent> UIPresenting.showScreenUnanimated(screenClass: KClass<T>, userTriggered: Boolean = true) {
+    showScreen(screenClass, transitionType = TransitionType.NONE, userTriggered = userTriggered)
 }
 
-fun <T : UIComponent> UIPresenting.showScreenFaded(screenClass: KClass<T>) {
-    showScreen(screenClass, transitionType = TransitionType.FADE)
+fun <T : UIComponent> UIPresenting.showScreenFaded(screenClass: KClass<T>, userTriggered: Boolean = true) {
+    showScreen(screenClass, transitionType = TransitionType.FADE, userTriggered = userTriggered)
 }
 
-fun <T : UIComponent> UIPresenting.showScreenModally(screenClass: KClass<T>) {
-    showScreen(screenClass, transitionType = TransitionType.MODAL)
+fun <T : UIComponent> UIPresenting.showScreenModally(screenClass: KClass<T>, userTriggered: Boolean = true) {
+    showScreen(screenClass, transitionType = TransitionType.MODAL, userTriggered = userTriggered)
 }
