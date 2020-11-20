@@ -20,6 +20,7 @@ import javafx.scene.control.Menu
 import javafx.scene.layout.Pane
 import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
+import tornadofx.UIComponent
 import tornadofx.action
 import tornadofx.addClass
 import tornadofx.addStylesheet
@@ -32,6 +33,7 @@ import tornadofx.menu
 import tornadofx.menubar
 import tornadofx.stackpane
 import tornadofx.top
+import kotlin.reflect.KClass
 
 class RootScreen : BaseView(), RequestSending {
 
@@ -164,34 +166,16 @@ class RootScreen : BaseView(), RequestSending {
         Logger.debug("Show screen state '$rootScreenState'")
 
         when (rootScreenState) {
-            is RootViewModel.RootScreenState.LoggedIn.Locked -> showLockedScreen()
-            is RootViewModel.RootScreenState.LoggedIn.Unlocked -> showOverviewScreen()
-            is RootViewModel.RootScreenState.LoggedOut.Welcome -> showWelcomeScreen()
-            is RootViewModel.RootScreenState.LoggedOut.OpeningVault -> showLoginScreen()
+            is RootViewModel.RootScreenState.LoggedIn.Locked -> showScreenIfNotShown(LockedScreen::class)
+            is RootViewModel.RootScreenState.LoggedIn.Unlocked -> showScreenIfNotShown(OverviewScreen::class)
+            is RootViewModel.RootScreenState.LoggedOut.Welcome -> showScreenIfNotShown(WelcomeScreen::class)
+            is RootViewModel.RootScreenState.LoggedOut.OpeningVault -> showScreenIfNotShown(LoginScreen::class)
         }
     }
 
-    private fun showLockedScreen() {
-        if (!isScreenShown(LockedScreen::class)) {
-            showScreen(LockedScreen::class)
-        }
-    }
-
-    private fun showOverviewScreen() {
-        if (!isScreenShown(OverviewScreen::class)) {
-            showScreen(OverviewScreen::class)
-        }
-    }
-
-    private fun showWelcomeScreen() {
-        if (!isScreenShown(WelcomeScreen::class)) {
-            showScreen(WelcomeScreen::class)
-        }
-    }
-
-    private fun showLoginScreen() {
-        if (!isScreenShown(LoginScreen::class)) {
-            showScreen(LoginScreen::class)
+    private fun <T : UIComponent> showScreenIfNotShown(screenClass: KClass<T>) {
+        if (!isScreenShown(screenClass)) {
+            showScreen(screenClass, userTriggered = false)
         }
     }
 }

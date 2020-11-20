@@ -24,8 +24,8 @@ class UIPresenter(
 
     private var shownScreenClass: KClass<out UIComponent>? = null
 
-    override fun <T : UIComponent> showScreen(screenClass: KClass<T>, debounce: Boolean, transitionType: TransitionType) {
-        val debouncedViewTransactionEnsured = ensureDebouncedViewTransaction().takeIf { debounce } ?: true
+    override fun <T : UIComponent> showScreen(screenClass: KClass<T>, userTriggered: Boolean, transitionType: TransitionType) {
+        val debouncedViewTransactionEnsured = ensureDebouncedViewTransaction().takeIf { userTriggered } ?: true
 
         if (debouncedViewTransactionEnsured) {
             rootScreen.contentContainer?.getChildList()?.apply {

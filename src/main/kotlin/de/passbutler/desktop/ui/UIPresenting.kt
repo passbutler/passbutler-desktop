@@ -7,7 +7,7 @@ import tornadofx.UIComponent
 import kotlin.reflect.KClass
 
 interface UIPresenting : ProgressPresenting, BannerPresenting {
-    fun <T : UIComponent> showScreen(screenClass: KClass<T>, debounce: Boolean = true, transitionType: TransitionType = TransitionType.SLIDE)
+    fun <T : UIComponent> showScreen(screenClass: KClass<T>, userTriggered: Boolean = true, transitionType: TransitionType = TransitionType.SLIDE)
     fun <T : UIComponent> isScreenShown(screenClass: KClass<T>): Boolean
 }
 
