@@ -1,5 +1,6 @@
 package de.passbutler.desktop
 
+import de.passbutler.common.base.LoggingConstants
 import de.passbutler.common.base.formattedDateTime
 import de.passbutler.desktop.base.PathProvider
 import de.passbutler.desktop.ui.ThemeManager
@@ -33,7 +34,7 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
 
     private fun createLoggerConfiguration(): Map<String, String> {
         val logFilePath = PathProvider.logFile
-        val logFormat = "{date} {level} {class-name}.{method}() [{thread}]: {message}"
+        val logFormat = LoggingConstants.LOG_FORMAT_FILE
 
         return mapOf(
             "writer1" to "console",
