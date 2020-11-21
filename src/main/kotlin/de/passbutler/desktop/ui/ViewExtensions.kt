@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXSnackbar
 import com.jfoenix.controls.JFXSpinner
 import com.jfoenix.controls.JFXToggleButton
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
+import javafx.animation.Animation
 import javafx.event.EventTarget
 import javafx.scene.Node
 import javafx.scene.control.Label
@@ -19,7 +20,6 @@ import tornadofx.css
 import tornadofx.fade
 import tornadofx.label
 import tornadofx.px
-import tornadofx.useMaxWidth
 
 typealias JavaTimeDuration = java.time.Duration
 typealias JavaFxDuration = javafx.util.Duration
@@ -63,16 +63,24 @@ fun EventTarget.textLabelBody2(text: String = "", graphic: Node? = null, op: Lab
     op.invoke(this)
 }
 
+private const val FADE_IN_OUT_ANIMATION_PROPERTY = "de.passbutler.desktop.ui.showFadeInOutAnimation"
+
 fun Node.showFadeInOutAnimation(shouldShow: Boolean) {
-    // TODO: Cancel previous animation if any is running to avoid produce out-of-sync view state
+    // Cancel previous animation if any is running to avoid produce out-of-sync view state
+    (properties[FADE_IN_OUT_ANIMATION_PROPERTY] as? Animation)?.stop()
+
     if (shouldShow) {
         isVisible = true
         opacity = 0.0
-        fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 1.0).onFinished = null
+        properties[FADE_IN_OUT_ANIMATION_PROPERTY] = fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 1.0).apply {
+            onFinished = null
+        }
     } else {
         opacity = 1.0
-        fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 0.0).setOnFinished {
-            isVisible = false
+        properties[FADE_IN_OUT_ANIMATION_PROPERTY] = fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 0.0).apply {
+            setOnFinished {
+                isVisible = false
+            }
         }
     }
 }
