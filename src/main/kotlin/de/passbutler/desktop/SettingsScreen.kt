@@ -22,6 +22,7 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"]) {
                 isSelected = (ThemeManager.themeType == ThemeType.DARK)
 
                 onLeftClick {
+                    // TODO: When clicking fast, the state gets out of sync
                     ThemeManager.themeType = when (ThemeManager.themeType) {
                         ThemeType.LIGHT -> ThemeType.DARK
                         ThemeType.DARK -> ThemeType.LIGHT
