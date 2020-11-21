@@ -1,6 +1,8 @@
 package de.passbutler.desktop.ui
 
+import de.passbutler.desktop.base.PathProvider
 import javafx.stage.FileChooser
+import kotlinx.coroutines.runBlocking
 import tornadofx.FX
 import tornadofx.FileChooserMode
 import tornadofx.chooseFile
@@ -8,19 +10,21 @@ import tornadofx.get
 import java.io.File
 
 fun showOpenVaultFileChooser(title: String, chosenFileBlock: (File) -> Unit) {
-    // TODO: Extract
-    val homeDirectory = System.getProperty("user.home")
+    val homeDirectory = runBlocking {
+        PathProvider.obtainDirectory { homeDirectory }
+    }
 
-    chooseFile(title, createFileChooserExtensionFilter(), initialDirectory = File(homeDirectory), mode = FileChooserMode.Single).firstOrNull()?.let {
+    chooseFile(title, createFileChooserExtensionFilter(), initialDirectory = homeDirectory, mode = FileChooserMode.Single).firstOrNull()?.let {
         chosenFileBlock(it)
     }
 }
 
 fun showSaveVaultFileChooser(title: String, chosenFileBlock: (File) -> Unit) {
-    // TODO: Extract
-    val homeDirectory = System.getProperty("user.home")
+    val homeDirectory = runBlocking {
+        PathProvider.obtainDirectory { homeDirectory }
+    }
 
-    chooseFile(title, createFileChooserExtensionFilter(), initialDirectory = File(homeDirectory), mode = FileChooserMode.Save).firstOrNull()?.let {
+    chooseFile(title, createFileChooserExtensionFilter(), initialDirectory = homeDirectory, mode = FileChooserMode.Save).firstOrNull()?.let {
         chosenFileBlock(it)
     }
 }

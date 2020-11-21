@@ -1,6 +1,7 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.base.formattedDateTime
+import de.passbutler.desktop.base.PathProvider
 import de.passbutler.desktop.ui.ThemeManager
 import javafx.stage.Stage
 import org.tinylog.configuration.Configuration
@@ -31,8 +32,7 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
     }
 
     private fun createLoggerConfiguration(): Map<String, String> {
-        // TODO: Do not hardcode
-        val logFilePath = "/home/bastian/Desktop/passbutler-debug.log"
+        val logFilePath = PathProvider.logFile
         val logFormat = "{date} {level} {class-name}.{method}() [{thread}]: {message}"
 
         return mapOf(
