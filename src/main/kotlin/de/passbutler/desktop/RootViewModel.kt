@@ -35,7 +35,7 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
         // TODO: IO Exceptions
         val configurationFile = PathProvider.obtainFile { configurationFile }
 
-        if (configurationFile.exists()) {
+        val recentVaultFile = if (configurationFile.exists()) {
             val configurationFileContent = configurationFile.readText()
             val configuration = PassButlerConfiguration.Deserializer.deserializeOrNull(configurationFileContent)
 
@@ -45,9 +45,13 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
                 withContext(Dispatchers.IO) { File(it) }.takeIf { it.exists() }
             }
 
-            recentVaultFile?.let {
-                openVault(it)
-            }
+            recentVaultFile
+        } else {
+            null
+        }
+
+        if (recentVaultFile != null) {
+            openVault(recentVaultFile)
         } else {
             rootScreenState.value = RootScreenState.LoggedOut.Welcome
         }
@@ -79,18 +83,14 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
     suspend fun openVault(selectedFile: File): Result<Unit> {
         return when (val closeResult = closeVaultIfOpened()) {
             is Success -> {
-                if (selectedFile.exists()) {
-                    initializeUserManager(selectedFile)
+                initializeUserManager(selectedFile)
 
-                    userManager?.restoreLoggedInUser()
+                userManager?.restoreLoggedInUser()
 
-                    // TODO: check if successful
+                // TODO: check if successful
 
-                    // TODO: save as recent only if successful
-                    appendRecentVault(selectedFile)
-                } else {
-                    rootScreenState.value = RootScreenState.LoggedOut.Welcome
-                }
+                // TODO: save as recent only if successful
+                appendRecentVault(selectedFile)
 
                 Success(Unit)
             }
