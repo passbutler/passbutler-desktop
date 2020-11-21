@@ -39,6 +39,7 @@ import tornadofx.form
 import tornadofx.get
 import tornadofx.hbox
 import tornadofx.imageview
+import tornadofx.longpress
 import tornadofx.onLeftClick
 import tornadofx.paddingAll
 import tornadofx.paddingBottom
@@ -132,7 +133,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
 
     private fun ImageView.setupDebugPresetsButton() {
         if (BuildInformationProvider.buildType == BuildType.Debug) {
-            onLeftClick {
+            longpress {
                 viewModel.serverUrlProperty.set(DebugConstants.TEST_SERVERURL)
                 viewModel.usernameProperty.set(DebugConstants.TEST_USERNAME)
                 viewModel.passwordProperty.set(DebugConstants.TEST_PASSWORD)

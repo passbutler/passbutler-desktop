@@ -35,6 +35,7 @@ import tornadofx.form
 import tornadofx.get
 import tornadofx.hbox
 import tornadofx.imageview
+import tornadofx.longpress
 import tornadofx.onLeftClick
 import tornadofx.paddingAll
 import tornadofx.paddingBottom
@@ -120,7 +121,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), RequestSendi
 
     private fun ImageView.setupDebugPresetsButton() {
         if (BuildInformationProvider.buildType == BuildType.Debug) {
-            onLeftClick {
+            longpress {
                 viewModel.passwordProperty.set(DebugConstants.TEST_PASSWORD)
             }
         }
