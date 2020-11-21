@@ -32,6 +32,7 @@ class UserViewModelProvidingViewModel : ViewModel() {
 
     private val loggedInUserResultObserver = LoggedInUserResultObserver()
 
+    // TODO: This may be called before out observer fully logged out
     suspend fun initializeUserManager(vaultFile: File) {
         val databasePath = vaultFile.absolutePath
         val localRepository = createLocalRepository(databasePath)
