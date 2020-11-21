@@ -1,7 +1,9 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.LoggedInUserResult
+import de.passbutler.common.UserManager
 import de.passbutler.common.base.BindableObserver
+import de.passbutler.common.base.Failure
 import de.passbutler.common.base.MutableBindable
 import de.passbutler.common.base.Result
 import de.passbutler.common.base.Success
@@ -39,44 +41,52 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
         openVault(recentVaultFile)
     }
 
-    // TODO: close previous
     suspend fun openVault(selectedFile: File): Result<Unit> {
-        if (selectedFile.exists()) {
-            initializeUserManager(selectedFile)
+        return when (val closeResult = closeVaultIfOpened()) {
+            is Success -> {
+                if (selectedFile.exists()) {
+                    initializeUserManager(selectedFile)
 
-            userManager?.restoreLoggedInUser()
+                    userManager?.restoreLoggedInUser()
 
-            // TODO: check if successful
+                    // TODO: check if successful
 
-            // TODO: save as recent
-        } else {
-            rootScreenState.value = RootScreenState.LoggedOut.Welcome
+                    // TODO: save as recent
+                } else {
+                    rootScreenState.value = RootScreenState.LoggedOut.Welcome
+                }
+
+                Success(Unit)
+            }
+            is Failure -> Failure(closeResult.throwable)
         }
-
-        return Success(Unit)
     }
 
-    // TODO: close previous
     suspend fun createVault(selectedFile: File): Result<Unit> {
-        val vaultFile = if (selectedFile.name.endsWith(".$VAULT_FILE_EXTENSION")) {
-            selectedFile
-        } else {
-            // TODO: IO
-            File("${selectedFile.absolutePath}.$VAULT_FILE_EXTENSION")
+        return when (val closeResult = closeVaultIfOpened()) {
+            is Success -> {
+                val vaultFile = if (selectedFile.name.endsWith(".$VAULT_FILE_EXTENSION")) {
+                    selectedFile
+                } else {
+                    // TODO: IO
+                    File("${selectedFile.absolutePath}.$VAULT_FILE_EXTENSION")
+                }
+
+                // TODO: Ensure `vaultFile` does not exists
+
+                // TODO: Create file?
+                vaultFile.createNewFile()
+
+                initializeUserManager(vaultFile)
+
+                // TODO: save as recent
+
+                rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
+
+                Success(Unit)
+            }
+            is Failure -> Failure(closeResult.throwable)
         }
-
-        // TODO: Ensure `vaultFile` does not exists
-
-        // TODO: Create file?
-        vaultFile.createNewFile()
-
-        initializeUserManager(vaultFile)
-
-        // TODO: save as recent
-
-        rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
-
-        return Success(Unit)
     }
 
     private suspend fun initializeUserManager(vaultFile: File) {
@@ -94,12 +104,16 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
         userManager?.loggedInUserResult?.removeObserver(loggedInUserResultObserver)
     }
 
+    private suspend fun closeVaultIfOpened(): Result<Unit> {
+        return loggedInUserViewModel?.logout(UserManager.LogoutBehaviour.KeepDatabase) ?: Success(Unit)
+    }
+
     suspend fun closeVault(): Result<Unit> {
         // Some artificial delay to look flow more natural
         delay(500)
 
         val loggedInUserViewModel = loggedInUserViewModel ?: throw LoggedInUserViewModelUninitializedException
-        return loggedInUserViewModel.logout()
+        return loggedInUserViewModel.logout(UserManager.LogoutBehaviour.KeepDatabase)
     }
 
     sealed class RootScreenState {
