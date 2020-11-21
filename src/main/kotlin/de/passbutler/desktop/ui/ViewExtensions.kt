@@ -111,6 +111,7 @@ private fun dropShadow(): DropShadow {
     }
 }
 
+// TODO: The scaling does not center which results in misaligned icons
 fun SVGPath.scaleToSize(width: Double, height: Double) {
     val originalWidth = prefWidth(-1.0)
     val originalHeight = prefHeight(originalWidth)
