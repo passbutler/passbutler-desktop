@@ -40,14 +40,17 @@ dependencies {
     implementation("org.tinylog:tinylog-api-kotlin:$tinylogVersion")
     implementation("org.tinylog:tinylog-impl:$tinylogVersion")
 
+    // JSON library
+    implementation("org.json:json:20200518")
+
+    // SQLDelight
+    implementation("com.squareup.sqldelight:sqlite-driver:1.4.4")
+
     // TornadoFX
     implementation("no.tornado:tornadofx:1.7.20")
 
     // TornadoFX depends on old version - explicitly use version matching the Kotlin version
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-
-    // SQLDelight
-    implementation("com.squareup.sqldelight:sqlite-driver:1.4.4")
 
     // JFoenix
     implementation("com.jfoenix:jfoenix:9.0.10")

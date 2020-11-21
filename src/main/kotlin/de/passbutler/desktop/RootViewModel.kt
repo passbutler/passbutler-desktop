@@ -8,6 +8,7 @@ import de.passbutler.common.base.MutableBindable
 import de.passbutler.common.base.Result
 import de.passbutler.common.base.Success
 import de.passbutler.desktop.base.CoroutineScopedViewModel
+import de.passbutler.desktop.base.PathProvider
 import de.passbutler.desktop.base.ViewLifecycledViewModel
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
 import kotlinx.coroutines.Dispatchers
@@ -31,14 +32,48 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
     }
 
     suspend fun restoreRecentVault() {
-        // TODO: Do not hardcode
-        val recentVaultFilePath = "/home/bastian/Desktop/PassButlerDatabase.sqlite"
+        // TODO: IO Exceptions
+        val configurationFile = PathProvider.obtainFile { configurationFile }
 
-        val recentVaultFile = withContext(Dispatchers.IO) {
-            File(recentVaultFilePath)
+        if (configurationFile.exists()) {
+            val configurationFileContent = configurationFile.readText()
+            val configuration = PassButlerConfiguration.Deserializer.deserializeOrNull(configurationFileContent)
+
+            val mostRecentVaultFile = configuration?.recentVaultFiles?.lastOrNull()
+
+            val recentVaultFile = mostRecentVaultFile?.let {
+                withContext(Dispatchers.IO) { File(it) }.takeIf { it.exists() }
+            }
+
+            recentVaultFile?.let {
+                openVault(it)
+            }
+        } else {
+            rootScreenState.value = RootScreenState.LoggedOut.Welcome
+        }
+    }
+
+    private suspend fun appendRecentVault(vaultFile: File) {
+        val configurationFile = PathProvider.obtainFile { configurationFile }
+
+        val configuration = if (configurationFile.exists()) {
+            val configurationFileContent = configurationFile.readText()
+            PassButlerConfiguration.Deserializer.deserializeOrNull(configurationFileContent)
+        } else {
+            withContext(Dispatchers.IO) {
+                configurationFile.createNewFile()
+            }
+
+            null
         }
 
-        openVault(recentVaultFile)
+        val updatedRecentVaultFiles = (configuration?.recentVaultFiles ?: emptyList()) + vaultFile.absolutePath
+
+        val updatedConfiguration = configuration?.copy(
+            recentVaultFiles = updatedRecentVaultFiles
+        ) ?: PassButlerConfiguration(updatedRecentVaultFiles)
+
+        configurationFile.writeText(updatedConfiguration.serialize().toString())
     }
 
     suspend fun openVault(selectedFile: File): Result<Unit> {
@@ -51,7 +86,8 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
 
                     // TODO: check if successful
 
-                    // TODO: save as recent
+                    // TODO: save as recent only if successful
+                    appendRecentVault(selectedFile)
                 } else {
                     rootScreenState.value = RootScreenState.LoggedOut.Welcome
                 }
@@ -79,7 +115,8 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
 
                 initializeUserManager(vaultFile)
 
-                // TODO: save as recent
+                // TODO: save as recent only if successful
+                appendRecentVault(vaultFile)
 
                 rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
 
