@@ -85,6 +85,10 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
         }
     }
 
+    private suspend fun closeVaultIfOpened(): Result<Unit> {
+        return loggedInUserViewModel?.logout(UserManager.LogoutBehaviour.KeepDatabase) ?: Success(Unit)
+    }
+
     private suspend fun initializeUserManager(vaultFile: File) {
         unregisterLoggedInUserResultObserver()
         userViewModelProvidingViewModel.initializeUserManager(vaultFile)
@@ -104,10 +108,6 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
 
     private fun unregisterLoggedInUserResultObserver() {
         userManager?.loggedInUserResult?.removeObserver(loggedInUserResultObserver)
-    }
-
-    private suspend fun closeVaultIfOpened(): Result<Unit> {
-        return loggedInUserViewModel?.logout(UserManager.LogoutBehaviour.KeepDatabase) ?: Success(Unit)
     }
 
     suspend fun closeVault(): Result<Unit> {
