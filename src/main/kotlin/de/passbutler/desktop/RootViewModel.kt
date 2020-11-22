@@ -12,7 +12,6 @@ import de.passbutler.desktop.base.PathProvider
 import de.passbutler.desktop.base.ViewLifecycledViewModel
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import tornadofx.Component
 import tornadofx.FX
@@ -146,9 +145,6 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
     }
 
     suspend fun closeVault(): Result<Unit> {
-        // Some artificial delay to look flow more natural
-        delay(500)
-
         val loggedInUserViewModel = loggedInUserViewModel ?: throw LoggedInUserViewModelUninitializedException
         return loggedInUserViewModel.logout(UserManager.LogoutBehaviour.KeepDatabase)
     }
