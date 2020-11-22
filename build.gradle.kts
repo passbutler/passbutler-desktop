@@ -17,7 +17,7 @@ buildscript {
 version = "1.0.0"
 group = "de.passbutler.desktop"
 
-// TODO: Use proper configuration
+// TODO: Use proper build tooling to set correct value
 val buildType = "debug"
 
 repositories {
