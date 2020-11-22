@@ -21,7 +21,7 @@ import java.util.*
 
 class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotlinClass) {
 
-    override val configBasePath: Path = Paths.get(PathProvider.configurationDirectory)
+    override val configBasePath: Path = Paths.get(PathProvider.obtainDirectoryBlocking { configurationDirectory }.absolutePath)
 
     override fun start(stage: Stage) {
         stage.minWidth = 800.px.value
@@ -41,7 +41,7 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
     }
 
     private fun createLoggerConfiguration(): Map<String, String> {
-        val logFilePath = PathProvider.logFile
+        val logFilePath = PathProvider.obtainFileBlocking { logFile }.absolutePath
         val logFormat = LoggingConstants.LOG_FORMAT_FILE
 
         return mapOf(

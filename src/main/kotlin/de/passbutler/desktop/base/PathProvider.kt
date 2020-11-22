@@ -1,17 +1,17 @@
 package de.passbutler.desktop.base
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.IOException
 
 interface DirectoryPathProviding {
     val homeDirectory: String
     val configurationDirectory: String
-    val logDirectory: String
 }
 
 interface FilePathProviding {
-    val configurationFile: String
     val logFile: String
 }
 
@@ -24,27 +24,53 @@ object PathProvider : DirectoryPathProviding, FilePathProviding {
     override val configurationDirectory: String
         get() = "$homeDirectory/.config/PassButler"
 
-    override val configurationFile: String
-        get() = "$configurationDirectory/configuration.json"
-
-    override val logDirectory: String
-        get() = configurationDirectory
-
     override val logFile: String
-        get() = "$logDirectory/debug.log"
+        get() = "$configurationDirectory/debug.log"
 
+    @Throws(IOException::class)
     suspend fun obtainDirectory(directoryPathProviding: DirectoryPathProviding.() -> String): File {
         return withContext(Dispatchers.IO) {
             val directoryPathProvidingString = directoryPathProviding.invoke(this@PathProvider)
-            File(directoryPathProvidingString)
+            val directoryFile = File(directoryPathProvidingString)
+
+            // Ensure the path exists
+            directoryFile.mkdirs()
+
+            directoryFile
         }
     }
 
-    // TODO: Ensure, the path exists?
+    @Throws(IOException::class)
+    fun obtainDirectoryBlocking(directoryPathProviding: DirectoryPathProviding.() -> String): File {
+        return runBlocking {
+            obtainDirectory(directoryPathProviding)
+        }
+    }
+
+    @Throws(IOException::class)
     suspend fun obtainFile(filePathProviding: FilePathProviding.() -> String): File {
         return withContext(Dispatchers.IO) {
             val filePathProvidingString = filePathProviding.invoke(this@PathProvider)
-            File(filePathProvidingString)
+            val file = File(filePathProvidingString)
+
+            // Ensure the path exists
+            file.parentFile.mkdirs()
+
+            // Ensure the file exists
+            if (!file.exists()) {
+                // Because the blocking call is dispatched to IO, there should be no problem
+                @Suppress("BlockingMethodInNonBlockingContext")
+                file.createNewFile()
+            }
+
+            file
+        }
+    }
+
+    @Throws(IOException::class)
+    fun obtainFileBlocking(filePathProviding: FilePathProviding.() -> String): File {
+        return runBlocking {
+            obtainFile(filePathProviding)
         }
     }
 }
