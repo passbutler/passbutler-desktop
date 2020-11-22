@@ -8,14 +8,14 @@ import de.passbutler.common.base.MutableBindable
 import de.passbutler.common.base.Result
 import de.passbutler.common.base.Success
 import de.passbutler.desktop.base.CoroutineScopedViewModel
-import de.passbutler.desktop.base.PathProvider
 import de.passbutler.desktop.base.ViewLifecycledViewModel
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import tornadofx.Component
 import tornadofx.FX
 import java.io.File
+import javax.json.Json
+import javax.json.JsonString
+import javax.json.JsonValue
 
 class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserViewModelUsingViewModel {
 
@@ -31,22 +31,11 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
     }
 
     suspend fun restoreRecentVault() {
-        // TODO: IO Exceptions
-        val configurationFile = PathProvider.obtainFile { configurationFile }
-
-        val recentVaultFile = if (configurationFile.exists()) {
-            val configurationFileContent = configurationFile.readText()
-            val configuration = PassButlerConfiguration.Deserializer.deserializeOrNull(configurationFileContent)
-
-            val mostRecentVaultFile = configuration?.recentVaultFiles?.lastOrNull()
-
-            val recentVaultFile = mostRecentVaultFile?.let {
-                withContext(Dispatchers.IO) { File(it) }.takeIf { it.exists() }
-            }
-
-            recentVaultFile
-        } else {
-            null
+        val recentVaultFile = with(app.config) {
+            jsonArray(APPLICATION_CONFIGURATION_RECENT_VAULTS)?.getValuesAs(JsonString::getString)
+                ?.lastOrNull()
+                ?.let { File(it) }
+                ?.takeIf { it.exists() }
         }
 
         if (recentVaultFile != null) {
@@ -57,26 +46,15 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
     }
 
     private suspend fun appendRecentVault(vaultFile: File) {
-        val configurationFile = PathProvider.obtainFile { configurationFile }
+        with(app.config) {
+            val oldRecentVaults = jsonArray(APPLICATION_CONFIGURATION_RECENT_VAULTS) ?: JsonValue.EMPTY_JSON_ARRAY
+            val newRecentVaults = Json.createArrayBuilder(oldRecentVaults).apply {
+                add(vaultFile.absolutePath)
+            }.build()
 
-        val configuration = if (configurationFile.exists()) {
-            val configurationFileContent = configurationFile.readText()
-            PassButlerConfiguration.Deserializer.deserializeOrNull(configurationFileContent)
-        } else {
-            withContext(Dispatchers.IO) {
-                configurationFile.createNewFile()
-            }
-
-            null
+            set(APPLICATION_CONFIGURATION_RECENT_VAULTS to newRecentVaults)
+            save()
         }
-
-        val updatedRecentVaultFiles = (configuration?.recentVaultFiles ?: emptyList()) + vaultFile.absolutePath
-
-        val updatedConfiguration = configuration?.copy(
-            recentVaultFiles = updatedRecentVaultFiles
-        ) ?: PassButlerConfiguration(updatedRecentVaultFiles)
-
-        configurationFile.writeText(updatedConfiguration.serialize().toString())
     }
 
     suspend fun openVault(selectedFile: File): Result<Unit> {
@@ -175,6 +153,10 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
                 }
             }
         }
+    }
+
+    companion object {
+        private const val APPLICATION_CONFIGURATION_RECENT_VAULTS = "recentVaults"
     }
 }
 

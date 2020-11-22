@@ -10,10 +10,14 @@ import org.tinylog.kotlin.Logger
 import tornadofx.App
 import tornadofx.launch
 import tornadofx.px
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.time.Instant
 import java.util.*
 
 class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotlinClass) {
+
+    override val configBasePath: Path = Paths.get(PathProvider.configurationDirectory)
 
     override fun start(stage: Stage) {
         stage.minWidth = 800.px.value
