@@ -13,9 +13,6 @@ import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
 import tornadofx.Component
 import tornadofx.FX
 import java.io.File
-import javax.json.Json
-import javax.json.JsonString
-import javax.json.JsonValue
 
 class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserViewModelUsingViewModel {
 
@@ -31,29 +28,14 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
     }
 
     suspend fun restoreRecentVault() {
-        val recentVaultFile = with(app.config) {
-            jsonArray(APPLICATION_CONFIGURATION_RECENT_VAULTS)?.getValuesAs(JsonString::getString)
-                ?.lastOrNull()
-                ?.let { File(it) }
-                ?.takeIf { it.exists() }
-        }
+        val recentVaultFile = applicationConfiguration.readValue {
+            string(PassButlerConfiguration.RECENT_VAULT)
+        }?.let { File(it) }?.takeIf { it.exists() }
 
         if (recentVaultFile != null) {
             openVault(recentVaultFile)
         } else {
             rootScreenState.value = RootScreenState.LoggedOut.Welcome
-        }
-    }
-
-    private suspend fun appendRecentVault(vaultFile: File) {
-        with(app.config) {
-            val oldRecentVaults = jsonArray(APPLICATION_CONFIGURATION_RECENT_VAULTS) ?: JsonValue.EMPTY_JSON_ARRAY
-            val newRecentVaults = Json.createArrayBuilder(oldRecentVaults).apply {
-                add(vaultFile.absolutePath)
-            }.build()
-
-            set(APPLICATION_CONFIGURATION_RECENT_VAULTS to newRecentVaults)
-            save()
         }
     }
 
@@ -67,7 +49,7 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
                 // TODO: check if successful
 
                 // TODO: save as recent only if successful
-                appendRecentVault(selectedFile)
+                persistRecentVault(selectedFile)
 
                 Success(Unit)
             }
@@ -93,7 +75,7 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
                 initializeUserManager(vaultFile)
 
                 // TODO: save as recent only if successful
-                appendRecentVault(vaultFile)
+                persistRecentVault(vaultFile)
 
                 rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
 
@@ -107,6 +89,12 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
         unregisterLoggedInUserResultObserver()
         userViewModelProvidingViewModel.initializeUserManager(vaultFile)
         registerLoggedInUserResultObserver()
+    }
+
+    private suspend fun persistRecentVault(vaultFile: File) {
+        applicationConfiguration.writeValue {
+            set(PassButlerConfiguration.RECENT_VAULT to vaultFile.absolutePath)
+        }
     }
 
     private fun registerLoggedInUserResultObserver() {
@@ -153,10 +141,6 @@ class RootViewModel : CoroutineScopedViewModel(), ViewLifecycledViewModel, UserV
                 }
             }
         }
-    }
-
-    companion object {
-        private const val APPLICATION_CONFIGURATION_RECENT_VAULTS = "recentVaults"
     }
 }
 

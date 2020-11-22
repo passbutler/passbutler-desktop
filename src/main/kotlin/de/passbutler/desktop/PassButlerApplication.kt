@@ -5,9 +5,13 @@ import de.passbutler.common.base.formattedDateTime
 import de.passbutler.desktop.base.PathProvider
 import de.passbutler.desktop.ui.ThemeManager
 import javafx.stage.Stage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.tinylog.configuration.Configuration
 import org.tinylog.kotlin.Logger
 import tornadofx.App
+import tornadofx.Component
+import tornadofx.ConfigProperties
 import tornadofx.launch
 import tornadofx.px
 import java.nio.file.Path
@@ -80,6 +84,32 @@ private class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
         defaultUncaughtExceptionHandler?.uncaughtException(t, e)
     }
 }
+
+class PassButlerConfiguration(private val application: PassButlerApplication) {
+    suspend fun <T> readValue(valueGetter: ConfigProperties.() -> T?): T? {
+        return withContext(Dispatchers.IO) {
+            with(application.config) {
+                valueGetter(this)
+            }
+        }
+    }
+
+    suspend fun writeValue(valueSetter: ConfigProperties.() -> Unit) {
+        return withContext(Dispatchers.IO) {
+            with(application.config) {
+                valueSetter()
+                save()
+            }
+        }
+    }
+
+    companion object {
+        const val RECENT_VAULT = "recentVault"
+    }
+}
+
+val Component.applicationConfiguration: PassButlerConfiguration
+    get() = PassButlerConfiguration(app as PassButlerApplication)
 
 fun main(args: Array<String>) {
     launch<PassButlerApplication>(args)
