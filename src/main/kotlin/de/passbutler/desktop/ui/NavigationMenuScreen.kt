@@ -16,9 +16,7 @@ import tornadofx.left
 import tornadofx.onLeftClick
 import tornadofx.paddingLeft
 import tornadofx.pane
-import tornadofx.px
 import tornadofx.stackpane
-import tornadofx.svgpath
 import tornadofx.vbox
 import kotlin.reflect.KClass
 
@@ -54,7 +52,7 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
                 // Enforce dark theme to navigation view because it has dark background
                 addStylesheet(DarkTheme::class)
 
-                addClass(Theme.navigationView)
+                addClass(Theme.navigationViewStyle)
 
                 createNavigationItem(messages["drawer_menu_item_overview"], Drawables.ICON_HOME, OverviewScreen::class)
                 createNavigationItem(messages["drawer_menu_item_settings"], Drawables.ICON_SETTINGS, SettingsScreen::class)
@@ -73,11 +71,7 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
 
     private fun Node.createNavigationItem(title: String, icon: Drawable, clickedAction: () -> Unit) {
         hbox {
-            svgpath(icon.svgPath) {
-                addClass(Theme.imageTint)
-
-                scaleToSize(18.px.value, 18.px.value)
-            }
+            smallSVGIcon(icon.svgPath)
 
             label(title) {
                 paddingLeft = marginS.value

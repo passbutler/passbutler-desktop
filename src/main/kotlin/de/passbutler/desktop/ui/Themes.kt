@@ -150,18 +150,23 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         /**
-         * Image
+         * Icons
          */
 
-        imageTint {
-            fill = textColorPrimary
+        smallIconStyle {
+            backgroundColor = multi(textColorPrimary)
+
+            minWidth = 18.px
+            minHeight = 18.px
+            maxWidth = 18.px
+            maxHeight = 18.px
         }
 
         /**
          * Navigation drawer
          */
 
-        navigationView {
+        navigationViewStyle {
             spacing = marginS
             prefWidth = 200.px
             padding = box(marginM)
@@ -178,8 +183,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val textBody1Style by cssclass()
         val textBody2Style by cssclass()
 
-        val imageTint by cssclass()
-        val navigationView by cssclass()
+        val smallIconStyle by cssclass()
+        val navigationViewStyle by cssclass()
     }
 }
 

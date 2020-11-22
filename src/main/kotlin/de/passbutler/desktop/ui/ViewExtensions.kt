@@ -13,7 +13,6 @@ import javafx.scene.effect.DropShadow
 import javafx.scene.effect.Effect
 import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
-import javafx.scene.shape.SVGPath
 import tornadofx.addClass
 import tornadofx.attachTo
 import tornadofx.css
@@ -109,13 +108,4 @@ private fun dropShadow(): DropShadow {
         // No theming here because not styleable
         color = Color.web(greyDark.css, 0.5)
     }
-}
-
-// TODO: The scaling does not center which results in misaligned icons
-fun SVGPath.scaleToSize(width: Double, height: Double) {
-    val originalWidth = prefWidth(-1.0)
-    val originalHeight = prefHeight(originalWidth)
-
-    scaleX = width / originalWidth
-    scaleY = height / originalHeight
 }
