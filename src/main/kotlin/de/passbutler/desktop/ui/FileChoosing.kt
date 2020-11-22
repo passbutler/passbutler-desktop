@@ -2,7 +2,6 @@ package de.passbutler.desktop.ui
 
 import de.passbutler.desktop.base.PathProvider
 import javafx.stage.FileChooser
-import kotlinx.coroutines.runBlocking
 import tornadofx.FX
 import tornadofx.FileChooserMode
 import tornadofx.chooseFile

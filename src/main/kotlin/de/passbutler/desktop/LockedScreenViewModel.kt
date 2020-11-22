@@ -8,7 +8,6 @@ import de.passbutler.common.base.resultOrThrowException
 import de.passbutler.common.database.models.UserType
 import javafx.beans.property.SimpleStringProperty
 import kotlinx.coroutines.launch
-import tornadofx.FX
 import tornadofx.ViewModel
 
 class LockedScreenViewModel : ViewModel(), UserViewModelUsingViewModel {
