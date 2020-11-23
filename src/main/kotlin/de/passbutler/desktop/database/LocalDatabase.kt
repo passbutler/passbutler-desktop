@@ -15,10 +15,6 @@ suspend fun createLocalRepository(databasePath: File, mode: DatabaseInitializati
             require(databasePath.exists()) { "The given database file does not exists!" }
         }
 
-        if (mode is DatabaseInitializationMode.Create) {
-            require(databasePath.canWrite()) { "The given database file is not writable!" }
-        }
-
         val databasePathString = databasePath.absolutePath
         val driver = JdbcSqliteDriver("jdbc:sqlite:$databasePathString")
 
