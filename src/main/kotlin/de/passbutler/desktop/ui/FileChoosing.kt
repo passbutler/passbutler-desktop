@@ -36,13 +36,14 @@ private fun createFileChooserExtensionFilter(): Array<FileChooser.ExtensionFilte
 }
 
 suspend fun File.ensureFileExtension(extension: String): File {
+    val initialFile = this
     val extensionSuffix = ".$extension"
 
-    return if (name.endsWith(extensionSuffix)) {
-        this
+    return if (initialFile.name.endsWith(extensionSuffix)) {
+        initialFile
     } else {
         withContext(Dispatchers.IO) {
-            File("$absolutePath.$extension")
+            File("${initialFile.path}.$extension")
         }
     }
 }

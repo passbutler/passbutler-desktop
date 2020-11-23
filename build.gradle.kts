@@ -54,6 +54,15 @@ dependencies {
 
     // JFoenix
     implementation("com.jfoenix:jfoenix:9.0.10")
+
+    // JUnit 5
+    val junitVersion = "5.7.0"
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+
+    // Mockk.io
+    testImplementation("io.mockk:mockk:1.10.2")
 }
 
 javafx {
@@ -63,6 +72,10 @@ javafx {
 
 sourceSets.all {
     java.srcDir("./build/generated/source/")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 tasks {
