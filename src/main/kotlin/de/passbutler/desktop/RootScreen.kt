@@ -98,7 +98,6 @@ class RootScreen : BaseView(), RequestSending {
         super.onUndock()
 
         viewModel.rootScreenState.removeObserver(rootScreenStateObserver)
-        viewModel.onCleared()
 
         Logger.debug("RootScreen was undocked")
     }
@@ -130,8 +129,14 @@ class RootScreen : BaseView(), RequestSending {
     private fun createVaultClicked() {
         showSaveVaultFileChooser(messages["menu_create_vault"]) { choosenFile ->
             launchRequestSending(
-                handleFailure = { showError(messages["general_create_vault_failed_title"]) },
-                isCancellable = false
+                handleFailure = {
+                    val errorStringResourceId = when (it) {
+                        is VaultFileAlreadyExistsException -> "general_create_vault_failed_already_existing_title"
+                        else -> "general_create_vault_failed_title"
+                    }
+
+                    showError(messages[errorStringResourceId])
+                }
             ) {
                 viewModel.createVault(choosenFile)
             }

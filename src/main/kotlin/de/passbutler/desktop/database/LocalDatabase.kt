@@ -7,6 +7,8 @@ import de.passbutler.common.database.PassButlerDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+// Throws `SQLiteException` if file is can't be read/wrote
+@Throws(Exception::class)
 suspend fun createLocalRepository(databasePath: String): LocalRepository {
     return withContext(Dispatchers.IO) {
         val driver = JdbcSqliteDriver("jdbc:sqlite:$databasePath")

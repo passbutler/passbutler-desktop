@@ -69,7 +69,14 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
     private fun createVaultClicked() {
         showSaveVaultFileChooser(messages["welcome_create_vault_headline"]) { choosenFile ->
             launchRequestSending(
-                handleFailure = { showError(messages["general_create_vault_failed_title"]) },
+                handleFailure = {
+                    val errorStringResourceId = when (it) {
+                        is VaultFileAlreadyExistsException -> "general_create_vault_failed_already_existing_title"
+                        else -> "general_create_vault_failed_title"
+                    }
+
+                    showError(messages[errorStringResourceId])
+                },
                 isCancellable = false
             ) {
                 viewModel.createVault(choosenFile)

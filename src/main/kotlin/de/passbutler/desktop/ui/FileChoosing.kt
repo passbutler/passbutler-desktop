@@ -2,11 +2,15 @@ package de.passbutler.desktop.ui
 
 import de.passbutler.desktop.base.PathProvider
 import javafx.stage.FileChooser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import tornadofx.FX
 import tornadofx.FileChooserMode
 import tornadofx.chooseFile
 import tornadofx.get
 import java.io.File
+
+const val VAULT_FILE_EXTENSION = "sqlite"
 
 fun showOpenVaultFileChooser(title: String, chosenFileBlock: (File) -> Unit) {
     val homeDirectory = PathProvider.obtainDirectoryBlocking { homeDirectory }
@@ -31,4 +35,14 @@ private fun createFileChooserExtensionFilter(): Array<FileChooser.ExtensionFilte
     return arrayOf(extensionFilter)
 }
 
-const val VAULT_FILE_EXTENSION = "sqlite"
+suspend fun File.ensureFileExtension(extension: String): File {
+    val extensionSuffix = ".$extension"
+
+    return if (name.endsWith(extensionSuffix)) {
+        this
+    } else {
+        withContext(Dispatchers.IO) {
+            File("$absolutePath.$extension")
+        }
+    }
+}
