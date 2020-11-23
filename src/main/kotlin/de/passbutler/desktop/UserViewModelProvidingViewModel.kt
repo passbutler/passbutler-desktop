@@ -26,9 +26,7 @@ class UserViewModelProvidingViewModel : ViewModel() {
 
     suspend fun initializeUserManager(vaultFile: File): Result<Unit> {
         return try {
-            val databasePath = vaultFile.absolutePath
-            val localRepository = createLocalRepository(databasePath)
-
+            val localRepository = createLocalRepository(vaultFile)
             userManager = UserManager(localRepository, BuildInformationProvider)
 
             Success(Unit)
