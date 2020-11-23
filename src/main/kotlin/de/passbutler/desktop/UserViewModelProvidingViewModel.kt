@@ -7,6 +7,7 @@ import de.passbutler.common.base.Result
 import de.passbutler.common.base.Success
 import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.crypto.BiometricsProvider
+import de.passbutler.desktop.database.DatabaseInitializationMode
 import de.passbutler.desktop.database.createLocalRepository
 import org.tinylog.kotlin.Logger
 import tornadofx.Component
@@ -24,9 +25,9 @@ class UserViewModelProvidingViewModel : ViewModel() {
 
     private val biometricsProvider = BiometricsProvider()
 
-    suspend fun initializeUserManager(vaultFile: File): Result<Unit> {
+    suspend fun initializeUserManager(vaultFile: File, mode: DatabaseInitializationMode): Result<Unit> {
         return try {
-            val localRepository = createLocalRepository(vaultFile)
+            val localRepository = createLocalRepository(vaultFile, mode)
             userManager = UserManager(localRepository, BuildInformationProvider)
 
             Success(Unit)

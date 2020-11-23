@@ -9,6 +9,7 @@ import de.passbutler.common.base.Result
 import de.passbutler.common.base.Success
 import de.passbutler.common.base.resultOrThrowException
 import de.passbutler.common.database.models.UserType
+import de.passbutler.desktop.database.DatabaseInitializationMode
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
 import de.passbutler.desktop.ui.ensureFileExtension
 import kotlinx.coroutines.launch
@@ -40,7 +41,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
         return when (val closeResult = closeVault()) {
             is Success -> {
                 try {
-                    userViewModelProvidingViewModel.initializeUserManager(selectedFile).resultOrThrowException()
+                    userViewModelProvidingViewModel.initializeUserManager(selectedFile, DatabaseInitializationMode.Open).resultOrThrowException()
                     userViewModelProvidingViewModel.restoreLoggedInUser().resultOrThrowException()
 
                     persistRecentVaultFile(selectedFile)
@@ -63,7 +64,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
                 if (vaultFile.exists()) {
                     Failure(VaultFileAlreadyExistsException)
                 } else {
-                    val initializeResult = userViewModelProvidingViewModel.initializeUserManager(selectedFile)
+                    val initializeResult = userViewModelProvidingViewModel.initializeUserManager(selectedFile, DatabaseInitializationMode.Create)
 
                     when (initializeResult) {
                         is Success -> {
