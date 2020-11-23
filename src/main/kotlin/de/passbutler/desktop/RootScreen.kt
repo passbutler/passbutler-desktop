@@ -146,8 +146,7 @@ class RootScreen : BaseView(), RequestSending {
     private fun openVaultClicked() {
         showOpenVaultFileChooser(messages["menu_open_vault"]) { choosenFile ->
             launchRequestSending(
-                handleFailure = { showError(messages["general_open_vault_failed_title"]) },
-                isCancellable = false
+                handleFailure = { showError(messages["general_open_vault_failed_title"]) }
             ) {
                 viewModel.openVault(choosenFile)
             }
@@ -156,8 +155,7 @@ class RootScreen : BaseView(), RequestSending {
 
     private fun closeVaultClicked() {
         launchRequestSending(
-            handleFailure = { showError(messages["root_logout_failed_title"]) },
-            isCancellable = false
+            handleFailure = { showError(messages["root_logout_failed_title"]) }
         ) {
             viewModel.closeVault()
         }
