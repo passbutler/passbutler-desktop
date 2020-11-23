@@ -1,13 +1,17 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.UserManager
+import de.passbutler.common.UserViewModel
+import de.passbutler.common.base.Bindable
 import de.passbutler.common.base.Failure
 import de.passbutler.common.base.MutableBindable
 import de.passbutler.common.base.Result
 import de.passbutler.common.base.Success
 import de.passbutler.common.base.resultOrThrowException
+import de.passbutler.common.database.models.UserType
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
 import de.passbutler.desktop.ui.ensureFileExtension
+import kotlinx.coroutines.launch
 import tornadofx.Component
 import tornadofx.FX
 import tornadofx.ViewModel
@@ -15,7 +19,10 @@ import java.io.File
 
 class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
-    val rootScreenState = MutableBindable<RootScreenState?>(null)
+    val rootScreenState: Bindable<RootScreenState?>
+        get() = _rootScreenState
+
+    private val _rootScreenState = MutableBindable<RootScreenState?>(null)
 
     override val userViewModelProvidingViewModel by injectUserViewModelProvidingViewModel()
 
@@ -25,7 +32,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
         if (recentVaultFile != null) {
             openVault(recentVaultFile)
         } else {
-            rootScreenState.value = RootScreenState.LoggedOut.Welcome
+            _rootScreenState.value = RootScreenState.LoggedOut.Welcome
         }
     }
 
@@ -37,7 +44,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
                     userViewModelProvidingViewModel.restoreLoggedInUser().resultOrThrowException()
 
                     persistRecentVaultFile(selectedFile)
-                    rootScreenState.value = RootScreenState.LoggedIn.Locked
+                    _rootScreenState.value = RootScreenState.LoggedIn.Locked
 
                     Success(Unit)
                 } catch (exception: Exception) {
@@ -61,7 +68,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
                     when (initializeResult) {
                         is Success -> {
                             persistRecentVaultFile(vaultFile)
-                            rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
+                            _rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
 
                             Success(Unit)
                         }
@@ -73,12 +80,51 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
         }
     }
 
+    suspend fun loginVault(serverUrlString: String?, username: String, masterPassword: String): Result<Unit> {
+        val loginResult = userViewModelProvidingViewModel.loginUser(serverUrlString, username, masterPassword)
+
+        return when (loginResult) {
+            is Success -> {
+                _rootScreenState.value = RootScreenState.LoggedIn.Unlocked
+                Success(Unit)
+            }
+            is Failure -> Failure(loginResult.throwable)
+        }
+    }
+
+    suspend fun unlockVaultWithPassword(masterPassword: String): Result<Unit> {
+        val loggedInUserViewModel = loggedInUserViewModel ?: throw LoggedInUserViewModelUninitializedException
+
+        return try {
+            loggedInUserViewModel.decryptSensibleData(masterPassword).resultOrThrowException()
+
+            if (loggedInUserViewModel.userType == UserType.REMOTE) {
+                restoreWebservices(loggedInUserViewModel, masterPassword)
+            }
+
+            _rootScreenState.value = RootScreenState.LoggedIn.Unlocked
+
+            Success(Unit)
+        } catch (exception: Exception) {
+            Failure(exception)
+        }
+    }
+
+    private fun restoreWebservices(loggedInUserViewModel: UserViewModel, masterPassword: String) {
+        val userManager = userManager ?: throw UserManagerUninitializedException
+
+        // Restore webservices asynchronously to avoid slow network is blocking unlock progress
+        loggedInUserViewModel.launch {
+            userManager.restoreWebservices(masterPassword)
+        }
+    }
+
     suspend fun closeVault(): Result<Unit> {
         val logoutResult = userViewModelProvidingViewModel.logoutUser(UserManager.LogoutBehaviour.KeepDatabase)
 
         return when (logoutResult) {
             is Success -> {
-                rootScreenState.value = RootScreenState.LoggedOut.Welcome
+                _rootScreenState.value = RootScreenState.LoggedOut.Welcome
                 Success(Unit)
             }
             is Failure -> Failure(logoutResult.throwable)
