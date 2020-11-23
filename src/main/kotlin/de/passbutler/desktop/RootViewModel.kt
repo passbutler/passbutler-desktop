@@ -64,7 +64,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
                 if (vaultFile.exists()) {
                     Failure(VaultFileAlreadyExistsException)
                 } else {
-                    val initializeResult = userViewModelProvidingViewModel.initializeUserManager(selectedFile, DatabaseInitializationMode.Create)
+                    val initializeResult = userViewModelProvidingViewModel.initializeUserManager(vaultFile, DatabaseInitializationMode.Create)
 
                     when (initializeResult) {
                         is Success -> {
