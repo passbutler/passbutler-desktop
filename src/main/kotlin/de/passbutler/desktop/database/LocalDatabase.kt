@@ -11,6 +11,10 @@ import java.io.File
 @Throws(Exception::class)
 suspend fun createLocalRepository(databasePath: File, mode: DatabaseInitializationMode): LocalRepository {
     return withContext(Dispatchers.IO) {
+        if (mode is DatabaseInitializationMode.Create) {
+            require(!databasePath.exists()) { "The given database file already exists!" }
+        }
+
         if (mode is DatabaseInitializationMode.Open) {
             require(databasePath.exists()) { "The given database file does not exists!" }
         }
