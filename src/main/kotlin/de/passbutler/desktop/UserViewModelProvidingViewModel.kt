@@ -1,6 +1,7 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.UserManager
+import de.passbutler.common.UserManagerUninitializedException
 import de.passbutler.common.UserViewModel
 import de.passbutler.common.base.Failure
 import de.passbutler.common.base.Result
@@ -98,9 +99,6 @@ class UserViewModelProvidingViewModel : ViewModel() {
         }
     }
 }
-
-object UserManagerUninitializedException : IllegalStateException("The UserManager is null!")
-object LoggedInUserViewModelUninitializedException : IllegalStateException("The logged-in UserViewModel is null!")
 
 interface UserViewModelUsingViewModel {
     val userViewModelProvidingViewModel: UserViewModelProvidingViewModel

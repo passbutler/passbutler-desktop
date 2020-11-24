@@ -1,6 +1,8 @@
 package de.passbutler.desktop
 
+import de.passbutler.common.LoggedInUserViewModelUninitializedException
 import de.passbutler.common.UserManager
+import de.passbutler.common.UserManagerUninitializedException
 import de.passbutler.common.UserViewModel
 import de.passbutler.common.base.Bindable
 import de.passbutler.common.base.Failure
