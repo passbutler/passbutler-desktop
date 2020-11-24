@@ -123,7 +123,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     }
 
     suspend fun closeVault(): Result<Unit> {
-        val logoutResult = userViewModelProvidingViewModel.logoutUser(UserManager.LogoutBehaviour.KeepDatabase)
+        val logoutResult = userViewModelProvidingViewModel.logoutUser()
 
         return when (logoutResult) {
             is Success -> {
