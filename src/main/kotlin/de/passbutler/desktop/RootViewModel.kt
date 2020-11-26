@@ -102,7 +102,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
             loggedInUserViewModel.decryptSensibleData(masterPassword).resultOrThrowException()
 
             if (loggedInUserViewModel.userType == UserType.REMOTE) {
-                restoreWebservices(loggedInUserViewModel, masterPassword)
+                loggedInUserViewModel.restoreWebservices(masterPassword)
             }
 
             _rootScreenState.value = RootScreenState.LoggedIn.Unlocked
@@ -110,15 +110,6 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
             Success(Unit)
         } catch (exception: Exception) {
             Failure(exception)
-        }
-    }
-
-    private fun restoreWebservices(loggedInUserViewModel: UserViewModel, masterPassword: String) {
-        val userManager = userManager ?: throw UserManagerUninitializedException
-
-        // Restore webservices asynchronously to avoid slow network is blocking unlock progress
-        loggedInUserViewModel.launch {
-            userManager.restoreWebservices(masterPassword)
         }
     }
 
