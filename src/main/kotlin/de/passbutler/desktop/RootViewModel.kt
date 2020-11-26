@@ -1,7 +1,6 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.LoggedInUserViewModelUninitializedException
-import de.passbutler.common.UserManager
 import de.passbutler.common.UserManagerUninitializedException
 import de.passbutler.common.UserViewModel
 import de.passbutler.common.base.Bindable
@@ -51,6 +50,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
                     Success(Unit)
                 } catch (exception: Exception) {
+                    // TODO: Handle screen state if file could not be opened
                     Failure(exception)
                 }
             }
