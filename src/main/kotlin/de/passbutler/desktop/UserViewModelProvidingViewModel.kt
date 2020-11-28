@@ -82,19 +82,23 @@ class UserViewModelProvidingViewModel : ViewModel() {
     }
 
     suspend fun logoutUser(): Result<Unit> {
-        // TODO: On initial open vault call, it is tried to logout before the `UserManager` is initialized
-        val userManager = userManager ?: throw UserManagerUninitializedException
-        val logoutResult = userManager.logoutUser(UserManager.LogoutBehaviour.KeepDatabase)
+        val userManager = userManager
 
-        return when (logoutResult) {
-            is Success -> {
-                loggedInUserViewModel?.clearSensibleData()
-                loggedInUserViewModel?.cancelJobs()
-                loggedInUserViewModel = null
+        return if (userManager != null) {
+            val logoutResult = userManager.logoutUser(UserManager.LogoutBehaviour.KeepDatabase)
 
-                Success(Unit)
+            when (logoutResult) {
+                is Success -> {
+                    loggedInUserViewModel?.clearSensibleData()
+                    loggedInUserViewModel?.cancelJobs()
+                    loggedInUserViewModel = null
+
+                    Success(Unit)
+                }
+                is Failure -> Failure(logoutResult.throwable)
             }
-            is Failure -> Failure(logoutResult.throwable)
+        } else {
+            Failure(UserManagerUninitializedException)
         }
     }
 }

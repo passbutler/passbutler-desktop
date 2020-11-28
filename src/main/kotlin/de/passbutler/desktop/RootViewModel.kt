@@ -14,6 +14,7 @@ import de.passbutler.desktop.database.DatabaseInitializationMode
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
 import de.passbutler.desktop.ui.ensureFileExtension
 import kotlinx.coroutines.launch
+import org.tinylog.kotlin.Logger
 import tornadofx.Component
 import tornadofx.FX
 import tornadofx.ViewModel
@@ -31,9 +32,11 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     suspend fun restoreRecentVault() {
         val recentVaultFile = restoreRecentVaultFile()
 
-        if (recentVaultFile != null) {
+        val openResult = recentVaultFile?.let {
             openVault(recentVaultFile)
-        } else {
+        } ?: Failure(Exception("No recent file available to open!"))
+
+        if (openResult is Failure) {
             _rootScreenState.value = RootScreenState.LoggedOut.Welcome
         }
     }
@@ -50,7 +53,6 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
                     Success(Unit)
                 } catch (exception: Exception) {
-                    // TODO: Handle screen state if file could not be opened
                     Failure(exception)
                 }
             }
