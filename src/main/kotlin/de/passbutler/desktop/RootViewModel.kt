@@ -1,6 +1,7 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.LoggedInUserViewModelUninitializedException
+import de.passbutler.common.UserManagerUninitializedException
 import de.passbutler.common.base.Bindable
 import de.passbutler.common.base.Failure
 import de.passbutler.common.base.MutableBindable
@@ -50,7 +51,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     suspend fun openVault(selectedFile: File): Result<Unit> {
         Logger.debug("Open vault file '$selectedFile'")
 
-        return when (val closeResult = closeVault()) {
+        return when (val closeResult = closeVaultIfOpen()) {
             is Success -> {
                 try {
                     userViewModelProvidingViewModel.initializeUserManager(selectedFile, DatabaseInitializationMode.Open).resultOrThrowException()
@@ -71,7 +72,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     suspend fun createVault(selectedFile: File): Result<Unit> {
         Logger.debug("Create vault file '$selectedFile'")
 
-        return when (val closeResult = closeVault()) {
+        return when (val closeResult = closeVaultIfOpen()) {
             is Success -> {
                 val vaultFile = selectedFile.ensureFileExtension(VAULT_FILE_EXTENSION)
 
@@ -130,7 +131,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     }
 
     suspend fun closeVault(): Result<Unit> {
-        Logger.debug("Close current vault if opened")
+        Logger.debug("Close current vault")
 
         val logoutResult = userViewModelProvidingViewModel.logoutUser()
 
@@ -152,6 +153,24 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     private suspend fun persistRecentVaultFile(vaultFile: File) {
         applicationConfiguration.writeValue {
             set(PassButlerConfiguration.RECENT_VAULT to vaultFile.absolutePath)
+        }
+    }
+
+    private suspend fun closeVaultIfOpen(): Result<Unit> {
+        Logger.debug("Close current vault if opened")
+
+        val logoutResult = userViewModelProvidingViewModel.logoutUser()
+
+        return when (logoutResult) {
+            is Success -> Success(Unit)
+            is Failure -> {
+                // Ignore missing `UserManager` if it is tried to close vault initially when open/create vault
+                if (logoutResult.throwable is UserManagerUninitializedException) {
+                    Success(Unit)
+                } else {
+                    Failure(logoutResult.throwable)
+                }
+            }
         }
     }
 
