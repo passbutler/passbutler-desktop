@@ -39,8 +39,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
                     Logger.debug("The recent vault file was opened")
                 }
                 is Failure -> {
-                    val exceptionMessage = openResult.throwable.message
-                    Logger.debug("The recent vault file could not be opened: $exceptionMessage")
+                    Logger.debug(openResult.throwable, "The recent vault file could not be opened")
                 }
             }
         } else {
