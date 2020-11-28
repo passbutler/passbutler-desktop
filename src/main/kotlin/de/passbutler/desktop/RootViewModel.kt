@@ -32,14 +32,16 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
         val openResult = recentVaultFile?.let {
             openVault(recentVaultFile)
-        } ?: Failure(Exception("No recent file available to open!"))
+        } ?: Failure(NoRecentVaultFileAvailableException)
 
         when (openResult) {
             is Success -> {
                 Logger.debug("The recent vault file was opened")
             }
             is Failure -> {
-                Logger.debug(openResult.throwable, "The recent vault file could not be opened")
+                val exceptionMessage = openResult.throwable.message
+                Logger.debug("The recent vault file could not be opened: $exceptionMessage")
+
                 _rootScreenState.value = RootScreenState.LoggedOut.Welcome
             }
         }
@@ -166,6 +168,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     }
 }
 
+object NoRecentVaultFileAvailableException : IllegalArgumentException("No recent file available to open!")
 object VaultFileAlreadyExistsException : IllegalArgumentException("The selected file to create vault already exists!")
 
 /**
