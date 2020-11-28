@@ -13,7 +13,6 @@ import de.passbutler.desktop.ui.jfxSnackbar
 import de.passbutler.desktop.ui.jfxSpinner
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
 import de.passbutler.desktop.ui.showSaveVaultFileChooser
-import de.passbutler.desktop.ui.showScreenUnanimated
 import javafx.application.Platform
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -180,7 +179,7 @@ class RootScreen : BaseView(), RequestSending {
     private fun <T : UIComponent> showScreenIfNotShown(screenClass: KClass<T>) {
         if (!isScreenShown(screenClass)) {
             // Show unanimated because when showing screens non-user-triggered very quickly, the transition animation gets out-of-sync
-            showScreenUnanimated(screenClass, userTriggered = false)
+            showScreen(screenClass, userTriggered = false)
         }
     }
 }
