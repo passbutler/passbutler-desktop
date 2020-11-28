@@ -29,22 +29,23 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
     suspend fun restoreRecentVault() {
         val recentVaultFile = restoreRecentVaultFile()
-        Logger.debug("Restore recent vault file recentVaultFile='$recentVaultFile'")
+        Logger.debug("Restore recent vault file '$recentVaultFile'")
 
-        val openResult = recentVaultFile?.let {
-            openVault(recentVaultFile)
-        } ?: Failure(NoRecentVaultFileAvailableException)
+        if (recentVaultFile != null) {
+            val openResult = openVault(recentVaultFile)
 
-        when (openResult) {
-            is Success -> {
-                Logger.debug("The recent vault file was opened")
+            when (openResult) {
+                is Success -> {
+                    Logger.debug("The recent vault file was opened")
+                }
+                is Failure -> {
+                    val exceptionMessage = openResult.throwable.message
+                    Logger.debug("The recent vault file could not be opened: $exceptionMessage")
+                }
             }
-            is Failure -> {
-                val exceptionMessage = openResult.throwable.message
-                Logger.debug("The recent vault file could not be opened: $exceptionMessage")
-
-                _rootScreenState.value = RootScreenState.LoggedOut.Welcome
-            }
+        } else {
+            Logger.debug("No recent file available to open!")
+            _rootScreenState.value = RootScreenState.LoggedOut.Welcome
         }
     }
 
@@ -62,6 +63,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
                     Success(Unit)
                 } catch (exception: Exception) {
+                    _rootScreenState.value = RootScreenState.LoggedOut.Welcome
                     Failure(exception)
                 }
             }
@@ -88,7 +90,10 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
                             Success(Unit)
                         }
-                        is Failure -> Failure(initializeResult.throwable)
+                        is Failure -> {
+                            _rootScreenState.value = RootScreenState.LoggedOut.Welcome
+                            Failure(initializeResult.throwable)
+                        }
                     }
                 }
             }
@@ -187,7 +192,6 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     }
 }
 
-object NoRecentVaultFileAvailableException : IllegalArgumentException("No recent file available to open!")
 object VaultFileAlreadyExistsException : IllegalArgumentException("The selected file to create vault already exists!")
 
 /**
