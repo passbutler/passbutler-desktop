@@ -1,8 +1,6 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.LoggedInUserViewModelUninitializedException
-import de.passbutler.common.UserManagerUninitializedException
-import de.passbutler.common.UserViewModel
 import de.passbutler.common.base.Bindable
 import de.passbutler.common.base.Failure
 import de.passbutler.common.base.MutableBindable
@@ -13,7 +11,6 @@ import de.passbutler.common.database.models.UserType
 import de.passbutler.desktop.database.DatabaseInitializationMode
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
 import de.passbutler.desktop.ui.ensureFileExtension
-import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
 import tornadofx.Component
 import tornadofx.FX
@@ -31,17 +28,26 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
     suspend fun restoreRecentVault() {
         val recentVaultFile = restoreRecentVaultFile()
+        Logger.debug("Restore recent vault file recentVaultFile='$recentVaultFile'")
 
         val openResult = recentVaultFile?.let {
             openVault(recentVaultFile)
         } ?: Failure(Exception("No recent file available to open!"))
 
-        if (openResult is Failure) {
-            _rootScreenState.value = RootScreenState.LoggedOut.Welcome
+        when (openResult) {
+            is Success -> {
+                Logger.debug("The recent vault file was opened")
+            }
+            is Failure -> {
+                Logger.debug(openResult.throwable, "The recent vault file could not be opened")
+                _rootScreenState.value = RootScreenState.LoggedOut.Welcome
+            }
         }
     }
 
     suspend fun openVault(selectedFile: File): Result<Unit> {
+        Logger.debug("Open vault file '$selectedFile'")
+
         return when (val closeResult = closeVault()) {
             is Success -> {
                 try {
@@ -61,6 +67,8 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     }
 
     suspend fun createVault(selectedFile: File): Result<Unit> {
+        Logger.debug("Create vault file '$selectedFile'")
+
         return when (val closeResult = closeVault()) {
             is Success -> {
                 val vaultFile = selectedFile.ensureFileExtension(VAULT_FILE_EXTENSION)
@@ -86,6 +94,8 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     }
 
     suspend fun loginVault(serverUrlString: String?, username: String, masterPassword: String): Result<Unit> {
+        Logger.debug("Login current vault")
+
         val loginResult = userViewModelProvidingViewModel.loginUser(serverUrlString, username, masterPassword)
 
         return when (loginResult) {
@@ -98,6 +108,8 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     }
 
     suspend fun unlockVaultWithPassword(masterPassword: String): Result<Unit> {
+        Logger.debug("Unlock current vault with password")
+
         val loggedInUserViewModel = loggedInUserViewModel ?: throw LoggedInUserViewModelUninitializedException
 
         return try {
@@ -116,6 +128,8 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     }
 
     suspend fun closeVault(): Result<Unit> {
+        Logger.debug("Close current vault if opened")
+
         val logoutResult = userViewModelProvidingViewModel.logoutUser()
 
         return when (logoutResult) {
