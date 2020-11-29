@@ -9,6 +9,7 @@ import de.passbutler.desktop.ui.ThemeManager
 import de.passbutler.desktop.ui.ThemeType
 import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
+import de.passbutler.desktop.ui.onLeftClickIgnoringCount
 import javafx.scene.Node
 import javafx.scene.control.ToggleButton
 import tornadofx.FX.Companion.messages
@@ -31,8 +32,7 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"]), Request
         jfxToggleButton(messages["settings_dark_theme_setting_title"]) {
             isSelected = (ThemeManager.themeType == ThemeType.DARK)
 
-            // TODO: When clicking fast, the state gets out of sync
-            onLeftClick {
+            onLeftClickIgnoringCount {
                 saveThemeType()
             }
         }

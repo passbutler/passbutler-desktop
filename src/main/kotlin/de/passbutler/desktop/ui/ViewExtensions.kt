@@ -11,6 +11,7 @@ import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.effect.DropShadow
 import javafx.scene.effect.Effect
+import javafx.scene.input.MouseButton
 import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import tornadofx.addClass
@@ -107,5 +108,14 @@ private fun dropShadow(): DropShadow {
 
         // No theming here because not styleable
         color = Color.web(greyDark.css, 0.5)
+    }
+}
+
+
+fun Node.onLeftClickIgnoringCount(action: () -> Unit) {
+    setOnMouseClicked {
+        if (it.button === MouseButton.PRIMARY) {
+            action()
+        }
     }
 }
