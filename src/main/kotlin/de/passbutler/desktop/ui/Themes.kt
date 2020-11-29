@@ -150,6 +150,29 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         /**
+         * List view styles
+         */
+
+        listView {
+            backgroundColor = multi(colorBackground)
+            padding = box(0.px)
+        }
+
+        listCell {
+            and(filled) {
+                backgroundColor += colorBackground
+            }
+
+            and(selected) {
+                backgroundColor += colorBackground
+            }
+
+            and(focused) {
+                backgroundColor += colorBackground
+            }
+        }
+
+        /**
          * Icons
          */
 
