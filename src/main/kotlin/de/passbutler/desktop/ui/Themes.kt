@@ -241,16 +241,18 @@ object ThemeManager {
 
     var themeType: ThemeType = ThemeType.LIGHT
         set(value) {
-            field = value
+            if (value != field) {
+                field = value
 
-            when (value) {
-                ThemeType.LIGHT -> {
-                    removeStylesheet(DarkTheme::class)
-                    importStylesheet(LightTheme::class)
-                }
-                ThemeType.DARK -> {
-                    removeStylesheet(LightTheme::class)
-                    importStylesheet(DarkTheme::class)
+                when (value) {
+                    ThemeType.LIGHT -> {
+                        removeStylesheet(DarkTheme::class)
+                        importStylesheet(LightTheme::class)
+                    }
+                    ThemeType.DARK -> {
+                        removeStylesheet(LightTheme::class)
+                        importStylesheet(DarkTheme::class)
+                    }
                 }
             }
         }
@@ -258,5 +260,15 @@ object ThemeManager {
 
 enum class ThemeType(val kotlinClass: KClass<out Theme>) {
     LIGHT(LightTheme::class),
-    DARK(DarkTheme::class)
+    DARK(DarkTheme::class);
+
+    companion object {
+        fun valueOfOrNull(name: String): ThemeType? {
+            return try {
+                ThemeType.valueOf(name)
+            } catch (exception: Exception) {
+                null
+            }
+        }
+    }
 }

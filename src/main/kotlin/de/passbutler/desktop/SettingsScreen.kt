@@ -1,33 +1,69 @@
 package de.passbutler.desktop
 
+import de.passbutler.common.base.Failure
+import de.passbutler.common.base.Success
+import de.passbutler.common.ui.RequestSending
+import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.ThemeManager
 import de.passbutler.desktop.ui.ThemeType
 import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
 import javafx.scene.Node
+import javafx.scene.control.ToggleButton
 import tornadofx.FX.Companion.messages
 import tornadofx.get
 import tornadofx.onLeftClick
 import tornadofx.paddingAll
 import tornadofx.vbox
 
-class SettingsScreen : NavigationMenuScreen(messages["settings_title"]) {
+class SettingsScreen : NavigationMenuScreen(messages["settings_title"]), RequestSending {
 
     override fun Node.createMainContent() {
         vbox {
             paddingAll = marginM.value
 
-            jfxToggleButton(messages["settings_dark_theme_setting_title"]) {
-                isSelected = (ThemeManager.themeType == ThemeType.DARK)
+            setupDarkThemeSetting()
+        }
+    }
 
-                onLeftClick {
-                    // TODO: When clicking fast, the state gets out of sync
-                    ThemeManager.themeType = when (ThemeManager.themeType) {
-                        ThemeType.LIGHT -> ThemeType.DARK
-                        ThemeType.DARK -> ThemeType.LIGHT
-                    }
-                }
+    private fun setupDarkThemeSetting() {
+        jfxToggleButton(messages["settings_dark_theme_setting_title"]) {
+            isSelected = (ThemeManager.themeType == ThemeType.DARK)
+
+            // TODO: When clicking fast, the state gets out of sync
+            onLeftClick {
+                saveThemeType()
+            }
+        }
+    }
+
+    private fun ToggleButton.saveThemeType() {
+        val oldSelectedValue = !isSelected
+
+        launchRequestSending(
+            handleSuccess = { newThemeType ->
+                ThemeManager.themeType = newThemeType
+            },
+            handleFailure = {
+                // Reset to old value if operation failed
+                isSelected = oldSelectedValue
+
+                showError(messages["settings_save_setting_failed_title"])
+            }
+        ) {
+            val newThemeType = when (ThemeManager.themeType) {
+                ThemeType.LIGHT -> ThemeType.DARK
+                ThemeType.DARK -> ThemeType.LIGHT
+            }
+
+            val saveSettingResult = applicationConfiguration.writeValue {
+                set(PassButlerConfiguration.THEME_TYPE to newThemeType.name)
+            }
+
+            when (saveSettingResult) {
+                is Success -> Success(newThemeType)
+                is Failure -> Failure(saveSettingResult.throwable)
             }
         }
     }
