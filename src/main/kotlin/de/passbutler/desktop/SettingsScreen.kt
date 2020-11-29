@@ -4,6 +4,7 @@ import de.passbutler.common.base.Failure
 import de.passbutler.common.base.Success
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.PassButlerApplication.Configuration.Companion.applicationConfiguration
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.ThemeManager
 import de.passbutler.desktop.ui.ThemeType
@@ -14,7 +15,6 @@ import javafx.scene.Node
 import javafx.scene.control.ToggleButton
 import tornadofx.FX.Companion.messages
 import tornadofx.get
-import tornadofx.onLeftClick
 import tornadofx.paddingAll
 import tornadofx.vbox
 
@@ -58,7 +58,7 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"]), Request
             }
 
             val saveSettingResult = applicationConfiguration.writeValue {
-                set(PassButlerConfiguration.THEME_TYPE to newThemeType.name)
+                set(PassButlerApplication.Configuration.THEME_TYPE to newThemeType.name)
             }
 
             when (saveSettingResult) {
