@@ -6,6 +6,7 @@ import de.passbutler.common.Webservices
 import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
@@ -14,6 +15,7 @@ import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.showFadeInOutAnimation
+import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline
 import javafx.collections.FXCollections.observableArrayList
@@ -26,10 +28,12 @@ import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.cache
 import tornadofx.get
+import tornadofx.hbox
 import tornadofx.listview
 import tornadofx.onChange
 import tornadofx.paddingAll
 import tornadofx.paddingBottom
+import tornadofx.paddingLeft
 import tornadofx.paddingTop
 import tornadofx.stackpane
 import tornadofx.vbox
@@ -89,13 +93,20 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     }
 
     private fun Node.createItemEntryView(entry: ItemEntry): Node {
-        return vbox {
-            paddingTop = marginXS.value
-            paddingBottom = marginXS.value
+        return hbox {
+            alignment = Pos.CENTER_LEFT
 
-            textLabelHeadline(entry.itemViewModel.title ?: "")
-            textLabelBody1(entry.itemViewModel.subtitle) {
-                paddingTop = marginS.value
+            smallSVGIcon(Drawables.ICON_FAVORITE.svgPath)
+
+            vbox {
+                paddingLeft = marginM.value
+                paddingTop = marginXS.value
+                paddingBottom = marginXS.value
+
+                textLabelHeadline(entry.itemViewModel.title ?: "")
+                textLabelBody1(entry.itemViewModel.subtitle) {
+                    paddingTop = marginS.value
+                }
             }
         }
     }
