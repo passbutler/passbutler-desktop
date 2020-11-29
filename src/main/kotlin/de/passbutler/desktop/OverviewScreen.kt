@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXSpinner
 import de.passbutler.common.ItemViewModel
 import de.passbutler.common.Webservices
 import de.passbutler.common.base.BindableObserver
+import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.Drawables
@@ -82,7 +83,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     private fun Node.createListScreenLayout(): ListView<ItemEntry> {
         return listview {
             cellFormat { entry ->
-                graphic = cache {
+                graphic = cache(key = entry.listItemId) {
                     createItemEntryView(entry)
                 }
             }
@@ -185,7 +186,10 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     }
 }
 
-class ItemEntry(val itemViewModel: ItemViewModel)
+class ItemEntry(val itemViewModel: ItemViewModel) : ListItemIdentifiable {
+    override val listItemId: String
+        get() = itemViewModel.id
+}
 
 fun List<ItemEntry>.sorted(): List<ItemEntry> {
     return sortedBy { it.itemViewModel.title }
