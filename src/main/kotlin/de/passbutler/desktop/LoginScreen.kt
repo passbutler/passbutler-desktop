@@ -10,6 +10,7 @@ import de.passbutler.desktop.base.isHttpsUrl
 import de.passbutler.desktop.base.isNetworkUrl
 import de.passbutler.desktop.ui.BaseFragment
 import de.passbutler.desktop.ui.FormFieldValidatorRule
+import de.passbutler.desktop.ui.LONGPRESS_DURATION
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
@@ -133,7 +134,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
 
     private fun ImageView.setupDebugPresetsButton() {
         if (BuildInformationProvider.buildType == BuildType.Debug) {
-            longpress {
+            longpress(LONGPRESS_DURATION) {
                 viewModel.serverUrlProperty.set(DebugConstants.TEST_SERVERURL)
                 viewModel.usernameProperty.set(DebugConstants.TEST_USERNAME)
                 viewModel.passwordProperty.set(DebugConstants.TEST_PASSWORD)

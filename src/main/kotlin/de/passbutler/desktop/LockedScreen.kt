@@ -8,6 +8,7 @@ import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.base.DebugConstants
 import de.passbutler.desktop.ui.BaseFragment
 import de.passbutler.desktop.ui.FormFieldValidatorRule
+import de.passbutler.desktop.ui.LONGPRESS_DURATION
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
@@ -121,7 +122,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), RequestSendi
 
     private fun ImageView.setupDebugPresetsButton() {
         if (BuildInformationProvider.buildType == BuildType.Debug) {
-            longpress {
+            longpress(LONGPRESS_DURATION) {
                 viewModel.passwordProperty.set(DebugConstants.TEST_PASSWORD)
             }
         }

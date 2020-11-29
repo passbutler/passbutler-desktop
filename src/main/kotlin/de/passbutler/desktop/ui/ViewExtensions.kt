@@ -111,7 +111,6 @@ private fun dropShadow(): DropShadow {
     }
 }
 
-
 fun Node.onLeftClickIgnoringCount(action: () -> Unit) {
     setOnMouseClicked {
         if (it.button === MouseButton.PRIMARY) {
