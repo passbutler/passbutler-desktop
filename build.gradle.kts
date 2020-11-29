@@ -98,6 +98,7 @@ tasks {
         }
     }
 
+    // TODO: Fix "run" task with "JFoenix"
     defaultTasks("run")
 }
 

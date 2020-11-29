@@ -83,6 +83,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     private fun Node.createListScreenLayout(): ListView<ItemEntry> {
         return listview {
             cellFormat { entry ->
+                // TODO: Update does not work
                 graphic = cache(key = entry.listItemId) {
                     createItemEntryView(entry)
                 }
