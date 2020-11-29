@@ -155,6 +155,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         listView {
             backgroundColor = multi(colorBackground)
+            backgroundInsets = multi(box(0.px))
+            borderInsets = multi(box(0.px))
             padding = box(0.px)
         }
 
