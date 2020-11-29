@@ -26,12 +26,12 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
 
     init {
         with(root) {
-            left {
-                createNavigationMenu()
-            }
-
             center {
                 createMainContent()
+            }
+
+            left {
+                createNavigationMenu()
             }
         }
     }
