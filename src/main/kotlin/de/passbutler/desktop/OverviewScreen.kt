@@ -34,6 +34,7 @@ import tornadofx.onChange
 import tornadofx.paddingAll
 import tornadofx.paddingBottom
 import tornadofx.paddingLeft
+import tornadofx.paddingRight
 import tornadofx.paddingTop
 import tornadofx.stackpane
 import tornadofx.vbox
@@ -79,7 +80,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     }
 
     private fun Node.createListScreenLayout(): ListView<ItemEntry> {
-        return listview<ItemEntry> {
+        return listview {
             cellFormat { entry ->
                 graphic = cache {
                     createItemEntryView(entry)
@@ -95,12 +96,14 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     private fun Node.createItemEntryView(entry: ItemEntry): Node {
         return hbox {
             alignment = Pos.CENTER_LEFT
+            paddingLeft = marginM.value
 
             smallSVGIcon(Drawables.ICON_FAVORITE.svgPath)
 
             vbox {
                 paddingLeft = marginM.value
                 paddingTop = marginXS.value
+                paddingRight = marginM.value
                 paddingBottom = marginXS.value
 
                 textLabelHeadline(entry.itemViewModel.title ?: "")
