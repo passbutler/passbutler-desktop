@@ -26,7 +26,6 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
 
     init {
         with(root) {
-            // TODO: Do not center content itself
             center {
                 createMainContent()
             }
