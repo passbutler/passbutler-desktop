@@ -6,7 +6,6 @@ import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
-import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme
@@ -26,7 +25,6 @@ import kotlinx.coroutines.Job
 import org.tinylog.kotlin.Logger
 import tornadofx.FX.Companion.messages
 import tornadofx.addClass
-import tornadofx.addStylesheet
 import tornadofx.borderpane
 import tornadofx.cache
 import tornadofx.center
@@ -92,9 +90,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
             // Draw afterwards to apply drop shadow
             top {
                 stackpane {
-                    // Enforce dark theme to toolbar view because it should look always dark
-                    addStylesheet(DarkTheme::class)
-
                     pane {
                         addClass(Theme.backgroundStyle)
                         effect = bottomDropShadow()
@@ -110,7 +105,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
         borderpane {
             padding = insets(marginM.value, marginS.value)
 
-            // TODO: Does not apply dark theme
             left {
                 textfield {
                     promptText = messages["overview_search_hint"]
