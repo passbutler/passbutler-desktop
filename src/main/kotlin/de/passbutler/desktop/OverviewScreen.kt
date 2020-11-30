@@ -1,21 +1,20 @@
 package de.passbutler.desktop
 
-import com.jfoenix.controls.JFXSpinner
 import de.passbutler.common.ItemViewModel
 import de.passbutler.common.Webservices
 import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.Theme
+import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.injectWithPrivateScope
-import de.passbutler.desktop.ui.jfxButtonRaised
-import de.passbutler.desktop.ui.jfxSpinner
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.marginXS
-import de.passbutler.desktop.ui.showFadeInOutAnimation
 import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline
@@ -26,18 +25,25 @@ import javafx.scene.control.ListView
 import kotlinx.coroutines.Job
 import org.tinylog.kotlin.Logger
 import tornadofx.FX.Companion.messages
-import tornadofx.action
+import tornadofx.addClass
+import tornadofx.addStylesheet
+import tornadofx.borderpane
 import tornadofx.cache
+import tornadofx.center
 import tornadofx.get
 import tornadofx.hbox
+import tornadofx.insets
+import tornadofx.left
 import tornadofx.listview
 import tornadofx.onChange
+import tornadofx.onLeftClick
 import tornadofx.paddingAll
-import tornadofx.paddingBottom
 import tornadofx.paddingLeft
-import tornadofx.paddingRight
 import tornadofx.paddingTop
+import tornadofx.right
 import tornadofx.stackpane
+import tornadofx.textfield
+import tornadofx.top
 import tornadofx.vbox
 
 class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), RequestSending {
@@ -46,7 +52,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
 
     private var listScreenLayout: ListView<ItemEntry>? = null
     private var emptyScreenLayout: Node? = null
-    private var refreshSpinner: JFXSpinner? = null
+    private var syncIcon: Node? = null
 
     private val itemEntries = observableArrayList<ItemEntry>()
 
@@ -74,9 +80,52 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     }
 
     override fun Node.createMainContent() {
-        stackpane {
-            listScreenLayout = createListScreenLayout()
-            emptyScreenLayout = createEmptyScreenLayout()
+        borderpane {
+            center {
+                stackpane {
+                    listScreenLayout = createListScreenLayout()
+                    emptyScreenLayout = createEmptyScreenLayout()
+                }
+            }
+
+            // Draw afterwards to apply drop shadow
+            top {
+                borderpane {
+                    // Enforce dark theme to toolbar view because it should look always dark
+                    addStylesheet(DarkTheme::class)
+
+                    addClass(Theme.backgroundStyle)
+
+                    // TODO: Apply drop shadow only to borderpane
+                    effect = bottomDropShadow()
+
+                    padding = insets(marginM.value, marginS.value)
+
+                    // TODO: Does not apply dark theme
+                    left {
+                        textfield(messages["overview_search_hint"])
+                    }
+
+                    right {
+                        vbox {
+                            alignment = Pos.CENTER_RIGHT
+
+                            // TODO: Icon looks squeezed
+                            syncIcon = smallSVGIcon(Drawables.ICON_SYNC.svgPath) {
+                                onLeftClick {
+                                    if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
+                                        synchronizeData(userTriggered = true)
+                                    }
+                                }
+                            }
+
+                            textLabelBody1(messages["overview_last_sync_subtitle"].format(messages["overview_last_sync_never"])) {
+                                paddingTop = marginXS.value
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -98,15 +147,12 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     private fun Node.createItemEntryView(entry: ItemEntry): Node {
         return hbox {
             alignment = Pos.CENTER_LEFT
-            paddingLeft = marginM.value
+            padding = insets(marginM.value, marginXS.value)
 
             smallSVGIcon(Drawables.ICON_FAVORITE.svgPath)
 
             vbox {
                 paddingLeft = marginM.value
-                paddingTop = marginXS.value
-                paddingRight = marginM.value
-                paddingBottom = marginXS.value
 
                 textLabelHeadline(entry.itemViewModel.title ?: "")
                 textLabelBody1(entry.itemViewModel.subtitle) {
@@ -124,20 +170,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
             textLabelHeadline(messages["overview_empty_screen_title"])
             textLabelBody1(messages["overview_empty_screen_description"]) {
                 paddingTop = marginS.value
-                paddingBottom = marginM.value
-            }
-
-            // TODO: Proper UI
-            jfxButtonRaised("Synchronize") {
-                action {
-                    if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
-                        synchronizeData(userTriggered = true)
-                    }
-                }
-            }
-
-            refreshSpinner = jfxSpinner() {
-                isVisible = false
             }
         }
     }
@@ -176,7 +208,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
                     }
                 },
                 handleLoadingChanged = { isLoading ->
-                    refreshSpinner?.showFadeInOutAnimation(isLoading)
+                    syncIcon?.isDisable = isLoading
                 }
             ) {
                 viewModel.synchronizeData()

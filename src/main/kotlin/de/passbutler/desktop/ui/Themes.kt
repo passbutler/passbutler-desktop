@@ -130,6 +130,10 @@ abstract class Theme : Stylesheet(), ThemeColors {
          * Background styles
          */
 
+        backgroundStyle {
+            backgroundColor = multi(colorBackground)
+        }
+
         abstractBackgroundStyle {
             backgroundImage += URI("/drawables/background.jpg")
             backgroundSize += BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
@@ -181,6 +185,11 @@ abstract class Theme : Stylesheet(), ThemeColors {
         smallIconStyle {
             backgroundColor = multi(textColorPrimary)
 
+            // TODO: Proper color
+            and(disabled) {
+                backgroundColor += magenta
+            }
+
             minWidth = 18.px
             minHeight = 18.px
             maxWidth = 18.px
@@ -199,6 +208,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
     }
 
     companion object {
+        val backgroundStyle by cssclass()
         val abstractBackgroundStyle by cssclass()
         val abstractBackgroundOverlayStyle by cssclass()
         val cardViewBackgroundStyle by cssclass()
