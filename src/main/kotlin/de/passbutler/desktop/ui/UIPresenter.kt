@@ -1,7 +1,6 @@
 package de.passbutler.desktop.ui
 
 import com.jfoenix.controls.JFXSnackbar
-import com.jfoenix.controls.JFXSnackbarLayout
 import de.passbutler.common.ui.DebouncedUIPresenting
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import de.passbutler.common.ui.SLIDE_TRANSITION_DURATION
@@ -65,7 +64,7 @@ class UIPresenter(
     }
 
     override fun showInformation(message: String) {
-        rootScreen.bannerView?.enqueue(JFXSnackbar.SnackbarEvent(JFXSnackbarLayout(message)))
+        rootScreen.bannerView?.enqueue(JFXSnackbar.SnackbarEvent(SnackbarLayout(message)))
     }
 
     override fun showError(message: String) {
