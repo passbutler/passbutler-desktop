@@ -110,8 +110,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
                         vbox {
                             alignment = Pos.CENTER_RIGHT
 
-                            // TODO: Icon looks squeezed
-                            syncIcon = smallSVGIcon(Drawables.ICON_SYNC.svgPath) {
+                            syncIcon = smallSVGIcon(Drawables.ICON_REFRESH.svgPath) {
                                 onLeftClick {
                                     if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
                                         synchronizeData(userTriggered = true)
