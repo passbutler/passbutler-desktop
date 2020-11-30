@@ -89,25 +89,33 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
 
             // Draw afterwards to apply drop shadow
             top {
-                stackpane {
-                    pane {
-                        addClass(Theme.backgroundStyle)
-                        effect = bottomDropShadow()
-                    }
-
-                    setupToolbar()
-                }
+                setupToolbar()
             }
         }
     }
 
     private fun Node.setupToolbar() {
+        stackpane {
+            pane {
+                addClass(Theme.backgroundStyle)
+                effect = bottomDropShadow()
+            }
+
+            setupToolbarContent()
+        }
+    }
+
+    private fun Node.setupToolbarContent() {
         borderpane {
             padding = insets(marginM.value, marginS.value)
 
             left {
-                textfield {
-                    promptText = messages["overview_search_hint"]
+                vbox {
+                    alignment = Pos.CENTER_LEFT
+
+                    textfield {
+                        promptText = messages["overview_search_hint"]
+                    }
                 }
             }
 
