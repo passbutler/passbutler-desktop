@@ -103,7 +103,9 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
 
                     // TODO: Does not apply dark theme
                     left {
-                        textfield(messages["overview_search_hint"])
+                        textfield {
+                            promptText = messages["overview_search_hint"]
+                        }
                     }
 
                     right {
