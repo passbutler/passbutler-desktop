@@ -206,11 +206,18 @@ abstract class Theme : Stylesheet(), ThemeColors {
             prefWidth = 200.px
             padding = box(marginM)
         }
+
+        navigationViewItemStyle {
+            and(pressed) {
+                opacity = OPACITY_PRESSED
+            }
+        }
     }
 
     companion object {
         // Disabled value took from "modena.css"
         const val OPACITY_DISABLED = 0.4
+        const val OPACITY_PRESSED = 0.8
 
         val backgroundStyle by cssclass()
         val abstractBackgroundStyle by cssclass()
@@ -224,6 +231,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         val smallIconStyle by cssclass()
         val navigationViewStyle by cssclass()
+        val navigationViewItemStyle by cssclass()
     }
 }
 
@@ -277,7 +285,6 @@ class DarkTheme : Theme(), ThemeColors by Companion {
 }
 
 object ThemeManager {
-
     var themeType: ThemeType = ThemeType.LIGHT
         set(value) {
             if (value != field) {

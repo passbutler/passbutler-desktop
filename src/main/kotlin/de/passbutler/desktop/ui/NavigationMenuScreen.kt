@@ -72,6 +72,8 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
 
     private fun Node.createNavigationItem(title: String, icon: Drawable, clickedAction: () -> Unit) {
         hbox {
+            addClass(Theme.navigationViewItemStyle)
+
             smallSVGIcon(icon.svgPath)
 
             label(title) {
