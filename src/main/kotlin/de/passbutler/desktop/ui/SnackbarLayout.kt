@@ -7,6 +7,7 @@ import tornadofx.insets
 
 class SnackbarLayout(message: String) : Label(message) {
     init {
+        // TODO: Use inverted style
         // Enforce dark theme to have always dark background
         addStylesheet(DarkTheme::class)
 
