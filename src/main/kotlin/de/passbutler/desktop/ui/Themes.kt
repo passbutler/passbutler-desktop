@@ -187,9 +187,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         smallIconStyle {
             backgroundColor = multi(textColorPrimary)
 
-            // TODO: Proper color
             and(disabled) {
-                backgroundColor += magenta
+                opacity = OPACITY_DISABLED
             }
 
             minWidth = 18.px
@@ -210,6 +209,9 @@ abstract class Theme : Stylesheet(), ThemeColors {
     }
 
     companion object {
+        // Disabled value took from "modena.css"
+        const val OPACITY_DISABLED = 0.4
+
         val backgroundStyle by cssclass()
         val abstractBackgroundStyle by cssclass()
         val abstractBackgroundOverlayStyle by cssclass()
