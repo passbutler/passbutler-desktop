@@ -176,6 +176,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
             and(focused) {
                 backgroundColor += colorBackground
             }
+
+            padding = box(0.px)
         }
 
         /**
