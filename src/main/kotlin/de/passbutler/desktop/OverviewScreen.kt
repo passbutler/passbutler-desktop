@@ -40,6 +40,7 @@ import tornadofx.onLeftClick
 import tornadofx.paddingAll
 import tornadofx.paddingLeft
 import tornadofx.paddingTop
+import tornadofx.pane
 import tornadofx.right
 import tornadofx.stackpane
 import tornadofx.textfield
@@ -90,40 +91,46 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
 
             // Draw afterwards to apply drop shadow
             top {
-                borderpane {
+                stackpane {
                     // Enforce dark theme to toolbar view because it should look always dark
                     addStylesheet(DarkTheme::class)
 
-                    addClass(Theme.backgroundStyle)
+                    pane {
+                        addClass(Theme.backgroundStyle)
+                        effect = bottomDropShadow()
+                    }
 
-                    // TODO: Apply drop shadow only to borderpane
-                    effect = bottomDropShadow()
+                    setupToolbar()
+                }
+            }
+        }
+    }
 
-                    padding = insets(marginM.value, marginS.value)
+    private fun Node.setupToolbar() {
+        borderpane {
+            padding = insets(marginM.value, marginS.value)
 
-                    // TODO: Does not apply dark theme
-                    left {
-                        textfield {
-                            promptText = messages["overview_search_hint"]
+            // TODO: Does not apply dark theme
+            left {
+                textfield {
+                    promptText = messages["overview_search_hint"]
+                }
+            }
+
+            right {
+                vbox {
+                    alignment = Pos.CENTER_RIGHT
+
+                    syncIcon = smallSVGIcon(Drawables.ICON_REFRESH.svgPath) {
+                        onLeftClick {
+                            if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
+                                synchronizeData(userTriggered = true)
+                            }
                         }
                     }
 
-                    right {
-                        vbox {
-                            alignment = Pos.CENTER_RIGHT
-
-                            syncIcon = smallSVGIcon(Drawables.ICON_REFRESH.svgPath) {
-                                onLeftClick {
-                                    if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
-                                        synchronizeData(userTriggered = true)
-                                    }
-                                }
-                            }
-
-                            textLabelBody1(messages["overview_last_sync_subtitle"].format(messages["overview_last_sync_never"])) {
-                                paddingTop = marginXS.value
-                            }
-                        }
+                    textLabelBody1(messages["overview_last_sync_subtitle"].format(messages["overview_last_sync_never"])) {
+                        paddingTop = marginXS.value
                     }
                 }
             }
