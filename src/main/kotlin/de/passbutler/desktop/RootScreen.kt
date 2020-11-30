@@ -67,6 +67,7 @@ class RootScreen : BaseView(), RequestSending {
                 }
             }
 
+            // Draw afterwards to apply drop shadow over content area
             top {
                 menubar {
                     // Enforce dark theme to menu view because it should look always dark
