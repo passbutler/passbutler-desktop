@@ -120,6 +120,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
             }
 
             right {
+                // TODO: Hide data for local user
                 vbox {
                     alignment = Pos.CENTER_RIGHT
 
@@ -131,6 +132,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
                         }
                     }
 
+                    // TODO: Use correct data
                     textLabelBody1(messages["overview_last_sync_subtitle"].format(messages["overview_last_sync_never"])) {
                         paddingTop = marginXS.value
                     }
