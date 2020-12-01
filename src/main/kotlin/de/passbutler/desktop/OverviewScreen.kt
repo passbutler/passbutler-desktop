@@ -3,6 +3,8 @@ package de.passbutler.desktop
 import de.passbutler.common.ItemViewModel
 import de.passbutler.common.Webservices
 import de.passbutler.common.base.BindableObserver
+import de.passbutler.common.base.formattedDateTime
+import de.passbutler.common.database.models.LoggedInStateStorage
 import de.passbutler.common.database.models.UserType
 import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
@@ -25,6 +27,9 @@ import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
 import tornadofx.FX.Companion.messages
 import tornadofx.addClass
@@ -52,14 +57,17 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
 
     private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 
+    private var toolbarSynchronizationContainer: Node? = null
+    private var toolbarSynchronizationSubtitle: Label? = null
+    private var toolbarSynchronizationIcon: Node? = null
+
     private var listScreenLayout: ListView<ItemEntry>? = null
     private var emptyScreenLayout: Node? = null
-    private var syncIcon: Node? = null
-    private var toolbarSubtitle: Label? = null
 
     private val unfilteredItemEntries = observableArrayList<ItemEntry>()
     private val itemEntries = FilteredList(unfilteredItemEntries)
 
+    private var updateToolbarJob: Job? = null
     private var synchronizeDataRequestSendingJob: Job? = null
 
     private val webservicesInitializedObserver: BindableObserver<Webservices?> = {
@@ -81,6 +89,10 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
 
         val showEmptyScreen = newItemEntries.isEmpty()
         emptyScreenLayout?.isVisible = showEmptyScreen
+    }
+
+    private val loggedInStateStorageObserver: BindableObserver<LoggedInStateStorage?> = {
+        updateToolbarSynchronizationContainer()
     }
 
     override fun Node.createMainContent() {
@@ -118,41 +130,49 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
                 vbox {
                     alignment = Pos.CENTER_LEFT
 
-                    textfield {
-                        promptText = messages["overview_search_hint"]
-
-                        textProperty().addListener { _, _, newValue ->
-                            val newPredicate: ((ItemEntry) -> Boolean)? = if (newValue.isNullOrEmpty()) {
-                                null
-                            } else {
-                                { it.itemViewModel.title?.contains(newValue, ignoreCase = true) ?: false }
-                            }
-
-                            itemEntries.setPredicate(newPredicate)
-                        }
-                    }
+                    setupFilterTextfield()
                 }
             }
 
             right {
-                // TODO: Hide data for local user
-                vbox {
-                    alignment = Pos.CENTER_RIGHT
+                toolbarSynchronizationContainer = createToolbarSynchronizationContainer()
+            }
+        }
+    }
 
-                    syncIcon = smallSVGIcon(Drawables.ICON_REFRESH.svgPath) {
-                        onLeftClick {
-                            if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
-                                synchronizeData(userTriggered = true)
-                            }
-                        }
-                    }
+    private fun Node.setupFilterTextfield() {
+        textfield {
+            promptText = messages["overview_search_hint"]
 
-                    toolbarSubtitle = textLabelBody1 {
-                        paddingTop = marginXS.value
-                    }
-
-                    updateToolbarSubtitle()
+            textProperty().addListener { _, _, newValue ->
+                val newPredicate: ((ItemEntry) -> Boolean)? = if (newValue.isNullOrEmpty()) {
+                    null
+                } else {
+                    { it.itemViewModel.title?.contains(newValue, ignoreCase = true) ?: false }
                 }
+
+                itemEntries.setPredicate(newPredicate)
+            }
+        }
+    }
+
+    private fun Node.createToolbarSynchronizationContainer(): Node {
+        return vbox {
+            alignment = Pos.CENTER_RIGHT
+
+            // Hidden by default
+            isVisible = false
+
+            toolbarSynchronizationIcon = smallSVGIcon(Drawables.ICON_REFRESH.svgPath) {
+                onLeftClick {
+                    if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
+                        synchronizeData(userTriggered = true)
+                    }
+                }
+            }
+
+            toolbarSynchronizationSubtitle = textLabelBody1 {
+                paddingTop = marginXS.value
             }
         }
     }
@@ -199,6 +219,11 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
             textLabelBody1(messages["overview_empty_screen_description"]) {
                 paddingTop = marginS.value
             }
+
+            // Obtain focus from search textfield
+            onLeftClick {
+                requestFocus()
+            }
         }
     }
 
@@ -209,11 +234,44 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
 
         viewModel.loggedInUserViewModel?.webservices?.addObserver(this, true, webservicesInitializedObserver)
         viewModel.loggedInUserViewModel?.itemViewModels?.addObserver(this, true, itemViewModelsObserver)
+        viewModel.loggedInUserViewModel?.loggedInStateStorage?.addObserver(this, true, loggedInStateStorageObserver)
+
+        updateToolbarJob?.cancel()
+        updateToolbarJob = launch {
+            while (isActive) {
+                Logger.debug("Update relative time in toolbar subtitle")
+
+                // Update relative time in toolbar every minute
+                updateToolbarSubtitle()
+                delay(60_000)
+            }
+        }
+    }
+
+    private fun updateToolbarSynchronizationContainer() {
+        toolbarSynchronizationContainer?.apply {
+            isVisible = viewModel.loggedInUserViewModel?.userType == UserType.REMOTE
+        }
+    }
+
+    private fun updateToolbarSubtitle() {
+        toolbarSynchronizationSubtitle?.text = if (viewModel.loggedInUserViewModel?.userType == UserType.REMOTE) {
+            val newDate = viewModel.loggedInUserViewModel?.lastSuccessfulSyncDate
+
+            // TODO: Use relative formatting
+            val formattedLastSuccessfulSync = newDate?.formattedDateTime ?: messages["overview_last_sync_never"]
+            messages["overview_last_sync_subtitle"].format(formattedLastSuccessfulSync)
+        } else {
+            null
+        }
     }
 
     override fun onUndock() {
         viewModel.loggedInUserViewModel?.webservices?.removeObserver(webservicesInitializedObserver)
         viewModel.loggedInUserViewModel?.itemViewModels?.removeObserver(itemViewModelsObserver)
+        viewModel.loggedInUserViewModel?.loggedInStateStorage?.removeObserver(loggedInStateStorageObserver)
+
+        updateToolbarJob?.cancel()
 
         super.onUndock()
     }
@@ -236,7 +294,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
                     }
                 },
                 handleLoadingChanged = { isLoading ->
-                    syncIcon?.isDisable = isLoading
+                    toolbarSynchronizationIcon?.isDisable = isLoading
                 }
             ) {
                 viewModel.synchronizeData()
