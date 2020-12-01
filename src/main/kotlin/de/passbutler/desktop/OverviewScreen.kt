@@ -55,7 +55,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     private var syncIcon: Node? = null
 
     private val unfilteredItemEntries = observableArrayList<ItemEntry>()
-    private val itemEntries = FilteredList(unfilteredItemEntries, PREDIDICATE_UNFILTERED)
+    private val itemEntries = FilteredList(unfilteredItemEntries)
 
     private var synchronizeDataRequestSendingJob: Job? = null
 
@@ -119,8 +119,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
                         promptText = messages["overview_search_hint"]
 
                         textProperty().addListener { _, _, newValue ->
-                            val newPredicate = if (newValue.isNullOrEmpty()) {
-                                PREDIDICATE_UNFILTERED
+                            val newPredicate: ((ItemEntry) -> Boolean)? = if (newValue.isNullOrEmpty()) {
+                                null
                             } else {
                                 { it.itemViewModel.title?.contains(newValue) ?: false }
                             }
@@ -240,10 +240,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
         } else {
             Logger.debug("The synchronize data request is already running - skip call")
         }
-    }
-
-    companion object {
-        private val PREDIDICATE_UNFILTERED: (ItemEntry) -> Boolean = { true }
     }
 }
 
