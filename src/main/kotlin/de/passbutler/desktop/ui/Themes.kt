@@ -220,10 +220,10 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         snackbarLayoutStyle {
             backgroundColor = multi(colorOnSurface)
-
+            backgroundRadius = multi(box(3.px))
             textFill = colorSurface
-
             padding = box(marginS, marginM)
+            opacity = 0.8
         }
     }
 
