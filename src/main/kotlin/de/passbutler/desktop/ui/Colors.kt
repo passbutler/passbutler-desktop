@@ -2,6 +2,10 @@ package de.passbutler.desktop.ui
 
 import javafx.scene.paint.Color
 
+/**
+ * Shared colors
+ */
+
 val wineRed = Color.web("#782121")
 val wineRedLight = Color.web("#AC4F49")
 val wineRedDark = Color.web("#470000")
@@ -23,6 +27,10 @@ val whiteMediumTransparent = Color.web("#FAFAFA", 0.5)
 
 val greyMedium = Color.web("#313131")
 val greyMediumTransparent = Color.web("#313131", 0.5)
+
+/**
+ * Desktop only colors
+ */
 
 val greyDark = Color.web("#171717")
 
