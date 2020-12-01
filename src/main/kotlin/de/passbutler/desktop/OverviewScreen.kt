@@ -3,6 +3,7 @@ package de.passbutler.desktop
 import de.passbutler.common.ItemViewModel
 import de.passbutler.common.Webservices
 import de.passbutler.common.base.BindableObserver
+import de.passbutler.common.database.models.UserType
 import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
@@ -21,6 +22,7 @@ import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.transformation.FilteredList
 import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.control.Label
 import javafx.scene.control.ListView
 import kotlinx.coroutines.Job
 import org.tinylog.kotlin.Logger
@@ -53,6 +55,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     private var listScreenLayout: ListView<ItemEntry>? = null
     private var emptyScreenLayout: Node? = null
     private var syncIcon: Node? = null
+    private var toolbarSubtitle: Label? = null
 
     private val unfilteredItemEntries = observableArrayList<ItemEntry>()
     private val itemEntries = FilteredList(unfilteredItemEntries)
@@ -122,7 +125,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
                             val newPredicate: ((ItemEntry) -> Boolean)? = if (newValue.isNullOrEmpty()) {
                                 null
                             } else {
-                                { it.itemViewModel.title?.contains(newValue) ?: false }
+                                { it.itemViewModel.title?.contains(newValue, ignoreCase = true) ?: false }
                             }
 
                             itemEntries.setPredicate(newPredicate)
@@ -144,10 +147,11 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
                         }
                     }
 
-                    // TODO: Use correct data
-                    textLabelBody1(messages["overview_last_sync_subtitle"].format(messages["overview_last_sync_never"])) {
+                    toolbarSubtitle = textLabelBody1 {
                         paddingTop = marginXS.value
                     }
+
+                    updateToolbarSubtitle()
                 }
             }
         }
