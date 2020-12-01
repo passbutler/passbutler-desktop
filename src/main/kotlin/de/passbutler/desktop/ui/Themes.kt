@@ -30,6 +30,7 @@ interface ThemeColors {
 
     val colorOnPrimary: Color
     val colorOnSecondary: Color
+    val colorOnSurface: Color
 
     val scrimBackground: Color
     val colorBackgroundImageTint: Color
@@ -212,6 +213,18 @@ abstract class Theme : Stylesheet(), ThemeColors {
                 opacity = OPACITY_PRESSED
             }
         }
+
+        /**
+         * Snackbar
+         */
+
+        snackbarLayoutStyle {
+            backgroundColor = multi(colorOnSurface)
+
+            textFill = colorSurface
+
+            padding = box(marginS, marginM)
+        }
     }
 
     companion object {
@@ -232,6 +245,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val smallIconStyle by cssclass()
         val navigationViewStyle by cssclass()
         val navigationViewItemStyle by cssclass()
+
+        val snackbarLayoutStyle by cssclass()
     }
 }
 
@@ -255,6 +270,7 @@ class LightTheme : Theme(), ThemeColors by Companion {
         override val colorAccent = pointRed
         override val colorOnPrimary = white
         override val colorOnSecondary = white
+        override val colorOnSurface = greyMedium
         override val scrimBackground = whiteMediumTransparent
         override val colorBackgroundImageTint = Color.web(black.css, 0.0)
         override val textColorPrimary = black
@@ -277,6 +293,7 @@ class DarkTheme : Theme(), ThemeColors by Companion {
         override val colorAccent = pointRed
         override val colorOnPrimary = white
         override val colorOnSecondary = white
+        override val colorOnSurface = whiteMedium
         override val scrimBackground = greyMediumTransparent
         override val colorBackgroundImageTint = Color.web(black.css, 0.3)
         override val textColorPrimary = white
