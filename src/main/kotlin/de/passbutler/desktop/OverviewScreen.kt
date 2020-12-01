@@ -20,11 +20,13 @@ import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline
+import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.transformation.FilteredList
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Label
+import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -39,6 +41,7 @@ import tornadofx.center
 import tornadofx.get
 import tornadofx.hbox
 import tornadofx.insets
+import tornadofx.label
 import tornadofx.left
 import tornadofx.listview
 import tornadofx.onChange
@@ -48,10 +51,12 @@ import tornadofx.paddingLeft
 import tornadofx.paddingTop
 import tornadofx.pane
 import tornadofx.right
+import tornadofx.select
 import tornadofx.stackpane
 import tornadofx.textfield
 import tornadofx.top
 import tornadofx.vbox
+import java.util.*
 
 class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), RequestSending {
 
@@ -179,10 +184,9 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
 
     private fun Node.createListScreenLayout(): ListView<ItemEntry> {
         return listview {
-            cellFormat { entry ->
-                // TODO: Update does not work
-                graphic = cache(key = entry.listItemId) {
-                    createItemEntryView(entry)
+            cellFormat {
+                graphic = cache {
+                    createItemEntryView(this@cellFormat)
                 }
             }
 
@@ -192,7 +196,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
         }
     }
 
-    private fun Node.createItemEntryView(entry: ItemEntry): Node {
+    private fun Node.createItemEntryView(listCell: ListCell<ItemEntry>): Node {
         return hbox {
             alignment = Pos.CENTER_LEFT
             padding = insets(marginM.value, marginXS.value)
@@ -202,8 +206,12 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
             vbox {
                 paddingLeft = marginM.value
 
-                textLabelHeadline(entry.itemViewModel.title ?: "")
-                textLabelBody1(entry.itemViewModel.subtitle) {
+                label(listCell.itemProperty().select { it.titleProperty }) {
+                    addClass(Theme.textHeadline1Style)
+                }
+
+                label(listCell.itemProperty().select { it.subtitleProperty }) {
+                    addClass(Theme.textBody1Style)
                     paddingTop = marginS.value
                 }
             }
@@ -308,6 +316,9 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
 class ItemEntry(val itemViewModel: ItemViewModel) : ListItemIdentifiable {
     override val listItemId: String
         get() = itemViewModel.id
+
+    val titleProperty = SimpleStringProperty(itemViewModel.title)
+    val subtitleProperty = SimpleStringProperty(itemViewModel.subtitle)
 }
 
 fun List<ItemEntry>.sorted(): List<ItemEntry> {
