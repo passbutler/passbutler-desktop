@@ -18,6 +18,7 @@ import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline
 import javafx.collections.FXCollections.observableArrayList
+import javafx.collections.transformation.FilteredList
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ListView
@@ -53,7 +54,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     private var emptyScreenLayout: Node? = null
     private var syncIcon: Node? = null
 
-    private val itemEntries = observableArrayList<ItemEntry>()
+    private val unfilteredItemEntries = observableArrayList<ItemEntry>()
+    private val itemEntries = FilteredList(unfilteredItemEntries, PREDIDICATE_UNFILTERED)
 
     private var synchronizeDataRequestSendingJob: Job? = null
 
@@ -72,7 +74,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
             .map { ItemEntry(it) }
             .sorted()
 
-        itemEntries.setAll(newItemEntries)
+        unfilteredItemEntries.setAll(newItemEntries)
 
         val showEmptyScreen = newItemEntries.isEmpty()
         emptyScreenLayout?.isVisible = showEmptyScreen
@@ -115,6 +117,16 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
 
                     textfield {
                         promptText = messages["overview_search_hint"]
+
+                        textProperty().addListener { _, _, newValue ->
+                            val newPredicate = if (newValue.isNullOrEmpty()) {
+                                PREDIDICATE_UNFILTERED
+                            } else {
+                                { it.itemViewModel.title?.contains(newValue) ?: false }
+                            }
+
+                            itemEntries.setPredicate(newPredicate)
+                        }
                     }
                 }
             }
@@ -228,6 +240,10 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
         } else {
             Logger.debug("The synchronize data request is already running - skip call")
         }
+    }
+
+    companion object {
+        private val PREDIDICATE_UNFILTERED: (ItemEntry) -> Boolean = { true }
     }
 }
 
