@@ -3,12 +3,13 @@ package de.passbutler.desktop
 import de.passbutler.common.ItemViewModel
 import de.passbutler.common.Webservices
 import de.passbutler.common.base.BindableObserver
-import de.passbutler.common.base.formattedDateTime
+import de.passbutler.common.base.formattedRelativeDateTime
 import de.passbutler.common.database.models.LoggedInStateStorage
 import de.passbutler.common.database.models.UserType
 import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.base.createRelativeDateFormattingTranslations
 import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme
@@ -265,9 +266,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
     private fun updateToolbarSubtitle() {
         toolbarSynchronizationSubtitle?.text = if (viewModel.loggedInUserViewModel?.userType == UserType.REMOTE) {
             val newDate = viewModel.loggedInUserViewModel?.lastSuccessfulSyncDate
-
-            // TODO: Use relative formatting
-            val formattedLastSuccessfulSync = newDate?.formattedDateTime ?: messages["overview_last_sync_never"]
+            val relativeDateFormattingTranslations = createRelativeDateFormattingTranslations(this)
+            val formattedLastSuccessfulSync = newDate?.formattedRelativeDateTime(relativeDateFormattingTranslations) ?: messages["overview_last_sync_never"]
             messages["overview_last_sync_subtitle"].format(formattedLastSuccessfulSync)
         } else {
             null
