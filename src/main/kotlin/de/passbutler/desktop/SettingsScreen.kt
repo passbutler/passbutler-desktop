@@ -8,6 +8,7 @@ import de.passbutler.desktop.PassButlerApplication.Configuration.Companion.appli
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.ThemeManager
 import de.passbutler.desktop.ui.ThemeType
+import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.onLeftClickIgnoringCount
@@ -18,7 +19,7 @@ import tornadofx.get
 import tornadofx.paddingAll
 import tornadofx.vbox
 
-class SettingsScreen : NavigationMenuScreen(messages["settings_title"]), RequestSending {
+class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
     override fun Node.createMainContent() {
         vbox {

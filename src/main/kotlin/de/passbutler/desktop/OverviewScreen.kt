@@ -14,6 +14,7 @@ import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.bottomDropShadow
+import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxFloatingActionButtonRaised
 import de.passbutler.desktop.ui.marginM
@@ -61,7 +62,7 @@ import tornadofx.top
 import tornadofx.vbox
 import java.util.*
 
-class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), RequestSending {
+class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
     private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 

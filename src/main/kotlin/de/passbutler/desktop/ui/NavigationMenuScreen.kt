@@ -20,7 +20,11 @@ import tornadofx.stackpane
 import tornadofx.vbox
 import kotlin.reflect.KClass
 
-abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) : BaseFragment(title, icon) {
+abstract class NavigationMenuScreen(
+    title: String? = null,
+    icon: Node? = null,
+    override val navigationMenuItems: List<NavigationMenuUsing.NavigationItem>
+) : BaseFragment(title, icon), NavigationMenuUsing {
 
     final override val root = borderpane()
 
@@ -55,14 +59,14 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
 
                 addClass(Theme.navigationViewStyle)
 
-                createNavigationItem(messages["drawer_menu_item_overview"], Drawables.ICON_HOME, OverviewScreen::class)
-                createNavigationItem(messages["drawer_menu_item_settings"], Drawables.ICON_SETTINGS, SettingsScreen::class)
-                createNavigationItem(messages["drawer_menu_item_about"], Drawables.ICON_INFO, AboutScreen::class)
+                navigationMenuItems.forEach {
+                    createNavigationItem(messages[it.titleMessageKey], it.icon, it.screenClass)
+                }
             }
         }
     }
 
-    protected fun Node.createNavigationItem(title: String, icon: Drawable, screenClass: KClass<out UIComponent>) {
+    private fun Node.createNavigationItem(title: String, icon: Drawable, screenClass: KClass<out UIComponent>) {
         createNavigationItem(title, icon) {
             if (!isScreenShown(screenClass)) {
                 showScreenUnanimated(screenClass)
@@ -85,4 +89,18 @@ abstract class NavigationMenuScreen(title: String? = null, icon: Node? = null) :
     }
 
     abstract fun Node.createMainContent()
+}
+
+interface NavigationMenuUsing {
+    val navigationMenuItems: List<NavigationItem>
+
+    data class NavigationItem(val titleMessageKey: String, val icon: Drawable, val screenClass: KClass<out UIComponent>)
+}
+
+fun createDefaultNavigationMenu(): List<NavigationMenuUsing.NavigationItem> {
+    return listOf(
+        NavigationMenuUsing.NavigationItem("drawer_menu_item_overview", Drawables.ICON_HOME, OverviewScreen::class),
+        NavigationMenuUsing.NavigationItem("drawer_menu_item_settings", Drawables.ICON_SETTINGS, SettingsScreen::class),
+        NavigationMenuUsing.NavigationItem("drawer_menu_item_about", Drawables.ICON_INFO, AboutScreen::class),
+    )
 }

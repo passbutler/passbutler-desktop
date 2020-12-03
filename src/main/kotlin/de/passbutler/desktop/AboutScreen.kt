@@ -2,6 +2,7 @@ package de.passbutler.desktop
 
 import de.passbutler.common.base.formattedDateTime
 import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBody1
@@ -15,7 +16,7 @@ import tornadofx.paddingTop
 import tornadofx.vbox
 import java.time.Instant
 
-class AboutScreen : NavigationMenuScreen(messages["about_title"]) {
+class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenuItems = createDefaultNavigationMenu()) {
 
     override fun Node.createMainContent() {
         vbox {
