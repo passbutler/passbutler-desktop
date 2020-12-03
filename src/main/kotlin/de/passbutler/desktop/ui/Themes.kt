@@ -225,6 +225,18 @@ abstract class Theme : Stylesheet(), ThemeColors {
             padding = box(marginS, marginM)
             opacity = 0.8
         }
+
+        /**
+         * Buttons
+         */
+
+        floatingActionButtonStyle {
+            backgroundColor = multi(colorAccent)
+            minWidth = 45.px
+            minHeight = 45.px
+            maxWidth = 45.px
+            maxHeight = 45.px
+        }
     }
 
     companion object {
@@ -247,6 +259,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val navigationViewItemStyle by cssclass()
 
         val snackbarLayoutStyle by cssclass()
+        val floatingActionButtonStyle by cssclass()
     }
 }
 

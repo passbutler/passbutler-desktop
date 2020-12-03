@@ -14,6 +14,7 @@ import javafx.scene.effect.Effect
 import javafx.scene.input.MouseButton
 import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
+import javafx.scene.shape.Circle
 import tornadofx.addClass
 import tornadofx.attachTo
 import tornadofx.css
@@ -24,17 +25,25 @@ import tornadofx.px
 typealias JavaTimeDuration = java.time.Duration
 typealias JavaFxDuration = javafx.util.Duration
 
-fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = JFXButton(text.toUpperCase()).attachTo(this, {
-    minWidth = 150.px.value
-    op.invoke(this)
-}) {
+fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = JFXButton(text.toUpperCase()).attachTo(this, op) {
     if (graphic != null) it.graphic = graphic
 }
 
 fun EventTarget.jfxButtonRaised(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = jfxButtonBase(text, graphic) {
+    minWidth = 150.px.value
     buttonType = JFXButton.ButtonType.RAISED
     op.invoke(this)
 }
+
+fun EventTarget.jfxFloatingActionButtonRaised(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = jfxButtonBase(text, graphic) {
+    addClass(Theme.floatingActionButtonStyle)
+
+    buttonType = JFXButton.ButtonType.RAISED
+    shape = Circle(1.px.value)
+
+    op.invoke(this)
+}
+
 
 fun EventTarget.jfxSpinner(op: JFXSpinner.() -> Unit = {}) = JFXSpinner().attachTo(this, op)
 fun EventTarget.jfxSnackbar(snackbarContainer: Pane, op: JFXSnackbar.() -> Unit = {}) = JFXSnackbar(snackbarContainer).attachTo(this, op)

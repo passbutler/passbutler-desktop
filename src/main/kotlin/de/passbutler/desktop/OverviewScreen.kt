@@ -15,6 +15,7 @@ import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.injectWithPrivateScope
+import de.passbutler.desktop.ui.jfxFloatingActionButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.marginXS
@@ -37,6 +38,7 @@ import org.tinylog.kotlin.Logger
 import tornadofx.FX.Companion.messages
 import tornadofx.addClass
 import tornadofx.borderpane
+import tornadofx.bottom
 import tornadofx.cache
 import tornadofx.center
 import tornadofx.get
@@ -113,6 +115,19 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
             // Draw afterwards to apply drop shadow
             top {
                 setupToolbar()
+            }
+
+            bottom {
+                hbox {
+                    alignment = Pos.CENTER_RIGHT
+                    paddingAll = marginM.value
+
+                    jfxFloatingActionButtonRaised("+") {
+                        setOnAction {
+                            Logger.debug("Add entry clicked")
+                        }
+                    }
+                }
             }
         }
     }
