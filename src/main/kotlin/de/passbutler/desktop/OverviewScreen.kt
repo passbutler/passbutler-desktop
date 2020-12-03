@@ -30,6 +30,7 @@ import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
+import javafx.scene.layout.StackPane
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -38,7 +39,6 @@ import org.tinylog.kotlin.Logger
 import tornadofx.FX.Companion.messages
 import tornadofx.addClass
 import tornadofx.borderpane
-import tornadofx.bottom
 import tornadofx.cache
 import tornadofx.center
 import tornadofx.get
@@ -109,25 +109,14 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
                 stackpane {
                     listScreenLayout = createListScreenLayout()
                     emptyScreenLayout = createEmptyScreenLayout()
+
+                    setupAddButton()
                 }
             }
 
             // Draw afterwards to apply drop shadow
             top {
                 setupToolbar()
-            }
-
-            bottom {
-                hbox {
-                    alignment = Pos.CENTER_RIGHT
-                    paddingAll = marginM.value
-
-                    jfxFloatingActionButtonRaised("+") {
-                        setOnAction {
-                            Logger.debug("Add entry clicked")
-                        }
-                    }
-                }
             }
         }
     }
@@ -247,6 +236,19 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"]), Request
             // Obtain focus from search textfield
             onLeftClick {
                 requestFocus()
+            }
+        }
+    }
+
+    private fun StackPane.setupAddButton() {
+        hbox {
+            alignment = Pos.BOTTOM_RIGHT
+            paddingAll = marginM.value
+
+            jfxFloatingActionButtonRaised("+") {
+                setOnAction {
+                    Logger.debug("Add entry clicked")
+                }
             }
         }
     }
