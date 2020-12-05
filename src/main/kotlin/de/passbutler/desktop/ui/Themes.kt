@@ -275,16 +275,16 @@ class LightTheme : Theme(), ThemeColors by Companion {
     }
 
     companion object : ThemeColors {
-        override val colorBackground = whiteMedium
-        override val colorSurface = whiteMedium
+        override val colorBackground = grey00
+        override val colorSurface = grey00
         override val colorPrimary = wineRed
         override val colorPrimaryDark = wineRedDark
         override val colorSecondary = pointRed
         override val colorAccent = pointRed
         override val colorOnPrimary = white
         override val colorOnSecondary = white
-        override val colorOnSurface = greyMedium
-        override val scrimBackground = whiteMediumTransparent
+        override val colorOnSurface = grey80
+        override val scrimBackground = grey00Transparent
         override val colorBackgroundImageTint = Color.web(black.css, 0.0)
         override val textColorPrimary = black
         override val textColorSecondary = blackTransparent
@@ -298,16 +298,16 @@ class DarkTheme : Theme(), ThemeColors by Companion {
     }
 
     companion object : ThemeColors {
-        override val colorBackground = greyMedium
-        override val colorSurface = greyMedium
+        override val colorBackground = grey80
+        override val colorSurface = grey80
         override val colorPrimary = wineRedLight
         override val colorPrimaryDark = wineRed
         override val colorSecondary = pointRed
         override val colorAccent = pointRed
         override val colorOnPrimary = white
         override val colorOnSecondary = white
-        override val colorOnSurface = whiteMedium
-        override val scrimBackground = greyMediumTransparent
+        override val colorOnSurface = grey00
+        override val scrimBackground = grey80Transparent
         override val colorBackgroundImageTint = Color.web(black.css, 0.3)
         override val textColorPrimary = white
         override val textColorSecondary = whiteTransparent

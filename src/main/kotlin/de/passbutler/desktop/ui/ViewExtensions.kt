@@ -116,7 +116,7 @@ private fun dropShadow(): DropShadow {
         offsetY = 1.px.value
 
         // No theming here because not styleable
-        color = Color.web(greyDark.css, 0.5)
+        color = Color.web(grey90.css, 0.5)
     }
 }
 

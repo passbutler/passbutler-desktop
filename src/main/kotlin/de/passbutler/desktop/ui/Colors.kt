@@ -22,17 +22,23 @@ val blackTransparent = Color.web("#000000", 0.65)
 
 val transparent = Color.web("#000000", 0.0)
 
-val whiteMedium = Color.web("#FAFAFA")
-val whiteMediumTransparent = Color.web("#FAFAFA", 0.5)
+val grey00 = Color.web("#FAFAFA")
+val grey10 = Color.web("#E1E1E1")
+val grey20 = Color.web("#C8C8C8")
+val grey30 = Color.web("#AFAFAF")
+val grey40 = Color.web("#969696")
+val grey50 = Color.web("#7D7D7D")
+val grey60 = Color.web("#646464")
+val grey70 = Color.web("#4B4B4B")
+val grey80 = Color.web("#323232")
+val grey90 = Color.web("#191919")
 
-val greyMedium = Color.web("#313131")
-val greyMediumTransparent = Color.web("#313131", 0.5)
+val grey00Transparent = Color.web("#FAFAFA", 0.5)
+val grey80Transparent = Color.web("#323232", 0.5)
 
 /**
  * Desktop only colors
  */
-
-val greyDark = Color.web("#171717")
 
 // Colors used for debugging only
 val magenta = Color.web("#FF00FF")
