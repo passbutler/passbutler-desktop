@@ -246,6 +246,9 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             alignment = Pos.BOTTOM_RIGHT
             paddingAll = marginM.value
 
+            // Do not consume clicks on lower panes
+            isPickOnBounds = false
+
             jfxFloatingActionButtonRaised("+") {
                 setOnAction {
                     Logger.debug("Add entry clicked")
