@@ -240,8 +240,9 @@ abstract class Theme : Stylesheet(), ThemeColors {
     }
 
     companion object {
-        // Disabled value took from "modena.css"
+        // Value took from "modena.css"
         const val OPACITY_DISABLED = 0.4
+
         const val OPACITY_PRESSED = 0.8
 
         val backgroundStyle by cssclass()
