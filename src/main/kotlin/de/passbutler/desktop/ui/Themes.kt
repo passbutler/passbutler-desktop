@@ -283,7 +283,7 @@ class LightTheme : Theme(), ThemeColors by Companion {
 
     companion object : ThemeColors {
         override val colorBackground = grey00
-        override val colorBackgroundEmphasized = grey02
+        override val colorBackgroundEmphasized = grey04
         override val colorSurface = grey00
         override val colorPrimary = wineRed
         override val colorPrimaryDark = wineRedDark
@@ -307,7 +307,7 @@ class DarkTheme : Theme(), ThemeColors by Companion {
 
     companion object : ThemeColors {
         override val colorBackground = grey80
-        override val colorBackgroundEmphasized = grey82
+        override val colorBackgroundEmphasized = grey84
         override val colorSurface = grey80
         override val colorPrimary = wineRedLight
         override val colorPrimaryDark = wineRed

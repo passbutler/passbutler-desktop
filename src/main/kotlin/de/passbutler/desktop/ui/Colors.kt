@@ -36,13 +36,12 @@ val grey90 = Color.web("#191919")
 val grey00Transparent = Color.web("#FAFAFA", 0.5)
 val grey80Transparent = Color.web("#323232", 0.5)
 
-val grey02 = Color.web("#f5f5f5")
-val grey82 = Color.web("#2d2d2d")
-
-
 /**
  * Desktop only colors
  */
+
+val grey04 = Color.web("#f0f0f0")
+val grey84 = Color.web("#282828")
 
 // Colors used for debugging only
 val magenta = Color.web("#FF00FF")
