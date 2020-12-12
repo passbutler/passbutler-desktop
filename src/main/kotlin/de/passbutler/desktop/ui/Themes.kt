@@ -18,6 +18,7 @@ import kotlin.reflect.KClass
 
 interface ThemeColors {
     val colorBackground: Color
+    val colorBackgroundEmphasized: Color
 
     val colorSurface: Color
 
@@ -166,16 +167,21 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         listCell {
+            backgroundColor = multi(colorBackground)
+
+            and(even) {
+                backgroundColor += colorBackground
+            }
+
+            and(odd) {
+                backgroundColor += colorBackgroundEmphasized
+            }
+
+            // Apply pressed state only for filled, not for empty list cells
             and(filled) {
-                backgroundColor += colorBackground
-            }
-
-            and(selected) {
-                backgroundColor += colorBackground
-            }
-
-            and(focused) {
-                backgroundColor += colorBackground
+                and(pressed) {
+                    opacity = OPACITY_PRESSED
+                }
             }
 
             padding = box(0.px)
@@ -277,6 +283,7 @@ class LightTheme : Theme(), ThemeColors by Companion {
 
     companion object : ThemeColors {
         override val colorBackground = grey00
+        override val colorBackgroundEmphasized = grey02
         override val colorSurface = grey00
         override val colorPrimary = wineRed
         override val colorPrimaryDark = wineRedDark
@@ -300,6 +307,7 @@ class DarkTheme : Theme(), ThemeColors by Companion {
 
     companion object : ThemeColors {
         override val colorBackground = grey80
+        override val colorBackgroundEmphasized = grey82
         override val colorSurface = grey80
         override val colorPrimary = wineRedLight
         override val colorPrimaryDark = wineRed

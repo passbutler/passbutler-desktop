@@ -36,6 +36,10 @@ val grey90 = Color.web("#191919")
 val grey00Transparent = Color.web("#FAFAFA", 0.5)
 val grey80Transparent = Color.web("#323232", 0.5)
 
+val grey02 = Color.web("#f5f5f5")
+val grey82 = Color.web("#2d2d2d")
+
+
 /**
  * Desktop only colors
  */
