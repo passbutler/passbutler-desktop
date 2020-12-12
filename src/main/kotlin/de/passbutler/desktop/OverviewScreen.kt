@@ -273,7 +273,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
                 // Update relative time in toolbar every minute
                 updateToolbarSubtitle()
-                delay(60_000)
+                delay(10_000)
             }
         }
     }
@@ -282,6 +282,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         toolbarSynchronizationContainer?.apply {
             isVisible = viewModel.loggedInUserViewModel?.userType == UserType.REMOTE
         }
+
+        updateToolbarSubtitle()
     }
 
     private fun updateToolbarSubtitle() {
