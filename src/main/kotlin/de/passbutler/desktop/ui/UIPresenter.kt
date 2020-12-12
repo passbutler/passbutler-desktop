@@ -23,12 +23,12 @@ class UIPresenter(
 
     private var shownScreenClass: KClass<out UIComponent>? = null
 
-    override fun <T : UIComponent> showScreen(screenClass: KClass<T>, userTriggered: Boolean, transitionType: TransitionType) {
+    override fun <T : UIComponent> showScreen(screenClass: KClass<T>, parameters: Map<*, Any?>?, userTriggered: Boolean, transitionType: TransitionType) {
         val debouncedViewTransactionEnsured = ensureDebouncedViewTransaction().takeIf { userTriggered } ?: true
 
         if (debouncedViewTransactionEnsured) {
             rootScreen.contentContainer?.getChildList()?.apply {
-                val screenInstance = find(screenClass)
+                val screenInstance = find(screenClass, params = parameters)
                 rootScreen.title = screenInstance.title
 
                 if (screenInstance is BaseUIComponent) {

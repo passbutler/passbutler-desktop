@@ -20,8 +20,8 @@ interface BaseUIComponent : UIPresenting {
     var transitionType: TransitionType
     var uiPresentingDelegate: UIPresenting?
 
-    override fun <T : UIComponent> showScreen(screenClass: KClass<T>, userTriggered: Boolean, transitionType: TransitionType) {
-        uiPresentingDelegate?.showScreen(screenClass, userTriggered, transitionType)
+    override fun <T : UIComponent> showScreen(screenClass: KClass<T>, parameters: Map<*, Any?>?, userTriggered: Boolean, transitionType: TransitionType) {
+        uiPresentingDelegate?.showScreen(screenClass, parameters, userTriggered, transitionType)
     }
 
     override fun <T : UIComponent> isScreenShown(screenClass: KClass<T>): Boolean {

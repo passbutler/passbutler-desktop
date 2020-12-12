@@ -20,6 +20,7 @@ import de.passbutler.desktop.ui.jfxFloatingActionButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.marginXS
+import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline
@@ -196,8 +197,12 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
                 }
             }
 
-            selectionModel.selectedItemProperty().onChange {
-                Logger.debug("Selected $it")
+            selectionModel.selectedItemProperty().onChange { itemEntry ->
+                Logger.debug("Selected item $itemEntry")
+
+                if (itemEntry != null) {
+                    showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("id" to itemEntry.itemViewModel.id))
+                }
             }
         }
     }
@@ -251,7 +256,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
             jfxFloatingActionButtonRaised("+") {
                 setOnAction {
-                    Logger.debug("Add entry clicked")
+                    showScreenUnanimated(ItemDetailScreen::class)
                 }
             }
         }
