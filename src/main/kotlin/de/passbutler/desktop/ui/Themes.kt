@@ -1,5 +1,6 @@
 package de.passbutler.desktop.ui
 
+import javafx.geometry.Pos
 import javafx.scene.layout.BackgroundRepeat
 import javafx.scene.layout.BackgroundSize
 import javafx.scene.paint.Color
@@ -215,6 +216,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         navigationViewItemStyle {
+            alignment = Pos.CENTER_LEFT
+
             and(pressed) {
                 opacity = OPACITY_PRESSED
             }

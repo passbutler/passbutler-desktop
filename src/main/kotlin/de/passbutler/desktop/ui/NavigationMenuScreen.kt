@@ -11,7 +11,6 @@ import tornadofx.borderpane
 import tornadofx.center
 import tornadofx.get
 import tornadofx.hbox
-import tornadofx.label
 import tornadofx.left
 import tornadofx.onLeftClick
 import tornadofx.paddingLeft
@@ -80,7 +79,7 @@ abstract class NavigationMenuScreen(
 
             smallSVGIcon(icon.svgPath)
 
-            label(title) {
+            textLabelWrapped(title) {
                 paddingLeft = marginS.value
             }
 
