@@ -46,7 +46,6 @@ import tornadofx.center
 import tornadofx.get
 import tornadofx.hbox
 import tornadofx.insets
-import tornadofx.label
 import tornadofx.left
 import tornadofx.listview
 import tornadofx.onChange
@@ -217,12 +216,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             vbox {
                 paddingLeft = marginM.value
 
-                label(listCell.itemProperty().select { it.titleProperty }) {
-                    addClass(Theme.textHeadline1Style)
-                }
-
-                label(listCell.itemProperty().select { it.subtitleProperty }) {
-                    addClass(Theme.textBody1Style)
+                textLabelHeadline(listCell.itemProperty().select { it.titleProperty })
+                textLabelBody1(listCell.itemProperty().select { it.subtitleProperty }) {
                     paddingTop = marginS.value
                 }
             }

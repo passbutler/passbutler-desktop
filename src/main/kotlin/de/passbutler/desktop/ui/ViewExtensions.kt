@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXSpinner
 import com.jfoenix.controls.JFXToggleButton
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import javafx.animation.Animation
+import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.scene.Node
 import javafx.scene.control.Label
@@ -57,12 +58,27 @@ fun EventTarget.textLabelWrapped(text: String = "", graphic: Node? = null, op: L
     op.invoke(this)
 }
 
+fun EventTarget.textLabelWrapped(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = label(observable) {
+    isWrapText = true
+    op.invoke(this)
+}
+
 fun EventTarget.textLabelHeadline(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
     addClass(Theme.textHeadline1Style)
     op.invoke(this)
 }
 
+fun EventTarget.textLabelHeadline(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelWrapped(observable) {
+    addClass(Theme.textHeadline1Style)
+    op.invoke(this)
+}
+
 fun EventTarget.textLabelBody1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
+    addClass(Theme.textBody1Style)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelBody1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelWrapped(observable) {
     addClass(Theme.textBody1Style)
     op.invoke(this)
 }
