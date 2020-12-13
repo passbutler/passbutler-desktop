@@ -27,7 +27,7 @@ abstract class NavigationMenuScreen(
 
     final override val root = borderpane()
 
-    init {
+    protected fun setupRootView() {
         with(root) {
             center {
                 createMainContent()

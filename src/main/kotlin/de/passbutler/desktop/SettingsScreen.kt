@@ -37,6 +37,10 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigati
 
     private val viewModel by injectWithPrivateScope<SettingsViewModel>()
 
+    init {
+        setupRootView()
+    }
+
     override fun Node.createMainContent() {
         vbox {
             paddingAll = marginM.value

@@ -18,6 +18,10 @@ import java.time.Instant
 
 class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenuItems = createDefaultNavigationMenu()) {
 
+    init {
+        setupRootView()
+    }
+
     override fun Node.createMainContent() {
         vbox {
             paddingAll = marginM.value

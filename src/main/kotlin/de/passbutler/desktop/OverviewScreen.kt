@@ -104,6 +104,10 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         updateToolbarSynchronizationContainer()
     }
 
+    init {
+        setupRootView()
+    }
+
     override fun Node.createMainContent() {
         borderpane {
             center {
@@ -189,7 +193,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     }
 
     private fun Node.createListScreenLayout(): ListView<ItemEntry> {
-        return listview {
+        return listview(itemEntries) {
             cellFormat {
                 graphic = cache {
                     createItemEntryView(this@cellFormat)
@@ -259,8 +263,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
     override fun onDock() {
         super.onDock()
-
-        listScreenLayout?.items = itemEntries
 
         viewModel.loggedInUserViewModel?.webservices?.addObserver(this, true, webservicesInitializedObserver)
         viewModel.loggedInUserViewModel?.itemViewModels?.addObserver(this, true, itemViewModelsObserver)

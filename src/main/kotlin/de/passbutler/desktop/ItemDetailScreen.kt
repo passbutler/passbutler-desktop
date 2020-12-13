@@ -14,6 +14,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     private val id by param<String?>(null)
 
     init {
+        setupRootView()
         title = messages["itemdetail_title_new"]
     }
 
