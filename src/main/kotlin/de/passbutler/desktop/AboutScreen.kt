@@ -7,7 +7,7 @@ import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelBody2
-import de.passbutler.desktop.ui.textLabelHeadline
+import de.passbutler.desktop.ui.textLabelHeadline1
 import javafx.scene.Node
 import tornadofx.FX.Companion.messages
 import tornadofx.get
@@ -22,7 +22,7 @@ class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenu
         vbox {
             paddingAll = marginM.value
 
-            textLabelHeadline(messages["about_header"])
+            textLabelHeadline1(messages["about_header"])
 
             textLabelBody1 {
                 paddingTop = marginS.value

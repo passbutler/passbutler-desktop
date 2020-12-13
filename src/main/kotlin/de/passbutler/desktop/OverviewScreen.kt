@@ -23,7 +23,7 @@ import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline
+import de.passbutler.desktop.ui.textLabelHeadline1
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.transformation.FilteredList
@@ -216,7 +216,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             vbox {
                 paddingLeft = marginM.value
 
-                textLabelHeadline(listCell.itemProperty().select { it.titleProperty })
+                textLabelHeadline1(listCell.itemProperty().select { it.titleProperty })
                 textLabelBody1(listCell.itemProperty().select { it.subtitleProperty }) {
                     paddingTop = marginS.value
                 }
@@ -229,7 +229,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             paddingAll = marginM.value
             alignment = Pos.CENTER
 
-            textLabelHeadline(messages["overview_empty_screen_title"])
+            textLabelHeadline1(messages["overview_empty_screen_title"])
             textLabelBody1(messages["overview_empty_screen_description"]) {
                 paddingTop = marginS.value
             }

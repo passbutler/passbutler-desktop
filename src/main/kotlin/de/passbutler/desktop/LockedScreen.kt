@@ -15,7 +15,7 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline
+import de.passbutler.desktop.ui.textLabelHeadline1
 import de.passbutler.desktop.ui.validatorWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
@@ -97,7 +97,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), RequestSendi
                 setupDebugPresetsButton()
             }
 
-            textLabelHeadline(messages["locked_screen_header_normal"]) {
+            textLabelHeadline1(messages["locked_screen_header_normal"]) {
                 paddingTop = marginM.value
                 textAlignment = TextAlignment.CENTER
             }

@@ -3,7 +3,7 @@ package de.passbutler.desktop
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.marginM
-import de.passbutler.desktop.ui.textLabelHeadline
+import de.passbutler.desktop.ui.textLabelHeadline1
 import javafx.scene.Node
 import tornadofx.get
 import tornadofx.paddingAll
@@ -21,7 +21,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         vbox {
             paddingAll = marginM.value
 
-            textLabelHeadline(messages["itemdetail_title_new"])
+            textLabelHeadline1(messages["itemdetail_title_new"])
         }
     }
 }

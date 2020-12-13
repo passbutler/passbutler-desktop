@@ -63,12 +63,12 @@ fun EventTarget.textLabelWrapped(observable: ObservableValue<String>, op: Label.
     op.invoke(this)
 }
 
-fun EventTarget.textLabelHeadline(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
+fun EventTarget.textLabelHeadline1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
     addClass(Theme.textHeadline1Style)
     op.invoke(this)
 }
 
-fun EventTarget.textLabelHeadline(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelWrapped(observable) {
+fun EventTarget.textLabelHeadline1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelWrapped(observable) {
     addClass(Theme.textHeadline1Style)
     op.invoke(this)
 }

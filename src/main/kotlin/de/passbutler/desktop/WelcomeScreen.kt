@@ -10,7 +10,7 @@ import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
 import de.passbutler.desktop.ui.showSaveVaultFileChooser
 import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline
+import de.passbutler.desktop.ui.textLabelHeadline1
 import javafx.geometry.Pos
 import javafx.scene.Node
 import tornadofx.FX.Companion.messages
@@ -110,7 +110,7 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
                 prefWidth = 420.px
             }
 
-            textLabelHeadline(title)
+            textLabelHeadline1(title)
 
             textLabelBody1(description) {
                 paddingTop = marginS.value
