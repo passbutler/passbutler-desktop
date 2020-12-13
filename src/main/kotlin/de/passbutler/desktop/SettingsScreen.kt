@@ -9,32 +9,59 @@ import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.ThemeManager
 import de.passbutler.desktop.ui.ThemeType
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
+import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
+import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.onLeftClickIgnoringCount
+import de.passbutler.desktop.ui.textLabelBody1
+import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.textLabelHeadline2
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ToggleButton
+import javafx.scene.text.FontWeight
 import tornadofx.FX.Companion.messages
+import tornadofx.borderpane
 import tornadofx.get
+import tornadofx.left
 import tornadofx.paddingAll
+import tornadofx.paddingTop
+import tornadofx.right
+import tornadofx.style
 import tornadofx.vbox
 
 class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
+
+    private val viewModel by injectWithPrivateScope<SettingsViewModel>()
 
     override fun Node.createMainContent() {
         vbox {
             paddingAll = marginM.value
 
-            setupDarkThemeSetting()
+            textLabelHeadline1(messages["settings_title"])
+
+            setupGeneralCategory()
+            setupSecurityCategory()
         }
     }
 
-    private fun setupDarkThemeSetting() {
-        jfxToggleButton(messages["settings_dark_theme_setting_title"]) {
-            isSelected = (ThemeManager.themeType == ThemeType.DARK)
+    private fun Node.setupGeneralCategory() {
+        textLabelHeadline2(messages["settings_category_general_title"]) {
+            paddingTop = marginM.value
+        }
 
-            onLeftClickIgnoringCount {
-                saveThemeType()
+        setupDarkThemeItem()
+    }
+
+    private fun Node.setupDarkThemeItem() {
+        setupSettingItem(messages["settings_dark_theme_setting_title"], messages["settings_dark_theme_setting_summary"]) {
+            jfxToggleButton {
+                isSelected = (ThemeManager.themeType == ThemeType.DARK)
+
+                onLeftClickIgnoringCount {
+                    saveThemeType()
+                }
             }
         }
     }
@@ -65,6 +92,50 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigati
             when (saveSettingResult) {
                 is Success -> Success(newThemeType)
                 is Failure -> Failure(saveSettingResult.throwable)
+            }
+        }
+    }
+
+    private fun Node.setupSecurityCategory() {
+        textLabelHeadline2(messages["settings_category_security_title"]) {
+            paddingTop = marginM.value
+        }
+
+        setupHidePasswordsItem()
+    }
+
+    private fun Node.setupHidePasswordsItem() {
+        setupSettingItem(messages["settings_hide_passwords_setting_title"], messages["settings_hide_passwords_setting_summary"]) {
+            jfxToggleButton {
+                isSelected = viewModel.hidePasswordsEnabledSetting
+
+                onLeftClickIgnoringCount {
+                    viewModel.hidePasswordsEnabledSetting = !viewModel.hidePasswordsEnabledSetting
+                }
+            }
+        }
+    }
+
+    private fun Node.setupSettingItem(title: String, summary: String, settingNode: Node.() -> Unit) {
+        borderpane {
+            left {
+                vbox {
+                    alignment = Pos.CENTER_LEFT
+
+                    textLabelBody1(title) {
+                        style {
+                            fontWeight = FontWeight.BOLD
+                        }
+                    }
+
+                    textLabelBody1(summary) {
+                        paddingTop = marginXS.value
+                    }
+                }
+            }
+
+            right {
+                settingNode()
             }
         }
     }

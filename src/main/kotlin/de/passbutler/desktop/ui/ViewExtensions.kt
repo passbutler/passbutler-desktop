@@ -45,10 +45,9 @@ fun EventTarget.jfxFloatingActionButtonRaised(text: String = "", graphic: Node? 
     op.invoke(this)
 }
 
-
 fun EventTarget.jfxSpinner(op: JFXSpinner.() -> Unit = {}) = JFXSpinner().attachTo(this, op)
 fun EventTarget.jfxSnackbar(snackbarContainer: Pane, op: JFXSnackbar.() -> Unit = {}) = JFXSnackbar(snackbarContainer).attachTo(this, op)
-fun EventTarget.jfxToggleButton(text: String, op: JFXToggleButton.() -> Unit = {}) = JFXToggleButton().attachTo(this) {
+fun EventTarget.jfxToggleButton(text: String? = null, op: JFXToggleButton.() -> Unit = {}) = JFXToggleButton().attachTo(this) {
     this.text = text
     op.invoke(this)
 }
@@ -70,6 +69,11 @@ fun EventTarget.textLabelHeadline1(text: String = "", graphic: Node? = null, op:
 
 fun EventTarget.textLabelHeadline1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelWrapped(observable) {
     addClass(Theme.textHeadline1Style)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelHeadline2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
+    addClass(Theme.textHeadline2Style)
     op.invoke(this)
 }
 

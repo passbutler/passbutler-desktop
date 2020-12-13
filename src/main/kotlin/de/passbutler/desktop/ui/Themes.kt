@@ -94,6 +94,13 @@ abstract class Theme : Stylesheet(), ThemeColors {
             fontSize = textSizeLarge
         }
 
+        textHeadline2Style {
+            fontFamily = fontLight
+            textFill = textColorSecondary
+            fontWeight = FontWeight.LIGHT
+            fontSize = textSizeMedium
+        }
+
         textBody1Style {
             fontSize = textSizeMedium
         }
@@ -261,6 +268,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val scrimBackgroundStyle by cssclass()
 
         val textHeadline1Style by cssclass()
+        val textHeadline2Style by cssclass()
         val textBody1Style by cssclass()
         val textBody2Style by cssclass()
 
