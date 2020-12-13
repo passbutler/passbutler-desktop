@@ -12,6 +12,7 @@ import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
+import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.onLeftClickIgnoringCount
 import de.passbutler.desktop.ui.textLabelBody1
@@ -20,14 +21,15 @@ import de.passbutler.desktop.ui.textLabelHeadline2
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ToggleButton
+import javafx.scene.layout.Priority
 import javafx.scene.text.FontWeight
 import tornadofx.FX.Companion.messages
-import tornadofx.borderpane
 import tornadofx.get
-import tornadofx.left
+import tornadofx.hbox
+import tornadofx.hgrow
 import tornadofx.paddingAll
 import tornadofx.paddingTop
-import tornadofx.right
+import tornadofx.region
 import tornadofx.style
 import tornadofx.vbox
 
@@ -117,26 +119,28 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigati
     }
 
     private fun Node.setupSettingItem(title: String, summary: String, settingNode: Node.() -> Unit) {
-        borderpane {
-            left {
-                vbox {
-                    alignment = Pos.CENTER_LEFT
+        hbox {
+            paddingTop = marginS.value
 
-                    textLabelBody1(title) {
-                        style {
-                            fontWeight = FontWeight.BOLD
-                        }
-                    }
+            vbox {
+                alignment = Pos.CENTER_LEFT
 
-                    textLabelBody1(summary) {
-                        paddingTop = marginXS.value
+                textLabelBody1(title) {
+                    style {
+                        fontWeight = FontWeight.BOLD
                     }
+                }
+
+                textLabelBody1(summary) {
+                    paddingTop = marginXS.value
                 }
             }
 
-            right {
-                settingNode()
+            region {
+                hgrow = Priority.ALWAYS
             }
+
+            settingNode()
         }
     }
 }
