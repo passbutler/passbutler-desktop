@@ -23,7 +23,6 @@ import de.passbutler.desktop.ui.validatorWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.Parent
 import javafx.scene.control.Button
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
@@ -58,14 +57,20 @@ import tornadofx.whenDocked
 
 class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
 
-    override val root = createRootView()
+    override val root = stackpane()
 
     private val viewModel by injectWithPrivateScope<LoginViewModel>()
 
     private var serverUrlField: Field? = null
 
-    private fun createRootView(): Parent {
-        return stackpane {
+    init {
+        with(root) {
+            setupRootView()
+        }
+    }
+
+    private fun Node.setupRootView() {
+        stackpane {
             pane {
                 addClass(Theme.abstractBackgroundStyle)
             }
