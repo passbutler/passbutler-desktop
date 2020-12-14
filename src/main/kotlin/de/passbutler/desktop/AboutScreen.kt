@@ -22,7 +22,7 @@ class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenu
         setupRootView()
     }
 
-    override fun Node.createMainContent() {
+    override fun Node.setupMainContent() {
         vbox {
             paddingAll = marginM.value
 

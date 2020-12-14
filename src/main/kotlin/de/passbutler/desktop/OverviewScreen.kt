@@ -108,7 +108,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         setupRootView()
     }
 
-    override fun Node.createMainContent() {
+    override fun Node.setupMainContent() {
         borderpane {
             center {
                 stackpane {

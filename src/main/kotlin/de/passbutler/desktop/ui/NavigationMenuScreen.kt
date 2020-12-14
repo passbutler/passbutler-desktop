@@ -30,12 +30,12 @@ abstract class NavigationMenuScreen(
     protected fun setupRootView() {
         with(root) {
             center {
-                createMainContent()
+                setupMainContent()
             }
 
             // Draw afterwards to apply drop shadow over content area
             left {
-                createNavigationMenu()
+                setupNavigationMenu()
             }
 
             // Obtain focus from any inputs if clicked on layout
@@ -45,7 +45,7 @@ abstract class NavigationMenuScreen(
         }
     }
 
-    private fun Node.createNavigationMenu() {
+    private fun Node.setupNavigationMenu() {
         stackpane {
             pane {
                 addClass(Theme.abstractBackgroundStyle)
@@ -92,7 +92,7 @@ abstract class NavigationMenuScreen(
         }
     }
 
-    abstract fun Node.createMainContent()
+    abstract fun Node.setupMainContent()
 }
 
 interface NavigationMenuUsing {

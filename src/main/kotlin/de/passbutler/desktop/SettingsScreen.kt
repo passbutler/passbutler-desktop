@@ -41,7 +41,7 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigati
         setupRootView()
     }
 
-    override fun Node.createMainContent() {
+    override fun Node.setupMainContent() {
         vbox {
             paddingAll = marginM.value
 

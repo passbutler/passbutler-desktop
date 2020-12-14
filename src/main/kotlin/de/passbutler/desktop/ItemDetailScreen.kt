@@ -78,7 +78,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         setupRootView()
     }
 
-    override fun Node.createMainContent() {
+    override fun Node.setupMainContent() {
         vbox {
             paddingAll = marginM.value
 
