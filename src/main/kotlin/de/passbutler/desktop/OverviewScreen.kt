@@ -249,11 +249,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             textLabelBody1(messages["overview_empty_screen_description"]) {
                 paddingTop = marginS.value
             }
-
-            // Obtain focus from search textfield
-            onLeftClick {
-                requestFocus()
-            }
         }
     }
 

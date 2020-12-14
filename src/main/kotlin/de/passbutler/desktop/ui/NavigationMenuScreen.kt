@@ -37,6 +37,11 @@ abstract class NavigationMenuScreen(
             left {
                 createNavigationMenu()
             }
+
+            // Obtain focus from any inputs if clicked on layout
+            onLeftClick {
+                requestFocus()
+            }
         }
     }
 

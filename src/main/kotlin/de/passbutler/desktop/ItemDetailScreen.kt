@@ -29,6 +29,7 @@ import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
+import tornadofx.onLeftClick
 import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.passwordfield
