@@ -1,8 +1,9 @@
 package de.passbutler.desktop.ui
 
-import com.jfoenix.controls.JFXSnackbar
+import de.passbutler.common.ui.BannerPresenting
 import de.passbutler.common.ui.DebouncedUIPresenting
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
+import de.passbutler.common.ui.ProgressPresenting
 import de.passbutler.common.ui.SLIDE_TRANSITION_DURATION
 import de.passbutler.common.ui.TransitionType
 import de.passbutler.desktop.RootScreen
@@ -17,7 +18,9 @@ import kotlin.reflect.KClass
 
 class UIPresenter(
     private val rootScreen: RootScreen
-) : UIPresenting, DebouncedUIPresenting {
+) : UIPresenting, DebouncedUIPresenting,
+    ProgressPresenting by ProgressPresenter(rootScreen),
+    BannerPresenting by BannerPresenter(rootScreen) {
 
     override var lastViewTransactionTime: Instant? = null
 
@@ -51,10 +54,24 @@ class UIPresenter(
         }
     }
 
+    private fun TransitionType.createViewTransition(): ViewTransition? {
+        return when (this) {
+            TransitionType.MODAL -> {
+                // Not supported at the moment
+                null
+            }
+            TransitionType.SLIDE -> ViewTransition.Slide(SLIDE_TRANSITION_DURATION.toJavaFxDuration())
+            TransitionType.FADE -> ViewTransition.Fade(FADE_TRANSITION_DURATION.toJavaFxDuration())
+            TransitionType.NONE -> null
+        }
+    }
+
     override fun <T : UIComponent> isScreenShown(screenClass: KClass<T>): Boolean {
         return shownScreenClass == screenClass
     }
+}
 
+class ProgressPresenter(private val rootScreen: RootScreen) : ProgressPresenting {
     override fun showProgress() {
         rootScreen.progressView?.showFadeInOutAnimation(true)
     }
@@ -62,25 +79,15 @@ class UIPresenter(
     override fun hideProgress() {
         rootScreen.progressView?.showFadeInOutAnimation(false)
     }
+}
 
+class BannerPresenter(private val rootScreen: RootScreen) : BannerPresenting {
     override fun showInformation(message: String) {
-        rootScreen.bannerView?.enqueue(JFXSnackbar.SnackbarEvent(SnackbarLayout(message)))
+        rootScreen.bannerView?.show(message)
     }
 
     override fun showError(message: String) {
         // Same as information at the moment
         showInformation(message)
-    }
-}
-
-private fun TransitionType.createViewTransition(): ViewTransition? {
-    return when (this) {
-        TransitionType.MODAL -> {
-            // Not supported at the moment
-            null
-        }
-        TransitionType.SLIDE -> ViewTransition.Slide(SLIDE_TRANSITION_DURATION.toJavaFxDuration())
-        TransitionType.FADE -> ViewTransition.Fade(FADE_TRANSITION_DURATION.toJavaFxDuration())
-        TransitionType.NONE -> null
     }
 }

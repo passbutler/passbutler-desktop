@@ -1,23 +1,23 @@
 package de.passbutler.desktop
 
-import com.jfoenix.controls.JFXSnackbar
 import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.ui.BannerView
 import de.passbutler.desktop.ui.BaseView
 import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.UIPresenter
 import de.passbutler.desktop.ui.bottomDropShadow
-import de.passbutler.desktop.ui.jfxSnackbar
 import de.passbutler.desktop.ui.jfxSpinner
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
 import de.passbutler.desktop.ui.showSaveVaultFileChooser
+import de.passbutler.desktop.ui.snackbarBannerView
 import javafx.application.Platform
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Menu
-import javafx.scene.layout.Pane
+import javafx.scene.layout.StackPane
 import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
 import tornadofx.UIComponent
@@ -45,7 +45,7 @@ class RootScreen : BaseView(), RequestSending {
     var progressView: Node? = null
         private set
 
-    var bannerView: JFXSnackbar? = null
+    var bannerView: BannerView? = null
         private set
 
     private var menuView: Menu? = null
@@ -100,6 +100,19 @@ class RootScreen : BaseView(), RequestSending {
         viewModel.rootScreenState.removeObserver(rootScreenStateObserver)
 
         Logger.debug("RootScreen was undocked")
+    }
+
+    private fun StackPane.createProgressView(): Node {
+        return hbox(alignment = Pos.CENTER) {
+            addClass(Theme.scrimBackgroundStyle)
+
+            jfxSpinner()
+            isVisible = false
+        }
+    }
+
+    private fun StackPane.createBannerView(): BannerView {
+        return snackbarBannerView(this)
     }
 
     private fun updateMenu() {
@@ -183,17 +196,4 @@ class RootScreen : BaseView(), RequestSending {
             showScreen(screenClass, userTriggered = false)
         }
     }
-}
-
-private fun Pane.createProgressView(): Pane {
-    return hbox(alignment = Pos.CENTER) {
-        addClass(Theme.scrimBackgroundStyle)
-
-        jfxSpinner()
-        isVisible = false
-    }
-}
-
-private fun Pane.createBannerView(): JFXSnackbar {
-    return jfxSnackbar(this)
 }
