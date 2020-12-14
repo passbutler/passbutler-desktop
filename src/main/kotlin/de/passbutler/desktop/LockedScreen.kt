@@ -111,8 +111,6 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), RequestSendi
                 paddingTop = marginS.value
                 paddingBottom = marginM.value
 
-                spacing = marginS.value
-
                 createPasswordUrlField()
             }
 
