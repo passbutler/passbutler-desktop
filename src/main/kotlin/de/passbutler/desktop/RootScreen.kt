@@ -9,7 +9,6 @@ import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.UIPresenter
 import de.passbutler.desktop.ui.bottomDropShadow
-import de.passbutler.desktop.ui.jfxSpinner
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
 import de.passbutler.desktop.ui.showSaveVaultFileChooser
 import de.passbutler.desktop.ui.snackbarBannerView
@@ -31,6 +30,7 @@ import tornadofx.hbox
 import tornadofx.item
 import tornadofx.menu
 import tornadofx.menubar
+import tornadofx.progressindicator
 import tornadofx.stackpane
 import tornadofx.top
 import kotlin.reflect.KClass
@@ -106,7 +106,8 @@ class RootScreen : BaseView(), RequestSending {
         return hbox(alignment = Pos.CENTER) {
             addClass(Theme.scrimBackgroundStyle)
 
-            jfxSpinner()
+            progressindicator()
+
             isVisible = false
         }
     }
