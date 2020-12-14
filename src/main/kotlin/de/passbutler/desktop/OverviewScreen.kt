@@ -168,6 +168,10 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
                 itemEntries.setPredicate(newPredicate)
             }
+
+            shortcut("Ctrl+F") {
+                requestFocus()
+            }
         }
     }
 
@@ -180,15 +184,23 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
             toolbarSynchronizationIcon = smallSVGIcon(Drawables.ICON_REFRESH.svgPath) {
                 onLeftClick {
-                    if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
-                        synchronizeData(userTriggered = true)
-                    }
+                    synchronizeData()
                 }
             }
 
             toolbarSynchronizationSubtitle = textLabelBody1 {
                 paddingTop = marginXS.value
             }
+
+            shortcut("Ctrl+R") {
+                synchronizeData()
+            }
+        }
+    }
+
+    private fun synchronizeData() {
+        if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
+            synchronizeData(userTriggered = true)
         }
     }
 
