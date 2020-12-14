@@ -216,7 +216,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
                 Logger.debug("Selected item $itemEntry")
 
                 if (itemEntry != null) {
-                    showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("id" to itemEntry.itemViewModel.id))
+                    showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to itemEntry.itemViewModel.id))
                 }
             }
         }
@@ -267,7 +267,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
             jfxFloatingActionButtonRaised("+") {
                 setOnAction {
-                    showScreenUnanimated(ItemDetailScreen::class)
+                    showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to null))
                 }
             }
         }

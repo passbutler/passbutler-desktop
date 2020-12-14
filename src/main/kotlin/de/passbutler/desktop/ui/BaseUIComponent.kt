@@ -86,6 +86,6 @@ abstract class BaseFragment(title: String? = null, icon: Node? = null) : Fragmen
 /**
  * Injects a `ViewModel` with private scope to ensure it is always a non-shared instance.
  */
-inline fun <reified T> Component.injectWithPrivateScope()
+inline fun <reified T> Component.injectWithPrivateScope(parameters: Map<String, Any?>? = null)
     where T : ViewModel,
-          T : ScopedInstance = inject<T>(Scope())
+          T : ScopedInstance = inject<T>(Scope(), parameters)

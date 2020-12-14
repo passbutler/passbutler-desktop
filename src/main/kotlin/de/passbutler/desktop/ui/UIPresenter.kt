@@ -29,7 +29,7 @@ class UIPresenter(
         if (debouncedViewTransactionEnsured) {
             rootScreen.contentContainer?.getChildList()?.apply {
                 val screenInstance = find(screenClass, params = parameters)
-                rootScreen.title = screenInstance.title
+                rootScreen.titleProperty.bind(screenInstance.titleProperty)
 
                 if (screenInstance is BaseUIComponent) {
                     screenInstance.transitionType = transitionType
