@@ -23,6 +23,8 @@ class ItemEditingViewModelWrapper : ViewModel(), UserViewModelUsingViewModel {
     }
 
     val itemTitleProperty = bind { SimpleStringProperty(itemEditingViewModel.title.value) }
+    val itemUsernameProperty = bind { SimpleStringProperty(itemEditingViewModel.username.value) }
+    val itemPasswordProperty = bind { SimpleStringProperty(itemEditingViewModel.password.value) }
 }
 
 //fun DiscardableMutableBindable<String>.asStringProperty(): StringProperty {

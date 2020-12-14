@@ -43,11 +43,6 @@ interface ThemeColors {
 
 abstract class Theme : Stylesheet(), ThemeColors {
 
-    private val fontMedium = loadFontFamily("/fonts/roboto/Roboto-Medium.ttf")
-    private val fontRegular = loadFontFamily("/fonts/roboto/Roboto-Regular.ttf")
-    private val fontLight = loadFontFamily("/fonts/roboto/Roboto-Light.ttf")
-    private val fontBold = loadFontFamily("/fonts/roboto/Roboto-Bold.ttf")
-
     private lateinit var colorSurfaceTransparent: Color
 
     protected fun applyStyles() {
@@ -256,6 +251,11 @@ abstract class Theme : Stylesheet(), ThemeColors {
     }
 
     companion object {
+        val fontMedium = loadFontFamily("/fonts/roboto/Roboto-Medium.ttf")
+        val fontRegular = loadFontFamily("/fonts/roboto/Roboto-Regular.ttf")
+        val fontLight = loadFontFamily("/fonts/roboto/Roboto-Light.ttf")
+        val fontBold = loadFontFamily("/fonts/roboto/Roboto-Bold.ttf")
+
         // Value took from "modena.css"
         const val OPACITY_DISABLED = 0.4
 

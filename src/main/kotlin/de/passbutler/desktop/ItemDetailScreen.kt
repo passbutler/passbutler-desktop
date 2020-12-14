@@ -6,12 +6,14 @@ import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.Theme.Companion.fontLight
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.textSizeLarge
 import de.passbutler.desktop.ui.validatorWithRules
 import javafx.geometry.Orientation
 import javafx.scene.Node
@@ -19,6 +21,7 @@ import javafx.scene.control.Button
 import tornadofx.Field
 import tornadofx.Fieldset
 import tornadofx.Form
+import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.field
 import tornadofx.fieldset
@@ -26,9 +29,10 @@ import tornadofx.form
 import tornadofx.get
 import tornadofx.paddingAll
 import tornadofx.paddingTop
+import tornadofx.passwordfield
+import tornadofx.style
 import tornadofx.textfield
 import tornadofx.vbox
-import tornadofx.whenDocked
 
 class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
@@ -76,10 +80,21 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
             textLabelHeadline1(titleProperty)
 
             form {
+                paddingAll = 0
+
                 fieldset(labelPosition = Orientation.VERTICAL) {
                     paddingTop = marginS.value
 
+                    spacing = marginS.value
+
                     createTitleField()
+
+                    textLabelHeadline1(messages["itemdetail_details_header"]) {
+                        paddingTop = marginM.value
+                    }
+
+                    createUsernameField()
+                    createPasswordField()
                 }
 
                 saveButton = createSaveButton()
@@ -88,17 +103,36 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     }
 
     private fun Fieldset.createTitleField(): Field {
-        return field(messages["itemdetail_title_hint"]) {
+        return field {
             textfield(viewModelWrapper.itemTitleProperty) {
-                whenDocked {
-                    requestFocus()
+                style {
+                    fontSize = textSizeLarge
+                    fontFamily = fontLight
                 }
 
+                promptText = messages["itemdetail_title_hint"]
+                
                 validatorWithRules {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["itemdetail_title_validation_error_empty"])
                     )
                 }
+            }
+        }
+    }
+
+    private fun Fieldset.createUsernameField(): Field {
+        return field(messages["itemdetail_username_hint"]) {
+            textfield(viewModelWrapper.itemUsernameProperty)
+        }
+    }
+
+    private fun Fieldset.createPasswordField(): Field {
+        return field(messages["itemdetail_password_hint"]) {
+            if (viewModel.hidePasswordsEnabled) {
+                passwordfield(viewModelWrapper.itemPasswordProperty)
+            } else {
+                textfield(viewModelWrapper.itemPasswordProperty)
             }
         }
     }
