@@ -92,21 +92,21 @@ fun EventTarget.textLabelBody2(text: String = "", graphic: Node? = null, op: Lab
     op.invoke(this)
 }
 
-private const val FADE_IN_OUT_ANIMATION_PROPERTY = "de.passbutler.desktop.ui.showFadeInOutAnimation"
-
 fun Node.showFadeInOutAnimation(shouldShow: Boolean) {
+    val animationProperty = "de.passbutler.desktop.ui.showFadeInOutAnimation"
+
     // Cancel previous animation if any is running to avoid produce out-of-sync view state
-    (properties[FADE_IN_OUT_ANIMATION_PROPERTY] as? Animation)?.stop()
+    (properties[animationProperty] as? Animation)?.stop()
 
     if (shouldShow) {
         isVisible = true
         opacity = 0.0
-        properties[FADE_IN_OUT_ANIMATION_PROPERTY] = fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 1.0).apply {
+        properties[animationProperty] = fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 1.0).apply {
             onFinished = null
         }
     } else {
         opacity = 1.0
-        properties[FADE_IN_OUT_ANIMATION_PROPERTY] = fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 0.0).apply {
+        properties[animationProperty] = fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 0.0).apply {
             setOnFinished {
                 isVisible = false
             }
