@@ -13,6 +13,7 @@ import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
 import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.Parent
 import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.addClass
@@ -29,18 +30,12 @@ import tornadofx.vbox
 
 class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
 
-    override val root = stackpane()
+    override val root = createRootView()
 
     private val viewModel by injectRootViewModel()
 
-    init {
-        with(root) {
-            setupContentView()
-        }
-    }
-
-    private fun Node.setupContentView() {
-        stackpane {
+    private fun createRootView(): Parent {
+        return stackpane {
             pane {
                 addClass(Theme.abstractBackgroundStyle)
             }
