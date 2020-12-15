@@ -47,6 +47,7 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigati
 
             textLabelHeadline1(messages["settings_title"])
 
+            // TODO: Use spacing instead of padding
             setupGeneralCategory()
             setupSecurityCategory()
         }

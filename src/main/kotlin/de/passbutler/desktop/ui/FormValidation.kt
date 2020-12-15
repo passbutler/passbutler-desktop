@@ -10,6 +10,7 @@ interface FormValidating {
 
 data class FormFieldValidatorRule(val isInvalidValidator: (formFieldText: String?) -> Boolean, val errorString: String)
 
+// TODO: Remove usage
 fun TextInputControl.validatorWithRules(rulesCreator: () -> List<FormFieldValidatorRule>?) {
     validator { formFieldText ->
         var formFieldError: String? = null
