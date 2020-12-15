@@ -12,10 +12,11 @@ import tornadofx.ScopedInstance
 import tornadofx.UIComponent
 import tornadofx.View
 import tornadofx.ViewModel
+import tornadofx.whenUndocked
 import kotlin.coroutines.CoroutineContext
 import kotlin.reflect.KClass
 
-interface BaseUIComponent : UIPresenting {
+interface BaseUIComponent : UIPresenting, CoroutineScope {
 
     var transitionType: TransitionType
     var uiPresentingDelegate: UIPresenting?
@@ -43,12 +44,14 @@ interface BaseUIComponent : UIPresenting {
     override fun showError(message: String) {
         uiPresentingDelegate?.showError(message)
     }
+
+    fun addUndockedObserver(observer: () -> Unit)
 }
 
 /**
  * A screen view that have only a single instance (the same instance will be used always if shown).
  */
-abstract class BaseView(title: String? = null, icon: Node? = null) : View(title, icon), BaseUIComponent, CoroutineScope {
+abstract class BaseView(title: String? = null, icon: Node? = null) : View(title, icon), BaseUIComponent {
 
     override var transitionType = TransitionType.NONE
     override var uiPresentingDelegate: UIPresenting? = null
@@ -62,12 +65,16 @@ abstract class BaseView(title: String? = null, icon: Node? = null) : View(title,
         super.onUndock()
         coroutineJob.cancel()
     }
+
+    override fun addUndockedObserver(observer: () -> Unit) {
+        whenUndocked { observer.invoke() }
+    }
 }
 
 /**
  * A screen view that can have multiple instances (a new instance will be created always if shown).
  */
-abstract class BaseFragment(title: String? = null, icon: Node? = null) : Fragment(title, icon), BaseUIComponent, CoroutineScope {
+abstract class BaseFragment(title: String? = null, icon: Node? = null) : Fragment(title, icon), BaseUIComponent {
 
     override var transitionType = TransitionType.NONE
     override var uiPresentingDelegate: UIPresenting? = null
@@ -80,6 +87,10 @@ abstract class BaseFragment(title: String? = null, icon: Node? = null) : Fragmen
     override fun onUndock() {
         super.onUndock()
         coroutineJob.cancel()
+    }
+
+    override fun addUndockedObserver(observer: () -> Unit) {
+        whenUndocked { observer.invoke() }
     }
 }
 

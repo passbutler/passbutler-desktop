@@ -9,11 +9,8 @@ import javafx.scene.control.TextInputControl
  * Enabled binders
  */
 
-fun Node.bindEnabled(bindable: Bindable<Boolean>) {
-    isEnabled = bindable.value
-
-    // TODO: Leaking
-    bindable.addObserver(null, false) {
+fun Node.bindEnabled(baseUIComponent: BaseUIComponent, bindable: Bindable<Boolean>) {
+    bindable.addLifecycleObserver(baseUIComponent, true) {
         isEnabled = it
     }
 }

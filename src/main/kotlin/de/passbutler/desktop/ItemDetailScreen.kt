@@ -1,6 +1,5 @@
 package de.passbutler.desktop
 
-import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.base.DependentValueGetterBindable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
@@ -8,6 +7,7 @@ import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme.Companion.fontLight
+import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindEnabled
 import de.passbutler.desktop.ui.bindInput
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
@@ -66,14 +66,6 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
     }
 
-    private val isNewItemObserver: BindableObserver<Boolean> = {
-        updateTitle()
-    }
-
-    private val isItemModifiedObserver: BindableObserver<Boolean> = {
-        updateSaveButton()
-    }
-
     private var saveButton: Button? = null
 
     init {
@@ -120,7 +112,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
                 promptText = messages["itemdetail_title_hint"]
 
-                bindEnabled(viewModel.isItemModificationAllowed)
+                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(viewModel.title)
 
                 validateWithRules(this) {
@@ -135,7 +127,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     private fun Fieldset.createUsernameField(): Field {
         return field(messages["itemdetail_username_hint"]) {
             textfield {
-                bindEnabled(viewModel.isItemModificationAllowed)
+                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(viewModel.username)
             }
         }
@@ -149,7 +141,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
                 textfield()
             }
 
-            inputField.bindEnabled(viewModel.isItemModificationAllowed)
+            inputField.bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
             inputField.bindInput(viewModel.password)
         }
     }
@@ -157,7 +149,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     private fun Fieldset.createUrlField(): Field {
         return field(messages["itemdetail_url_hint"]) {
             textfield {
-                bindEnabled(viewModel.isItemModificationAllowed)
+                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(viewModel.url)
             }
         }
@@ -188,15 +180,13 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     override fun onDock() {
         super.onDock()
 
-        viewModel.isNewItem.addObserver(this, true, isNewItemObserver)
-        isItemModified.addObserver(this, true, isItemModifiedObserver)
-    }
+        viewModel.isNewItem.addLifecycleObserver(this, true) {
+            updateTitle()
+        }
 
-    override fun onUndock() {
-        viewModel.isNewItem.removeObserver(isNewItemObserver)
-        isItemModified.removeObserver(isItemModifiedObserver)
-
-        super.onUndock()
+        isItemModified.addLifecycleObserver(this, true) {
+            updateSaveButton()
+        }
     }
 
     private fun updateTitle() {
