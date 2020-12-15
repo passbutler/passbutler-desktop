@@ -4,7 +4,6 @@ import de.passbutler.common.ItemViewModel
 import de.passbutler.common.Webservices
 import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.base.formattedRelativeDateTime
-import de.passbutler.common.database.models.LoggedInStateStorage
 import de.passbutler.common.database.models.UserType
 import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
@@ -13,6 +12,7 @@ import de.passbutler.desktop.base.createRelativeDateFormattingTranslations
 import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme
+import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
@@ -98,10 +98,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
         val showEmptyScreen = newItemEntries.isEmpty()
         emptyScreenLayout?.isVisible = showEmptyScreen
-    }
-
-    private val loggedInStateStorageObserver: BindableObserver<LoggedInStateStorage?> = {
-        updateToolbarSynchronizationContainer()
     }
 
     init {
@@ -271,9 +267,12 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     override fun onDock() {
         super.onDock()
 
-        viewModel.loggedInUserViewModel?.webservices?.addObserver(this, true, webservicesInitializedObserver)
-        viewModel.loggedInUserViewModel?.itemViewModels?.addObserver(this, true, itemViewModelsObserver)
-        viewModel.loggedInUserViewModel?.loggedInStateStorage?.addObserver(this, true, loggedInStateStorageObserver)
+        viewModel.loggedInUserViewModel?.webservices?.addLifecycleObserver(this, true, webservicesInitializedObserver)
+        viewModel.loggedInUserViewModel?.itemViewModels?.addLifecycleObserver(this, true, itemViewModelsObserver)
+
+        viewModel.loggedInUserViewModel?.loggedInStateStorage?.addLifecycleObserver(this, true) {
+            updateToolbarSynchronizationContainer()
+        }
 
         updateToolbarJob?.cancel()
         updateToolbarJob = launch {
@@ -304,16 +303,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         } else {
             null
         }
-    }
-
-    override fun onUndock() {
-        viewModel.loggedInUserViewModel?.webservices?.removeObserver(webservicesInitializedObserver)
-        viewModel.loggedInUserViewModel?.itemViewModels?.removeObserver(itemViewModelsObserver)
-        viewModel.loggedInUserViewModel?.loggedInStateStorage?.removeObserver(loggedInStateStorageObserver)
-
-        updateToolbarJob?.cancel()
-
-        super.onUndock()
     }
 
     private fun synchronizeData(userTriggered: Boolean) {

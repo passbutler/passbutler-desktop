@@ -1,6 +1,5 @@
 package de.passbutler.desktop
 
-import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.BannerView
@@ -8,6 +7,7 @@ import de.passbutler.desktop.ui.BaseView
 import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.UIPresenter
+import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
 import de.passbutler.desktop.ui.showSaveVaultFileChooser
@@ -52,11 +52,6 @@ class RootScreen : BaseView(), RequestSending {
 
     private val viewModel by injectRootViewModel()
 
-    private val rootScreenStateObserver: BindableObserver<RootViewModel.RootScreenState?> = {
-        updateMenu()
-        updateRootScreen()
-    }
-
     init {
         with(root) {
             center {
@@ -87,7 +82,10 @@ class RootScreen : BaseView(), RequestSending {
 
         uiPresentingDelegate = UIPresenter(this)
 
-        viewModel.rootScreenState.addObserver(this, false, rootScreenStateObserver)
+        viewModel.rootScreenState.addLifecycleObserver(this, false) {
+            updateMenu()
+            updateRootScreen()
+        }
 
         launch {
             viewModel.restoreRecentVault()
@@ -96,8 +94,6 @@ class RootScreen : BaseView(), RequestSending {
 
     override fun onUndock() {
         super.onUndock()
-
-        viewModel.rootScreenState.removeObserver(rootScreenStateObserver)
 
         Logger.debug("RootScreen was undocked")
     }
