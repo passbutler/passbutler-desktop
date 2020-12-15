@@ -27,6 +27,12 @@ typealias JavaFxDuration = javafx.util.Duration
  * General
  */
 
+var Node.isEnabled: Boolean
+    get() = !isDisable
+    set(value) {
+        isDisable = !value
+    }
+
 fun JavaTimeDuration.toJavaFxDuration(): JavaFxDuration {
     return JavaFxDuration(toMillis().toDouble())
 }

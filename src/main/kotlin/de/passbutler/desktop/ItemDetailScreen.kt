@@ -8,10 +8,12 @@ import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme.Companion.fontLight
+import de.passbutler.desktop.ui.bindEnabled
 import de.passbutler.desktop.ui.bindInput
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelHeadline1
@@ -29,8 +31,8 @@ import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
-import tornadofx.onLeftClick
 import tornadofx.paddingAll
+import tornadofx.paddingBottom
 import tornadofx.paddingTop
 import tornadofx.passwordfield
 import tornadofx.style
@@ -89,7 +91,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
                 fieldset(labelPosition = Orientation.VERTICAL) {
                     paddingTop = marginS.value
-
+                    paddingBottom = marginL.value
                     spacing = marginS.value
 
                     createTitleField()
@@ -100,6 +102,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
                     createUsernameField()
                     createPasswordField()
+                    createUrlField()
                 }
 
                 saveButton = createSaveButton()
@@ -117,6 +120,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
                 promptText = messages["itemdetail_title_hint"]
 
+                bindEnabled(viewModel.isItemModificationAllowed)
                 bindInput(viewModel.title)
 
                 validateWithRules(this) {
@@ -131,6 +135,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     private fun Fieldset.createUsernameField(): Field {
         return field(messages["itemdetail_username_hint"]) {
             textfield {
+                bindEnabled(viewModel.isItemModificationAllowed)
                 bindInput(viewModel.username)
             }
         }
@@ -138,13 +143,23 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
     private fun Fieldset.createPasswordField(): Field {
         return field(messages["itemdetail_password_hint"]) {
-            val passwordField = if (viewModel.hidePasswordsEnabled) {
+            val inputField = if (viewModel.hidePasswordsEnabled) {
                 passwordfield()
             } else {
                 textfield()
             }
 
-            passwordField.bindInput(viewModel.password)
+            inputField.bindEnabled(viewModel.isItemModificationAllowed)
+            inputField.bindInput(viewModel.password)
+        }
+    }
+
+    private fun Fieldset.createUrlField(): Field {
+        return field(messages["itemdetail_url_hint"]) {
+            textfield {
+                bindEnabled(viewModel.isItemModificationAllowed)
+                bindInput(viewModel.url)
+            }
         }
     }
 
