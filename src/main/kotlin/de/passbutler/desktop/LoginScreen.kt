@@ -10,6 +10,7 @@ import de.passbutler.desktop.base.isHttpsUrl
 import de.passbutler.desktop.base.isNetworkUrl
 import de.passbutler.desktop.ui.BaseFragment
 import de.passbutler.desktop.ui.FormFieldValidatorRule
+import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.LONGPRESS_DURATION
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.injectWithPrivateScope
@@ -19,7 +20,7 @@ import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showFadeInOutAnimation
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
-import de.passbutler.desktop.ui.validatorWithRules
+import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -31,6 +32,7 @@ import tornadofx.FX.Companion.messages
 import tornadofx.Field
 import tornadofx.Fieldset
 import tornadofx.Form
+import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
 import tornadofx.checkbox
@@ -55,9 +57,11 @@ import tornadofx.useMaxWidth
 import tornadofx.vbox
 import tornadofx.whenDocked
 
-class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
+class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, RequestSending {
 
     override val root = stackpane()
+
+    override val validationContext = ValidationContext()
 
     private val viewModel by injectWithPrivateScope<LoginViewModel>()
 
@@ -148,7 +152,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
             isVisible = !viewModel.isLocalLoginProperty.value
 
             textfield(viewModel.serverUrlProperty) {
-                validatorWithRules {
+                validateWithRules(this) {
                     listOfNotNull(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_serverurl_validation_error_empty"]),
                         FormFieldValidatorRule({ !isNetworkUrl(it) }, messages["form_serverurl_validation_error_invalid"]),
@@ -166,7 +170,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
                     requestFocus()
                 }
 
-                validatorWithRules {
+                validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["login_username_validation_error_empty"])
                     )
@@ -178,7 +182,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
     private fun Fieldset.createPasswordUrlField(): Field {
         return field(messages["login_master_password_hint"]) {
             passwordfield(viewModel.passwordProperty) {
-                validatorWithRules {
+                validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_master_password_validation_error_empty"])
                     )
@@ -210,9 +214,9 @@ class LoginScreen : BaseFragment(messages["login_title"]), RequestSending {
     }
 
     private fun loginClicked() {
-        viewModel.validate()
+        validationContext.validate()
 
-        if (viewModel.valid.value) {
+        if (validationContext.isValid) {
             val isLocalLogin = viewModel.isLocalLoginProperty.value
 
             val serverUrl = viewModel.serverUrlProperty.value?.takeIf { !isLocalLogin }

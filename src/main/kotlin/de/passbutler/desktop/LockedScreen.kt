@@ -8,6 +8,7 @@ import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.base.DebugConstants
 import de.passbutler.desktop.ui.BaseFragment
 import de.passbutler.desktop.ui.FormFieldValidatorRule
+import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.LONGPRESS_DURATION
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.injectWithPrivateScope
@@ -16,7 +17,7 @@ import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
-import de.passbutler.desktop.ui.validatorWithRules
+import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -28,6 +29,7 @@ import tornadofx.FX.Companion.messages
 import tornadofx.Field
 import tornadofx.Fieldset
 import tornadofx.Form
+import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
 import tornadofx.field
@@ -49,9 +51,11 @@ import tornadofx.style
 import tornadofx.useMaxWidth
 import tornadofx.vbox
 
-class LockedScreen : BaseFragment(messages["locked_screen_title"]), RequestSending {
+class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidating, RequestSending {
 
     override val root = stackpane()
+
+    override val validationContext = ValidationContext()
 
     private val viewModel by injectWithPrivateScope<LockedScreenViewModel>()
 
@@ -129,7 +133,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), RequestSendi
     private fun Fieldset.createPasswordUrlField(): Field {
         return field(messages["locked_screen_master_password_hint"]) {
             passwordfield(viewModel.passwordProperty) {
-                validatorWithRules {
+                validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_master_password_validation_error_empty"])
                     )
@@ -150,9 +154,9 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), RequestSendi
     }
 
     private fun unlockWithPasswordClicked() {
-        viewModel.validate()
+        validationContext.validate()
 
-        if (viewModel.valid.value) {
+        if (validationContext.isValid) {
             val masterPassword = viewModel.passwordProperty.value
             unlockWithPassword(masterPassword)
         }
