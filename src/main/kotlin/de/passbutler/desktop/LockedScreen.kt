@@ -32,6 +32,7 @@ import tornadofx.Form
 import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
+import tornadofx.box
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
@@ -40,7 +41,6 @@ import tornadofx.hbox
 import tornadofx.imageview
 import tornadofx.longpress
 import tornadofx.onLeftClick
-import tornadofx.paddingAll
 import tornadofx.paddingBottom
 import tornadofx.paddingTop
 import tornadofx.pane
@@ -93,7 +93,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
 
             style {
                 alignment = Pos.CENTER
-                paddingAll = marginM.value
+                padding = box(marginM)
                 prefWidth = 320.px
             }
 

@@ -35,6 +35,7 @@ import tornadofx.Form
 import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
+import tornadofx.box
 import tornadofx.checkbox
 import tornadofx.field
 import tornadofx.fieldset
@@ -101,7 +102,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
 
             style {
                 alignment = Pos.CENTER
-                paddingAll = marginM.value
+                padding = box(marginM)
                 prefWidth = 320.px
             }
 
@@ -122,7 +123,6 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
             fieldset(labelPosition = Orientation.VERTICAL) {
                 paddingTop = marginS.value
                 paddingBottom = marginM.value
-
                 spacing = marginS.value
 
                 serverUrlField = createServerUrlField()

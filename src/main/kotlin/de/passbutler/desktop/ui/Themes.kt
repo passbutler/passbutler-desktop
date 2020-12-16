@@ -248,6 +248,15 @@ abstract class Theme : Stylesheet(), ThemeColors {
             maxWidth = 45.px
             maxHeight = 45.px
         }
+
+        /**
+         * Form
+         */
+
+        form {
+            // Remove default padding
+            padding = box(0.px)
+        }
     }
 
     companion object {
