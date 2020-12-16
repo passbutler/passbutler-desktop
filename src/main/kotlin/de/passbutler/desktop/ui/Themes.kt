@@ -241,6 +241,10 @@ abstract class Theme : Stylesheet(), ThemeColors {
          * Buttons
          */
 
+        button {
+            minWidth = 150.px
+        }
+
         floatingActionButtonStyle {
             backgroundColor = multi(colorAccent)
             minWidth = 45.px

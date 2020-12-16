@@ -76,7 +76,6 @@ fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXB
 }
 
 fun EventTarget.jfxButtonRaised(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = jfxButtonBase(text, graphic) {
-    minWidth = 150.px.value
     buttonType = JFXButton.ButtonType.RAISED
     op.invoke(this)
 }
