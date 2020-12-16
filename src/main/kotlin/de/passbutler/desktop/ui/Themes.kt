@@ -131,6 +131,13 @@ abstract class Theme : Stylesheet(), ThemeColors {
             fontSize = textSizeMedium
         }
 
+        textArea {
+            textFill = textColorPrimary
+            fontSize = textSizeMedium
+
+            minHeight = 36.px
+        }
+
         /**
          * Background styles
          */
@@ -261,6 +268,27 @@ abstract class Theme : Stylesheet(), ThemeColors {
             // Remove default padding
             padding = box(0.px)
         }
+
+        /**
+         * Scroll views
+         */
+
+        // Do not apply to default style `scrollPane` to avoid affecting `TextArea`
+        scrollPaneBorderlessStyle {
+            // Remove default border
+            padding = box(0.px)
+            backgroundInsets = multi(box(0.px))
+
+            // Apply background color to scroll pane, see https://community.oracle.com/thread/3538169 or "modena.css"
+            viewport {
+                backgroundColor = multi(colorBackground)
+            }
+        }
+
+        scrollBar {
+            // Remove default border
+            backgroundInsets = multi(box(0.px))
+        }
     }
 
     companion object {
@@ -291,6 +319,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         val snackbarLayoutStyle by cssclass()
         val floatingActionButtonStyle by cssclass()
+
+        val scrollPaneBorderlessStyle by cssclass()
     }
 }
 

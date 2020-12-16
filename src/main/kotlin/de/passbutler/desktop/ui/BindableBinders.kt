@@ -3,7 +3,24 @@ package de.passbutler.desktop.ui
 import de.passbutler.common.base.Bindable
 import de.passbutler.common.base.MutableBindable
 import javafx.scene.Node
+import javafx.scene.control.Label
 import javafx.scene.control.TextInputControl
+
+/**
+ * Visibility binders
+ */
+
+fun <T> Node.bindVisibility(baseUIComponent: BaseUIComponent, bindable: Bindable<T>, block: (T) -> Boolean) {
+    bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        isVisible = block(newValue)
+    }
+}
+
+fun Node.bindVisibility(baseUIComponent: BaseUIComponent, bindable: Bindable<Boolean>) {
+    bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        isVisible = newValue
+    }
+}
 
 /**
  * Enabled binders
@@ -12,6 +29,36 @@ import javafx.scene.control.TextInputControl
 fun Node.bindEnabled(baseUIComponent: BaseUIComponent, bindable: Bindable<Boolean>) {
     bindable.addLifecycleObserver(baseUIComponent, true) {
         isEnabled = it
+    }
+}
+
+/**
+ * Text binders
+ */
+
+fun Label.bindTextAndVisibility(baseUIComponent: BaseUIComponent, bindable: Bindable<String?>) {
+    bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        if (newValue != null) {
+            text = newValue
+            isVisible = true
+        } else {
+            text = ""
+            isVisible = false
+        }
+    }
+}
+
+fun <T> Label.bindTextAndVisibility(baseUIComponent: BaseUIComponent, bindable: Bindable<T>, transform: (T) -> String?) {
+    bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        val newTransformedValue = transform(newValue)
+
+        if (newTransformedValue != null) {
+            text = newTransformedValue
+            isVisible = true
+        } else {
+            text = ""
+            isVisible = false
+        }
     }
 }
 

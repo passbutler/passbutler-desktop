@@ -1,32 +1,40 @@
 package de.passbutler.desktop
 
+import de.passbutler.common.ItemEditingViewModel.Companion.NOTES_MAXIMUM_CHARACTERS
 import de.passbutler.common.base.DependentValueGetterBindable
+import de.passbutler.common.base.formattedDateTime
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.Theme.Companion.fontLight
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindEnabled
 import de.passbutler.desktop.ui.bindInput
+import de.passbutler.desktop.ui.bindTextAndVisibility
+import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
 import de.passbutler.desktop.ui.textSizeLarge
 import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.scene.Node
 import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.text.FontWeight
 import tornadofx.Field
 import tornadofx.Fieldset
-import tornadofx.Form
 import tornadofx.ValidationContext
 import tornadofx.action
+import tornadofx.addClass
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
@@ -35,7 +43,9 @@ import tornadofx.paddingAll
 import tornadofx.paddingBottom
 import tornadofx.paddingTop
 import tornadofx.passwordfield
+import tornadofx.scrollpane
 import tornadofx.style
+import tornadofx.textarea
 import tornadofx.textfield
 import tornadofx.vbox
 
@@ -66,38 +76,73 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
     }
 
-    private var saveButton: Button? = null
-
     init {
         setupRootView()
     }
 
     override fun Node.setupMainContent() {
-        vbox {
-            paddingAll = marginM.value
+        scrollpane(fitToWidth = true, fitToHeight = true) {
+            addClass(Theme.scrollPaneBorderlessStyle)
 
-            textLabelHeadline1(titleProperty)
+            vbox {
+                paddingAll = marginM.value
 
-            form {
-                paddingAll = 0
+                textLabelHeadline1(titleProperty)
 
-                fieldset(labelPosition = Orientation.VERTICAL) {
-                    paddingTop = marginS.value
-                    paddingBottom = marginL.value
-                    spacing = marginS.value
+                form {
+                    fieldset(labelPosition = Orientation.VERTICAL) {
+                        paddingTop = marginS.value
+                        paddingBottom = marginL.value
 
-                    createTitleField()
+                        createTitleField()
 
-                    textLabelHeadline1(messages["itemdetail_details_header"]) {
-                        paddingTop = marginM.value
+                        // TODO: Spacing not working
+                        vbox {
+                            paddingTop = marginM.value
+                            spacing = marginS.value
+
+                            textLabelHeadline1(messages["itemdetail_details_header"])
+
+                            createUsernameField()
+                            createPasswordField()
+                            createUrlField()
+                            createNotesField()
+                        }
+
+                        vbox {
+                            paddingTop = marginM.value
+                            spacing = marginS.value
+
+                            textLabelHeadline1(messages["itemdetail_information_header"])
+
+                            createInformationView(messages["itemdetail_id_title"]) {
+                                style {
+                                    fontFamily = "monospace"
+                                }
+
+                                bindTextAndVisibility(this@ItemDetailScreen, viewModel.id)
+                            }
+
+                            createInformationView(messages["itemdetail_modified_title"]) {
+                                bindTextAndVisibility(this@ItemDetailScreen, viewModel.modified) {
+                                    it?.formattedDateTime
+                                }
+                            }
+
+                            createInformationView(messages["itemdetail_created_title"]) {
+                                bindTextAndVisibility(this@ItemDetailScreen, viewModel.created) {
+                                    it?.formattedDateTime
+                                }
+                            }
+
+                            bindVisibility(this@ItemDetailScreen, viewModel.isNewItem) { isNewItem ->
+                                !isNewItem
+                            }
+                        }
                     }
 
-                    createUsernameField()
-                    createPasswordField()
-                    createUrlField()
+                    createSaveButton()
                 }
-
-                saveButton = createSaveButton()
             }
         }
     }
@@ -155,9 +200,42 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
     }
 
-    private fun Form.createSaveButton(): Button {
+    private fun Fieldset.createNotesField(): Field {
+        return field(messages["itemdetail_notes_hint"]) {
+            textarea {
+                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
+                bindInput(viewModel.notes)
+
+                prefRowCount = 2
+
+                textProperty().addListener { _, _, newValue ->
+                    // Do not reject new value / use old value - only accept the first N of characters
+                    text = newValue.take(NOTES_MAXIMUM_CHARACTERS)
+                }
+
+                // TODO: Counter
+            }
+        }
+    }
+
+    private fun Node.createInformationView(title: String, valueSetup: Label.() -> Unit): Node {
+        return vbox {
+            textLabelBody1(title) {
+                style {
+                    fontWeight = FontWeight.BOLD
+                }
+            }
+
+            textLabelBody1(op = valueSetup)
+        }
+    }
+
+    private fun Node.createSaveButton(): Button {
         return jfxButtonRaised(messages["itemdetail_save_button_title"]) {
             isDefaultButton = true
+
+            bindVisibility(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
+            bindEnabled(this@ItemDetailScreen, isItemModified)
 
             action {
                 saveClicked()
@@ -183,10 +261,6 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         viewModel.isNewItem.addLifecycleObserver(this, true) {
             updateTitle()
         }
-
-        isItemModified.addLifecycleObserver(this, true) {
-            updateSaveButton()
-        }
     }
 
     private fun updateTitle() {
@@ -195,10 +269,5 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         } else {
             messages["itemdetail_title_edit"]
         }
-    }
-
-    private fun updateSaveButton() {
-        saveButton?.isVisible = viewModel.isItemModificationAllowed.value
-        saveButton?.isDisable = !isItemModified.value
     }
 }
