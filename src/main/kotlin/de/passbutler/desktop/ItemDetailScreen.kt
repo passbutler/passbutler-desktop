@@ -22,10 +22,12 @@ import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBody1
+import de.passbutler.desktop.ui.textLabelBody2
 import de.passbutler.desktop.ui.textLabelHeadline1
 import de.passbutler.desktop.ui.textSizeLarge
 import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Button
 import javafx.scene.control.Label
@@ -148,7 +150,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     }
 
     private fun Fieldset.createTitleField(): Field {
-        return field {
+        return field(orientation = Orientation.VERTICAL) {
             textfield {
                 style {
                     fontSize = textSizeLarge
@@ -170,7 +172,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     }
 
     private fun Fieldset.createUsernameField(): Field {
-        return field(messages["itemdetail_username_hint"]) {
+        return field(messages["itemdetail_username_hint"], orientation = Orientation.VERTICAL) {
             textfield {
                 bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(viewModel.username)
@@ -179,7 +181,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     }
 
     private fun Fieldset.createPasswordField(): Field {
-        return field(messages["itemdetail_password_hint"]) {
+        return field(messages["itemdetail_password_hint"], orientation = Orientation.VERTICAL) {
             val inputField = if (viewModel.hidePasswordsEnabled) {
                 passwordfield()
             } else {
@@ -192,7 +194,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     }
 
     private fun Fieldset.createUrlField(): Field {
-        return field(messages["itemdetail_url_hint"]) {
+        return field(messages["itemdetail_url_hint"], orientation = Orientation.VERTICAL) {
             textfield {
                 bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(viewModel.url)
@@ -200,20 +202,29 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
     }
 
-    private fun Fieldset.createNotesField(): Field {
-        return field(messages["itemdetail_notes_hint"]) {
-            textarea {
-                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
-                bindInput(viewModel.notes)
+    private fun Fieldset.createNotesField(): Node {
+        return vbox {
+            alignment = Pos.CENTER_RIGHT
 
-                prefRowCount = 2
+            field(messages["itemdetail_notes_hint"], orientation = Orientation.VERTICAL) {
+                textarea {
+                    bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
+                    bindInput(viewModel.notes)
 
-                textProperty().addListener { _, _, newValue ->
-                    // Do not reject new value / use old value - only accept the first N of characters
-                    text = newValue.take(NOTES_MAXIMUM_CHARACTERS)
+                    prefRowCount = 2
+
+                    textProperty().addListener { _, _, newValue ->
+                        // Do not reject new value / use old value - only accept the first N of characters
+                        text = newValue.take(NOTES_MAXIMUM_CHARACTERS)
+                    }
                 }
+            }
 
-                // TODO: Counter
+            textLabelBody2 {
+                bindTextAndVisibility(this@ItemDetailScreen, viewModel.notes) { notesValue ->
+                    val notesLength = notesValue.length.coerceIn(0, NOTES_MAXIMUM_CHARACTERS)
+                    "$notesLength/$NOTES_MAXIMUM_CHARACTERS"
+                }
             }
         }
     }
