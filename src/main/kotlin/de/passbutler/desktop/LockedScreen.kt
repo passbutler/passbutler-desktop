@@ -29,7 +29,6 @@ import tornadofx.Fieldset
 import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
-import tornadofx.box
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
@@ -38,12 +37,12 @@ import tornadofx.hbox
 import tornadofx.imageview
 import tornadofx.longpress
 import tornadofx.onLeftClick
+import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.pane
 import tornadofx.passwordfield
 import tornadofx.px
 import tornadofx.stackpane
-import tornadofx.style
 import tornadofx.useMaxWidth
 import tornadofx.vbox
 
@@ -87,11 +86,8 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
         form {
             addClass(Theme.cardViewBackgroundStyle)
 
-            style {
-                padding = box(marginM)
-            }
-
             alignment = Pos.CENTER
+            paddingAll = marginM.value
             prefWidth = 320.px.value
 
             imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.px.value, true, true)) {

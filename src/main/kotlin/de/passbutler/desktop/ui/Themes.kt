@@ -261,15 +261,6 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         /**
-         * Form
-         */
-
-        form {
-            // Remove default padding
-            padding = box(0.px)
-        }
-
-        /**
          * Scroll views
          */
 
