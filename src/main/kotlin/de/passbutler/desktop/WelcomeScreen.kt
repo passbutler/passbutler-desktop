@@ -23,7 +23,6 @@ import tornadofx.paddingTop
 import tornadofx.pane
 import tornadofx.px
 import tornadofx.stackpane
-import tornadofx.style
 import tornadofx.vbox
 
 class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
@@ -104,10 +103,8 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
         vbox {
             addClass(Theme.cardViewBackgroundStyle)
 
-            style {
-                paddingAll = marginM.value
-                prefWidth = 420.px
-            }
+            paddingAll = marginM.value
+            prefWidth = 420.px.value
 
             textLabelHeadline1(title)
 

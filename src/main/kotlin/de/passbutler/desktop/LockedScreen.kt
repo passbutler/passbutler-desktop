@@ -88,10 +88,11 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
             addClass(Theme.cardViewBackgroundStyle)
 
             style {
-                alignment = Pos.CENTER
                 padding = box(marginM)
-                prefWidth = 320.px
             }
+
+            alignment = Pos.CENTER
+            prefWidth = 320.px.value
 
             imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.px.value, true, true)) {
                 setupDebugPresetsButton()

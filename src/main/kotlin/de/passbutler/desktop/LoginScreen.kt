@@ -97,10 +97,11 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
             addClass(Theme.cardViewBackgroundStyle)
 
             style {
-                alignment = Pos.CENTER
                 padding = box(marginM)
-                prefWidth = 320.px
             }
+
+            alignment = Pos.CENTER
+            prefWidth = 320.px.value
 
             imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.0, true, true)) {
                 setupDebugPresetsButton()

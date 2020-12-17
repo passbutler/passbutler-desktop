@@ -238,8 +238,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
     private fun Node.createEmptyScreenLayout(): Node {
         return vbox {
-            paddingAll = marginM.value
             alignment = Pos.CENTER
+            paddingAll = marginM.value
 
             textLabelHeadline1(messages["overview_empty_screen_title"])
             textLabelBody1(messages["overview_empty_screen_description"]) {
