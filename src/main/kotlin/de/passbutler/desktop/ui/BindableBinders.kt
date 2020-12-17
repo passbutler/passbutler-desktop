@@ -12,13 +12,16 @@ import javafx.scene.control.TextInputControl
 
 fun <T> Node.bindVisibility(baseUIComponent: BaseUIComponent, bindable: Bindable<T>, block: (T) -> Boolean) {
     bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
-        isVisible = block(newValue)
+        val newVisibleValue = block(newValue)
+        isVisible = newVisibleValue
+        isManaged = newVisibleValue
     }
 }
 
 fun Node.bindVisibility(baseUIComponent: BaseUIComponent, bindable: Bindable<Boolean>) {
     bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
         isVisible = newValue
+        isManaged = newValue
     }
 }
 
@@ -41,9 +44,11 @@ fun Label.bindTextAndVisibility(baseUIComponent: BaseUIComponent, bindable: Bind
         if (newValue != null) {
             text = newValue
             isVisible = true
+            isManaged = true
         } else {
             text = ""
             isVisible = false
+            isManaged = false
         }
     }
 }
@@ -55,9 +60,11 @@ fun <T> Label.bindTextAndVisibility(baseUIComponent: BaseUIComponent, bindable: 
         if (newTransformedValue != null) {
             text = newTransformedValue
             isVisible = true
+            isManaged = true
         } else {
             text = ""
             isVisible = false
+            isManaged = false
         }
     }
 }
