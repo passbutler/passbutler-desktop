@@ -24,14 +24,12 @@ import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.text.TextAlignment
 import tornadofx.FX.Companion.messages
 import tornadofx.Field
 import tornadofx.Fieldset
-import tornadofx.Form
 import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
@@ -45,8 +43,6 @@ import tornadofx.hbox
 import tornadofx.imageview
 import tornadofx.longpress
 import tornadofx.onLeftClick
-import tornadofx.paddingAll
-import tornadofx.paddingBottom
 import tornadofx.paddingTop
 import tornadofx.pane
 import tornadofx.passwordfield
@@ -122,17 +118,18 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
 
             fieldset(labelPosition = Orientation.VERTICAL) {
                 paddingTop = marginS.value
-                paddingBottom = marginM.value
                 spacing = marginS.value
 
                 serverUrlField = createServerUrlField()
-
-                createUsernameUrlField()
-                createPasswordUrlField()
-                createLocalLoginCheckbox()
+                setupUsernameUrlField()
+                setupPasswordUrlField()
+                setupLocalLoginCheckbox()
             }
 
-            createLoginButton()
+            vbox {
+                paddingTop = marginM.value
+                setupLoginButton()
+            }
         }
     }
 
@@ -148,7 +145,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
     }
 
     private fun Fieldset.createServerUrlField(): Field {
-        return field(messages["login_serverurl_hint"]) {
+        return field(messages["login_serverurl_hint"], orientation = Orientation.VERTICAL) {
             isVisible = !viewModel.isLocalLoginProperty.value
 
             textfield(viewModel.serverUrlProperty) {
@@ -163,8 +160,8 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
         }
     }
 
-    private fun Fieldset.createUsernameUrlField(): Field {
-        return field(messages["login_username_hint"]) {
+    private fun Fieldset.setupUsernameUrlField() {
+        field(messages["login_username_hint"], orientation = Orientation.VERTICAL) {
             textfield(viewModel.usernameProperty) {
                 whenDocked {
                     requestFocus()
@@ -179,8 +176,8 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
         }
     }
 
-    private fun Fieldset.createPasswordUrlField(): Field {
-        return field(messages["login_master_password_hint"]) {
+    private fun Fieldset.setupPasswordUrlField() {
+        field(messages["login_master_password_hint"], orientation = Orientation.VERTICAL) {
             passwordfield(viewModel.passwordProperty) {
                 validateWithRules(this) {
                     listOf(
@@ -191,19 +188,17 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
         }
     }
 
-    private fun Fieldset.createLocalLoginCheckbox(): Field {
-        return field {
-            checkbox(messages["login_local_login_label"], viewModel.isLocalLoginProperty) {
-                action {
-                    val shouldShow = !viewModel.isLocalLoginProperty.value
-                    serverUrlField?.showFadeInOutAnimation(shouldShow)
-                }
+    private fun Node.setupLocalLoginCheckbox() {
+        checkbox(messages["login_local_login_label"], viewModel.isLocalLoginProperty) {
+            action {
+                val shouldShow = !viewModel.isLocalLoginProperty.value
+                serverUrlField?.showFadeInOutAnimation(shouldShow)
             }
         }
     }
 
-    private fun Form.createLoginButton(): Button {
-        return jfxButtonRaised(messages["login_button_text"]) {
+    private fun Node.setupLoginButton() {
+        jfxButtonRaised(messages["login_button_text"]) {
             useMaxWidth = true
             isDefaultButton = true
 

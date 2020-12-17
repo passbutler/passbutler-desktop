@@ -19,7 +19,6 @@ import tornadofx.addClass
 import tornadofx.get
 import tornadofx.hbox
 import tornadofx.paddingAll
-import tornadofx.paddingBottom
 import tornadofx.paddingTop
 import tornadofx.pane
 import tornadofx.px
@@ -53,15 +52,15 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
                 vbox(alignment = Pos.CENTER) {
                     spacing = marginM.value
 
-                    createCreateVaultCardView()
-                    createOpenVaultCardView()
+                    setupCreateVaultCardView()
+                    setupOpenVaultCardView()
                 }
             }
         }
     }
 
-    private fun Node.createCreateVaultCardView() {
-        createCardView(messages["welcome_create_vault_headline"], messages["welcome_create_vault_description"], messages["welcome_create_vault_button_text"]) {
+    private fun Node.setupCreateVaultCardView() {
+        setupCardView(messages["welcome_create_vault_headline"], messages["welcome_create_vault_description"], messages["welcome_create_vault_button_text"]) {
             createVaultClicked()
         }
     }
@@ -84,8 +83,8 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
         }
     }
 
-    private fun Node.createOpenVaultCardView() {
-        createCardView(messages["welcome_open_vault_headline"], messages["welcome_open_vault_description"], messages["welcome_open_vault_button_text"]) {
+    private fun Node.setupOpenVaultCardView() {
+        setupCardView(messages["welcome_open_vault_headline"], messages["welcome_open_vault_description"], messages["welcome_open_vault_button_text"]) {
             openVaultClicked()
         }
     }
@@ -101,7 +100,7 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
         }
     }
 
-    private fun Node.createCardView(title: String, description: String, buttonTitle: String, buttonAction: () -> Unit) {
+    private fun Node.setupCardView(title: String, description: String, buttonTitle: String, buttonAction: () -> Unit) {
         vbox {
             addClass(Theme.cardViewBackgroundStyle)
 
@@ -114,11 +113,14 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
 
             textLabelBody1(description) {
                 paddingTop = marginS.value
-                paddingBottom = marginM.value
             }
 
-            jfxButtonRaised(buttonTitle) {
-                action(buttonAction)
+            vbox {
+                paddingTop = marginM.value
+
+                jfxButtonRaised(buttonTitle) {
+                    action(buttonAction)
+                }
             }
         }
     }

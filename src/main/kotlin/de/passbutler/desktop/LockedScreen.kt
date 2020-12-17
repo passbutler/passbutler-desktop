@@ -21,14 +21,11 @@ import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.text.TextAlignment
 import tornadofx.FX.Companion.messages
-import tornadofx.Field
 import tornadofx.Fieldset
-import tornadofx.Form
 import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
@@ -41,7 +38,6 @@ import tornadofx.hbox
 import tornadofx.imageview
 import tornadofx.longpress
 import tornadofx.onLeftClick
-import tornadofx.paddingBottom
 import tornadofx.paddingTop
 import tornadofx.pane
 import tornadofx.passwordfield
@@ -113,12 +109,13 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
 
             fieldset(labelPosition = Orientation.VERTICAL) {
                 paddingTop = marginS.value
-                paddingBottom = marginM.value
-
-                createPasswordUrlField()
+                setupPasswordUrlField()
             }
 
-            createUnlockWithPasswordButton()
+            vbox {
+                paddingTop = marginM.value
+                setupUnlockWithPasswordButton()
+            }
         }
     }
 
@@ -130,8 +127,8 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
         }
     }
 
-    private fun Fieldset.createPasswordUrlField(): Field {
-        return field(messages["locked_screen_master_password_hint"]) {
+    private fun Fieldset.setupPasswordUrlField() {
+        field(messages["locked_screen_master_password_hint"], orientation = Orientation.VERTICAL) {
             passwordfield(viewModel.passwordProperty) {
                 validateWithRules(this) {
                     listOf(
@@ -142,8 +139,8 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
         }
     }
 
-    private fun Form.createUnlockWithPasswordButton(): Button {
-        return jfxButtonRaised(messages["locked_screen_button_password_text"]) {
+    private fun Node.setupUnlockWithPasswordButton() {
+        jfxButtonRaised(messages["locked_screen_button_password_text"]) {
             useMaxWidth = true
             isDefaultButton = true
 
