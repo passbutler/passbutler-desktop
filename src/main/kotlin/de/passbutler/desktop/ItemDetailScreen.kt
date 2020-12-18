@@ -20,6 +20,7 @@ import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelBody2
 import de.passbutler.desktop.ui.textLabelHeadline1
@@ -306,7 +307,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         launchRequestSending(
             handleSuccess = {
                 showInformation(messages["itemdetail_delete_successful_message"])
-                showScreen(OverviewScreen::class)
+                showScreenUnanimated(OverviewScreen::class)
             },
             handleFailure = { showError(messages["itemdetail_delete_failed_general_title"]) }
         ) {
