@@ -283,47 +283,23 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     }
 
     private fun copyUsernameOfSelectedItem() {
-        listScreenLayout?.selectedItem?.let { itemEntry ->
-            val itemId = itemEntry.itemViewModel.id
-            Logger.debug("Copy username of item (id = $itemId) to clipboard")
-
-            val username = itemEntry.itemViewModel.itemData?.username
-
-            if (username?.isNotBlank() == true) {
-                clipboard.putString(username)
-            } else {
-                Logger.debug("The username of item (id = $itemId) is blank - do not copy to clipboard")
-            }
-        }
+        copyItemInformationToClipboard(listScreenLayout?.selectedItem?.itemViewModel?.itemData?.username)
     }
 
     private fun copyPasswordOfSelectedItem() {
-        listScreenLayout?.selectedItem?.let { itemEntry ->
-            val itemId = itemEntry.itemViewModel.id
-            Logger.debug("Copy password of item (id = $itemId) to clipboard")
-
-            val password = itemEntry.itemViewModel.itemData?.password
-
-            if (password?.isNotBlank() == true) {
-                clipboard.putString(password)
-            } else {
-                Logger.debug("The password of item (id = $itemId) is blank - do not copy to clipboard")
-            }
-        }
+        copyItemInformationToClipboard(listScreenLayout?.selectedItem?.itemViewModel?.itemData?.password)
     }
 
     private fun copyUrlOfSelectedItem() {
-        listScreenLayout?.selectedItem?.let { itemEntry ->
-            val itemId = itemEntry.itemViewModel.id
-            Logger.debug("Copy URL of item (id = $itemId) to clipboard")
+        copyItemInformationToClipboard(listScreenLayout?.selectedItem?.itemViewModel?.itemData?.url)
+    }
 
-            val url = itemEntry.itemViewModel.itemData?.url
-
-            if (url?.isNotBlank() == true) {
-                clipboard.putString(url)
-            } else {
-                Logger.debug("The URL of item (id = $itemId) is blank - do not copy to clipboard")
-            }
+    private fun copyItemInformationToClipboard(itemInformation: String?) {
+        if (itemInformation?.isNotBlank() == true) {
+            clipboard.putString(itemInformation)
+            showInformation(messages["overview_item_information_clipboard_successful_message"])
+        } else {
+            showError(messages["overview_item_information_clipboard_failed_empty_title"])
         }
     }
 
