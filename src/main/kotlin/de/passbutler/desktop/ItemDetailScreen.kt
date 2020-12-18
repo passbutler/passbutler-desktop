@@ -30,6 +30,7 @@ import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Label
+import javafx.scene.control.TextFormatter
 import javafx.scene.text.FontWeight
 import tornadofx.Fieldset
 import tornadofx.Form
@@ -182,9 +183,13 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
                     prefRowCount = 2
 
-                    textProperty().addListener { _, _, newValue ->
-                        // Do not reject new value / use old value - only accept the first N of characters
-                        text = newValue.take(NOTES_MAXIMUM_CHARACTERS)
+                    textFormatter = TextFormatter<String> { change: TextFormatter.Change ->
+                        if (change.controlNewText.length > NOTES_MAXIMUM_CHARACTERS) {
+                            // Reject the change
+                            null
+                        } else {
+                            change
+                        }
                     }
                 }
             }
