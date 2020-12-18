@@ -258,10 +258,18 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
             jfxFloatingActionButtonRaised("+") {
                 setOnAction {
-                    showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to null))
+                    addItemClicked()
                 }
             }
+
+            shortcut("Ctrl+N") {
+                addItemClicked()
+            }
         }
+    }
+
+    private fun addItemClicked() {
+        showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to null))
     }
 
     override fun onDock() {
