@@ -171,3 +171,14 @@ private fun dropShadow(): DropShadow {
         color = Color.web(grey90.css, 0.5)
     }
 }
+
+/**
+ * Input events
+ */
+
+fun Node.onMouseBackClick(clickCount: Int = 1, action: () -> Unit) {
+    setOnMouseClicked {
+        if (it.clickCount == clickCount && it.button === MouseButton.BACK)
+            action()
+    }
+}
