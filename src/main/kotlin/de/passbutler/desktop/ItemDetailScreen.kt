@@ -88,13 +88,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
             form {
                 paddingAll = marginM.value
 
-                textLabelHeadline1(titleProperty)
-
-                fieldset(labelPosition = Orientation.VERTICAL) {
-                    paddingTop = marginM.value
-                    setupTitleField()
-                }
-
+                setupTitleSection()
                 setupDetailsSection()
                 setupButtonSection()
                 setupInformationSection()
@@ -103,19 +97,12 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
     }
 
-    private fun Form.setupDetailsSection() {
-        textLabelHeadline1(messages["itemdetail_details_header"]) {
-            paddingTop = marginM.value
-        }
+    private fun Form.setupTitleSection() {
+        textLabelHeadline1(titleProperty)
 
         fieldset(labelPosition = Orientation.VERTICAL) {
             paddingTop = marginM.value
-            spacing = marginS.value
-
-            setupUsernameField()
-            setupPasswordField()
-            setupUrlField()
-            setupNotesField()
+            setupTitleField()
         }
     }
 
@@ -138,6 +125,22 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
                     )
                 }
             }
+        }
+    }
+
+    private fun Form.setupDetailsSection() {
+        textLabelHeadline1(messages["itemdetail_details_header"]) {
+            paddingTop = marginM.value
+        }
+
+        fieldset(labelPosition = Orientation.VERTICAL) {
+            paddingTop = marginM.value
+            spacing = marginS.value
+
+            setupUsernameField()
+            setupPasswordField()
+            setupUrlField()
+            setupNotesField()
         }
     }
 
