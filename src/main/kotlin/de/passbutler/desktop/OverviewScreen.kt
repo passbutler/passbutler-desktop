@@ -307,11 +307,11 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         return vbox {
             alignment = Pos.CENTER
             paddingAll = marginM.value
+            spacing = marginS.value
 
+            smallSVGIcon(Drawables.ICON_LIST.svgPath)
             textLabelHeadline1(messages["overview_empty_screen_title"])
-            textLabelBody1(messages["overview_empty_screen_description"]) {
-                paddingTop = marginS.value
-            }
+            textLabelBody1(messages["overview_empty_screen_description"])
         }
     }
 
