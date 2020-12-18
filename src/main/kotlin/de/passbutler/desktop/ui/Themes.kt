@@ -169,6 +169,12 @@ abstract class Theme : Stylesheet(), ThemeColors {
             backgroundColor = multi(scrimBackground)
         }
 
+        pressedBackgroundStyle {
+            and(pressed) {
+                opacity = OPACITY_PRESSED
+            }
+        }
+
         /**
          * List view styles
          */
@@ -321,6 +327,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val abstractBackgroundOverlayStyle by cssclass()
         val cardViewBackgroundStyle by cssclass()
         val scrimBackgroundStyle by cssclass()
+        val pressedBackgroundStyle by cssclass()
 
         val textHeadline1Style by cssclass()
         val textHeadline2Style by cssclass()

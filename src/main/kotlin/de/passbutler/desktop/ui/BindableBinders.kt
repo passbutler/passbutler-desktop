@@ -80,3 +80,11 @@ fun TextInputControl.bindInput(bindable: MutableBindable<String>) {
         bindable.value = newValue
     }
 }
+
+fun TextInputControl.bindInputOptional(bindable: MutableBindable<String?>) {
+    text = bindable.value
+
+    textProperty().addListener { _, _, newValue ->
+        bindable.value = newValue
+    }
+}
