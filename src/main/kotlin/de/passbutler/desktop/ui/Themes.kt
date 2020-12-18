@@ -261,6 +261,17 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         /**
+         * Form
+         */
+
+        form {
+            field {
+                // Remove extra spacing (space in set only via `spacing` of `fieldset`)
+                padding = box(0.0.px)
+            }
+        }
+
+        /**
          * Scroll views
          */
 

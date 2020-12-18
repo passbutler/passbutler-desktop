@@ -18,7 +18,6 @@ import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
-import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBody1
@@ -29,11 +28,10 @@ import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.text.FontWeight
-import tornadofx.Field
 import tornadofx.Fieldset
+import tornadofx.Form
 import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
@@ -42,7 +40,6 @@ import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
 import tornadofx.paddingAll
-import tornadofx.paddingBottom
 import tornadofx.paddingTop
 import tornadofx.passwordfield
 import tornadofx.scrollpane
@@ -86,71 +83,42 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         scrollpane(fitToWidth = true, fitToHeight = true) {
             addClass(Theme.scrollPaneBorderlessStyle)
 
-            vbox {
+            form {
                 paddingAll = marginM.value
 
                 textLabelHeadline1(titleProperty)
 
-                form {
-                    fieldset(labelPosition = Orientation.VERTICAL) {
-                        paddingTop = marginS.value
-                        paddingBottom = marginL.value
-
-                        createTitleField()
-
-                        // TODO: Spacing not working
-                        vbox {
-                            paddingTop = marginM.value
-                            spacing = marginS.value
-
-                            textLabelHeadline1(messages["itemdetail_details_header"])
-
-                            createUsernameField()
-                            createPasswordField()
-                            createUrlField()
-                            createNotesField()
-                        }
-
-                        vbox {
-                            paddingTop = marginM.value
-                            spacing = marginS.value
-
-                            textLabelHeadline1(messages["itemdetail_information_header"])
-
-                            createInformationView(messages["itemdetail_id_title"]) {
-                                style {
-                                    fontFamily = "monospace"
-                                }
-
-                                bindTextAndVisibility(this@ItemDetailScreen, viewModel.id)
-                            }
-
-                            createInformationView(messages["itemdetail_modified_title"]) {
-                                bindTextAndVisibility(this@ItemDetailScreen, viewModel.modified) {
-                                    it?.formattedDateTime
-                                }
-                            }
-
-                            createInformationView(messages["itemdetail_created_title"]) {
-                                bindTextAndVisibility(this@ItemDetailScreen, viewModel.created) {
-                                    it?.formattedDateTime
-                                }
-                            }
-
-                            bindVisibility(this@ItemDetailScreen, viewModel.isNewItem) { isNewItem ->
-                                !isNewItem
-                            }
-                        }
-                    }
-
-                    createSaveButton()
+                fieldset(labelPosition = Orientation.VERTICAL) {
+                    paddingTop = marginM.value
+                    setupTitleField()
                 }
+
+                setupDetailsSection()
+                setupButtonSection()
+                setupInformationSection()
+                setupDeleteSection()
             }
         }
     }
 
-    private fun Fieldset.createTitleField(): Field {
-        return field(orientation = Orientation.VERTICAL) {
+    private fun Form.setupDetailsSection() {
+        textLabelHeadline1(messages["itemdetail_details_header"]) {
+            paddingTop = marginM.value
+        }
+
+        fieldset(labelPosition = Orientation.VERTICAL) {
+            paddingTop = marginM.value
+            spacing = marginS.value
+
+            setupUsernameField()
+            setupPasswordField()
+            setupUrlField()
+            setupNotesField()
+        }
+    }
+
+    private fun Fieldset.setupTitleField() {
+        field(orientation = Orientation.VERTICAL) {
             textfield {
                 style {
                     fontSize = textSizeLarge
@@ -171,8 +139,8 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
     }
 
-    private fun Fieldset.createUsernameField(): Field {
-        return field(messages["itemdetail_username_hint"], orientation = Orientation.VERTICAL) {
+    private fun Fieldset.setupUsernameField() {
+        field(messages["itemdetail_username_hint"], orientation = Orientation.VERTICAL) {
             textfield {
                 bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(viewModel.username)
@@ -180,8 +148,8 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
     }
 
-    private fun Fieldset.createPasswordField(): Field {
-        return field(messages["itemdetail_password_hint"], orientation = Orientation.VERTICAL) {
+    private fun Fieldset.setupPasswordField() {
+        field(messages["itemdetail_password_hint"], orientation = Orientation.VERTICAL) {
             val inputField = if (viewModel.hidePasswordsEnabled) {
                 passwordfield()
             } else {
@@ -193,8 +161,8 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
     }
 
-    private fun Fieldset.createUrlField(): Field {
-        return field(messages["itemdetail_url_hint"], orientation = Orientation.VERTICAL) {
+    private fun Fieldset.setupUrlField() {
+        field(messages["itemdetail_url_hint"], orientation = Orientation.VERTICAL) {
             textfield {
                 bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(viewModel.url)
@@ -202,8 +170,8 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
     }
 
-    private fun Fieldset.createNotesField(): Node {
-        return vbox {
+    private fun Fieldset.setupNotesField() {
+        vbox {
             alignment = Pos.CENTER_RIGHT
 
             field(messages["itemdetail_notes_hint"], orientation = Orientation.VERTICAL) {
@@ -229,20 +197,15 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
     }
 
-    private fun Node.createInformationView(title: String, valueSetup: Label.() -> Unit): Node {
-        return vbox {
-            textLabelBody1(title) {
-                style {
-                    fontWeight = FontWeight.BOLD
-                }
-            }
-
-            textLabelBody1(op = valueSetup)
+    private fun Node.setupButtonSection() {
+        vbox {
+            paddingTop = marginM.value
+            setupSaveButton()
         }
     }
 
-    private fun Node.createSaveButton(): Button {
-        return jfxButtonRaised(messages["itemdetail_save_button_title"]) {
+    private fun Node.setupSaveButton() {
+        jfxButtonRaised(messages["itemdetail_save_button_title"]) {
             isDefaultButton = true
 
             bindVisibility(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
@@ -263,6 +226,91 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
             ) {
                 viewModel.save()
             }
+        }
+    }
+
+    private fun Node.setupInformationSection() {
+        vbox {
+            paddingTop = marginM.value
+            spacing = marginM.value
+
+            textLabelHeadline1(messages["itemdetail_information_header"])
+
+            vbox {
+                spacing = marginS.value
+
+                setupInformationView(messages["itemdetail_id_title"]) {
+                    style {
+                        fontFamily = "monospace"
+                    }
+
+                    bindTextAndVisibility(this@ItemDetailScreen, viewModel.id)
+                }
+
+                setupInformationView(messages["itemdetail_modified_title"]) {
+                    bindTextAndVisibility(this@ItemDetailScreen, viewModel.modified) {
+                        it?.formattedDateTime
+                    }
+                }
+
+                setupInformationView(messages["itemdetail_created_title"]) {
+                    bindTextAndVisibility(this@ItemDetailScreen, viewModel.created) {
+                        it?.formattedDateTime
+                    }
+                }
+            }
+
+            bindVisibility(this@ItemDetailScreen, viewModel.isNewItem) { isNewItem ->
+                !isNewItem
+            }
+        }
+    }
+
+    private fun Node.setupInformationView(title: String, valueSetup: Label.() -> Unit) {
+        vbox {
+            textLabelBody1(title) {
+                style {
+                    fontWeight = FontWeight.BOLD
+                }
+            }
+
+            textLabelBody1(op = valueSetup)
+        }
+    }
+
+    private fun Node.setupDeleteSection() {
+        vbox {
+            paddingTop = marginM.value
+            spacing = marginM.value
+
+            textLabelHeadline1(messages["itemdetail_delete_header"])
+            setupDeleteButton()
+
+            bindVisibility(this@ItemDetailScreen, viewModel.isNewItem) { isNewItem ->
+                !isNewItem
+            }
+        }
+    }
+
+    private fun Node.setupDeleteButton() {
+        jfxButtonRaised(messages["itemdetail_delete_button_title"]) {
+            bindVisibility(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
+
+            action {
+                deleteClicked()
+            }
+        }
+    }
+
+    private fun deleteClicked() {
+        launchRequestSending(
+            handleSuccess = {
+                showInformation(messages["itemdetail_delete_successful_message"])
+                showScreen(OverviewScreen::class)
+            },
+            handleFailure = { showError(messages["itemdetail_delete_failed_general_title"]) }
+        ) {
+            viewModel.delete()
         }
     }
 
