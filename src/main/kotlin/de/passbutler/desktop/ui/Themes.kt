@@ -190,18 +190,18 @@ abstract class Theme : Stylesheet(), ThemeColors {
             backgroundColor = multi(colorBackground)
 
             and(even) {
-                backgroundColor += listItemBackgroundEven
+                backgroundColor = multi(listItemBackgroundEven)
 
                 and(selected) {
-                    backgroundColor += listItemBackgroundSelected
+                    backgroundColor = multi(listItemBackgroundSelected)
                 }
             }
 
             and(odd) {
-                backgroundColor += listItemBackgroundOdd
+                backgroundColor = multi(listItemBackgroundOdd)
 
                 and(selected) {
-                    backgroundColor += listItemBackgroundSelected
+                    backgroundColor = multi(listItemBackgroundSelected)
                 }
             }
 
