@@ -33,6 +33,8 @@ import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
+import javafx.scene.input.KeyCode
+import javafx.scene.input.KeyEvent
 import javafx.scene.layout.StackPane
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -49,7 +51,6 @@ import tornadofx.hbox
 import tornadofx.insets
 import tornadofx.left
 import tornadofx.listview
-import tornadofx.onChange
 import tornadofx.onLeftClick
 import tornadofx.paddingAll
 import tornadofx.paddingLeft
@@ -57,6 +58,7 @@ import tornadofx.paddingTop
 import tornadofx.pane
 import tornadofx.right
 import tornadofx.select
+import tornadofx.selectedItem
 import tornadofx.stackpane
 import tornadofx.textfield
 import tornadofx.top
@@ -214,11 +216,9 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
                 }
             }
 
-            selectionModel.selectedItemProperty().onChange { itemEntry ->
-                Logger.debug("Selected item $itemEntry")
-
-                if (itemEntry != null) {
-                    showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to itemEntry.itemViewModel.id))
+            setOnKeyReleased { keyEvent: KeyEvent ->
+                if (keyEvent.code == KeyCode.ENTER) {
+                    showSelectedItem()
                 }
             }
         }
@@ -239,6 +239,16 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
                     paddingTop = marginS.value
                 }
             }
+
+            onLeftClick {
+                showSelectedItem()
+            }
+        }
+    }
+
+    private fun showSelectedItem() {
+        listScreenLayout?.selectedItem?.let { itemEntry ->
+            showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to itemEntry.itemViewModel.id))
         }
     }
 

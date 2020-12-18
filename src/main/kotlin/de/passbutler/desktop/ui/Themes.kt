@@ -37,6 +37,10 @@ interface ThemeColors {
     val scrimBackground: Color
     val colorBackgroundImageTint: Color
 
+    val listItemBackgroundEven: Color
+    val listItemBackgroundOdd: Color
+    val listItemBackgroundSelected: Color
+
     val textColorPrimary: Color
     val textColorSecondary: Color
 }
@@ -180,11 +184,19 @@ abstract class Theme : Stylesheet(), ThemeColors {
             backgroundColor = multi(colorBackground)
 
             and(even) {
-                backgroundColor += colorBackground
+                backgroundColor += listItemBackgroundEven
+
+                and(selected) {
+                    backgroundColor += listItemBackgroundSelected
+                }
             }
 
             and(odd) {
-                backgroundColor += colorBackgroundEmphasized
+                backgroundColor += listItemBackgroundOdd
+
+                and(selected) {
+                    backgroundColor += listItemBackgroundSelected
+                }
             }
 
             // Apply pressed state only for filled, not for empty list cells
@@ -350,6 +362,9 @@ class LightTheme : Theme(), ThemeColors by Companion {
         override val colorOnSurface = grey80
         override val scrimBackground = grey00Transparent
         override val colorBackgroundImageTint = Color.web(black.css, 0.0)
+        override val listItemBackgroundEven = grey00
+        override val listItemBackgroundOdd = grey04
+        override val listItemBackgroundSelected = wineRedLight
         override val textColorPrimary = black
         override val textColorSecondary = blackTransparent
     }
@@ -374,6 +389,9 @@ class DarkTheme : Theme(), ThemeColors by Companion {
         override val colorOnSurface = grey00
         override val scrimBackground = grey80Transparent
         override val colorBackgroundImageTint = Color.web(black.css, 0.3)
+        override val listItemBackgroundEven = grey80
+        override val listItemBackgroundOdd = grey84
+        override val listItemBackgroundSelected = wineRedLight
         override val textColorPrimary = white
         override val textColorSecondary = whiteTransparent
     }
