@@ -287,7 +287,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             while (isActive) {
                 Logger.debug("Update relative time in toolbar subtitle")
 
-                // Update relative time in toolbar every minute
+                // Update relative time in toolbar periodically
                 updateToolbarSubtitle()
                 delay(10_000)
             }
