@@ -42,13 +42,16 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
 import tornadofx.FX.Companion.messages
+import tornadofx.action
 import tornadofx.addClass
 import tornadofx.borderpane
 import tornadofx.cache
 import tornadofx.center
+import tornadofx.contextmenu
 import tornadofx.get
 import tornadofx.hbox
 import tornadofx.insets
+import tornadofx.item
 import tornadofx.left
 import tornadofx.listview
 import tornadofx.onLeftClick
@@ -56,6 +59,7 @@ import tornadofx.paddingAll
 import tornadofx.paddingLeft
 import tornadofx.paddingTop
 import tornadofx.pane
+import tornadofx.putString
 import tornadofx.right
 import tornadofx.select
 import tornadofx.selectedItem
@@ -221,6 +225,18 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
                     showSelectedItem()
                 }
             }
+
+            shortcut("CTRL+B") {
+                copyUsernameOfSelectedItem()
+            }
+
+            shortcut("CTRL+C") {
+                copyPasswordOfSelectedItem()
+            }
+
+            shortcut("CTRL+U") {
+                copyUrlOfSelectedItem()
+            }
         }
     }
 
@@ -243,12 +259,71 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             onLeftClick {
                 showSelectedItem()
             }
+
+            contextmenu {
+                item(messages["overview_item_context_menu_copy_username"]).action {
+                    copyUsernameOfSelectedItem()
+                }
+
+                item(messages["overview_item_context_menu_copy_password"]).action {
+                    copyPasswordOfSelectedItem()
+                }
+
+                item(messages["overview_item_context_menu_copy_url"]).action {
+                    copyUrlOfSelectedItem()
+                }
+            }
         }
     }
 
     private fun showSelectedItem() {
         listScreenLayout?.selectedItem?.let { itemEntry ->
             showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to itemEntry.itemViewModel.id))
+        }
+    }
+
+    private fun copyUsernameOfSelectedItem() {
+        listScreenLayout?.selectedItem?.let { itemEntry ->
+            val itemId = itemEntry.itemViewModel.id
+            Logger.debug("Copy username of item (id = $itemId) to clipboard")
+
+            val username = itemEntry.itemViewModel.itemData?.username
+
+            if (username?.isNotBlank() == true) {
+                clipboard.putString(username)
+            } else {
+                Logger.debug("The username of item (id = $itemId) is blank - do not copy to clipboard")
+            }
+        }
+    }
+
+    private fun copyPasswordOfSelectedItem() {
+        listScreenLayout?.selectedItem?.let { itemEntry ->
+            val itemId = itemEntry.itemViewModel.id
+            Logger.debug("Copy password of item (id = $itemId) to clipboard")
+
+            val password = itemEntry.itemViewModel.itemData?.password
+
+            if (password?.isNotBlank() == true) {
+                clipboard.putString(password)
+            } else {
+                Logger.debug("The password of item (id = $itemId) is blank - do not copy to clipboard")
+            }
+        }
+    }
+
+    private fun copyUrlOfSelectedItem() {
+        listScreenLayout?.selectedItem?.let { itemEntry ->
+            val itemId = itemEntry.itemViewModel.id
+            Logger.debug("Copy URL of item (id = $itemId) to clipboard")
+
+            val url = itemEntry.itemViewModel.itemData?.url
+
+            if (url?.isNotBlank() == true) {
+                clipboard.putString(url)
+            } else {
+                Logger.debug("The URL of item (id = $itemId) is blank - do not copy to clipboard")
+            }
         }
     }
 
