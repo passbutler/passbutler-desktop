@@ -13,6 +13,7 @@ import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
+import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
@@ -66,7 +67,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
     private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 
-    private var toolbarSynchronizationContainer: Node? = null
     private var toolbarSynchronizationSubtitle: Label? = null
     private var toolbarSynchronizationIcon: Node? = null
 
@@ -146,7 +146,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             }
 
             right {
-                toolbarSynchronizationContainer = createToolbarSynchronizationContainer()
+                setupToolbarSynchronizationContainer()
             }
         }
     }
@@ -171,8 +171,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         }
     }
 
-    private fun Node.createToolbarSynchronizationContainer(): Node {
-        return vbox {
+    private fun Node.setupToolbarSynchronizationContainer() {
+        vbox {
             alignment = Pos.CENTER_RIGHT
 
             // Hidden by default
@@ -190,6 +190,12 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
             shortcut("Ctrl+R") {
                 synchronizeData()
+            }
+
+            viewModel.loggedInUserViewModel?.loggedInStateStorage?.let { loggedInStateStorageBindable ->
+                bindVisibility(this@OverviewScreen, loggedInStateStorageBindable) { loggedInStateStorageValue ->
+                    loggedInStateStorageValue?.userType == UserType.REMOTE
+                }
             }
         }
     }
@@ -279,7 +285,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         viewModel.loggedInUserViewModel?.itemViewModels?.addLifecycleObserver(this, true, itemViewModelsObserver)
 
         viewModel.loggedInUserViewModel?.loggedInStateStorage?.addLifecycleObserver(this, true) {
-            updateToolbarSynchronizationContainer()
+            updateToolbarSubtitle()
         }
 
         updateToolbarJob?.cancel()
@@ -292,14 +298,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
                 delay(10_000)
             }
         }
-    }
-
-    private fun updateToolbarSynchronizationContainer() {
-        toolbarSynchronizationContainer?.apply {
-            isVisible = viewModel.loggedInUserViewModel?.userType == UserType.REMOTE
-        }
-
-        updateToolbarSubtitle()
     }
 
     private fun updateToolbarSubtitle() {
