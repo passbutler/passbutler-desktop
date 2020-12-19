@@ -165,7 +165,7 @@ class RootScreen : BaseView(), RequestSending {
 
     private fun closeVaultClicked() {
         launchRequestSending(
-            handleFailure = { showError(messages["root_logout_failed_title"]) }
+            handleFailure = { showError(messages["overview_logout_failed_title"]) }
         ) {
             viewModel.closeVault()
         }
