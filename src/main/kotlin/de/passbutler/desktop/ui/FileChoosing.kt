@@ -29,7 +29,7 @@ fun showSaveVaultFileChooser(title: String, chosenFileBlock: (File) -> Unit) {
 }
 
 private fun createFileChooserExtensionFilter(): Array<FileChooser.ExtensionFilter> {
-    val userFacingFileExtensionDescription = FX.messages["file_extension_description"]
+    val userFacingFileExtensionDescription = FX.messages["general_file_extension_description"]
     val userFacingFileExtensionPattern = "*.$VAULT_FILE_EXTENSION"
     val extensionFilter = FileChooser.ExtensionFilter("$userFacingFileExtensionDescription ($userFacingFileExtensionPattern)", userFacingFileExtensionPattern)
     return arrayOf(extensionFilter)

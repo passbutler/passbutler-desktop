@@ -70,7 +70,7 @@ class RootScreen : BaseView(), RequestSending {
 
                     effect = bottomDropShadow()
 
-                    menuView = menu(messages["app_name"])
+                    menuView = menu(messages["general_app_name"])
                     updateMenu()
                 }
             }
