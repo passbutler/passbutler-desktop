@@ -18,6 +18,7 @@ import org.tinylog.kotlin.Logger
 import tornadofx.App
 import tornadofx.Component
 import tornadofx.ConfigProperties
+import tornadofx.FX
 import tornadofx.launch
 import tornadofx.px
 import java.nio.file.Path
@@ -36,6 +37,7 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         stage.minHeight = 600.px.value
 
         setupTheme()
+        setupLocale()
 
         super.start(stage)
 
@@ -51,6 +53,18 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
 
         if (restoredThemeType != null) {
             ThemeManager.themeType = restoredThemeType
+        }
+    }
+
+    private fun setupLocale() {
+        val restoredLanguage = runBlocking {
+            applicationConfiguration.readValue {
+                string(Configuration.LANGUAGE_CODE)
+            }.resultOrNull()?.let { Language.valueOfOrNull(it) }
+        }
+
+        if (restoredLanguage != null) {
+            FX.locale = Locale(restoredLanguage.languageCode)
         }
     }
 
@@ -131,6 +145,7 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         companion object {
             const val RECENT_VAULT = "recentVault"
             const val THEME_TYPE = "themeType"
+            const val LANGUAGE_CODE = "language"
 
             val Component.applicationConfiguration: Configuration
                 get() = Configuration(app as PassButlerApplication)
@@ -140,6 +155,17 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         }
 
         object NotFoundException : Exception("The value was not found!")
+    }
+
+    enum class Language(val languageCode: String) {
+        DE("de"),
+        EN("en");
+
+        companion object {
+            fun valueOfOrNull(languageCode: String): Language? {
+                return values().find { it.languageCode == languageCode }
+            }
+        }
     }
 }
 
