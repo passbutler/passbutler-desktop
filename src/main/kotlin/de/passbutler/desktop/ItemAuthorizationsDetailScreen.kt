@@ -128,29 +128,27 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
             alignment = Pos.CENTER_LEFT
             padding = insets(marginM.value, marginXS.value)
 
+            val headlineView = textLabelHeadline1(listCell.itemProperty().select { it.titleProperty }) {
+                graphic = smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE.svgPath)
+                graphicTextGap = marginM.value
+            }
+
             hbox {
-                smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE.svgPath)
+                spacing = marginS.value
 
-                vbox {
-                    paddingLeft = marginM.value
+                // Width of the graphic + spacing of the `headlineView`
+                paddingLeft = 18.0 + headlineView.graphicTextGap
 
-                    textLabelHeadline1(listCell.itemProperty().select { it.titleProperty })
+                jfxToggleButton(messages["itemauthorizations_read_switch_title"]) {
+                    paddingAll = 0
 
-                    hbox {
-                        spacing = marginS.value
+                    selectedProperty().bindBidirectional(listCell.itemProperty().select { it.readSwitchProperty })
+                }
 
-                        jfxToggleButton(messages["itemauthorizations_read_switch_title"]) {
-                            paddingAll = 0
+                jfxToggleButton(messages["itemauthorizations_write_switch_title"]) {
+                    paddingAll = 0
 
-                            selectedProperty().bindBidirectional(listCell.itemProperty().select { it.readSwitchProperty })
-                        }
-
-                        jfxToggleButton(messages["itemauthorizations_write_switch_title"]) {
-                            paddingAll = 0
-
-                            selectedProperty().bindBidirectional(listCell.itemProperty().select { it.writeSwitchProperty })
-                        }
-                    }
+                    selectedProperty().bindBidirectional(listCell.itemProperty().select { it.writeSwitchProperty })
                 }
             }
         }
