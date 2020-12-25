@@ -146,7 +146,7 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigati
 
     private fun Node.setupTextSettingItem(title: String, summary: String, settingItemAction: () -> Unit) {
         vbox {
-            addClass(Theme.pressedBackgroundStyle)
+            addClass(Theme.pressableBackgroundStyle)
 
             alignment = Pos.CENTER_LEFT
             padding = insets(0.px.value, marginS.value)
