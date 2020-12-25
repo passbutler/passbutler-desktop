@@ -142,13 +142,13 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
                         jfxToggleButton(messages["itemauthorizations_read_switch_title"]) {
                             paddingAll = 0
 
-                            // TODO: Bind correctly
+                            selectedProperty().bindBidirectional(listCell.itemProperty().select { it.readSwitchProperty })
                         }
 
                         jfxToggleButton(messages["itemauthorizations_write_switch_title"]) {
                             paddingAll = 0
 
-                            // TODO: Bind correctly
+                            selectedProperty().bindBidirectional(listCell.itemProperty().select { it.writeSwitchProperty })
                         }
                     }
                 }
@@ -197,6 +197,26 @@ class ItemAuthorizationEntry(val itemAuthorizationEditingViewModel: ItemAuthoriz
     val titleProperty = SimpleStringProperty(itemAuthorizationEditingViewModel.username)
     val readSwitchProperty = SimpleBooleanProperty(itemAuthorizationEditingViewModel.isReadAllowed.value)
     val writeSwitchProperty = SimpleBooleanProperty(itemAuthorizationEditingViewModel.isWriteAllowed.value)
+
+    init {
+        readSwitchProperty.addListener { _, _, isChecked ->
+            itemAuthorizationEditingViewModel.isReadAllowed.value = isChecked
+
+            // If no read access is given, write access is meaningless
+            if (!isChecked) {
+                writeSwitchProperty.value = false
+            }
+        }
+
+        writeSwitchProperty.addListener { _, _, isChecked ->
+            itemAuthorizationEditingViewModel.isWriteAllowed.value = isChecked
+
+            // If write access is given, read access is implied
+            if (isChecked) {
+                readSwitchProperty.value = true
+            }
+        }
+    }
 }
 
 fun List<ItemAuthorizationEntry>.sorted(): List<ItemAuthorizationEntry> {
