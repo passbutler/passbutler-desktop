@@ -215,6 +215,12 @@ abstract class Theme : Stylesheet(), ThemeColors {
             padding = box(0.px)
         }
 
+        listViewStaticBackgroundStyle {
+            listCell {
+                backgroundColor = multi(colorBackground)
+            }
+        }
+
         /**
          * Icons
          */
@@ -342,6 +348,9 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val floatingActionButtonStyle by cssclass()
 
         val scrollPaneBorderlessStyle by cssclass()
+
+        val listViewStaticBackgroundStyle by cssclass()
+
     }
 }
 
