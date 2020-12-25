@@ -205,14 +205,18 @@ abstract class Theme : Stylesheet(), ThemeColors {
                 }
             }
 
-            // Apply pressed state only for filled, not for empty list cells
-            and(filled) {
-                and(pressed) {
-                    opacity = OPACITY_PRESSED
+            padding = box(0.px)
+        }
+
+        listViewPressableCellStyle {
+            listCell {
+                // Apply pressed state only for filled, not for empty list cells
+                and(filled) {
+                    and(pressed) {
+                        opacity = OPACITY_PRESSED
+                    }
                 }
             }
-
-            padding = box(0.px)
         }
 
         listViewStaticBackgroundStyle {
@@ -349,8 +353,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         val scrollPaneBorderlessStyle by cssclass()
 
+        val listViewPressableCellStyle by cssclass()
         val listViewStaticBackgroundStyle by cssclass()
-
     }
 }
 

@@ -91,6 +91,7 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
             center {
                 listview(itemAuthorizationEntries) {
                     addClass(Theme.listViewStaticBackgroundStyle)
+                    addClass(Theme.listViewPressableCellStyle)
 
                     placeholder = createEmptyScreenLayout()
 
