@@ -5,7 +5,6 @@ import de.passbutler.common.base.DependentValueGetterBindable
 import de.passbutler.common.base.formattedDateTime
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
-import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuScreen
@@ -22,7 +21,6 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showScreenUnanimated
-import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelBody2
 import de.passbutler.desktop.ui.textLabelHeadline1
@@ -90,21 +88,38 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
             form {
                 paddingAll = marginM.value
 
-                setupTitleSection()
                 setupDetailsSection()
-                setupButtonSection()
                 setupInformationSection()
                 setupDeleteSection()
             }
         }
     }
 
-    private fun Form.setupTitleSection() {
+    private fun Form.setupDetailsSection() {
         textLabelHeadline1(titleProperty)
 
         fieldset(labelPosition = Orientation.VERTICAL) {
             paddingTop = marginM.value
             setupTitleField()
+        }
+
+        textLabelHeadline1(messages["itemdetail_details_header"]) {
+            paddingTop = marginM.value
+        }
+
+        fieldset(labelPosition = Orientation.VERTICAL) {
+            paddingTop = marginM.value
+            spacing = marginS.value
+
+            setupUsernameField()
+            setupPasswordField()
+            setupUrlField()
+            setupNotesField()
+        }
+
+        vbox {
+            paddingTop = marginM.value
+            setupSaveButton()
         }
     }
 
@@ -127,22 +142,6 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
                     )
                 }
             }
-        }
-    }
-
-    private fun Form.setupDetailsSection() {
-        textLabelHeadline1(messages["itemdetail_details_header"]) {
-            paddingTop = marginM.value
-        }
-
-        fieldset(labelPosition = Orientation.VERTICAL) {
-            paddingTop = marginM.value
-            spacing = marginS.value
-
-            setupUsernameField()
-            setupPasswordField()
-            setupUrlField()
-            setupNotesField()
         }
     }
 
@@ -205,13 +204,6 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
                     "$notesLength/$NOTES_MAXIMUM_CHARACTERS"
                 }
             }
-        }
-    }
-
-    private fun Node.setupButtonSection() {
-        vbox {
-            paddingTop = marginM.value
-            setupSaveButton()
         }
     }
 
