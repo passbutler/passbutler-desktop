@@ -36,6 +36,7 @@ import javafx.scene.control.ListView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.StackPane
+import javafx.scene.text.TextAlignment
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -310,8 +311,14 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             spacing = marginS.value
 
             smallSVGIcon(Drawables.ICON_LIST.svgPath)
-            textLabelHeadline1(messages["overview_empty_screen_title"])
-            textLabelBody1(messages["overview_empty_screen_description"])
+
+            textLabelHeadline1(messages["overview_empty_screen_title"]) {
+                textAlignment = TextAlignment.CENTER
+            }
+
+            textLabelBody1(messages["overview_empty_screen_description"]) {
+                textAlignment = TextAlignment.CENTER
+            }
         }
     }
 
