@@ -32,7 +32,10 @@ import org.tinylog.kotlin.Logger
 import tornadofx.FX
 import tornadofx.action
 import tornadofx.addClass
+import tornadofx.borderpane
+import tornadofx.bottom
 import tornadofx.cache
+import tornadofx.center
 import tornadofx.fitToParentHeight
 import tornadofx.get
 import tornadofx.hbox
@@ -41,6 +44,7 @@ import tornadofx.listview
 import tornadofx.paddingAll
 import tornadofx.paddingLeft
 import tornadofx.select
+import tornadofx.top
 import tornadofx.vbox
 
 class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemauthorizations_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
@@ -71,44 +75,49 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
     }
 
     private fun Node.createListScreenLayout(): Node {
-        return vbox {
+        return borderpane {
             // List header
-            vbox {
-                paddingAll = marginM.value
-                spacing = marginS.value
+            top {
+                vbox {
+                    paddingAll = marginM.value
+                    spacing = marginS.value
 
-                textLabelHeadline1(messages["itemauthorizations_header"])
-
-                // TODO: wrapText does not work if list view is added
-                textLabelBody1(messages["itemauthorizations_description"])
+                    textLabelHeadline1(messages["itemauthorizations_header"])
+                    textLabelBody1(messages["itemauthorizations_description"])
+                }
             }
 
-            listview(itemAuthorizationEntries) {
-                addClass(Theme.listViewStaticBackgroundStyle)
+            // List
+            center {
+                listview(itemAuthorizationEntries) {
+                    addClass(Theme.listViewStaticBackgroundStyle)
 
-                placeholder = createEmptyScreenLayout()
+                    placeholder = createEmptyScreenLayout()
 
-                // Workaround for "hardcoded 400px height of ListView" issue
-                fitToParentHeight()
+                    // Workaround for "hardcoded 400px height of ListView" issue
+                    fitToParentHeight()
 
-                cellFormat {
-                    graphic = cache {
-                        createItemAuthorizationEntryView(this@cellFormat)
+                    cellFormat {
+                        graphic = cache {
+                            createItemAuthorizationEntryView(this@cellFormat)
+                        }
                     }
                 }
             }
 
             // List footer
-            vbox {
-                paddingAll = marginM.value
+            bottom {
+                vbox {
+                    paddingAll = marginM.value
 
-                jfxButtonRaised(messages["itemauthorizations_save_button_title"]) {
-                    isDefaultButton = true
+                    jfxButtonRaised(messages["itemauthorizations_save_button_title"]) {
+                        isDefaultButton = true
 
-                    bindEnabled(this@ItemAuthorizationsDetailScreen, viewModel.itemAuthorizationEditingViewModelsModified)
+                        bindEnabled(this@ItemAuthorizationsDetailScreen, viewModel.itemAuthorizationEditingViewModelsModified)
 
-                    action {
-                        saveClicked()
+                        action {
+                            saveClicked()
+                        }
                     }
                 }
             }
