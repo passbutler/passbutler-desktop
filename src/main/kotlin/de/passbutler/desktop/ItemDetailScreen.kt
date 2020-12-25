@@ -266,12 +266,13 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
             vbox {
                 jfxButtonRaised(messages["itemdetail_authorizations_button_text"]) {
                     isEnabled = viewModel.isItemAuthorizationAvailable
-                    bindVisibility(this@ItemDetailScreen, viewModel.isItemAuthorizationAllowed)
 
                     action {
                         showScreenUnanimated(ItemAuthorizationsDetailScreen::class, parameters = params)
                     }
                 }
+
+                bindVisibility(this@ItemDetailScreen, viewModel.isItemAuthorizationAllowed)
             }
 
             textLabelBody2(messages["itemdetail_authorizations_footer_teaser"]) {
