@@ -17,6 +17,7 @@ import de.passbutler.desktop.ui.bindTextAndVisibility
 import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
+import de.passbutler.desktop.ui.isEnabled
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
@@ -59,6 +60,24 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
     private val viewModelWrapper by injectWithPrivateScope<ItemEditingViewModelWrapper>(params)
 
+    private val itemAuthorizationDescription by lazy {
+        DependentValueGetterBindable(viewModel.isItemAuthorizationAllowed, viewModel.isItemModificationAllowed, viewModel.ownerUsername, viewModel.itemAuthorizationModifiedDate) {
+            val itemOwnerUsername = viewModel.ownerUsername.value
+            val itemAuthorizationModifiedDate = viewModel.itemAuthorizationModifiedDate.value?.formattedDateTime
+
+            when {
+                viewModel.isItemAuthorizationAllowed.value -> messages["itemdetail_authorizations_description_owned_item"]
+                viewModel.isItemModificationAllowed.value && itemOwnerUsername != null && itemAuthorizationModifiedDate != null -> {
+                    messages["itemdetail_authorizations_description_shared_item"].format(itemOwnerUsername, itemAuthorizationModifiedDate)
+                }
+                !viewModel.isItemModificationAllowed.value && itemOwnerUsername != null && itemAuthorizationModifiedDate != null -> {
+                    messages["itemdetail_authorizations_description_shared_readonly_item"].format(itemOwnerUsername, itemAuthorizationModifiedDate)
+                }
+                else -> null
+            }
+        }
+    }
+
     private val isItemModified by lazy {
         DependentValueGetterBindable(
             viewModel.title,
@@ -89,6 +108,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
                 paddingAll = marginM.value
 
                 setupDetailsSection()
+                setupItemAuthorizationsSection()
                 setupInformationSection()
                 setupDeleteSection()
             }
@@ -228,6 +248,40 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
                 handleFailure = { showError(messages["itemdetail_save_failed_general_title"]) }
             ) {
                 viewModel.save()
+            }
+        }
+    }
+
+    private fun Node.setupItemAuthorizationsSection() {
+        vbox {
+            paddingTop = marginM.value
+            spacing = marginM.value
+
+            textLabelHeadline1(messages["itemdetail_authorizations_header"])
+
+            textLabelBody1 {
+                bindTextAndVisibility(this@ItemDetailScreen, itemAuthorizationDescription)
+            }
+
+            vbox {
+                jfxButtonRaised(messages["itemdetail_authorizations_button_text"]) {
+                    isEnabled = viewModel.isItemAuthorizationAvailable
+                    bindVisibility(this@ItemDetailScreen, viewModel.isItemAuthorizationAllowed)
+
+                    action {
+                        showScreenUnanimated(ItemAuthorizationsDetailScreen::class, parameters = params)
+                    }
+                }
+            }
+
+            textLabelBody2(messages["itemdetail_authorizations_footer_teaser"]) {
+                bindVisibility(this@ItemDetailScreen, viewModel.isItemAuthorizationAllowed) { isItemAuthorizationAllowed ->
+                    isItemAuthorizationAllowed && !viewModel.isItemAuthorizationAvailable
+                }
+            }
+
+            bindVisibility(this@ItemDetailScreen, viewModel.isNewItem) { isNewItem ->
+                !isNewItem
             }
         }
     }
