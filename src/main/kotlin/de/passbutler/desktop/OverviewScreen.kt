@@ -78,7 +78,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     private var toolbarSynchronizationIcon: Node? = null
 
     private var listScreenLayout: ListView<ItemEntry>? = null
-    private var emptyScreenLayout: Node? = null
 
     private val unfilteredItemEntries = observableArrayList<ItemEntry>()
     private val itemEntries = FilteredList(unfilteredItemEntries)
@@ -102,9 +101,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             .sorted()
 
         unfilteredItemEntries.setAll(newItemEntries)
-
-        val showEmptyScreen = newItemEntries.isEmpty()
-        emptyScreenLayout?.isVisible = showEmptyScreen
     }
 
     init {
@@ -116,7 +112,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             center {
                 stackpane {
                     listScreenLayout = createListScreenLayout()
-                    emptyScreenLayout = createEmptyScreenLayout()
 
                     setupAddButton()
                 }
@@ -215,6 +210,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
     private fun Node.createListScreenLayout(): ListView<ItemEntry> {
         return listview(itemEntries) {
+            placeholder = createEmptyScreenLayout()
+
             cellFormat {
                 graphic = cache {
                     createItemEntryView(this@cellFormat)
