@@ -11,6 +11,7 @@ import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createEmptyScreenLayout
 import de.passbutler.desktop.ui.injectWithPrivateScope
+import de.passbutler.desktop.ui.paneWithDropShadow
 import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.transformation.FilteredList
 import javafx.scene.Node
@@ -27,7 +28,6 @@ import tornadofx.contextmenu
 import tornadofx.get
 import tornadofx.item
 import tornadofx.listview
-import tornadofx.pane
 import tornadofx.selectedItem
 import tornadofx.stackpane
 import tornadofx.textfield
@@ -81,12 +81,7 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
     }
 
     private fun Node.setupToolbar() {
-        stackpane {
-            pane {
-                addClass(Theme.backgroundStyle)
-                effect = bottomDropShadow()
-            }
-
+        paneWithDropShadow(bottomDropShadow()) {
             setupToolbarContent()
         }
     }

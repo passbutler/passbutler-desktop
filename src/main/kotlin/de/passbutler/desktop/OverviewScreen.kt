@@ -22,6 +22,7 @@ import de.passbutler.desktop.ui.jfxFloatingActionButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.marginXS
+import de.passbutler.desktop.ui.paneWithDropShadow
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
@@ -60,7 +61,6 @@ import tornadofx.paddingBottom
 import tornadofx.paddingLeft
 import tornadofx.paddingRight
 import tornadofx.paddingTop
-import tornadofx.pane
 import tornadofx.putString
 import tornadofx.right
 import tornadofx.select
@@ -131,12 +131,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     }
 
     private fun Node.setupToolbar() {
-        stackpane {
-            pane {
-                addClass(Theme.backgroundStyle)
-                effect = bottomDropShadow()
-            }
-
+        paneWithDropShadow(bottomDropShadow()) {
             setupToolbarContent()
         }
     }

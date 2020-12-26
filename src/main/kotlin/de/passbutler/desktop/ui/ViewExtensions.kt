@@ -12,6 +12,7 @@ import javafx.scene.control.ToggleButton
 import javafx.scene.effect.DropShadow
 import javafx.scene.effect.Effect
 import javafx.scene.input.MouseButton
+import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Circle
 import tornadofx.addClass
@@ -19,7 +20,9 @@ import tornadofx.attachTo
 import tornadofx.css
 import tornadofx.fade
 import tornadofx.label
+import tornadofx.pane
 import tornadofx.px
+import tornadofx.stackpane
 
 typealias JavaTimeDuration = java.time.Duration
 typealias JavaFxDuration = javafx.util.Duration
@@ -154,6 +157,17 @@ fun EventTarget.textLabelBody2(text: String = "", graphic: Node? = null, op: Lab
 /**
  * Shadows
  */
+
+fun Node.paneWithDropShadow(dropShadowEffect: Effect, op: Pane.() -> Unit) {
+    stackpane {
+        pane {
+            addClass(Theme.backgroundStyle)
+            effect = bottomDropShadow()
+        }
+
+        op(this)
+    }
+}
 
 fun bottomDropShadow(): Effect {
     return dropShadow().apply {
