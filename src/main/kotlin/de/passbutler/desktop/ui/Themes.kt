@@ -275,14 +275,12 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         button {
             backgroundColor = multi(colorPrimary)
-            textFill = colorOnPrimary
-
             fontFamily = fontMedium
-
-            minWidth = 150.px
-            minHeight = 36.px
-            padding = box(marginS, marginM)
             fontSize = textSizeMedium
+            minHeight = 36.px
+            minWidth = 150.px
+            padding = box(marginS, marginM)
+            textFill = colorOnPrimary
         }
 
         floatingActionButtonStyle {
