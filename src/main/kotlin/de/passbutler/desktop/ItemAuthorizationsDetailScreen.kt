@@ -11,7 +11,7 @@ import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindEnabled
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
-import de.passbutler.desktop.ui.createEmptyScreenLayout
+import de.passbutler.desktop.ui.createEmptyScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.jfxToggleButton
@@ -23,10 +23,11 @@ import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.collections.FXCollections
+import javafx.collections.FXCollections.observableArrayList
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ListCell
+import javafx.scene.control.ListView
 import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
 import tornadofx.FX
@@ -53,7 +54,7 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
 
     private val viewModelWrapper by injectWithPrivateScope<ItemAuthorizationsDetailViewModelWrapper>(params)
 
-    private val itemAuthorizationEntries = FXCollections.observableArrayList<ItemAuthorizationEntry>()
+    private val itemAuthorizationEntries = observableArrayList<ItemAuthorizationEntry>()
 
     private val itemAuthorizationsObserver: BindableObserver<List<ItemAuthorizationEditingViewModel>> = { newItemAuthorizationEditingViewModels ->
         Logger.debug("newItemAuthorizationEditingViewModels.size = ${newItemAuthorizationEditingViewModels.size}")
@@ -70,46 +71,41 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
     }
 
     override fun Node.setupMainContent() {
-        createListScreenLayout()
+        borderpane {
+            top {
+                setupListViewHeader()
+            }
+
+            center {
+                createListView()
+            }
+
+            bottom {
+                setupListViewFooter()
+            }
+        }
     }
 
-    private fun Node.createListScreenLayout(): Node {
-        return borderpane {
-            // List header
-            top {
-                vbox {
-                    paddingAll = marginM.value
-                    spacing = marginS.value
+    private fun Node.setupListViewHeader() {
+        vbox {
+            paddingAll = marginM.value
+            spacing = marginS.value
 
-                    textLabelHeadline1(messages["itemauthorizations_header"])
-                    textLabelBody1(messages["itemauthorizations_description"])
-                }
-            }
+            textLabelHeadline1(messages["itemauthorizations_header"])
+            textLabelBody1(messages["itemauthorizations_description"])
+        }
+    }
 
-            // List
-            center {
-                listview(itemAuthorizationEntries) {
-                    addClass(Theme.listViewVerticalDividerStyle)
-                    addClass(Theme.listViewPressableCellStyle)
+    private fun Node.createListView(): ListView<ItemAuthorizationEntry> {
+        return listview(itemAuthorizationEntries) {
+            addClass(Theme.listViewVerticalDividerStyle)
+            addClass(Theme.listViewPressableCellStyle)
 
-                    placeholder = createEmptyScreenLayout(messages["itemauthorizations_empty_screen_title"], messages["itemauthorizations_empty_screen_description"])
+            placeholder = createEmptyScreen(messages["itemauthorizations_empty_screen_title"], messages["itemauthorizations_empty_screen_description"])
 
-                    cellFormat {
-                        graphic = cache {
-                            createItemAuthorizationEntryView(this@cellFormat)
-                        }
-                    }
-                }
-            }
-
-            // List footer
-            bottom {
-                hbox {
-                    paddingAll = marginM.value
-                    spacing = marginM.value
-
-                    setupSaveButton()
-                    setupCancelButton()
+            cellFormat {
+                graphic = cache {
+                    createItemAuthorizationEntryView(this@cellFormat)
                 }
             }
         }
@@ -145,6 +141,16 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
                     selectedProperty().bindBidirectional(listCell.itemProperty().select { it.writeSwitchProperty })
                 }
             }
+        }
+    }
+
+    private fun Node.setupListViewFooter() {
+        hbox {
+            paddingAll = marginM.value
+            spacing = marginM.value
+
+            setupSaveButton()
+            setupCancelButton()
         }
     }
 
