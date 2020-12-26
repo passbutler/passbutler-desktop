@@ -4,7 +4,6 @@ import de.passbutler.common.ItemViewModel
 import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
-import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
@@ -12,15 +11,8 @@ import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createEmptyScreenLayout
 import de.passbutler.desktop.ui.injectWithPrivateScope
-import de.passbutler.desktop.ui.marginM
-import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.marginXS
-import de.passbutler.desktop.ui.smallSVGIcon
-import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline1
 import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.transformation.FilteredList
-import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
@@ -33,14 +25,9 @@ import tornadofx.cache
 import tornadofx.center
 import tornadofx.contextmenu
 import tornadofx.get
-import tornadofx.hbox
-import tornadofx.insets
 import tornadofx.item
 import tornadofx.listview
-import tornadofx.paddingLeft
-import tornadofx.paddingTop
 import tornadofx.pane
-import tornadofx.select
 import tornadofx.selectedItem
 import tornadofx.stackpane
 import tornadofx.textfield
@@ -144,21 +131,7 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
     }
 
     private fun Node.createItemEntryView(listCell: ListCell<ItemEntry>): Node {
-        return hbox {
-            alignment = Pos.CENTER_LEFT
-            padding = insets(marginM.value, marginXS.value)
-
-            smallSVGIcon(Drawables.ICON_FAVORITE.svgPath)
-
-            vbox {
-                paddingLeft = marginM.value
-
-                textLabelHeadline1(listCell.itemProperty().select { it.titleProperty })
-                textLabelBody1(listCell.itemProperty().select { it.subtitleProperty }) {
-                    paddingTop = marginS.value
-                }
-            }
-
+        return createGenericItemEntryView(listCell) {
             contextmenu {
                 item(messages["recycle_bin_item_context_menu_restore"]).action {
                     restoreSelectedItem()

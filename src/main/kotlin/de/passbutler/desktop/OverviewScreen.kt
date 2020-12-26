@@ -245,21 +245,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     }
 
     private fun Node.createItemEntryView(listCell: ListCell<ItemEntry>): Node {
-        return hbox {
-            alignment = Pos.CENTER_LEFT
-            padding = insets(marginM.value, marginXS.value)
-
-            smallSVGIcon(Drawables.ICON_FAVORITE.svgPath)
-
-            vbox {
-                paddingLeft = marginM.value
-
-                textLabelHeadline1(listCell.itemProperty().select { it.titleProperty })
-                textLabelBody1(listCell.itemProperty().select { it.subtitleProperty }) {
-                    paddingTop = marginS.value
-                }
-            }
-
+        return createGenericItemEntryView(listCell) {
             onLeftClick {
                 showSelectedItem()
             }
@@ -403,4 +389,25 @@ class ItemEntry(val itemViewModel: ItemViewModel) : ListItemIdentifiable {
 
 fun List<ItemEntry>.sorted(): List<ItemEntry> {
     return sortedBy { it.itemViewModel.title }
+}
+
+
+fun Node.createGenericItemEntryView(listCell: ListCell<ItemEntry>, op: Node.() -> Unit): Node {
+    return hbox {
+        alignment = Pos.CENTER_LEFT
+        padding = insets(marginM.value, marginXS.value)
+
+        smallSVGIcon(Drawables.ICON_FAVORITE.svgPath)
+
+        vbox {
+            paddingLeft = marginM.value
+
+            textLabelHeadline1(listCell.itemProperty().select { it.titleProperty })
+            textLabelBody1(listCell.itemProperty().select { it.subtitleProperty }) {
+                paddingTop = marginS.value
+            }
+        }
+
+        op(this)
+    }
 }
