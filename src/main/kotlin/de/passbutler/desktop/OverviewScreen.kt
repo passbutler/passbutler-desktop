@@ -281,8 +281,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     }
 
     private fun showSelectedItem() {
-        listScreenLayout?.selectedItem?.let { itemEntry ->
-            showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to itemEntry.itemViewModel.id))
+        listScreenLayout?.selectedItem?.let { selectedItem ->
+            showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to selectedItem.itemViewModel.id))
         }
     }
 
