@@ -95,9 +95,6 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
 
                     placeholder = createEmptyScreenLayout()
 
-                    // Workaround for "hardcoded 400px height of ListView" issue
-                    fitToParentHeight()
-
                     cellFormat {
                         graphic = cache {
                             createItemAuthorizationEntryView(this@cellFormat)
