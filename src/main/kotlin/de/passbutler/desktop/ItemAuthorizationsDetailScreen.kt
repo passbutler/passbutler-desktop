@@ -11,6 +11,7 @@ import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindEnabled
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
+import de.passbutler.desktop.ui.createEmptyScreenLayout
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.jfxToggleButton
@@ -26,7 +27,6 @@ import javafx.collections.FXCollections
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ListCell
-import javafx.scene.text.TextAlignment
 import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
 import tornadofx.FX
@@ -36,7 +36,6 @@ import tornadofx.borderpane
 import tornadofx.bottom
 import tornadofx.cache
 import tornadofx.center
-import tornadofx.fitToParentHeight
 import tornadofx.get
 import tornadofx.hbox
 import tornadofx.insets
@@ -93,7 +92,7 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
                     addClass(Theme.listViewStaticBackgroundStyle)
                     addClass(Theme.listViewPressableCellStyle)
 
-                    placeholder = createEmptyScreenLayout()
+                    placeholder = createEmptyScreenLayout(messages["itemauthorizations_empty_screen_title"], messages["itemauthorizations_empty_screen_description"])
 
                     cellFormat {
                         graphic = cache {
@@ -157,24 +156,6 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
 
                     selectedProperty().bindBidirectional(listCell.itemProperty().select { it.writeSwitchProperty })
                 }
-            }
-        }
-    }
-
-    private fun Node.createEmptyScreenLayout(): Node {
-        return vbox {
-            alignment = Pos.CENTER
-            paddingAll = marginM.value
-            spacing = marginS.value
-
-            smallSVGIcon(Drawables.ICON_LIST.svgPath)
-
-            textLabelHeadline1(messages["itemauthorizations_empty_screen_title"]) {
-                textAlignment = TextAlignment.CENTER
-            }
-
-            textLabelBody1(messages["itemauthorizations_empty_screen_description"]) {
-                textAlignment = TextAlignment.CENTER
             }
         }
     }

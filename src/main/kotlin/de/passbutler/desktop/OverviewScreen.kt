@@ -16,6 +16,7 @@ import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
+import de.passbutler.desktop.ui.createEmptyScreenLayout
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxFloatingActionButtonRaised
 import de.passbutler.desktop.ui.marginM
@@ -36,7 +37,6 @@ import javafx.scene.control.ListView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.StackPane
-import javafx.scene.text.TextAlignment
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -116,7 +116,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             center {
                 stackpane {
                     listScreenLayout = createListScreenLayout()
-                    emptyScreenLayout = createEmptyScreenLayout()
+                    emptyScreenLayout = createEmptyScreenLayout(messages["overview_empty_screen_title"], messages["overview_empty_screen_description"])
 
                     setupAddButton()
                 }
@@ -304,24 +304,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             showInformation(messages["overview_item_information_clipboard_successful_message"])
         } else {
             showError(messages["overview_item_information_clipboard_failed_empty_title"])
-        }
-    }
-
-    private fun Node.createEmptyScreenLayout(): Node {
-        return vbox {
-            alignment = Pos.CENTER
-            paddingAll = marginM.value
-            spacing = marginS.value
-
-            smallSVGIcon(Drawables.ICON_LIST.svgPath)
-
-            textLabelHeadline1(messages["overview_empty_screen_title"]) {
-                textAlignment = TextAlignment.CENTER
-            }
-
-            textLabelBody1(messages["overview_empty_screen_description"]) {
-                textAlignment = TextAlignment.CENTER
-            }
         }
     }
 

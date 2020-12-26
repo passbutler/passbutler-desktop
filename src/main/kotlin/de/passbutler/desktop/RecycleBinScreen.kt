@@ -10,6 +10,7 @@ import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
+import de.passbutler.desktop.ui.createEmptyScreenLayout
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
@@ -23,7 +24,6 @@ import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
-import javafx.scene.text.TextAlignment
 import org.tinylog.kotlin.Logger
 import tornadofx.FX.Companion.messages
 import tornadofx.action
@@ -37,7 +37,6 @@ import tornadofx.hbox
 import tornadofx.insets
 import tornadofx.item
 import tornadofx.listview
-import tornadofx.paddingAll
 import tornadofx.paddingLeft
 import tornadofx.paddingTop
 import tornadofx.pane
@@ -83,7 +82,7 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
             center {
                 stackpane {
                     listScreenLayout = createListScreenLayout()
-                    emptyScreenLayout = createEmptyScreenLayout()
+                    emptyScreenLayout = createEmptyScreenLayout(messages["recycle_bin_empty_screen_title"], messages["recycle_bin_empty_screen_description"])
                 }
             }
 
@@ -179,24 +178,6 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
                 handleFailure = { showError(messages["recycle_bin_restore_failed_general_title"]) }
             ) {
                 itemEditingViewModel.restore()
-            }
-        }
-    }
-
-    private fun Node.createEmptyScreenLayout(): Node {
-        return vbox {
-            alignment = Pos.CENTER
-            paddingAll = marginM.value
-            spacing = marginS.value
-
-            smallSVGIcon(Drawables.ICON_LIST.svgPath)
-
-            textLabelHeadline1(messages["recycle_bin_empty_screen_title"]) {
-                textAlignment = TextAlignment.CENTER
-            }
-
-            textLabelBody1(messages["recycle_bin_empty_screen_description"]) {
-                textAlignment = TextAlignment.CENTER
             }
         }
     }
