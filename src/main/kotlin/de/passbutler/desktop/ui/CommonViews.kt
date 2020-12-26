@@ -12,6 +12,9 @@ fun Node.createEmptyScreenLayout(title: String, description: String): Node {
         paddingAll = marginM.value
         spacing = marginS.value
 
+        // Hidden by default to avoid initial flickering
+        isVisible = false
+
         smallSVGIcon(Drawables.ICON_LIST.svgPath)
 
         textLabelHeadline1(title) {
