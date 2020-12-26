@@ -101,7 +101,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     }
 
     override fun Node.setupMainContent() {
-        scrollpane(fitToWidth = true, fitToHeight = true) {
+        scrollpane(fitToWidth = true, fitToHeight = false) {
             addClass(Theme.scrollPaneBorderlessStyle)
 
             form {
