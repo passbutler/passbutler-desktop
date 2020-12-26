@@ -327,6 +327,16 @@ abstract class Theme : Stylesheet(), ThemeColors {
             // Remove default border
             backgroundInsets = multi(box(0.px))
         }
+
+        /**
+         * Toolbar
+         */
+
+        toolbarStyle {
+            alignment = Pos.CENTER_LEFT
+            minHeight = 60.px
+            padding = box(marginS, marginM)
+        }
     }
 
     companion object {
@@ -364,6 +374,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val listViewSelectableCellStyle by cssclass()
         val listViewPressableCellStyle by cssclass()
         val listViewStaticBackgroundStyle by cssclass()
+
+        val toolbarStyle by cssclass()
     }
 }
 

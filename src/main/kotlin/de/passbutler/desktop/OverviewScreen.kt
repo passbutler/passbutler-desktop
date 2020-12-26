@@ -142,7 +142,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
     private fun Node.setupToolbarContent() {
         borderpane {
-            padding = insets(marginM.value, marginS.value)
+            addClass(Theme.toolbarStyle)
 
             left {
                 vbox {
