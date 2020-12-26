@@ -298,7 +298,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         form {
             field {
                 // Remove extra spacing (space in set only via `spacing` of `fieldset`)
-                padding = box(0.0.px)
+                padding = box(0.px)
             }
         }
 
