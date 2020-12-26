@@ -191,21 +191,29 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
             and(even) {
                 backgroundColor = multi(listItemBackgroundEven)
-
-                and(selected) {
-                    backgroundColor = multi(listItemBackgroundSelected)
-                }
             }
 
             and(odd) {
                 backgroundColor = multi(listItemBackgroundOdd)
-
-                and(selected) {
-                    backgroundColor = multi(listItemBackgroundSelected)
-                }
             }
 
             padding = box(0.px)
+        }
+
+        listViewSelectableCellStyle {
+            listCell {
+                and(even) {
+                    and(selected) {
+                        backgroundColor = multi(listItemBackgroundSelected)
+                    }
+                }
+
+                and(odd) {
+                    and(selected) {
+                        backgroundColor = multi(listItemBackgroundSelected)
+                    }
+                }
+            }
         }
 
         listViewPressableCellStyle {
@@ -353,6 +361,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         val scrollPaneBorderlessStyle by cssclass()
 
+        val listViewSelectableCellStyle by cssclass()
         val listViewPressableCellStyle by cssclass()
         val listViewStaticBackgroundStyle by cssclass()
     }

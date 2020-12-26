@@ -215,6 +215,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
     private fun Node.createListScreenLayout(): ListView<ItemEntry> {
         return listview(itemEntries) {
+            addClass(Theme.listViewSelectableCellStyle)
             addClass(Theme.listViewPressableCellStyle)
 
             cellFormat {
