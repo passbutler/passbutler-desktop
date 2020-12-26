@@ -6,7 +6,7 @@ import javafx.scene.text.TextAlignment
 import tornadofx.paddingAll
 import tornadofx.vbox
 
-fun Node.createEmptyScreenLayout(title: String, description: String): Node {
+fun Node.createEmptyScreen(title: String, description: String): Node {
     return vbox {
         alignment = Pos.CENTER
         paddingAll = marginM.value

@@ -9,7 +9,7 @@ import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
-import de.passbutler.desktop.ui.createEmptyScreenLayout
+import de.passbutler.desktop.ui.createEmptyScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.paneWithDropShadow
 import javafx.collections.FXCollections.observableArrayList
@@ -39,8 +39,8 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
 
     private val viewModel by injectWithPrivateScope<RecycleBinViewModel>()
 
-    private var listScreenLayout: ListView<ItemEntry>? = null
-    private var emptyScreenLayout: Node? = null
+    private var listView: ListView<ItemEntry>? = null
+    private var emptyScreenView: Node? = null
 
     private val unfilteredItemEntries = observableArrayList<ItemEntry>()
     private val itemEntries = FilteredList(unfilteredItemEntries)
@@ -57,7 +57,7 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
         unfilteredItemEntries.setAll(newItemEntries)
 
         val showEmptyScreen = newItemEntries.isEmpty()
-        emptyScreenLayout?.isVisible = showEmptyScreen
+        emptyScreenView?.isVisible = showEmptyScreen
     }
 
     init {
@@ -68,8 +68,8 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
         borderpane {
             center {
                 stackpane {
-                    listScreenLayout = createListScreenLayout()
-                    emptyScreenLayout = createEmptyScreenLayout(messages["recycle_bin_empty_screen_title"], messages["recycle_bin_empty_screen_description"])
+                    listView = createListView()
+                    emptyScreenView = createEmptyScreen(messages["recycle_bin_empty_screen_title"], messages["recycle_bin_empty_screen_description"])
                 }
             }
 
@@ -113,7 +113,7 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
         }
     }
 
-    private fun Node.createListScreenLayout(): ListView<ItemEntry> {
+    private fun Node.createListView(): ListView<ItemEntry> {
         return listview(itemEntries) {
             addClass(Theme.listViewPressableCellStyle)
 
@@ -136,7 +136,7 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
     }
 
     private fun restoreSelectedItem() {
-        listScreenLayout?.selectedItem?.itemViewModel?.let { selectedItemViewModel ->
+        listView?.selectedItem?.itemViewModel?.let { selectedItemViewModel ->
             val itemEditingViewModel = selectedItemViewModel.createEditingViewModel()
 
             launchRequestSending(

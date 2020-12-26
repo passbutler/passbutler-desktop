@@ -16,7 +16,7 @@ import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
-import de.passbutler.desktop.ui.createEmptyScreenLayout
+import de.passbutler.desktop.ui.createEmptyScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxFloatingActionButtonRaised
 import de.passbutler.desktop.ui.marginM
@@ -78,8 +78,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     private var toolbarSynchronizationSubtitle: Label? = null
     private var toolbarSynchronizationIcon: Node? = null
 
-    private var listScreenLayout: ListView<ItemEntry>? = null
-    private var emptyScreenLayout: Node? = null
+    private var listView: ListView<ItemEntry>? = null
+    private var emptyScreenView: Node? = null
 
     private val unfilteredItemEntries = observableArrayList<ItemEntry>()
     private val itemEntries = FilteredList(unfilteredItemEntries)
@@ -105,7 +105,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         unfilteredItemEntries.setAll(newItemEntries)
 
         val showEmptyScreen = newItemEntries.isEmpty()
-        emptyScreenLayout?.isVisible = showEmptyScreen
+        emptyScreenView?.isVisible = showEmptyScreen
     }
 
     init {
@@ -116,8 +116,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         borderpane {
             center {
                 stackpane {
-                    listScreenLayout = createListScreenLayout()
-                    emptyScreenLayout = createEmptyScreenLayout(messages["overview_empty_screen_title"], messages["overview_empty_screen_description"])
+                    listView = createListView()
+                    emptyScreenView = createEmptyScreen(messages["overview_empty_screen_title"], messages["overview_empty_screen_description"])
 
                     setupAddButton()
                 }
@@ -209,7 +209,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         }
     }
 
-    private fun Node.createListScreenLayout(): ListView<ItemEntry> {
+    private fun Node.createListView(): ListView<ItemEntry> {
         return listview(itemEntries) {
             addClass(Theme.listViewSelectableCellStyle)
             addClass(Theme.listViewPressableCellStyle)
@@ -263,21 +263,21 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     }
 
     private fun showSelectedItem() {
-        listScreenLayout?.selectedItem?.let { selectedItem ->
+        listView?.selectedItem?.let { selectedItem ->
             showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to selectedItem.itemViewModel.id))
         }
     }
 
     private fun copyUsernameOfSelectedItem() {
-        copyItemInformationToClipboard(listScreenLayout?.selectedItem?.itemViewModel?.itemData?.username)
+        copyItemInformationToClipboard(listView?.selectedItem?.itemViewModel?.itemData?.username)
     }
 
     private fun copyPasswordOfSelectedItem() {
-        copyItemInformationToClipboard(listScreenLayout?.selectedItem?.itemViewModel?.itemData?.password)
+        copyItemInformationToClipboard(listView?.selectedItem?.itemViewModel?.itemData?.password)
     }
 
     private fun copyUrlOfSelectedItem() {
-        copyItemInformationToClipboard(listScreenLayout?.selectedItem?.itemViewModel?.itemData?.url)
+        copyItemInformationToClipboard(listView?.selectedItem?.itemViewModel?.itemData?.url)
     }
 
     private fun copyItemInformationToClipboard(itemInformation: String?) {
