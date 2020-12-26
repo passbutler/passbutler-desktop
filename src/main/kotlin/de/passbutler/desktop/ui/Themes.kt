@@ -41,6 +41,8 @@ interface ThemeColors {
     val listItemBackgroundOdd: Color
     val listItemBackgroundSelected: Color
 
+    val colorDivider: Color
+
     val textColorPrimary: Color
     val textColorSecondary: Color
 }
@@ -187,6 +189,11 @@ abstract class Theme : Stylesheet(), ThemeColors {
             }
 
             padding = box(0.px)
+        }
+
+        listViewVerticalDividerStyle {
+            borderColor = multi(box(colorDivider))
+            borderWidth = multi(box(1.px, 0.px))
         }
 
         listViewSelectableCellStyle {
@@ -375,6 +382,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         val scrollPaneBorderlessStyle by cssclass()
 
+        val listViewVerticalDividerStyle by cssclass()
         val listViewSelectableCellStyle by cssclass()
         val listViewPressableCellStyle by cssclass()
         val listViewStaticBackgroundStyle by cssclass()
@@ -410,6 +418,7 @@ class LightTheme : Theme(), ThemeColors by Companion {
         override val listItemBackgroundEven = grey00
         override val listItemBackgroundOdd = grey04
         override val listItemBackgroundSelected = wineRedLight
+        override val colorDivider = grey10
         override val textColorPrimary = black
         override val textColorSecondary = blackTransparent
     }
@@ -437,6 +446,7 @@ class DarkTheme : Theme(), ThemeColors by Companion {
         override val listItemBackgroundEven = grey80
         override val listItemBackgroundOdd = grey84
         override val listItemBackgroundSelected = wineRedLight
+        override val colorDivider = grey70
         override val textColorPrimary = white
         override val textColorSecondary = whiteTransparent
     }

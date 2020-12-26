@@ -17,7 +17,6 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
@@ -90,7 +89,7 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
             // List
             center {
                 listview(itemAuthorizationEntries) {
-                    addClass(Theme.listViewStaticBackgroundStyle)
+                    addClass(Theme.listViewVerticalDividerStyle)
                     addClass(Theme.listViewPressableCellStyle)
 
                     placeholder = createEmptyScreenLayout(messages["itemauthorizations_empty_screen_title"], messages["itemauthorizations_empty_screen_description"])
@@ -119,7 +118,9 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
     private fun Node.createItemAuthorizationEntryView(listCell: ListCell<ItemAuthorizationEntry>): Node {
         return vbox {
             alignment = Pos.CENTER_LEFT
-            padding = insets(marginM.value, marginXS.value)
+
+            // No bottom padding because the toggle buttons itself have a lot of padding
+            padding = insets(marginS.value, marginM.value, 0, marginM.value)
 
             val headlineView = textLabelHeadline1(listCell.itemProperty().select { it.titleProperty }) {
                 graphic = smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE.svgPath)
