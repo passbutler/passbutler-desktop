@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.scene.Node
 import javafx.scene.control.Label
+import javafx.scene.control.ToggleButton
 import javafx.scene.effect.DropShadow
 import javafx.scene.effect.Effect
 import javafx.scene.input.MouseButton
@@ -92,6 +93,10 @@ fun EventTarget.jfxFloatingActionButtonRaised(text: String = "", graphic: Node? 
 fun EventTarget.jfxToggleButton(text: String? = null, op: JFXToggleButton.() -> Unit = {}) = JFXToggleButton().attachTo(this) {
     this.text = text
     op.invoke(this)
+}
+
+fun ToggleButton.toggle() {
+    isSelected = !isSelected
 }
 
 /**

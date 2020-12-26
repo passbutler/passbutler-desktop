@@ -17,12 +17,14 @@ import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
 import de.passbutler.desktop.ui.textLabelHeadline2
+import de.passbutler.desktop.ui.toggle
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ToggleButton
 import javafx.scene.layout.Priority
 import javafx.scene.text.FontWeight
 import tornadofx.FX.Companion.messages
+import tornadofx.action
 import tornadofx.addClass
 import tornadofx.get
 import tornadofx.hbox
@@ -112,6 +114,8 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigati
 
     private fun Node.setupSwitchSettingItem(title: String, summary: String, initialSwitchEnabled: Boolean, switchEnabledChanged: ToggleButton.() -> Unit) {
         hbox {
+            addClass(Theme.pressableBackgroundStyle)
+
             alignment = Pos.CENTER_LEFT
 
             vbox {
@@ -133,13 +137,18 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigati
                 hgrow = Priority.ALWAYS
             }
 
-            jfxToggleButton {
+            val toggleButton = jfxToggleButton {
                 paddingAll = 0
                 isSelected = initialSwitchEnabled
 
-                onLeftClickIgnoringCount {
+                action {
                     switchEnabledChanged.invoke(this)
                 }
+            }
+
+            onLeftClickIgnoringCount {
+                toggleButton.toggle()
+                switchEnabledChanged.invoke(toggleButton)
             }
         }
     }
