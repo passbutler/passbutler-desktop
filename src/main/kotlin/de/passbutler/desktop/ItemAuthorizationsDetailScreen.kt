@@ -18,6 +18,7 @@ import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.marginXS
+import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
@@ -104,28 +105,14 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
 
             // List footer
             bottom {
-                vbox {
+                hbox {
                     paddingAll = marginM.value
+                    spacing = marginM.value
 
-                    jfxButtonRaised(messages["itemauthorizations_save_button_title"]) {
-                        isDefaultButton = true
-
-                        bindEnabled(this@ItemAuthorizationsDetailScreen, viewModel.itemAuthorizationEditingViewModelsModified)
-
-                        action {
-                            saveClicked()
-                        }
-                    }
+                    setupSaveButton()
+                    setupCancelButton()
                 }
             }
-        }
-    }
-
-    private fun saveClicked() {
-        launchRequestSending(
-            handleFailure = { showError(messages["itemauthorizations_save_failed_general_title"]) }
-        ) {
-            viewModel.save()
         }
     }
 
@@ -156,6 +143,36 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
 
                     selectedProperty().bindBidirectional(listCell.itemProperty().select { it.writeSwitchProperty })
                 }
+            }
+        }
+    }
+
+    private fun Node.setupSaveButton() {
+        jfxButtonRaised(messages["itemauthorizations_save_button_title"]) {
+            isDefaultButton = true
+
+            bindEnabled(this@ItemAuthorizationsDetailScreen, viewModel.itemAuthorizationEditingViewModelsModified)
+
+            action {
+                saveClicked()
+            }
+        }
+    }
+
+    private fun saveClicked() {
+        launchRequestSending(
+            handleFailure = { showError(messages["itemauthorizations_save_failed_general_title"]) }
+        ) {
+            viewModel.save()
+        }
+    }
+
+    private fun Node.setupCancelButton() {
+        jfxButtonRaised(messages["general_cancel"]) {
+            addClass(Theme.secondaryButtonStyle)
+
+            action {
+                showScreenUnanimated(ItemDetailScreen::class, parameters = params)
             }
         }
     }

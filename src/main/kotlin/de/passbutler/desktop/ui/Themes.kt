@@ -291,6 +291,14 @@ abstract class Theme : Stylesheet(), ThemeColors {
             maxHeight = 45.px
         }
 
+        secondaryButtonStyle {
+            backgroundColor = multi(transparent)
+            borderColor = multi(box(colorPrimary))
+            borderRadius = multi(box(3.px))
+            borderWidth = multi(box(1.px))
+            textFill = colorPrimary
+        }
+
         /**
          * Form
          */
@@ -363,6 +371,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         val snackbarLayoutStyle by cssclass()
         val floatingActionButtonStyle by cssclass()
+        val secondaryButtonStyle by cssclass()
 
         val scrollPaneBorderlessStyle by cssclass()
 

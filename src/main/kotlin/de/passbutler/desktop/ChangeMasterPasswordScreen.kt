@@ -8,6 +8,7 @@ import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.bindInputOptional
 import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
@@ -25,14 +26,15 @@ import tornadofx.FX.Companion.messages
 import tornadofx.Fieldset
 import tornadofx.ValidationContext
 import tornadofx.action
+import tornadofx.addClass
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
+import tornadofx.hbox
 import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.passwordfield
-import tornadofx.vbox
 
 class ChangeMasterPasswordScreen : NavigationMenuScreen(messages["change_master_password_title"], navigationMenuItems = createDefaultNavigationMenu()), FormValidating, RequestSending {
 
@@ -75,9 +77,12 @@ class ChangeMasterPasswordScreen : NavigationMenuScreen(messages["change_master_
                 setupNewPasswordConfirmField()
             }
 
-            vbox {
+            hbox {
                 paddingTop = marginM.value
+                spacing = marginM.value
+
                 setupChangeButton()
+                setupCancelButton()
             }
         }
     }
@@ -158,6 +163,16 @@ class ChangeMasterPasswordScreen : NavigationMenuScreen(messages["change_master_
                 }
             ) {
                 viewModel.changeMasterPassword(oldMasterPassword, newMasterPassword)
+            }
+        }
+    }
+
+    private fun Node.setupCancelButton() {
+        jfxButtonRaised(messages["general_cancel"]) {
+            addClass(Theme.secondaryButtonStyle)
+
+            action {
+                showScreenUnanimated(SettingsScreen::class)
             }
         }
     }
