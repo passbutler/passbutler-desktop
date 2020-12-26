@@ -33,10 +33,6 @@ var Node.isEnabled: Boolean
         isDisable = !value
     }
 
-fun JavaTimeDuration.toJavaFxDuration(): JavaFxDuration {
-    return JavaFxDuration(toMillis().toDouble())
-}
-
 fun Node.showFadeInOutAnimation(shouldShow: Boolean) {
     val animationProperty = "de.passbutler.desktop.ui.showFadeInOutAnimation"
 
@@ -57,6 +53,10 @@ fun Node.showFadeInOutAnimation(shouldShow: Boolean) {
             }
         }
     }
+}
+
+fun JavaTimeDuration.toJavaFxDuration(): JavaFxDuration {
+    return JavaFxDuration(toMillis().toDouble())
 }
 
 fun Node.onLeftClickIgnoringCount(action: () -> Unit) {
