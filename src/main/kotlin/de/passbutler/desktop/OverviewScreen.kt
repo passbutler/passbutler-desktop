@@ -56,8 +56,9 @@ import tornadofx.item
 import tornadofx.left
 import tornadofx.listview
 import tornadofx.onLeftClick
-import tornadofx.paddingAll
+import tornadofx.paddingBottom
 import tornadofx.paddingLeft
+import tornadofx.paddingRight
 import tornadofx.paddingTop
 import tornadofx.pane
 import tornadofx.putString
@@ -296,7 +297,8 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     private fun StackPane.setupAddButton() {
         hbox {
             alignment = Pos.BOTTOM_RIGHT
-            paddingAll = marginM.value
+            paddingRight = marginM.value
+            paddingBottom = marginM.value
 
             // Do not consume clicks on lower panes
             isPickOnBounds = false
