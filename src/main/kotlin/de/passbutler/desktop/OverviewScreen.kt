@@ -160,7 +160,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
     private fun Node.setupFilterTextfield() {
         textfield {
-            promptText = messages["overview_search_hint"]
+            promptText = messages["general_search"]
 
             textProperty().addListener { _, _, newValue ->
                 val newPredicate: ((ItemEntry) -> Boolean)? = if (newValue.isNullOrEmpty()) {

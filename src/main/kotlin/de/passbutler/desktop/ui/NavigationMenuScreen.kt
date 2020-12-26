@@ -2,6 +2,7 @@ package de.passbutler.desktop.ui
 
 import de.passbutler.desktop.AboutScreen
 import de.passbutler.desktop.OverviewScreen
+import de.passbutler.desktop.RecycleBinScreen
 import de.passbutler.desktop.SettingsScreen
 import javafx.scene.Node
 import tornadofx.UIComponent
@@ -105,6 +106,7 @@ fun createDefaultNavigationMenu(): List<NavigationMenuUsing.NavigationItem> {
     return listOf(
         NavigationMenuUsing.NavigationItem("drawer_menu_item_overview", Drawables.ICON_HOME, OverviewScreen::class),
         NavigationMenuUsing.NavigationItem("drawer_menu_item_settings", Drawables.ICON_SETTINGS, SettingsScreen::class),
+        NavigationMenuUsing.NavigationItem("drawer_menu_recycle_bin", Drawables.ICON_DELETE, RecycleBinScreen::class),
         NavigationMenuUsing.NavigationItem("drawer_menu_item_about", Drawables.ICON_INFO, AboutScreen::class),
     )
 }
