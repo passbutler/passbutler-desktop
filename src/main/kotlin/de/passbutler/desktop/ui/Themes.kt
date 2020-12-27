@@ -279,8 +279,11 @@ abstract class Theme : Stylesheet(), ThemeColors {
             backgroundColor = multi(colorPrimary)
             fontFamily = fontMedium
             fontSize = textSizeMedium
+
+            // Same minimum dimensions as input fields
             minHeight = 36.px
-            minWidth = 150.px
+            minWidth = 156.px
+
             padding = box(marginS, marginM)
             textFill = colorOnPrimary
         }
