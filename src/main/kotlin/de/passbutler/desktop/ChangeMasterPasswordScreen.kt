@@ -48,6 +48,10 @@ class ChangeMasterPasswordScreen : NavigationMenuScreen(messages["change_master_
 
     init {
         setupRootView()
+
+        shortcut("ESC") {
+            showScreenUnanimated(SettingsScreen::class)
+        }
     }
 
     override fun Node.setupMainContent() {

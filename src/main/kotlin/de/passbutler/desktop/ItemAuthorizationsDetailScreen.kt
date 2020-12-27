@@ -68,6 +68,10 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
 
     init {
         setupRootView()
+
+        shortcut("ESC") {
+            showScreenUnanimated(ItemDetailScreen::class, parameters = params)
+        }
     }
 
     override fun Node.setupMainContent() {

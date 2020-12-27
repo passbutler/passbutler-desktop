@@ -98,6 +98,10 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
     init {
         setupRootView()
+
+        shortcut("ESC") {
+            showScreenUnanimated(OverviewScreen::class)
+        }
     }
 
     override fun Node.setupMainContent() {
