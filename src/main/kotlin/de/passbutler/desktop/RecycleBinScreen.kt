@@ -89,6 +89,10 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
     private fun Node.setupToolbarContent() {
         vbox {
             addClass(Theme.toolbarStyle)
+
+            // Only take as much space as needed (not match parent)
+            isFillWidth = false
+
             setupFilterTextfield()
         }
     }
