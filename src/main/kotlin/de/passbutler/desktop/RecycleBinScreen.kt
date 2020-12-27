@@ -140,9 +140,7 @@ class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], nav
             val itemEditingViewModel = selectedItemViewModel.createEditingViewModel()
 
             launchRequestSending(
-                handleSuccess = {
-                    showInformation(messages["recycle_bin_restore_successful_message"])
-                },
+                handleSuccess = { showInformation(messages["recycle_bin_restore_successful_message"]) },
                 handleFailure = { showError(messages["recycle_bin_restore_failed_general_title"]) }
             ) {
                 itemEditingViewModel.restore()
