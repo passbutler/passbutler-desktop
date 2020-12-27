@@ -141,11 +141,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             addClass(Theme.toolbarStyle)
 
             left {
-                vbox {
-                    alignment = Pos.CENTER_LEFT
-
-                    setupFilterTextfield()
-                }
+                setupToolbarFilterContainer()
             }
 
             right {
@@ -154,27 +150,37 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
         }
     }
 
-    private fun Node.setupFilterTextfield() {
-        textfield {
-            promptText = messages["general_search"]
+    private fun Node.setupToolbarFilterContainer() {
+        vbox {
+            alignment = Pos.CENTER_LEFT
 
-            textProperty().addListener { _, _, newValue ->
-                val newPredicate: ((ItemEntry) -> Boolean)? = if (newValue.isNullOrEmpty()) {
-                    null
-                } else {
-                    { it.itemViewModel.title?.contains(newValue, ignoreCase = true) ?: false }
+            textfield {
+                promptText = messages["general_search"]
+
+                textProperty().addListener { _, _, newValue ->
+                    val newPredicate: ((ItemEntry) -> Boolean)? = if (newValue.isNullOrEmpty()) {
+                        null
+                    } else {
+                        { it.itemViewModel.title?.contains(newValue, ignoreCase = true) ?: false }
+                    }
+
+                    itemEntries.setPredicate(newPredicate)
                 }
 
-                itemEntries.setPredicate(newPredicate)
-            }
-
-            shortcut("Ctrl+F") {
-                requestFocus()
+                shortcut("Ctrl+F") {
+                    requestFocus()
+                }
             }
         }
     }
 
     private fun Node.setupToolbarSynchronizationContainer() {
+        val synchronizeDataAction = {
+            if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
+                synchronizeData(userTriggered = true)
+            }
+        }
+
         vbox {
             alignment = Pos.CENTER_RIGHT
 
@@ -182,9 +188,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             isVisible = false
 
             toolbarSynchronizationIcon = smallSVGIcon(Drawables.ICON_REFRESH.svgPath) {
-                onLeftClick {
-                    synchronizeData()
-                }
+                onLeftClick(action = synchronizeDataAction)
             }
 
             toolbarSynchronizationSubtitle = textLabelBody1 {
@@ -192,7 +196,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             }
 
             shortcut("Ctrl+R") {
-                synchronizeData()
+                synchronizeDataAction.invoke()
             }
 
             viewModel.loggedInUserViewModel?.loggedInStateStorage?.let { loggedInStateStorageBindable ->
@@ -200,12 +204,6 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
                     loggedInStateStorageValue?.userType == UserType.REMOTE
                 }
             }
-        }
-    }
-
-    private fun synchronizeData() {
-        if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
-            synchronizeData(userTriggered = true)
         }
     }
 
@@ -290,6 +288,10 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     }
 
     private fun StackPane.setupAddButton() {
+        val addItemAction = {
+            showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to null))
+        }
+
         hbox {
             alignment = Pos.BOTTOM_RIGHT
             paddingRight = marginM.value
@@ -300,18 +302,14 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
             jfxFloatingActionButtonRaised("+") {
                 setOnAction {
-                    addItemClicked()
+                    addItemAction.invoke()
                 }
             }
 
             shortcut("Ctrl+N") {
-                addItemClicked()
+                addItemAction.invoke()
             }
         }
-    }
-
-    private fun addItemClicked() {
-        showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to null))
     }
 
     override fun onDock() {
