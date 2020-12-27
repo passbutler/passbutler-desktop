@@ -374,18 +374,17 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     }
 }
 
-class ItemEntry(val itemViewModel: ItemViewModel) : ListItemIdentifiable {
+class ItemEntry(val itemViewModel: ItemViewModel) : ListItemIdentifiable, Comparable<ItemEntry> {
     override val listItemId: String
         get() = itemViewModel.id
 
     val titleProperty = SimpleStringProperty(itemViewModel.title)
     val subtitleProperty = SimpleStringProperty(itemViewModel.subtitle)
-}
 
-fun List<ItemEntry>.sorted(): List<ItemEntry> {
-    return sortedBy { it.itemViewModel.title }
+    override fun compareTo(other: ItemEntry): Int {
+        return compareValuesBy(this, other, { it.itemViewModel.title })
+    }
 }
-
 
 fun Node.createGenericItemEntryView(listCell: ListCell<ItemEntry>, op: Node.() -> Unit): Node {
     return hbox {
