@@ -11,10 +11,8 @@ import tornadofx.addStylesheet
 import tornadofx.borderpane
 import tornadofx.center
 import tornadofx.get
-import tornadofx.hbox
 import tornadofx.left
 import tornadofx.onLeftClick
-import tornadofx.paddingLeft
 import tornadofx.pane
 import tornadofx.stackpane
 import tornadofx.vbox
@@ -65,29 +63,26 @@ abstract class NavigationMenuScreen(
                 addClass(Theme.navigationViewStyle)
 
                 navigationMenuItems.forEach {
-                    createNavigationItem(messages[it.titleMessageKey], it.icon, it.screenClass)
+                    setupNavigationItem(messages[it.titleMessageKey], it.icon, it.screenClass)
                 }
             }
         }
     }
 
-    private fun Node.createNavigationItem(title: String, icon: Drawable, screenClass: KClass<out UIComponent>) {
-        createNavigationItem(title, icon) {
+    private fun Node.setupNavigationItem(title: String, icon: Drawable, screenClass: KClass<out UIComponent>) {
+        setupNavigationItem(title, icon) {
             if (!isScreenShown(screenClass)) {
                 showScreenUnanimated(screenClass)
             }
         }
     }
 
-    private fun Node.createNavigationItem(title: String, icon: Drawable, clickedAction: () -> Unit) {
-        hbox {
+    private fun Node.setupNavigationItem(title: String, icon: Drawable, clickedAction: () -> Unit) {
+        textLabelWrapped(title) {
             addClass(Theme.navigationViewItemStyle)
 
-            smallSVGIcon(icon.svgPath)
-
-            textLabelWrapped(title) {
-                paddingLeft = marginS.value
-            }
+            graphic = smallSVGIcon(icon.svgPath)
+            graphicTextGap = marginS.value
 
             onLeftClick(action = clickedAction)
         }
