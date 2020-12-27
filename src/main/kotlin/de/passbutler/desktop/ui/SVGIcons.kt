@@ -4,6 +4,7 @@ import javafx.event.EventTarget
 import javafx.scene.layout.Pane
 import tornadofx.addClass
 import tornadofx.attachTo
+import tornadofx.px
 import tornadofx.style
 
 /**
@@ -11,10 +12,15 @@ import tornadofx.style
  */
 class SmallSVGIcon(svgPath: String) : Pane() {
     init {
-        addClass(Theme.smallIconStyle)
+        addClass(Theme.iconStyle)
 
         style {
             shape = svgPath
+
+            minWidth = 18.px
+            minHeight = 18.px
+            maxWidth = 18.px
+            maxHeight = 18.px
         }
     }
 }

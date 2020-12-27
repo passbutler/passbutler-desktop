@@ -233,17 +233,12 @@ abstract class Theme : Stylesheet(), ThemeColors {
          * Icons
          */
 
-        smallIconStyle {
+        iconStyle {
             backgroundColor = multi(textColorPrimary)
 
             and(disabled) {
                 opacity = OPACITY_DISABLED
             }
-
-            minWidth = 18.px
-            minHeight = 18.px
-            maxWidth = 18.px
-            maxHeight = 18.px
         }
 
         /**
@@ -372,7 +367,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val textBody1Style by cssclass()
         val textBody2Style by cssclass()
 
-        val smallIconStyle by cssclass()
+        val iconStyle by cssclass()
         val navigationViewStyle by cssclass()
         val navigationViewItemStyle by cssclass()
 
