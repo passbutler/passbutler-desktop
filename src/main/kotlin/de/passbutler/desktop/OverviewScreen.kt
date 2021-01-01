@@ -21,7 +21,6 @@ import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxFloatingActionButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.paneWithDropShadow
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.smallSVGIcon
@@ -192,7 +191,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
             }
 
             toolbarSynchronizationSubtitle = textLabelBody1 {
-                paddingTop = marginXS.value
+                paddingTop = marginS.value
             }
 
             shortcut("Ctrl+R") {
@@ -389,7 +388,7 @@ class ItemEntry(val itemViewModel: ItemViewModel) : ListItemIdentifiable, Compar
 fun Node.createGenericItemEntryView(listCell: ListCell<ItemEntry>, op: Node.() -> Unit): Node {
     return hbox {
         alignment = Pos.CENTER_LEFT
-        padding = insets(marginM.value, marginXS.value)
+        padding = insets(marginM.value, marginS.value)
 
         smallSVGIcon(Drawables.ICON_FAVORITE.svgPath)
 

@@ -4,13 +4,13 @@ import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.text.TextAlignment
 import tornadofx.paddingAll
+import tornadofx.paddingTop
 import tornadofx.vbox
 
 fun Node.createEmptyScreen(title: String, description: String): Node {
     return vbox {
         alignment = Pos.CENTER
         paddingAll = marginM.value
-        spacing = marginS.value
 
         // Hidden by default to avoid initial flickering
         isVisible = false
@@ -18,10 +18,12 @@ fun Node.createEmptyScreen(title: String, description: String): Node {
         smallSVGIcon(Drawables.ICON_LIST.svgPath)
 
         textLabelHeadline1(title) {
+            paddingTop = marginM.value
             textAlignment = TextAlignment.CENTER
         }
 
         textLabelBody1(description) {
+            paddingTop = marginS.value
             textAlignment = TextAlignment.CENTER
         }
     }

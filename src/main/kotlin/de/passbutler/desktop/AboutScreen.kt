@@ -38,7 +38,7 @@ class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenu
             }
 
             textLabelBody2(messages["about_passage_1"]) {
-                paddingTop = marginM.value
+                paddingTop = marginS.value
             }
         }
     }

@@ -61,7 +61,7 @@ class ChangeMasterPasswordScreen : NavigationMenuScreen(messages["change_master_
             textLabelHeadline1(messages["change_master_password_header"])
 
             textLabelBody1(messages["change_master_password_description"]) {
-                paddingTop = marginM.value
+                paddingTop = marginS.value
             }
 
             textLabelBody1(messages["change_master_password_disable_biometric_hint"]) {

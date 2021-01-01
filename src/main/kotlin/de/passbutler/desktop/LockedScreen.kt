@@ -105,12 +105,12 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
             }
 
             fieldset(labelPosition = Orientation.VERTICAL) {
-                paddingTop = marginS.value
+                paddingTop = marginM.value
                 setupPasswordUrlField()
             }
 
             vbox {
-                paddingTop = marginM.value
+                paddingTop = marginS.value
                 setupUnlockWithPasswordButton()
             }
         }

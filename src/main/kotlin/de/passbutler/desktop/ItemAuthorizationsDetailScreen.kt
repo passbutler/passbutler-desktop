@@ -43,6 +43,7 @@ import tornadofx.insets
 import tornadofx.listview
 import tornadofx.paddingAll
 import tornadofx.paddingLeft
+import tornadofx.paddingTop
 import tornadofx.select
 import tornadofx.top
 import tornadofx.vbox
@@ -93,10 +94,12 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
     private fun Node.setupListViewHeader() {
         vbox {
             paddingAll = marginM.value
-            spacing = marginS.value
 
             textLabelHeadline1(messages["itemauthorizations_header"])
-            textLabelBody1(messages["itemauthorizations_description"])
+
+            textLabelBody1(messages["itemauthorizations_description"]) {
+                paddingTop = marginS.value
+            }
         }
     }
 
@@ -128,7 +131,7 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
             }
 
             hbox {
-                spacing = marginS.value
+                spacing = marginM.value
 
                 // Width of the graphic + spacing of the `headlineView`
                 paddingLeft = 18.0 + headlineView.graphicTextGap

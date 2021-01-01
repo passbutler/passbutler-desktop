@@ -114,7 +114,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
             }
 
             fieldset(labelPosition = Orientation.VERTICAL) {
-                paddingTop = marginS.value
+                paddingTop = marginM.value
                 spacing = marginS.value
 
                 serverUrlField = createServerUrlField()

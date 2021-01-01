@@ -5,6 +5,7 @@ import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.BaseFragment
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
@@ -49,7 +50,7 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
 
             hbox(alignment = Pos.CENTER) {
                 vbox(alignment = Pos.CENTER) {
-                    spacing = marginM.value
+                    spacing = marginL.value
 
                     setupCreateVaultCardView()
                     setupOpenVaultCardView()

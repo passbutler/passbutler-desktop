@@ -19,8 +19,10 @@ import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.isEnabled
 import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelBody2
@@ -128,7 +130,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         }
 
         textLabelHeadline1(messages["itemdetail_details_header"]) {
-            paddingTop = marginM.value
+            paddingTop = marginL.value
         }
 
         fieldset(labelPosition = Orientation.VERTICAL) {
@@ -258,16 +260,19 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
     private fun Node.setupItemAuthorizationsSection() {
         vbox {
-            paddingTop = marginM.value
-            spacing = marginM.value
+            paddingTop = marginL.value
 
             textLabelHeadline1(messages["itemdetail_authorizations_header"])
 
             textLabelBody1 {
+                paddingTop = marginS.value
+
                 bindTextAndVisibility(this@ItemDetailScreen, itemAuthorizationDescription)
             }
 
             vbox {
+                paddingTop = marginM.value
+
                 jfxButtonRaised(messages["itemdetail_authorizations_button_text"]) {
                     isEnabled = viewModel.isItemAuthorizationAvailable
 
@@ -280,6 +285,8 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
             }
 
             textLabelBody2(messages["itemdetail_authorizations_footer_teaser"]) {
+                paddingTop = marginS.value
+
                 bindVisibility(this@ItemDetailScreen, viewModel.isItemAuthorizationAllowed) { isItemAuthorizationAllowed ->
                     isItemAuthorizationAllowed && !viewModel.isItemAuthorizationAvailable
                 }
@@ -293,12 +300,12 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
     private fun Node.setupInformationSection() {
         vbox {
-            paddingTop = marginM.value
-            spacing = marginM.value
+            paddingTop = marginL.value
 
             textLabelHeadline1(messages["itemdetail_information_header"])
 
             vbox {
+                paddingTop = marginS.value
                 spacing = marginS.value
 
                 setupInformationView(messages["itemdetail_id_title"]) {
@@ -336,13 +343,17 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
                 }
             }
 
-            textLabelBody1(op = valueSetup)
+            textLabelBody1 {
+                paddingTop = marginXS.value
+
+                valueSetup.invoke(this)
+            }
         }
     }
 
     private fun Node.setupDeleteSection() {
         vbox {
-            paddingTop = marginM.value
+            paddingTop = marginL.value
             spacing = marginM.value
 
             textLabelHeadline1(messages["itemdetail_delete_header"])
