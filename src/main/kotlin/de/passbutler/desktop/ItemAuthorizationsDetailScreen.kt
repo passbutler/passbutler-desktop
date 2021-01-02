@@ -10,6 +10,7 @@ import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindEnabled
+import de.passbutler.desktop.ui.createCancelButton
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createEmptyScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
@@ -71,8 +72,12 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
         setupRootView()
 
         shortcut("ESC") {
-            showScreenUnanimated(ItemDetailScreen::class, parameters = params)
+            showPreviousScreen()
         }
+    }
+
+    private fun showPreviousScreen() {
+        showScreenUnanimated(ItemDetailScreen::class, parameters = params)
     }
 
     override fun Node.setupMainContent() {
@@ -157,7 +162,10 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
             spacing = marginM.value
 
             setupSaveButton()
-            setupCancelButton()
+
+            createCancelButton {
+                showPreviousScreen()
+            }
         }
     }
 
@@ -178,16 +186,6 @@ class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemaut
             handleFailure = { showError(messages["itemauthorizations_save_failed_general_title"]) }
         ) {
             viewModel.save()
-        }
-    }
-
-    private fun Node.setupCancelButton() {
-        jfxButtonRaised(messages["general_cancel"]) {
-            addClass(Theme.secondaryButtonStyle)
-
-            action {
-                showScreenUnanimated(ItemDetailScreen::class, parameters = params)
-            }
         }
     }
 

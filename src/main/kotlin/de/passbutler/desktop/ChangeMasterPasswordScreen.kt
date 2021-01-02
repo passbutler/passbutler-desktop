@@ -8,9 +8,9 @@ import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuScreen
-import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.bindInputOptional
 import de.passbutler.desktop.ui.bindVisibility
+import de.passbutler.desktop.ui.createCancelButton
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
@@ -26,7 +26,6 @@ import tornadofx.FX.Companion.messages
 import tornadofx.Fieldset
 import tornadofx.ValidationContext
 import tornadofx.action
-import tornadofx.addClass
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
@@ -50,8 +49,12 @@ class ChangeMasterPasswordScreen : NavigationMenuScreen(messages["change_master_
         setupRootView()
 
         shortcut("ESC") {
-            showScreenUnanimated(SettingsScreen::class)
+            showPreviousScreen()
         }
+    }
+
+    private fun showPreviousScreen() {
+        showScreenUnanimated(SettingsScreen::class)
     }
 
     override fun Node.setupMainContent() {
@@ -86,7 +89,10 @@ class ChangeMasterPasswordScreen : NavigationMenuScreen(messages["change_master_
                 spacing = marginM.value
 
                 setupChangeButton()
-                setupCancelButton()
+
+                createCancelButton {
+                    showPreviousScreen()
+                }
             }
         }
     }
@@ -154,7 +160,7 @@ class ChangeMasterPasswordScreen : NavigationMenuScreen(messages["change_master_
             launchRequestSending(
                 handleSuccess = {
                     showInformation(messages["change_master_password_successful_message"])
-                    showScreenUnanimated(SettingsScreen::class)
+                    showPreviousScreen()
                 },
                 handleFailure = {
                     val errorStringResourceId = when (it) {
@@ -167,16 +173,6 @@ class ChangeMasterPasswordScreen : NavigationMenuScreen(messages["change_master_
                 }
             ) {
                 viewModel.changeMasterPassword(oldMasterPassword, newMasterPassword)
-            }
-        }
-    }
-
-    private fun Node.setupCancelButton() {
-        jfxButtonRaised(messages["general_cancel"]) {
-            addClass(Theme.secondaryButtonStyle)
-
-            action {
-                showScreenUnanimated(SettingsScreen::class)
             }
         }
     }

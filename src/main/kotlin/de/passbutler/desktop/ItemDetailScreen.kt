@@ -102,8 +102,12 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         setupRootView()
 
         shortcut("ESC") {
-            showScreenUnanimated(OverviewScreen::class)
+            showPreviousScreen()
         }
+    }
+
+    private fun showPreviousScreen() {
+        showScreenUnanimated(OverviewScreen::class)
     }
 
     override fun Node.setupMainContent() {
@@ -379,7 +383,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
         launchRequestSending(
             handleSuccess = {
                 showInformation(messages["itemdetail_delete_successful_message"])
-                showScreenUnanimated(OverviewScreen::class)
+                showPreviousScreen()
             },
             handleFailure = { showError(messages["itemdetail_delete_failed_general_title"]) }
         ) {
