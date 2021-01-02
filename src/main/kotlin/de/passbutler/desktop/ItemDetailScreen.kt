@@ -281,7 +281,8 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
                     isEnabled = viewModel.isItemAuthorizationAvailable
 
                     action {
-                        showScreenUnanimated(ItemAuthorizationsDetailScreen::class, parameters = params)
+                        // Explicitly set the item ID to avoid `null` is passed for newly created item because `params` still does not contain an ID
+                        showScreenUnanimated(ItemAuthorizationsDetailScreen::class, parameters = mapOf("itemId" to viewModel.id.value))
                     }
                 }
 
