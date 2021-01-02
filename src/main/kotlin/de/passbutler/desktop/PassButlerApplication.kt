@@ -156,15 +156,15 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
 
         object NotFoundException : Exception("The value was not found!")
     }
+}
 
-    enum class Language(val languageCode: String) {
-        DE("de"),
-        EN("en");
+enum class Language(val languageCode: String) {
+    DE("de"),
+    EN("en");
 
-        companion object {
-            fun valueOfOrNull(languageCode: String): Language? {
-                return values().find { it.languageCode == languageCode }
-            }
+    companion object {
+        fun valueOfOrNull(languageCode: String): Language? {
+            return values().find { it.languageCode == languageCode }
         }
     }
 }
