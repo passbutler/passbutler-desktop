@@ -36,36 +36,11 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         stage.minWidth = 800.px.value
         stage.minHeight = 600.px.value
 
+        setupLogger()
         setupTheme()
         setupLocale()
 
         super.start(stage)
-
-        setupLogger()
-    }
-
-    private fun setupTheme() {
-        val restoredThemeType = runBlocking {
-            applicationConfiguration.readValue {
-                string(Configuration.THEME_TYPE)
-            }.resultOrNull()?.let { ThemeType.valueOfOrNull(it) }
-        }
-
-        if (restoredThemeType != null) {
-            ThemeManager.themeType = restoredThemeType
-        }
-    }
-
-    private fun setupLocale() {
-        val restoredLanguage = runBlocking {
-            applicationConfiguration.readValue {
-                string(Configuration.LANGUAGE_CODE)
-            }.resultOrNull()?.let { Language.valueOfOrNull(it) }
-        }
-
-        if (restoredLanguage != null) {
-            FX.locale = Locale(restoredLanguage.languageCode)
-        }
     }
 
     private fun setupLogger() {
@@ -109,6 +84,30 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
             appendLine("App:         ${BuildConfig.APPLICATION_ID} $versionName-$versionCode (build on $formattedBuildTime from $gitShortHash)")
             appendLine("Locale:      ${Locale.getDefault()}")
             appendLine("--------------------------------------------------------------------------------")
+        }
+    }
+
+    private fun setupTheme() {
+        val restoredThemeType = runBlocking {
+            applicationConfiguration.readValue {
+                string(Configuration.THEME_TYPE)
+            }.resultOrNull()?.let { ThemeType.valueOfOrNull(it) }
+        }
+
+        if (restoredThemeType != null) {
+            ThemeManager.themeType = restoredThemeType
+        }
+    }
+
+    private fun setupLocale() {
+        val restoredLanguage = runBlocking {
+            applicationConfiguration.readValue {
+                string(Configuration.LANGUAGE_CODE)
+            }.resultOrNull()?.let { Language.valueOfOrNull(it) }
+        }
+
+        if (restoredLanguage != null) {
+            FX.locale = Locale(restoredLanguage.languageCode)
         }
     }
 
