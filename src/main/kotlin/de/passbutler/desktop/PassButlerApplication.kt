@@ -10,6 +10,7 @@ import de.passbutler.desktop.ui.ThemeManager
 import de.passbutler.desktop.ui.ThemeType
 import javafx.stage.Stage
 import kotlinx.coroutines.runBlocking
+import org.tinylog.kotlin.Logger
 import tornadofx.App
 import tornadofx.FX
 import tornadofx.launch
@@ -26,13 +27,21 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         stage.minWidth = 800.px.value
         stage.minHeight = 600.px.value
 
-        val logFilePath = PathProvider.obtainFileBlocking { logFile }.absolutePath
-        setupLogging(logFilePath)
-
+        setupCrashHandler()
+        setupLogging()
         setupTheme()
         setupLocale()
 
         super.start(stage)
+    }
+
+    private fun setupCrashHandler() {
+        Thread.setDefaultUncaughtExceptionHandler(UncaughtExceptionHandler())
+    }
+
+    private fun setupLogging() {
+        val logFilePath = PathProvider.obtainFileBlocking { logFile }.absolutePath
+        setupLogging(logFilePath)
     }
 
     private fun setupTheme() {
@@ -62,6 +71,15 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         if (restoredLanguageCode != null) {
             FX.locale = Locale(restoredLanguageCode)
         }
+    }
+}
+
+private class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
+    private val defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+
+    override fun uncaughtException(t: Thread, e: Throwable) {
+        Logger.error(e, "⚠️⚠️⚠️ FATAL ⚠️⚠️⚠️")
+        defaultUncaughtExceptionHandler?.uncaughtException(t, e)
     }
 }
 

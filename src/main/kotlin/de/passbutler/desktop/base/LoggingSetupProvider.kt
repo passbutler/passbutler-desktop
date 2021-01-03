@@ -15,8 +15,6 @@ interface LoggingSetupProviding {
 
 class DebugLoggingSetupProvider : LoggingSetupProviding {
     override fun setupLogging(logFilePath: String) {
-        Thread.setDefaultUncaughtExceptionHandler(UncaughtExceptionHandler())
-
         Configuration.replace(createLoggerConfiguration(logFilePath))
 
         val loggingHeader = createLoggingHeader()
@@ -54,15 +52,6 @@ class DebugLoggingSetupProvider : LoggingSetupProviding {
             appendLine("App:         ${BuildConfig.APPLICATION_ID} $versionName-$versionCode (build on $formattedBuildTime from $gitShortHash)")
             appendLine("Locale:      ${Locale.getDefault()}")
             appendLine("--------------------------------------------------------------------------------")
-        }
-    }
-
-    private class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
-        private val defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
-
-        override fun uncaughtException(t: Thread, e: Throwable) {
-            Logger.error(e, "⚠️⚠️⚠️ FATAL ⚠️⚠️⚠️")
-            defaultUncaughtExceptionHandler?.uncaughtException(t, e)
         }
     }
 }
