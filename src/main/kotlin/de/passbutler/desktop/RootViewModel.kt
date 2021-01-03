@@ -10,7 +10,9 @@ import de.passbutler.common.base.Success
 import de.passbutler.common.base.resultOrNull
 import de.passbutler.common.base.resultOrThrowException
 import de.passbutler.common.database.models.UserType
-import de.passbutler.desktop.PassButlerApplication.Configuration.Companion.applicationConfiguration
+import de.passbutler.desktop.base.ConfigProperty
+import de.passbutler.desktop.base.readConfigProperty
+import de.passbutler.desktop.base.writeConfigProperty
 import de.passbutler.desktop.database.DatabaseInitializationMode
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
 import de.passbutler.desktop.ui.ensureFileExtension
@@ -151,14 +153,14 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     }
 
     private suspend fun restoreRecentVaultFile(): File? {
-        return applicationConfiguration.readValue {
-            string(PassButlerApplication.Configuration.RECENT_VAULT)
+        return app.readConfigProperty {
+            string(ConfigProperty.RECENT_VAULT)
         }.resultOrNull()?.let { File(it) }?.takeIf { it.exists() }
     }
 
     private suspend fun persistRecentVaultFile(vaultFile: File) {
-        val persistResult = applicationConfiguration.writeValue {
-            set(PassButlerApplication.Configuration.RECENT_VAULT to vaultFile.absolutePath)
+        val persistResult = app.writeConfigProperty {
+            set(ConfigProperty.RECENT_VAULT to vaultFile.absolutePath)
         }
 
         if (persistResult is Failure) {
