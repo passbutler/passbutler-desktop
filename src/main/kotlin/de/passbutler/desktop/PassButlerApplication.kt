@@ -8,10 +8,12 @@ import de.passbutler.desktop.base.loggingSetupProvider
 import de.passbutler.desktop.base.readConfigProperty
 import de.passbutler.desktop.ui.ThemeManager
 import de.passbutler.desktop.ui.ThemeType
+import javafx.application.Platform
 import javafx.stage.Stage
 import kotlinx.coroutines.runBlocking
 import org.tinylog.kotlin.Logger
 import tornadofx.App
+import tornadofx.DefaultErrorHandler
 import tornadofx.FX
 import tornadofx.launch
 import tornadofx.px
@@ -27,16 +29,14 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         stage.minWidth = 800.px.value
         stage.minHeight = 600.px.value
 
-        setupCrashHandler()
         setupLogging()
         setupTheme()
         setupLocale()
 
         super.start(stage)
-    }
 
-    private fun setupCrashHandler() {
-        Thread.setDefaultUncaughtExceptionHandler(UncaughtExceptionHandler())
+        // Must be called after super call
+        setupCrashHandler()
     }
 
     private fun setupLogging() {
@@ -70,6 +70,18 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
 
         if (restoredLanguageCode != null) {
             FX.locale = Locale(restoredLanguageCode)
+        }
+    }
+
+    private fun setupCrashHandler() {
+        Thread.setDefaultUncaughtExceptionHandler(UncaughtExceptionHandler())
+
+        DefaultErrorHandler.filter = { errorEvent ->
+            // Consume error event to avoid showing an alert window
+            errorEvent.consume()
+
+            // Do not call `System.exit(-1)` to allow JavaFX to shutdown properly
+            Platform.exit()
         }
     }
 }
