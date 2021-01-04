@@ -54,6 +54,9 @@ dependencies {
     // JFoenix
     implementation("com.jfoenix:jfoenix:9.0.10")
 
+    // JSON Web Token library
+    implementation("com.auth0:java-jwt:3.12.0")
+
     // JUnit 5
     val junitVersion = "5.7.0"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")

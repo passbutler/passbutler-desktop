@@ -345,6 +345,17 @@ abstract class Theme : Stylesheet(), ThemeColors {
             minHeight = 60.px
             padding = box(marginS, marginM)
         }
+
+        /**
+         * Emphasized Card
+         */
+
+        emphasizedCardStyle {
+            backgroundColor = multi(colorBackgroundEmphasized)
+            borderColor = multi(box(colorDivider))
+            borderRadius = multi(box(3.px))
+            borderWidth = multi(box(1.px))
+        }
     }
 
     companion object {
@@ -386,6 +397,9 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val listViewStaticBackgroundStyle by cssclass()
 
         val toolbarStyle by cssclass()
+
+        val emphasizedCardStyle by cssclass()
+
     }
 }
 

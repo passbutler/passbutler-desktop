@@ -46,9 +46,15 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
 
     private fun setupTheme() {
         val restoredThemeType = runBlocking {
-            readConfigProperty {
+            val premiumKey = readConfigProperty {
+                string(ConfigProperty.PREMIUM_KEY)
+            }.resultOrNull()?.let { PremiumKey.Deserializer.deserializeOrNull(it) }
+
+            val themeType = readConfigProperty {
                 string(ConfigProperty.THEME_TYPE)
-            }.resultOrNull()?.let { ThemeType.valueOfOrNull(it) }
+            }.resultOrNull()?.let { ThemeType.valueOfOrNull(it) }?.takeIf { premiumKey != null }
+
+            themeType
         }
 
         if (restoredThemeType != null) {
