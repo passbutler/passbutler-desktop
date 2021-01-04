@@ -16,13 +16,13 @@ import de.passbutler.desktop.ui.bindInput
 import de.passbutler.desktop.ui.bindTextAndVisibility
 import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
+import de.passbutler.desktop.ui.createInformationView
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.isEnabled
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelBody2
@@ -32,9 +32,7 @@ import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.control.Label
 import javafx.scene.control.TextFormatter
-import javafx.scene.text.FontWeight
 import tornadofx.Fieldset
 import tornadofx.Form
 import tornadofx.ValidationContext
@@ -312,7 +310,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
                 paddingTop = marginS.value
                 spacing = marginS.value
 
-                setupInformationView(messages["itemdetail_id_title"]) {
+                createInformationView(messages["itemdetail_id_title"]) {
                     style {
                         fontFamily = "monospace"
                     }
@@ -320,13 +318,13 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
                     bindTextAndVisibility(this@ItemDetailScreen, viewModel.id)
                 }
 
-                setupInformationView(messages["itemdetail_modified_title"]) {
+                createInformationView(messages["itemdetail_modified_title"]) {
                     bindTextAndVisibility(this@ItemDetailScreen, viewModel.modified) {
                         it?.formattedDateTime
                     }
                 }
 
-                setupInformationView(messages["itemdetail_created_title"]) {
+                createInformationView(messages["itemdetail_created_title"]) {
                     bindTextAndVisibility(this@ItemDetailScreen, viewModel.created) {
                         it?.formattedDateTime
                     }
@@ -335,22 +333,6 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
             bindVisibility(this@ItemDetailScreen, viewModel.isNewItem) { isNewItem ->
                 !isNewItem
-            }
-        }
-    }
-
-    private fun Node.setupInformationView(title: String, valueSetup: Label.() -> Unit) {
-        vbox {
-            textLabelBody1(title) {
-                style {
-                    fontWeight = FontWeight.BOLD
-                }
-            }
-
-            textLabelBody1 {
-                paddingTop = marginXS.value
-
-                valueSetup.invoke(this)
             }
         }
     }
