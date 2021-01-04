@@ -116,6 +116,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
             form {
                 paddingAll = marginM.value
+                spacing = marginL.value
 
                 setupDetailsSection()
                 setupItemAuthorizationsSection()
@@ -126,30 +127,32 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     }
 
     private fun Form.setupDetailsSection() {
-        textLabelHeadline1(titleProperty)
-
-        fieldset(labelPosition = Orientation.VERTICAL) {
-            paddingTop = marginM.value
-            setupTitleField()
-        }
-
-        textLabelHeadline1(messages["itemdetail_details_header"]) {
-            paddingTop = marginL.value
-        }
-
-        fieldset(labelPosition = Orientation.VERTICAL) {
-            paddingTop = marginM.value
-            spacing = marginS.value
-
-            setupUsernameField()
-            setupPasswordField()
-            setupUrlField()
-            setupNotesField()
-        }
-
         vbox {
-            paddingTop = marginM.value
-            setupSaveButton()
+            textLabelHeadline1(titleProperty)
+
+            fieldset(labelPosition = Orientation.VERTICAL) {
+                paddingTop = marginM.value
+                setupTitleField()
+            }
+
+            textLabelHeadline1(messages["itemdetail_details_header"]) {
+                paddingTop = marginL.value
+            }
+
+            fieldset(labelPosition = Orientation.VERTICAL) {
+                paddingTop = marginM.value
+                spacing = marginS.value
+
+                setupUsernameField()
+                setupPasswordField()
+                setupUrlField()
+                setupNotesField()
+            }
+
+            vbox {
+                paddingTop = marginM.value
+                setupSaveButton()
+            }
         }
     }
 
@@ -264,8 +267,6 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
     private fun Node.setupItemAuthorizationsSection() {
         vbox {
-            paddingTop = marginL.value
-
             textLabelHeadline1(messages["itemdetail_authorizations_header"])
 
             textLabelBody1 {
@@ -305,8 +306,6 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
     private fun Node.setupInformationSection() {
         vbox {
-            paddingTop = marginL.value
-
             textLabelHeadline1(messages["itemdetail_information_header"])
 
             vbox {
@@ -358,7 +357,6 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
     private fun Node.setupDeleteSection() {
         vbox {
-            paddingTop = marginL.value
             spacing = marginM.value
 
             textLabelHeadline1(messages["itemdetail_delete_header"])
