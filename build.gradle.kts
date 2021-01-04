@@ -17,7 +17,6 @@ buildscript {
 version = "1.0.0"
 group = "de.passbutler.desktop"
 
-// TODO: Use proper build tooling to set correct value
 val buildType = "debug"
 
 repositories {
@@ -98,7 +97,6 @@ tasks {
         }
     }
 
-    // TODO: Fix "run" task with "JFoenix"
     defaultTasks("run")
 }
 

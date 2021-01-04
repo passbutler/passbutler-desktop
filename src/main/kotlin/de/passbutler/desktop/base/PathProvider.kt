@@ -15,7 +15,6 @@ interface FilePathProviding {
     val logFile: String
 }
 
-// TODO: Handle other platform paths
 object PathProvider : DirectoryPathProviding, FilePathProviding {
 
     override val homeDirectory: String
