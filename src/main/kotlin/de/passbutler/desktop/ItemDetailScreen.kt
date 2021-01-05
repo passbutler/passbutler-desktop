@@ -33,6 +33,7 @@ import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.TextFormatter
+import tornadofx.FX
 import tornadofx.Fieldset
 import tornadofx.Form
 import tornadofx.ValidationContext
@@ -63,7 +64,7 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
     private val itemAuthorizationDescription by lazy {
         DependentValueGetterBindable(viewModel.isItemAuthorizationAllowed, viewModel.isItemModificationAllowed, viewModel.ownerUsername, viewModel.itemAuthorizationModifiedDate) {
             val itemOwnerUsername = viewModel.ownerUsername.value
-            val itemAuthorizationModifiedDate = viewModel.itemAuthorizationModifiedDate.value?.formattedDateTime
+            val itemAuthorizationModifiedDate = viewModel.itemAuthorizationModifiedDate.value?.formattedDateTime(FX.locale)
 
             when {
                 viewModel.isItemAuthorizationAllowed.value -> messages["itemdetail_authorizations_description_owned_item"]
@@ -320,13 +321,13 @@ class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaul
 
                 createInformationView(messages["itemdetail_modified_title"]) {
                     bindTextAndVisibility(this@ItemDetailScreen, viewModel.modified) {
-                        it?.formattedDateTime
+                        it?.formattedDateTime(FX.locale)
                     }
                 }
 
                 createInformationView(messages["itemdetail_created_title"]) {
                     bindTextAndVisibility(this@ItemDetailScreen, viewModel.created) {
-                        it?.formattedDateTime
+                        it?.formattedDateTime(FX.locale)
                     }
                 }
             }

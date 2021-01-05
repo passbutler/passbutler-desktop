@@ -22,6 +22,7 @@ import de.passbutler.desktop.ui.textLabelHeadline1
 import javafx.scene.Node
 import javafx.scene.layout.VBox
 import kotlinx.coroutines.launch
+import tornadofx.FX
 import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.addClass
@@ -58,7 +59,7 @@ class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenu
                 paddingTop = marginS.value
 
                 val versionName = BuildConfig.VERSION_NAME
-                val formattedBuildTime = Instant.ofEpochMilli(BuildConfig.BUILD_TIMESTAMP).formattedDateTime
+                val formattedBuildTime = Instant.ofEpochMilli(BuildConfig.BUILD_TIMESTAMP).formattedDateTime(FX.locale)
                 val gitShortHash = BuildConfig.BUILD_REVISION_HASH
                 text = messages["about_subheader"].format(versionName, formattedBuildTime, gitShortHash)
             }
