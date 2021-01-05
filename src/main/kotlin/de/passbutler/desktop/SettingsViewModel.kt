@@ -16,32 +16,38 @@ class SettingsViewModel : ViewModel(), UserViewModelUsingViewModel {
     override val userViewModelProvidingViewModel by injectUserViewModelProvidingViewModel()
 
     var hidePasswordsEnabledSetting: Boolean
-        get() {
-            return loggedInUserViewModel?.hidePasswordsEnabled?.value ?: false
-        }
+        get() = loggedInUserViewModel?.hidePasswordsEnabled?.value ?: false
         set(value) {
             loggedInUserViewModel?.hidePasswordsEnabled?.value = value
         }
 
+    private val premiumKeyViewModel by injectPremiumKeyViewModel()
+
     suspend fun saveThemeType(): Result<ThemeType> {
-        val newThemeType = when (ThemeManager.themeType) {
-            ThemeType.LIGHT -> ThemeType.DARK
-            ThemeType.DARK -> ThemeType.LIGHT
-        }
+        val premiumKey = premiumKeyViewModel.premiumKey.value
 
-        val saveSettingResult = app.writeConfigProperty {
-            set(ConfigProperty.THEME_TYPE to newThemeType.name)
-        }
-
-        return when (saveSettingResult) {
-            is Success -> {
-                withContext(Dispatchers.Main) {
-                    ThemeManager.themeType = newThemeType
-                }
-
-                Success(newThemeType)
+        return if (premiumKey != null) {
+            val newThemeType = when (ThemeManager.themeType) {
+                ThemeType.LIGHT -> ThemeType.DARK
+                ThemeType.DARK -> ThemeType.LIGHT
             }
-            is Failure -> Failure(saveSettingResult.throwable)
+
+            val saveSettingResult = app.writeConfigProperty {
+                set(ConfigProperty.THEME_TYPE to newThemeType.name)
+            }
+
+            when (saveSettingResult) {
+                is Success -> {
+                    withContext(Dispatchers.Main) {
+                        ThemeManager.themeType = newThemeType
+                    }
+
+                    Success(newThemeType)
+                }
+                is Failure -> Failure(saveSettingResult.throwable)
+            }
+        } else {
+            Failure(PremiumKeyRequiredException)
         }
     }
 }

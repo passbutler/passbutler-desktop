@@ -25,17 +25,17 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
 
     override val configBasePath: Path = Paths.get(PathProvider.obtainDirectoryBlocking { configurationDirectory }.absolutePath)
 
+    private val premiumKeyViewModel by injectPremiumKeyViewModel()
+
     override fun start(stage: Stage) {
         stage.minWidth = 800.px.value
         stage.minHeight = 600.px.value
 
+        super.start(stage)
+
         setupLogging()
         setupTheme()
         setupLocale()
-
-        super.start(stage)
-
-        // Must be called after super call
         setupCrashHandler()
     }
 
@@ -46,9 +46,10 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
 
     private fun setupTheme() {
         val restoredThemeType = runBlocking {
-            val premiumKey = readConfigProperty {
-                string(ConfigProperty.PREMIUM_KEY)
-            }.resultOrNull()?.let { PremiumKey.Deserializer.deserializeOrNull(it) }
+            // Before first usage, load premium key from configuration
+            premiumKeyViewModel.initializePremiumKey()
+
+            val premiumKey = premiumKeyViewModel.premiumKey.value
 
             val themeType = readConfigProperty {
                 string(ConfigProperty.THEME_TYPE)

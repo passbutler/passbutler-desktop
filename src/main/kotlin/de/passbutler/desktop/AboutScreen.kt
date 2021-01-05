@@ -10,7 +10,6 @@ import de.passbutler.desktop.ui.bindTextAndVisibility
 import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createInformationView
-import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
@@ -21,7 +20,6 @@ import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
 import javafx.scene.Node
 import javafx.scene.layout.VBox
-import kotlinx.coroutines.launch
 import tornadofx.FX
 import tornadofx.FX.Companion.messages
 import tornadofx.action
@@ -35,7 +33,7 @@ import java.time.Instant
 
 class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
-    private val viewModel by injectWithPrivateScope<AboutViewModel>()
+    private val viewModel by injectPremiumKeyViewModel()
 
     init {
         setupRootView()
@@ -173,14 +171,6 @@ class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenu
             handleFailure = { showError(messages["premium_remove_premium_key_failed_general_title"]) }
         ) {
             viewModel.removePremiumKey()
-        }
-    }
-
-    override fun onDock() {
-        super.onDock()
-
-        launch {
-            viewModel.checkPremiumKey()
         }
     }
 }

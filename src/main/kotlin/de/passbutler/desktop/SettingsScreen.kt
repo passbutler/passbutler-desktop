@@ -1,11 +1,7 @@
 package de.passbutler.desktop
 
-import de.passbutler.common.base.Failure
-import de.passbutler.common.base.resultOrNull
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
-import de.passbutler.desktop.base.ConfigProperty
-import de.passbutler.desktop.base.readConfigProperty
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.ThemeManager
@@ -95,15 +91,7 @@ class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigati
                     showError(messages[errorStringResourceId])
                 }
             ) {
-                val premiumKey = app.readConfigProperty {
-                    string(ConfigProperty.PREMIUM_KEY)
-                }.resultOrNull()?.let { PremiumKey.Deserializer.deserializeOrNull(it) }
-
-                if (premiumKey != null) {
-                    viewModel.saveThemeType()
-                } else {
-                    Failure(PremiumKeyRequiredException)
-                }
+                viewModel.saveThemeType()
             }
         }
     }
