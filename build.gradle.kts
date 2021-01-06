@@ -81,7 +81,7 @@ tasks.withType<Test> {
 }
 
 tasks {
-    val mainClassPath = "de.passbutler.desktop.PassButlerApplication"
+    val mainClassPath = "de.passbutler.desktop.PassButlerApplicationKt"
 
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
