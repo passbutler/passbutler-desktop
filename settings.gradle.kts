@@ -1,4 +1,4 @@
-rootProject.name = "Pass Butler Desktop"
+rootProject.name = "PassButlerDesktop"
 
 pluginManagement {
     resolutionStrategy {
