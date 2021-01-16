@@ -1,5 +1,7 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    val kotlinVersion = "1.4.10"
+    val kotlinVersion = "1.4.21"
     id("org.jetbrains.kotlin.jvm") version kotlinVersion
 
     id("org.gradle.application")
@@ -18,6 +20,13 @@ version = "1.0.0"
 group = "de.passbutler.desktop"
 
 val buildType = "debug"
+val mainClassPath = "de.passbutler.desktop.PassButlerApplicationKt"
+
+val javaVersion = JavaVersion.VERSION_14
+val javaFxVersion = "14.0.2.1"
+
+val kotlinVersion = "1.4.21"
+val kotlinJvmTargetVersion = "14"
 
 repositories {
     mavenLocal()
@@ -28,7 +37,6 @@ dependencies {
     implementation(project(":PassButlerCommon"))
 
     // Kotlin
-    val kotlinVersion = "1.4.21"
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     // Kotlin Coroutines for JavaFX
@@ -67,32 +75,25 @@ dependencies {
     testImplementation("io.mockk:mockk:1.10.4")
 }
 
+java {
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+}
+
 javafx {
-    version = "15.0.1"
+    version = javaFxVersion
     modules("javafx.controls", "javafx.fxml")
+}
+
+application {
+    mainClass.set(mainClassPath)
 }
 
 sourceSets.all {
     java.srcDir("./build/generated/source/")
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
 tasks {
-    val mainClassPath = "de.passbutler.desktop.PassButlerApplicationKt"
-
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
-
-        dependsOn("generateBuildConfig")
-    }
-
-    application {
-        mainClass.set(mainClassPath)
-    }
-
     jar {
         manifest {
             attributes["Class-Path"] = configurations.compile.get().all.joinToString(" ") { it.name }
@@ -101,6 +102,21 @@ tasks {
     }
 
     defaultTasks("run")
+}
+
+// Both default and test compile tasks
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = kotlinJvmTargetVersion
+    }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+tasks.compileKotlin {
+    dependsOn("generateBuildConfig")
 }
 
 task("generateBuildConfig") {
