@@ -55,6 +55,7 @@ import tornadofx.insets
 import tornadofx.item
 import tornadofx.left
 import tornadofx.listview
+import tornadofx.onDoubleClick
 import tornadofx.onLeftClick
 import tornadofx.paddingBottom
 import tornadofx.paddingLeft
@@ -239,7 +240,7 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
 
     private fun Node.createItemEntryView(listCell: ListCell<ItemEntry>): Node {
         return createGenericItemEntryView(listCell) {
-            onLeftClick {
+            onDoubleClick {
                 showSelectedItem()
             }
 
