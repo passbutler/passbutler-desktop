@@ -3,6 +3,7 @@ package de.passbutler.desktop
 import de.passbutler.common.base.formattedDateTime
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.base.PathProvider
 import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuScreen
 import de.passbutler.desktop.ui.Theme
@@ -14,7 +15,6 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.showOpenPremiumKeyFileChooser
 import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
@@ -22,13 +22,16 @@ import javafx.scene.Node
 import javafx.scene.layout.VBox
 import tornadofx.FX
 import tornadofx.FX.Companion.messages
+import tornadofx.FileChooserMode
 import tornadofx.action
 import tornadofx.addClass
+import tornadofx.chooseFile
 import tornadofx.get
 import tornadofx.paddingAll
 import tornadofx.paddingLeft
 import tornadofx.paddingTop
 import tornadofx.vbox
+import java.io.File
 import java.time.Instant
 
 class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
@@ -109,6 +112,14 @@ class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenu
             ) {
                 viewModel.registerPremiumKey(choosenFile)
             }
+        }
+    }
+
+    private fun showOpenPremiumKeyFileChooser(title: String, chosenFileBlock: (File) -> Unit) {
+        val homeDirectory = PathProvider.obtainDirectoryBlocking { homeDirectory }
+
+        chooseFile(title, emptyArray(), initialDirectory = homeDirectory, mode = FileChooserMode.Single).firstOrNull()?.let {
+            chosenFileBlock(it)
         }
     }
 

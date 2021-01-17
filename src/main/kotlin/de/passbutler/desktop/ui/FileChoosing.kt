@@ -47,11 +47,3 @@ suspend fun File.ensureFileExtension(extension: String): File {
         }
     }
 }
-
-fun showOpenPremiumKeyFileChooser(title: String, chosenFileBlock: (File) -> Unit) {
-    val homeDirectory = PathProvider.obtainDirectoryBlocking { homeDirectory }
-
-    chooseFile(title, emptyArray(), initialDirectory = homeDirectory, mode = FileChooserMode.Single).firstOrNull()?.let {
-        chosenFileBlock(it)
-    }
-}
