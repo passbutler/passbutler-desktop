@@ -21,7 +21,8 @@ class UserViewModelProvidingViewModel : ViewModel() {
     var loggedInUserViewModel: UserViewModel? = null
         private set
 
-    private var userManager: UserManager? = null
+    var userManager: UserManager? = null
+        private set
 
     private val biometricsProvider = BiometricsProvider()
 

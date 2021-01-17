@@ -65,6 +65,9 @@ dependencies {
     // JSON Web Token library
     implementation("com.auth0:java-jwt:3.12.0")
 
+    // CSV library
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.0")
+
     // JUnit 5
     val junitVersion = "5.7.0"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
