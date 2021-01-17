@@ -31,6 +31,9 @@ val kotlinJvmTargetVersion = "14"
 repositories {
     mavenLocal()
     mavenCentral()
+
+    // Needed for snapshot release of TornadoFX
+    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
 }
 
 dependencies {
@@ -54,7 +57,7 @@ dependencies {
     implementation("com.squareup.sqldelight:sqlite-driver:1.4.4")
 
     // TornadoFX
-    implementation("no.tornado:tornadofx:1.7.20")
+    implementation("no.tornado:tornadofx:2.0.0-SNAPSHOT")
 
     // TornadoFX depends on old version - explicitly use version matching the Kotlin version
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
