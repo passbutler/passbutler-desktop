@@ -19,7 +19,7 @@ buildscript {
 version = "1.0.0"
 group = "de.passbutler.desktop"
 
-val buildType = "debug"
+val buildType = obtainBuildType()
 val mainClassPath = "de.passbutler.desktop.PassButlerApplicationKt"
 
 val javaVersion = JavaVersion.VERSION_14
@@ -121,6 +121,10 @@ tasks.compileKotlin {
 
 task("generateBuildConfig") {
     generateBuildConfig()
+}
+
+fun obtainBuildType(): String {
+    return System.getenv("PASSBUTLER_BUILD_TYPE").takeIf { listOf("debug", "release").contains(it) } ?: "debug"
 }
 
 fun generateBuildConfig() {

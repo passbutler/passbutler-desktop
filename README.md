@@ -58,10 +58,27 @@ Currently only the distribution with "deb" package is supported!
 
 #### Package for Debian/Ubuntu
 
+Configuration for the distribution:
+
+    $ export PASSBUTLER_VERSION="1.0.0" # Same value as `version` in `build.gradle.kts` file
+    $ export PASSBUTLER_BUILD_TYPE="debug" # Valid values are "debug" or "release"
+
 Create the distribution files:
 
     $ ./gradlew installDist
 
 Build the package:
 
-    $ jpackage --name PassButler --input ./build/install/PassButlerDesktop/lib/ --main-jar PassButlerDesktop-1.0.0.jar --type deb
+    $ jpackage \
+        --name "PassButler" \
+        --app-version "$PASSBUTLER_VERSION" \
+        --copyright "Example copyright" \
+        --description "Example description" \
+        --vendor "Bastian Raschke" \
+        --input ./build/install/PassButlerDesktop/lib/ \
+        --main-jar PassButlerDesktop-${PASSBUTLER_VERSION}.jar \
+        --icon ./src/main/resources/drawables/logo_elevated.png \
+        --type deb \
+        --linux-package-name "pass-butler" \
+        --linux-deb-maintainer "bastian.raschke@posteo.de" \
+        --linux-app-category "utils"
