@@ -4,7 +4,7 @@ import de.passbutler.common.ItemViewModel
 import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
-import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bottomDropShadow
@@ -35,7 +35,7 @@ import tornadofx.top
 import tornadofx.vbox
 import java.util.*
 
-class RecycleBinScreen : NavigationMenuScreen(messages["recycle_bin_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
+class RecycleBinScreen : NavigationMenuFragment(messages["recycle_bin_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
     private val viewModel by injectWithPrivateScope<RecycleBinViewModel>()
 

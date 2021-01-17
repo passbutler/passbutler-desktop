@@ -5,7 +5,7 @@ import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.base.PathProvider
 import de.passbutler.desktop.ui.Drawables
-import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.bindTextAndVisibility
 import de.passbutler.desktop.ui.bindVisibility
@@ -34,7 +34,7 @@ import tornadofx.vbox
 import java.io.File
 import java.time.Instant
 
-class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
+class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
     private val viewModel by injectPremiumKeyViewModel()
 

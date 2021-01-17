@@ -2,7 +2,7 @@ package de.passbutler.desktop
 
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
-import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.ThemeManager
 import de.passbutler.desktop.ui.ThemeType
@@ -38,7 +38,7 @@ import tornadofx.region
 import tornadofx.style
 import tornadofx.vbox
 
-class SettingsScreen : NavigationMenuScreen(messages["settings_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
+class SettingsScreen : NavigationMenuFragment(messages["settings_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
     private val viewModel by injectWithPrivateScope<SettingsViewModel>()
 

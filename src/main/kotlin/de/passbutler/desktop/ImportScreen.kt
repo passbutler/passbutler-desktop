@@ -4,7 +4,7 @@ import de.passbutler.common.base.Result
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.base.PathProvider
-import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
@@ -25,7 +25,7 @@ import tornadofx.paddingTop
 import tornadofx.vbox
 import java.io.File
 
-class ImportScreen : NavigationMenuScreen(messages["import_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
+class ImportScreen : NavigationMenuFragment(messages["import_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
     private val viewModel by injectWithPrivateScope<ImportViewModel>()
 

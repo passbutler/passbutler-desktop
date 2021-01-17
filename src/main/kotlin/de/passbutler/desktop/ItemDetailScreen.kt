@@ -7,7 +7,7 @@ import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
-import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.Theme.Companion.fontLight
 import de.passbutler.desktop.ui.addLifecycleObserver
@@ -52,7 +52,7 @@ import tornadofx.textarea
 import tornadofx.textfield
 import tornadofx.vbox
 
-class ItemDetailScreen : NavigationMenuScreen(navigationMenuItems = createDefaultNavigationMenu()), FormValidating, RequestSending {
+class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefaultNavigationMenu()), FormValidating, RequestSending {
 
     override val validationContext = ValidationContext()
 

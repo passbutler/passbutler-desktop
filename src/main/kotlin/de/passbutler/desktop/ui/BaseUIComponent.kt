@@ -61,9 +61,11 @@ abstract class BaseView(title: String? = null, icon: Node? = null) : View(title,
 
     private val coroutineJob = SupervisorJob()
 
+    @Suppress("RedundantOverride")
     override fun onUndock() {
         super.onUndock()
-        coroutineJob.cancel()
+
+        // Do not cancel coroutine job here because a `View` is a singleton and the `CoroutineScope` would be cancelled if reused
     }
 
     override fun addUndockedObserver(observer: () -> Unit) {

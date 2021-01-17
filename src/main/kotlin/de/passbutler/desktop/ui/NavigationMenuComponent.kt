@@ -6,6 +6,7 @@ import de.passbutler.desktop.OverviewScreen
 import de.passbutler.desktop.RecycleBinScreen
 import de.passbutler.desktop.SettingsScreen
 import javafx.scene.Node
+import javafx.scene.layout.BorderPane
 import tornadofx.UIComponent
 import tornadofx.addClass
 import tornadofx.addStylesheet
@@ -17,17 +18,15 @@ import tornadofx.onLeftClick
 import tornadofx.pane
 import tornadofx.stackpane
 import tornadofx.vbox
+import java.util.*
 import kotlin.reflect.KClass
 
-abstract class NavigationMenuScreen(
-    title: String? = null,
-    icon: Node? = null,
-    override val navigationMenuItems: List<NavigationMenuUsing.NavigationItem>
-) : BaseFragment(title, icon), NavigationMenuUsing {
+interface NavigationMenuComponent : BaseUIComponent, NavigationMenuUsing {
 
-    final override val root = borderpane()
+    val root: BorderPane
+    val messages: ResourceBundle
 
-    protected fun setupRootView() {
+    fun setupRootView() {
         with(root) {
             center {
                 setupMainContent()
@@ -89,7 +88,23 @@ abstract class NavigationMenuScreen(
         }
     }
 
-    abstract fun Node.setupMainContent()
+    fun Node.setupMainContent()
+}
+
+abstract class NavigationMenuFragment(
+    title: String? = null,
+    icon: Node? = null,
+    override val navigationMenuItems: List<NavigationMenuUsing.NavigationItem>
+) : BaseFragment(title, icon), NavigationMenuComponent {
+    final override val root = borderpane()
+}
+
+abstract class NavigationMenuView(
+    title: String? = null,
+    icon: Node? = null,
+    override val navigationMenuItems: List<NavigationMenuUsing.NavigationItem>
+) : BaseView(title, icon), NavigationMenuComponent {
+    final override val root = borderpane()
 }
 
 interface NavigationMenuUsing {

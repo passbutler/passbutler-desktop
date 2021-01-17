@@ -6,7 +6,7 @@ import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.Drawables
-import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindEnabled
@@ -49,7 +49,7 @@ import tornadofx.select
 import tornadofx.top
 import tornadofx.vbox
 
-class ItemAuthorizationsDetailScreen : NavigationMenuScreen(FX.messages["itemauthorizations_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
+class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itemauthorizations_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
     private val viewModel
         get() = viewModelWrapper.itemAuthorizationsDetailViewModel

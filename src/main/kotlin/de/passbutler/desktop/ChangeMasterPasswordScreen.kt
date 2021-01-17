@@ -7,7 +7,7 @@ import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
-import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.bindInputOptional
 import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.createCancelButton
@@ -35,7 +35,7 @@ import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.passwordfield
 
-class ChangeMasterPasswordScreen : NavigationMenuScreen(messages["change_master_password_title"], navigationMenuItems = createDefaultNavigationMenu()), FormValidating, RequestSending {
+class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_master_password_title"], navigationMenuItems = createDefaultNavigationMenu()), FormValidating, RequestSending {
 
     override val validationContext = ValidationContext()
 
