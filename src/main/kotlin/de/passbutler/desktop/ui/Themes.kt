@@ -198,13 +198,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         listViewSelectableCellStyle {
             listCell {
-                and(even) {
-                    and(selected) {
-                        backgroundColor = multi(listItemBackgroundSelected)
-                    }
-                }
-
-                and(odd) {
+                and(even, odd) {
                     and(selected) {
                         backgroundColor = multi(listItemBackgroundSelected)
                     }
