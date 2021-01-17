@@ -201,6 +201,14 @@ abstract class Theme : Stylesheet(), ThemeColors {
                 and(even, odd) {
                     and(selected) {
                         backgroundColor = multi(listItemBackgroundSelected)
+
+                        label {
+                            textFill = colorOnPrimary
+                        }
+
+                        iconStyle {
+                            backgroundColor = multi(colorOnPrimary)
+                        }
                     }
                 }
             }
