@@ -137,7 +137,7 @@ class RootScreen : BaseView(), RequestSending {
     }
 
     private fun createVaultClicked() {
-        showSaveVaultFileChooser(messages["menu_create_vault"]) { choosenFile ->
+        showSaveVaultFileChooser(messages["menu_create_vault"]) { chosenFile ->
             launchRequestSending(
                 handleFailure = {
                     val errorStringResourceId = when (it) {
@@ -148,17 +148,17 @@ class RootScreen : BaseView(), RequestSending {
                     showError(messages[errorStringResourceId])
                 }
             ) {
-                viewModel.createVault(choosenFile)
+                viewModel.createVault(chosenFile)
             }
         }
     }
 
     private fun openVaultClicked() {
-        showOpenVaultFileChooser(messages["menu_open_vault"]) { choosenFile ->
+        showOpenVaultFileChooser(messages["menu_open_vault"]) { chosenFile ->
             launchRequestSending(
                 handleFailure = { showError(messages["general_open_vault_failed_title"]) }
             ) {
-                viewModel.openVault(choosenFile)
+                viewModel.openVault(chosenFile)
             }
         }
     }

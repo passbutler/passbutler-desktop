@@ -105,12 +105,12 @@ class AboutScreen : NavigationMenuScreen(messages["about_title"], navigationMenu
     }
 
     private fun registerPremiumKeyClicked() {
-        showOpenPremiumKeyFileChooser(messages["premium_register_premium_key_button_text"]) { choosenFile ->
+        showOpenPremiumKeyFileChooser(messages["premium_register_premium_key_button_text"]) { chosenFile ->
             launchRequestSending(
                 handleSuccess = { showInformation(messages["premium_register_premium_key_successful_message"]) },
                 handleFailure = { showError(messages["premium_register_premium_key_failed_general_title"]) }
             ) {
-                viewModel.registerPremiumKey(choosenFile)
+                viewModel.registerPremiumKey(chosenFile)
             }
         }
     }

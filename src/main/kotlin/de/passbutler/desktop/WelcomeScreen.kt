@@ -66,7 +66,7 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
     }
 
     private fun createVaultClicked() {
-        showSaveVaultFileChooser(messages["welcome_create_vault_headline"]) { choosenFile ->
+        showSaveVaultFileChooser(messages["welcome_create_vault_headline"]) { chosenFile ->
             launchRequestSending(
                 handleFailure = {
                     val errorStringResourceId = when (it) {
@@ -78,7 +78,7 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
                 },
                 isCancellable = false
             ) {
-                viewModel.createVault(choosenFile)
+                viewModel.createVault(chosenFile)
             }
         }
     }
@@ -90,12 +90,12 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
     }
 
     private fun openVaultClicked() {
-        showOpenVaultFileChooser(messages["welcome_open_vault_headline"]) { choosenFile ->
+        showOpenVaultFileChooser(messages["welcome_open_vault_headline"]) { chosenFile ->
             launchRequestSending(
                 handleFailure = { showError(messages["general_open_vault_failed_title"]) },
                 isCancellable = false
             ) {
-                viewModel.openVault(choosenFile)
+                viewModel.openVault(chosenFile)
             }
         }
     }
