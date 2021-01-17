@@ -10,7 +10,7 @@ import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.base.createRelativeDateFormattingTranslations
 import de.passbutler.desktop.ui.Drawables
-import de.passbutler.desktop.ui.NavigationMenuScreen
+import de.passbutler.desktop.ui.NavigationMenuView
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindVisibility
@@ -71,7 +71,7 @@ import tornadofx.top
 import tornadofx.vbox
 import java.util.*
 
-class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
+class OverviewScreen : NavigationMenuView(messages["overview_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
     private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 
@@ -88,10 +88,13 @@ class OverviewScreen : NavigationMenuScreen(messages["overview_title"], navigati
     private var synchronizeDataRequestSendingJob: Job? = null
 
     private val webservicesInitializedObserver: BindableObserver<Webservices?> = {
-        if (it != null) {
+        if (it != null && !webservicesInitialized) {
             synchronizeData(userTriggered = false)
+            webservicesInitialized = true
         }
     }
+
+    private var webservicesInitialized = false
 
     private val itemViewModelsObserver: BindableObserver<List<ItemViewModel>> = { newUnfilteredItemViewModels ->
         // Only show non-deleted items
