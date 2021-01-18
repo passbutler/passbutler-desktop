@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
 import javafx.scene.Node
 import javafx.scene.control.Label
+import javafx.scene.control.ScrollPane
 import javafx.scene.control.ToggleButton
 import javafx.scene.effect.DropShadow
 import javafx.scene.effect.Effect
@@ -200,4 +201,27 @@ fun Node.onMouseBackClick(clickCount: Int = 1, action: () -> Unit) {
         if (it.clickCount == clickCount && it.button === MouseButton.BACK)
             action()
     }
+}
+
+/**
+ * ScrollPane
+ */
+
+fun ScrollPane.setScrollSpeed(scrollSpeed: ScrollSpeed) {
+    val scrollSpeedFactor = when(scrollSpeed) {
+        ScrollSpeed.SLOW -> 0.001
+        ScrollSpeed.MEDIUM -> 0.0025
+        ScrollSpeed.FAST -> 0.01
+    }
+
+    content.setOnScroll {scrollEvent ->
+        val deltaY = scrollEvent.deltaY * scrollSpeedFactor
+        vvalue -= deltaY
+    }
+}
+
+enum class ScrollSpeed {
+    SLOW,
+    MEDIUM,
+    FAST
 }

@@ -8,6 +8,7 @@ import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuFragment
+import de.passbutler.desktop.ui.ScrollSpeed
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.Theme.Companion.fontLight
 import de.passbutler.desktop.ui.addLifecycleObserver
@@ -23,6 +24,7 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.setScrollSpeed
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelBody2
@@ -122,6 +124,8 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                 setupInformationSection()
                 setupDeleteSection()
             }
+        }.also {
+            it.setScrollSpeed(ScrollSpeed.MEDIUM)
         }
     }
 
