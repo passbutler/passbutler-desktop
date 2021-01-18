@@ -10,7 +10,7 @@ import tornadofx.chooseFile
 import tornadofx.get
 import java.io.File
 
-const val VAULT_FILE_EXTENSION = "sqlite"
+const val VAULT_FILE_EXTENSION = "passbutler"
 
 fun showOpenVaultFileChooser(title: String, chosenFileBlock: (File) -> Unit) {
     val homeDirectory = PathProvider.obtainDirectoryBlocking { homeDirectory }
