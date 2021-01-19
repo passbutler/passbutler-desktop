@@ -75,6 +75,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
     private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 
+    private var toolbarSynchronizationContainer: Node? = null
     private var toolbarSynchronizationSubtitle: Label? = null
     private var toolbarSynchronizationIcon: Node? = null
 
@@ -148,7 +149,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             }
 
             right {
-                setupToolbarSynchronizationContainer()
+                toolbarSynchronizationContainer = createToolbarSynchronizationContainer()
             }
         }
     }
@@ -177,14 +178,14 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
         }
     }
 
-    private fun Node.setupToolbarSynchronizationContainer() {
+    private fun Node.createToolbarSynchronizationContainer(): Node {
         val synchronizeDataAction = {
             if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
                 synchronizeData(userTriggered = true)
             }
         }
 
-        vbox {
+        return vbox {
             alignment = Pos.CENTER_RIGHT
 
             // Hidden by default
@@ -200,12 +201,6 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
             shortcut("Ctrl+R") {
                 synchronizeDataAction.invoke()
-            }
-
-            viewModel.loggedInUserViewModel?.loggedInStateStorage?.let { loggedInStateStorageBindable ->
-                bindVisibility(this@OverviewScreen, loggedInStateStorageBindable) { loggedInStateStorageValue ->
-                    loggedInStateStorageValue?.userType == UserType.REMOTE
-                }
             }
         }
     }
@@ -320,6 +315,12 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
         viewModel.loggedInUserViewModel?.webservices?.addLifecycleObserver(this, true, webservicesInitializedObserver)
         viewModel.loggedInUserViewModel?.itemViewModels?.addLifecycleObserver(this, true, itemViewModelsObserver)
+
+        viewModel.loggedInUserViewModel?.loggedInStateStorage?.let { loggedInStateStorageBindable ->
+            toolbarSynchronizationContainer?.bindVisibility(this@OverviewScreen, loggedInStateStorageBindable) { loggedInStateStorageValue ->
+                loggedInStateStorageValue?.userType == UserType.REMOTE
+            }
+        }
 
         viewModel.loggedInUserViewModel?.loggedInStateStorage?.addLifecycleObserver(this, true) {
             updateToolbarSubtitle()
