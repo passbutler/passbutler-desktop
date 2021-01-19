@@ -232,7 +232,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             }
 
             shortcut("CTRL+U") {
-                copyUrlOfSelectedItem()
+                openUrlOfSelectedItem()
             }
         }
     }
@@ -254,6 +254,10 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
                 item(messages["overview_item_context_menu_copy_url"]).action {
                     copyUrlOfSelectedItem()
+                }
+
+                item(messages["overview_item_context_menu_open_url"]).action {
+                    openUrlOfSelectedItem()
                 }
             }
         }
@@ -283,6 +287,16 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             showInformation(messages["overview_item_information_clipboard_successful_message"])
         } else {
             showError(messages["overview_item_information_clipboard_failed_empty_title"])
+        }
+    }
+
+    private fun openUrlOfSelectedItem() {
+        val url = listView?.selectedItem?.itemViewModel?.itemData?.url
+
+        if (url?.isNotBlank() == true) {
+            hostServices.showDocument(url)
+        } else {
+            showError(messages["overview_open_url_failed_title"])
         }
     }
 
