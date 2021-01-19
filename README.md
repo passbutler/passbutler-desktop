@@ -78,6 +78,7 @@ Build the package:
         --input ./build/install/PassButlerDesktop/lib/ \
         --main-jar PassButlerDesktop-${PASSBUTLER_VERSION}.jar \
         --icon ./src/main/resources/drawables/logo.png \
+        --file-associations ./file-associations.properties \
         --type deb \
         --linux-package-name "pass-butler" \
         --linux-deb-maintainer "bastian.raschke@posteo.de" \

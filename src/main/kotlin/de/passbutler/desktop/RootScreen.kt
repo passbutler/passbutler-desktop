@@ -17,7 +17,9 @@ import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Menu
 import javafx.scene.layout.StackPane
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.tinylog.kotlin.Logger
 import tornadofx.UIComponent
 import tornadofx.action
@@ -33,6 +35,7 @@ import tornadofx.menubar
 import tornadofx.progressindicator
 import tornadofx.stackpane
 import tornadofx.top
+import java.io.File
 import kotlin.reflect.KClass
 
 class RootScreen : BaseView(), RequestSending {
@@ -88,7 +91,18 @@ class RootScreen : BaseView(), RequestSending {
         }
 
         launch {
-            viewModel.restoreRecentVault()
+            val launchArgumentVaultFilePath = app.parameters.raw.firstOrNull()
+            Logger.debug("launchArgumentVaultFilePath = $launchArgumentVaultFilePath")
+
+            val launchArgumentVaultFile = withContext(Dispatchers.IO) {
+                launchArgumentVaultFilePath?.let { File(it) }?.takeIf { it.exists() }
+            }
+
+            if (launchArgumentVaultFile != null) {
+                viewModel.openVault(launchArgumentVaultFile)
+            } else {
+                viewModel.restoreRecentVault()
+            }
         }
     }
 

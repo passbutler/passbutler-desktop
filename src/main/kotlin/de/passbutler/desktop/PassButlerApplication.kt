@@ -31,9 +31,11 @@ class PassButlerApplication : App(RootScreen::class, ThemeManager.themeType.kotl
         stage.minWidth = 800.px.value
         stage.minHeight = 600.px.value
 
+        // Must be called to ensure logging early as possible (TinyLog crashes if gets logged before)
+        setupLogging()
+
         super.start(stage)
 
-        setupLogging()
         setupTheme()
         setupLocale()
         setupCrashHandler()
