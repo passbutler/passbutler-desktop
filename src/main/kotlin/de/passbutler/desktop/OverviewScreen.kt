@@ -42,6 +42,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.tinylog.kotlin.Logger
+import tornadofx.FX
 import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.addClass
@@ -383,7 +384,7 @@ class ItemEntry(val itemViewModel: ItemViewModel) : ListItemIdentifiable, Compar
         get() = itemViewModel.id
 
     val titleProperty = SimpleStringProperty(itemViewModel.title)
-    val subtitleProperty = SimpleStringProperty(itemViewModel.subtitle)
+    val subtitleProperty = SimpleStringProperty(itemViewModel.itemData?.username?.takeIf { it.isNotEmpty() } ?: FX.messages["overview_item_subtitle_username_missing"])
 
     override fun compareTo(other: ItemEntry): Int {
         return compareValuesBy(this, other, { it.itemViewModel.title })
