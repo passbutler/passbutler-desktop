@@ -77,7 +77,7 @@ Build the package:
         --vendor "Bastian Raschke" \
         --input ./build/install/PassButlerDesktop/lib/ \
         --main-jar PassButlerDesktop-${PASSBUTLER_VERSION}.jar \
-        --icon ./src/main/resources/drawables/logo_elevated.png \
+        --icon ./src/main/resources/drawables/logo.png \
         --type deb \
         --linux-package-name "pass-butler" \
         --linux-deb-maintainer "bastian.raschke@posteo.de" \
