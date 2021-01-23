@@ -77,6 +77,16 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         contextMenu {
             backgroundColor = multi(colorBackground)
+
+            label {
+                textFill = textColorPrimary
+            }
+
+            focused {
+                label {
+                    textFill = colorOnPrimary
+                }
+            }
         }
 
         /**
@@ -204,6 +214,19 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
                         label {
                             textFill = colorOnPrimary
+                        }
+
+                        // Reapply default label coloring for nested context menu
+                        contextMenu {
+                            label {
+                                textFill = textColorPrimary
+                            }
+
+                            focused {
+                                label {
+                                    textFill = colorOnPrimary
+                                }
+                            }
                         }
 
                         iconStyle {
@@ -401,7 +424,6 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val toolbarStyle by cssclass()
 
         val emphasizedCardStyle by cssclass()
-
     }
 }
 
