@@ -54,7 +54,6 @@ import tornadofx.stackpane
 import tornadofx.textfield
 import tornadofx.useMaxWidth
 import tornadofx.vbox
-import tornadofx.whenDocked
 
 class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, RequestSending {
 
@@ -177,10 +176,6 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["login_username_validation_error_empty"])
                     )
-                }
-
-                whenDocked {
-                    requestFocus()
                 }
             }
         }
