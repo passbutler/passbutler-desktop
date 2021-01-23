@@ -37,6 +37,7 @@ import javafx.scene.control.ListView
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.StackPane
+import javafx.scene.text.FontWeight
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -67,6 +68,7 @@ import tornadofx.right
 import tornadofx.select
 import tornadofx.selectedItem
 import tornadofx.stackpane
+import tornadofx.style
 import tornadofx.textfield
 import tornadofx.top
 import tornadofx.vbox
@@ -76,9 +78,10 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
     private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 
+    private var toolbarRegistrationContainer: Node? = null
     private var toolbarSynchronizationContainer: Node? = null
+    private var toolbarSynchronizationButton: Node? = null
     private var toolbarSynchronizationSubtitle: Label? = null
-    private var toolbarSynchronizationIcon: Node? = null
 
     private var listView: ListView<ItemEntry>? = null
     private var emptyScreenView: Node? = null
@@ -150,7 +153,10 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             }
 
             right {
-                toolbarSynchronizationContainer = createToolbarSynchronizationContainer()
+                stackpane {
+                    toolbarRegistrationContainer = createToolbarRegistrationContainer()
+                    toolbarSynchronizationContainer = createToolbarSynchronizationContainer()
+                }
             }
         }
     }
@@ -179,6 +185,30 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
         }
     }
 
+    private fun Node.createToolbarRegistrationContainer(): Node {
+        return vbox {
+            alignment = Pos.CENTER_RIGHT
+
+            // Hidden by default
+            isVisible = false
+
+            textLabelBody1(messages["drawer_header_usertype_local"]) {
+                addClass(Theme.pressableBackgroundStyle)
+
+                style {
+                    fontWeight = FontWeight.BOLD
+                }
+
+                graphic = smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE.svgPath)
+                graphicTextGap = marginS.value
+
+                onLeftClick {
+                    showScreenUnanimated(RegisterLocalUserScreen::class)
+                }
+            }
+        }
+    }
+
     private fun Node.createToolbarSynchronizationContainer(): Node {
         val synchronizeDataAction = {
             if (viewModel.loggedInUserViewModel?.webservices?.value != null) {
@@ -192,7 +222,16 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             // Hidden by default
             isVisible = false
 
-            toolbarSynchronizationIcon = smallSVGIcon(Drawables.ICON_REFRESH.svgPath) {
+            toolbarSynchronizationButton = textLabelBody1(messages["overview_sync_button_title"]) {
+                addClass(Theme.pressableBackgroundStyle)
+
+                style {
+                    fontWeight = FontWeight.BOLD
+                }
+
+                graphic = smallSVGIcon(Drawables.ICON_REFRESH.svgPath)
+                graphicTextGap = marginS.value
+
                 onLeftClick(action = synchronizeDataAction)
             }
 
@@ -332,6 +371,10 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
         viewModel.loggedInUserViewModel?.itemViewModels?.addLifecycleObserver(this, true, itemViewModelsObserver)
 
         viewModel.loggedInUserViewModel?.loggedInStateStorage?.let { loggedInStateStorageBindable ->
+            toolbarRegistrationContainer?.bindVisibility(this@OverviewScreen, loggedInStateStorageBindable) { loggedInStateStorageValue ->
+                loggedInStateStorageValue?.userType == UserType.LOCAL
+            }
+
             toolbarSynchronizationContainer?.bindVisibility(this@OverviewScreen, loggedInStateStorageBindable) { loggedInStateStorageValue ->
                 loggedInStateStorageValue?.userType == UserType.REMOTE
             }
@@ -382,7 +425,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                     }
                 },
                 handleLoadingChanged = { isLoading ->
-                    toolbarSynchronizationIcon?.isDisable = isLoading
+                    toolbarSynchronizationButton?.isDisable = isLoading
                 }
             ) {
                 viewModel.synchronizeData()
