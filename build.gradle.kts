@@ -97,29 +97,28 @@ sourceSets.all {
 }
 
 tasks {
+    // Both default and test compile tasks
+    withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = kotlinJvmTargetVersion
+        }
+    }
+
+    // Only the non-test compile task
+    compileKotlin {
+        dependsOn("generateBuildConfig")
+    }
+
+    withType<Test> {
+        useJUnitPlatform()
+    }
+
     jar {
         manifest {
             attributes["Class-Path"] = configurations.compile.get().all.joinToString(" ") { it.name }
             attributes["Main-Class"] = mainClassPath
         }
     }
-
-    defaultTasks("run")
-}
-
-// Both default and test compile tasks
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = kotlinJvmTargetVersion
-    }
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-}
-
-tasks.compileKotlin {
-    dependsOn("generateBuildConfig")
 }
 
 task("generateBuildConfig") {
