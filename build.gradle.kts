@@ -113,6 +113,10 @@ tasks {
         useJUnitPlatform()
     }
 
+    named<JavaExec>("run") {
+        jvmArgs("--add-opens=javafx.graphics/javafx.scene=ALL-UNNAMED")
+    }
+
     jar {
         manifest {
             attributes["Class-Path"] = configurations.compile.get().all.joinToString(" ") { it.name }
