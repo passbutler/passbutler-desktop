@@ -11,6 +11,7 @@ import tornadofx.css
 import tornadofx.cssclass
 import tornadofx.importStylesheet
 import tornadofx.loadFont
+import tornadofx.mixin
 import tornadofx.multi
 import tornadofx.px
 import tornadofx.removeStylesheet
@@ -75,7 +76,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
             backgroundColor = multi(colorBackground)
         }
 
-        contextMenu {
+        val contextMenuMixin = mixin {
             backgroundColor = multi(colorBackground)
 
             label {
@@ -87,6 +88,10 @@ abstract class Theme : Stylesheet(), ThemeColors {
                     textFill = colorOnPrimary
                 }
             }
+        }
+
+        contextMenu {
+            +contextMenuMixin
         }
 
         /**
@@ -218,15 +223,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
                         // Reapply default label coloring for nested context menu
                         contextMenu {
-                            label {
-                                textFill = textColorPrimary
-                            }
-
-                            focused {
-                                label {
-                                    textFill = colorOnPrimary
-                                }
-                            }
+                            +contextMenuMixin
                         }
 
                         iconStyle {
