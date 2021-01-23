@@ -16,6 +16,7 @@ import de.passbutler.desktop.ui.bindEnabled
 import de.passbutler.desktop.ui.bindInput
 import de.passbutler.desktop.ui.bindTextAndVisibility
 import de.passbutler.desktop.ui.bindVisibility
+import de.passbutler.desktop.ui.createCancelButton
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createInformationView
 import de.passbutler.desktop.ui.injectWithPrivateScope
@@ -45,6 +46,7 @@ import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
+import tornadofx.hbox
 import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.passwordfield
@@ -152,9 +154,15 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                 setupNotesField()
             }
 
-            vbox {
+            hbox {
                 paddingTop = marginM.value
+                spacing = marginM.value
+
                 setupSaveButton()
+
+                createCancelButton {
+                    showPreviousScreen()
+                }
             }
         }
     }
