@@ -100,7 +100,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
     private fun Fieldset.setupOldPasswordField() {
         field(messages["change_master_password_old_master_password_hint"], orientation = Orientation.VERTICAL) {
             passwordfield {
-                bindInputOptional(oldMasterPassword)
+                bindInputOptional(this@ChangeMasterPasswordScreen, oldMasterPassword)
 
                 validateWithRules(this) {
                     listOf(
@@ -114,7 +114,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
     private fun Fieldset.setupNewPasswordField() {
         field(messages["change_master_password_new_master_password_hint"], orientation = Orientation.VERTICAL) {
             passwordfield {
-                bindInputOptional(newMasterPassword)
+                bindInputOptional(this@ChangeMasterPasswordScreen, newMasterPassword)
 
                 validateWithRules(this) {
                     listOf(
@@ -129,7 +129,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
     private fun Fieldset.setupNewPasswordConfirmField() {
         field(messages["change_master_password_new_master_password_confirm_hint"], orientation = Orientation.VERTICAL) {
             passwordfield {
-                bindInputOptional(newMasterPasswordConfirm)
+                bindInputOptional(this@ChangeMasterPasswordScreen, newMasterPasswordConfirm)
 
                 validateWithRules(this) {
                     listOf(
@@ -145,35 +145,39 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
             isDefaultButton = true
 
             action {
-                changeMasterPassword()
+                changeMasterPasswordClicked()
             }
         }
     }
 
-    private fun changeMasterPassword() {
+    private fun changeMasterPasswordClicked() {
         validationContext.validate()
 
-        val oldMasterPassword = oldMasterPassword.value
-        val newMasterPassword = newMasterPassword.value
+        val oldMasterPasswordValue = oldMasterPassword.value
+        val newMasterPasswordValue = newMasterPassword.value
 
-        if (validationContext.isValid && oldMasterPassword != null && newMasterPassword != null) {
-            launchRequestSending(
-                handleSuccess = {
-                    showInformation(messages["change_master_password_successful_message"])
-                    showPreviousScreen()
-                },
-                handleFailure = {
-                    val errorStringResourceId = when (it) {
-                        is DecryptMasterEncryptionKeyFailedException -> "change_master_password_failed_wrong_master_password_title"
-                        is UpdateUserFailedException -> "change_master_password_failed_update_user_failed_title"
-                        else -> "change_master_password_failed_general_title"
-                    }
+        if (validationContext.isValid && oldMasterPasswordValue != null && newMasterPasswordValue != null) {
+            changeMasterPassword(oldMasterPasswordValue, newMasterPasswordValue)
+        }
+    }
 
-                    showError(messages[errorStringResourceId])
+    private fun changeMasterPassword(oldMasterPassword: String, newMasterPassword: String) {
+        launchRequestSending(
+            handleSuccess = {
+                showInformation(messages["change_master_password_successful_message"])
+                showPreviousScreen()
+            },
+            handleFailure = {
+                val errorStringResourceId = when (it) {
+                    is DecryptMasterEncryptionKeyFailedException -> "change_master_password_failed_wrong_master_password_title"
+                    is UpdateUserFailedException -> "change_master_password_failed_update_user_failed_title"
+                    else -> "change_master_password_failed_general_title"
                 }
-            ) {
-                viewModel.changeMasterPassword(oldMasterPassword, newMasterPassword)
+
+                showError(messages[errorStringResourceId])
             }
+        ) {
+            viewModel.changeMasterPassword(oldMasterPassword, newMasterPassword)
         }
     }
 }

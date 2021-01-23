@@ -3,8 +3,21 @@ package de.passbutler.desktop.ui
 import de.passbutler.common.base.Bindable
 import de.passbutler.common.base.MutableBindable
 import javafx.scene.Node
+import javafx.scene.control.CheckBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextInputControl
+import tornadofx.action
+
+
+/**
+ * General binders
+ */
+
+fun <T> Node.bind(baseUIComponent: BaseUIComponent, bindable: Bindable<T>, block: (T) -> Unit) {
+    bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        block(newValue)
+    }
+}
 
 /**
  * Visibility binders
@@ -73,18 +86,42 @@ fun <T> Label.bindTextAndVisibility(baseUIComponent: BaseUIComponent, bindable: 
  * Input binders
  */
 
-fun TextInputControl.bindInput(bindable: MutableBindable<String>) {
-    text = bindable.value
+fun TextInputControl.bindInput(baseUIComponent: BaseUIComponent, bindable: MutableBindable<String>) {
+    bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        // Update bindable via text property and not vice versa to avoid the cursor position is lost
+        if (text != newValue) {
+            text = newValue
+            end()
+        }
+    }
 
     textProperty().addListener { _, _, newValue ->
         bindable.value = newValue
     }
 }
 
-fun TextInputControl.bindInputOptional(bindable: MutableBindable<String?>) {
-    text = bindable.value
+fun TextInputControl.bindInputOptional(baseUIComponent: BaseUIComponent, bindable: MutableBindable<String?>) {
+    bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        // Update bindable via text property and not vice versa to avoid the cursor position is lost
+        if (text != newValue) {
+            text = newValue ?: ""
+            end()
+        }
+    }
 
     textProperty().addListener { _, _, newValue ->
         bindable.value = newValue
+    }
+}
+
+fun CheckBox.bindChecked(baseUIComponent: BaseUIComponent, bindable: MutableBindable<Boolean>) {
+    bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        if (isSelected != newValue) {
+            isSelected = newValue
+        }
+    }
+
+    action {
+        bindable.value = !bindable.value
     }
 }

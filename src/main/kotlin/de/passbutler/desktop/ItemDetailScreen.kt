@@ -170,7 +170,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                 promptText = messages["itemdetail_title_hint"]
 
                 bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
-                bindInput(viewModel.title)
+                bindInput(this@ItemDetailScreen, viewModel.title)
 
                 validateWithRules(this) {
                     listOf(
@@ -185,7 +185,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
         field(messages["itemdetail_username_hint"], orientation = Orientation.VERTICAL) {
             textfield {
                 bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
-                bindInput(viewModel.username)
+                bindInput(this@ItemDetailScreen, viewModel.username)
             }
         }
     }
@@ -199,7 +199,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
             }
 
             inputField.bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
-            inputField.bindInput(viewModel.password)
+            inputField.bindInput(this@ItemDetailScreen, viewModel.password)
         }
     }
 
@@ -207,7 +207,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
         field(messages["itemdetail_url_hint"], orientation = Orientation.VERTICAL) {
             textfield {
                 bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
-                bindInput(viewModel.url)
+                bindInput(this@ItemDetailScreen, viewModel.url)
             }
         }
     }
@@ -219,7 +219,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
             field(messages["itemdetail_notes_hint"], orientation = Orientation.VERTICAL) {
                 textarea {
                     bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
-                    bindInput(viewModel.notes)
+                    bindInput(this@ItemDetailScreen, viewModel.notes)
 
                     prefRowCount = 5
 

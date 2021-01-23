@@ -2,6 +2,7 @@ package de.passbutler.desktop
 
 import de.passbutler.common.DecryptMasterEncryptionKeyFailedException
 import de.passbutler.common.base.BuildType
+import de.passbutler.common.base.MutableBindable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.base.BuildInformationProvider
@@ -11,6 +12,7 @@ import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.LONGPRESS_DURATION
 import de.passbutler.desktop.ui.Theme
+import de.passbutler.desktop.ui.bindInputOptional
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
@@ -53,6 +55,8 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
     override val validationContext = ValidationContext()
 
     private val viewModel by injectWithPrivateScope<LockedScreenViewModel>()
+
+    private val masterPassword = MutableBindable<String?>(null)
 
     init {
         with(root) {
@@ -119,14 +123,16 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
     private fun ImageView.setupDebugPresetsButton() {
         if (BuildInformationProvider.buildType == BuildType.Debug) {
             longpress(LONGPRESS_DURATION) {
-                viewModel.passwordProperty.set(DebugConstants.TEST_PASSWORD)
+                masterPassword.value = DebugConstants.TEST_PASSWORD
             }
         }
     }
 
     private fun Fieldset.setupPasswordUrlField() {
         field(messages["locked_screen_master_password_hint"], orientation = Orientation.VERTICAL) {
-            passwordfield(viewModel.passwordProperty) {
+            passwordfield {
+                bindInputOptional(this@LockedScreen, masterPassword)
+
                 validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_master_password_validation_error_empty"])
@@ -150,9 +156,10 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
     private fun unlockWithPasswordClicked() {
         validationContext.validate()
 
-        if (validationContext.isValid) {
-            val masterPassword = viewModel.passwordProperty.value
-            unlockWithPassword(masterPassword)
+        val masterPasswordValue = masterPassword.value
+
+        if (validationContext.isValid && masterPasswordValue != null) {
+            unlockWithPassword(masterPasswordValue)
         }
     }
 

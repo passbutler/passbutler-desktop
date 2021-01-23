@@ -1,6 +1,7 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.base.BuildType
+import de.passbutler.common.base.MutableBindable
 import de.passbutler.common.database.RequestUnauthorizedException
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
@@ -13,6 +14,9 @@ import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.LONGPRESS_DURATION
 import de.passbutler.desktop.ui.Theme
+import de.passbutler.desktop.ui.bind
+import de.passbutler.desktop.ui.bindChecked
+import de.passbutler.desktop.ui.bindInputOptional
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
@@ -28,7 +32,6 @@ import javafx.scene.image.Image
 import javafx.scene.image.ImageView
 import javafx.scene.text.TextAlignment
 import tornadofx.FX.Companion.messages
-import tornadofx.Field
 import tornadofx.Fieldset
 import tornadofx.ValidationContext
 import tornadofx.action
@@ -61,7 +64,10 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
 
     private val viewModel by injectWithPrivateScope<LoginViewModel>()
 
-    private var serverUrlField: Field? = null
+    private val serverUrl = MutableBindable<String?>(null)
+    private val username = MutableBindable<String?>(null)
+    private val masterPassword = MutableBindable<String?>(null)
+    private val isLocalLogin = MutableBindable(false)
 
     init {
         with(root) {
@@ -117,9 +123,9 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
                 paddingTop = marginM.value
                 spacing = marginS.value
 
-                serverUrlField = createServerUrlField()
+                setupServerUrlField()
                 setupUsernameUrlField()
-                setupPasswordUrlField()
+                setupMasterPasswordUrlField()
                 setupLocalLoginCheckbox()
             }
 
@@ -133,25 +139,30 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
     private fun ImageView.setupDebugPresetsButton() {
         if (BuildInformationProvider.buildType == BuildType.Debug) {
             longpress(LONGPRESS_DURATION) {
-                viewModel.serverUrlProperty.set(DebugConstants.TEST_SERVERURL)
-                viewModel.usernameProperty.set(DebugConstants.TEST_USERNAME)
-                viewModel.passwordProperty.set(DebugConstants.TEST_PASSWORD)
-                viewModel.isLocalLoginProperty.set(false)
+                serverUrl.value = DebugConstants.TEST_SERVERURL
+                username.value = DebugConstants.TEST_USERNAME
+                masterPassword.value = DebugConstants.TEST_PASSWORD
+                isLocalLogin.value = false
             }
         }
     }
 
-    private fun Fieldset.createServerUrlField(): Field {
-        return field(messages["login_serverurl_hint"], orientation = Orientation.VERTICAL) {
-            isVisible = !viewModel.isLocalLoginProperty.value
+    private fun Fieldset.setupServerUrlField() {
+        field(messages["login_serverurl_hint"], orientation = Orientation.VERTICAL) {
+            bind(this@LoginScreen, isLocalLogin) { isLocalLogin ->
+                val shouldShow = !isLocalLogin
+                showFadeInOutAnimation(shouldShow)
+            }
 
-            textfield(viewModel.serverUrlProperty) {
+            textfield {
+                bindInputOptional(this@LoginScreen, serverUrl)
+
                 validateWithRules(this) {
                     listOfNotNull(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_serverurl_validation_error_empty"]),
                         FormFieldValidatorRule({ !isNetworkUrl(it) }, messages["form_serverurl_validation_error_invalid"]),
                         FormFieldValidatorRule({ !isHttpsUrl(it) }, messages["form_serverurl_validation_error_invalid_scheme"]).takeIf { BuildInformationProvider.buildType == BuildType.Release }
-                    ).takeIf { !viewModel.isLocalLoginProperty.value }
+                    ).takeIf { !isLocalLogin.value }
                 }
             }
         }
@@ -159,23 +170,27 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
 
     private fun Fieldset.setupUsernameUrlField() {
         field(messages["login_username_hint"], orientation = Orientation.VERTICAL) {
-            textfield(viewModel.usernameProperty) {
-                whenDocked {
-                    requestFocus()
-                }
+            textfield {
+                bindInputOptional(this@LoginScreen, username)
 
                 validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["login_username_validation_error_empty"])
                     )
                 }
+
+                whenDocked {
+                    requestFocus()
+                }
             }
         }
     }
 
-    private fun Fieldset.setupPasswordUrlField() {
+    private fun Fieldset.setupMasterPasswordUrlField() {
         field(messages["login_master_password_hint"], orientation = Orientation.VERTICAL) {
-            passwordfield(viewModel.passwordProperty) {
+            passwordfield {
+                bindInputOptional(this@LoginScreen, masterPassword)
+
                 validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_master_password_validation_error_empty"])
@@ -186,11 +201,8 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
     }
 
     private fun Node.setupLocalLoginCheckbox() {
-        checkbox(messages["login_local_login_label"], viewModel.isLocalLoginProperty) {
-            action {
-                val shouldShow = !viewModel.isLocalLoginProperty.value
-                serverUrlField?.showFadeInOutAnimation(shouldShow)
-            }
+        checkbox(messages["login_local_login_label"]) {
+            bindChecked(this@LoginScreen, isLocalLogin)
         }
     }
 
@@ -208,13 +220,13 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
     private fun loginClicked() {
         validationContext.validate()
 
-        if (validationContext.isValid) {
-            val isLocalLogin = viewModel.isLocalLoginProperty.value
+        val isLocalLoginValue = isLocalLogin.value
+        val serverUrlValue = serverUrl.value?.takeIf { !isLocalLoginValue }
+        val usernameValue = username.value
+        val masterPasswordValue = masterPassword.value
 
-            val serverUrl = viewModel.serverUrlProperty.value?.takeIf { !isLocalLogin }
-            val username = viewModel.usernameProperty.value
-            val masterPassword = viewModel.passwordProperty.value
-            loginUser(serverUrl, username, masterPassword)
+        if (validationContext.isValid && usernameValue != null && masterPasswordValue != null) {
+            loginUser(serverUrlValue, usernameValue, masterPasswordValue)
         }
     }
 
