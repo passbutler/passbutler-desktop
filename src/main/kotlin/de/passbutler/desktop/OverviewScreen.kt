@@ -453,7 +453,7 @@ fun Node.createGenericItemEntryView(listCell: ListCell<ItemEntry>, op: Node.() -
         alignment = Pos.CENTER_LEFT
         padding = insets(marginM.value, marginS.value)
 
-        smallSVGIcon(Drawables.ICON_FAVORITE.svgPath)
+        smallSVGIcon(Drawables.ICON_TEXT_SNIPPET.svgPath)
 
         vbox {
             paddingLeft = marginM.value
