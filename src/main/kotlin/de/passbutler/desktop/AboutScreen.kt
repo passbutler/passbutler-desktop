@@ -27,9 +27,11 @@ import tornadofx.action
 import tornadofx.addClass
 import tornadofx.chooseFile
 import tornadofx.get
+import tornadofx.hyperlink
 import tornadofx.paddingAll
 import tornadofx.paddingLeft
 import tornadofx.paddingTop
+import tornadofx.textflow
 import tornadofx.vbox
 import java.io.File
 import java.time.Instant
@@ -56,13 +58,26 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
         vbox {
             textLabelHeadline1(messages["about_header"])
 
-            textLabelBody1 {
+            textflow {
                 paddingTop = marginS.value
 
                 val versionName = BuildConfig.VERSION_NAME
                 val formattedBuildTime = Instant.ofEpochMilli(BuildConfig.BUILD_TIMESTAMP).formattedDateTime(FX.locale)
                 val gitShortHash = BuildConfig.BUILD_REVISION_HASH
-                text = messages["about_subheader"].format(versionName, formattedBuildTime, gitShortHash)
+
+                val formattedText = messages["about_subheader"].format(versionName, formattedBuildTime, gitShortHash)
+                val formattedTextBeforeGitHash = formattedText.substringBefore(gitShortHash)
+                val formattedTextAfterGitHash = formattedText.substringAfter(gitShortHash)
+
+                textLabelBody1(formattedTextBeforeGitHash)
+
+                hyperlink(gitShortHash) {
+                    action {
+                        hostServices.showDocument(GIT_PROJECT_URL.format(gitShortHash))
+                    }
+                }
+
+                textLabelBody1(formattedTextAfterGitHash)
             }
 
             textLabelBody1(messages["about_passage_1"]) {
@@ -183,5 +198,9 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
         ) {
             viewModel.removePremiumKey()
         }
+    }
+
+    companion object {
+        private const val GIT_PROJECT_URL = "https://git.sicherheitskritisch.de/passbutler/passbutler-desktop/commit/%s"
     }
 }

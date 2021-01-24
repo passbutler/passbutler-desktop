@@ -125,6 +125,12 @@ abstract class Theme : Stylesheet(), ThemeColors {
             fontSize = textSizeSmall
         }
 
+        hyperlink {
+            borderWidth = multi(box(0.px))
+            padding = box(0.px)
+            underline = true
+        }
+
         /**
          * Input styles
          */
