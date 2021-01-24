@@ -2,11 +2,11 @@ package de.passbutler.desktop.ui
 
 import de.passbutler.common.base.Bindable
 import de.passbutler.common.base.MutableBindable
+import javafx.beans.value.ChangeListener
 import javafx.scene.Node
 import javafx.scene.control.CheckBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextInputControl
-import tornadofx.action
 
 
 /**
@@ -87,41 +87,57 @@ fun <T> Label.bindTextAndVisibility(baseUIComponent: BaseUIComponent, bindable: 
  */
 
 fun TextInputControl.bindInput(baseUIComponent: BaseUIComponent, bindable: MutableBindable<String>) {
+    val changeListener = ChangeListener<String> { _, _, newValue ->
+        bindable.value = newValue
+    }
+
+    textProperty().addListener(changeListener)
+
     bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
         // Update bindable via text property and not vice versa to avoid the cursor position is lost
         if (text != newValue) {
+            textProperty().removeListener(changeListener)
+
             text = newValue
             end()
-        }
-    }
 
-    textProperty().addListener { _, _, newValue ->
-        bindable.value = newValue
+            textProperty().addListener(changeListener)
+        }
     }
 }
 
 fun TextInputControl.bindInputOptional(baseUIComponent: BaseUIComponent, bindable: MutableBindable<String?>) {
+    val changeListener = ChangeListener<String> { _, _, newValue ->
+        bindable.value = newValue
+    }
+
+    textProperty().addListener(changeListener)
+
     bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
         // Update bindable via text property and not vice versa to avoid the cursor position is lost
         if (text != newValue) {
+            textProperty().removeListener(changeListener)
+
             text = newValue ?: ""
             end()
-        }
-    }
 
-    textProperty().addListener { _, _, newValue ->
-        bindable.value = newValue
+            textProperty().addListener(changeListener)
+        }
     }
 }
 
 fun CheckBox.bindChecked(baseUIComponent: BaseUIComponent, bindable: MutableBindable<Boolean>) {
-    bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
-        if (isSelected != newValue) {
-            isSelected = newValue
-        }
+    val changeListener = ChangeListener<Boolean> { _, _, newValue ->
+        bindable.value = newValue
     }
 
-    action {
-        bindable.value = !bindable.value
+    selectedProperty().addListener(changeListener)
+
+    bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        if (isSelected != newValue) {
+            selectedProperty().removeListener(changeListener)
+            isSelected = newValue
+            selectedProperty().addListener(changeListener)
+        }
     }
 }
