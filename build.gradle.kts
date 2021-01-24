@@ -75,7 +75,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
     // Mockk.io
-    testImplementation("io.mockk:mockk:1.10.4")
+    testImplementation("io.mockk:mockk:1.10.5")
 }
 
 java {
