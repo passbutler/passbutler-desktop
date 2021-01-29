@@ -79,7 +79,7 @@ private class KeePassX2ImportProvider : ImportProvider {
                     val itemUrl = csvLine.getOrNull(4) ?: ""
                     val itemNotes = csvLine.getOrNull(5) ?: ""
 
-                    val itemData = ItemData(itemTitle, itemUsername, itemPassword, itemUrl, itemNotes)
+                    val itemData = ItemData(itemTitle, itemUsername, itemPassword, itemUrl, itemNotes, emptyList())
                     val itemWasDeleted = itemGroup.contains("Recycle Bin")
 
                     ItemEditingViewModel.ItemModel.Imported(itemData, itemWasDeleted)
@@ -113,7 +113,7 @@ private class KeePass2ImportProvider : ImportProvider {
                     val itemUrl = csvLine.getOrNull(3) ?: ""
                     val itemNotes = csvLine.getOrNull(4) ?: ""
 
-                    val itemData = ItemData(itemTitle, itemUsername, itemPassword, itemUrl, itemNotes)
+                    val itemData = ItemData(itemTitle, itemUsername, itemPassword, itemUrl, itemNotes, emptyList())
                     val itemWasDeleted = false
 
                     ItemEditingViewModel.ItemModel.Imported(itemData, itemWasDeleted)
