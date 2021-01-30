@@ -6,6 +6,12 @@ This repository contains the source code of Pass Butler for desktop platforms.
 
 The following steps are tested with Ubuntu 20.04.
 
+### Install Git
+
+Git is needed for a build task that generates the version information for the build:
+
+    $ sudo apt install git
+
 ### Install IntelliJ
 
 Recommended version:
