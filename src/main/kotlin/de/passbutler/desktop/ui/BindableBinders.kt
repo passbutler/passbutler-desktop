@@ -48,6 +48,17 @@ fun Node.bindEnabled(baseUIComponent: BaseUIComponent, bindable: Bindable<Boolea
     }
 }
 
+fun Node.bindEnabled(baseUIComponent: BaseUIComponent, bindable1: Bindable<Boolean>, bindable2: Bindable<Boolean>) {
+    bindable1.addLifecycleObserver(baseUIComponent, false) {
+        isEnabled = it && bindable2.value
+    }
+
+    bindable2.addLifecycleObserver(baseUIComponent, true) {
+        isEnabled = it && bindable1.value
+    }
+}
+
+
 /**
  * Text binders
  */

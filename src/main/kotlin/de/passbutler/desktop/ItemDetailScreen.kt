@@ -255,8 +255,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
         jfxButtonRaised(messages["itemdetail_save_button_title"]) {
             isDefaultButton = true
 
-            bindVisibility(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
-            bindEnabled(this@ItemDetailScreen, isItemModified)
+            bindEnabled(this@ItemDetailScreen, isItemModified, viewModel.isItemModificationAllowed)
 
             action {
                 saveClicked()
@@ -365,7 +364,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Node.setupDeleteButton() {
         jfxButtonRaised(messages["itemdetail_delete_button_title"]) {
-            bindVisibility(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
+            bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
 
             action {
                 deleteClicked()
