@@ -4,26 +4,36 @@ import com.jfoenix.controls.JFXButton
 import com.jfoenix.controls.JFXToggleButton
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import javafx.animation.Animation
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.value.ObservableValue
 import javafx.event.EventTarget
+import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.Label
+import javafx.scene.control.PasswordField
 import javafx.scene.control.ScrollPane
 import javafx.scene.control.ToggleButton
+import javafx.scene.control.skin.TextFieldSkin
 import javafx.scene.effect.DropShadow
 import javafx.scene.effect.Effect
 import javafx.scene.input.MouseButton
 import javafx.scene.layout.Pane
+import javafx.scene.layout.StackPane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Circle
+import tornadofx.ChangeListener
 import tornadofx.addClass
 import tornadofx.attachTo
 import tornadofx.css
 import tornadofx.fade
+import tornadofx.hiddenWhen
 import tornadofx.label
+import tornadofx.onLeftClick
+import tornadofx.paddingRight
 import tornadofx.pane
 import tornadofx.px
 import tornadofx.stackpane
+import tornadofx.visibleWhen
 
 typealias JavaTimeDuration = java.time.Duration
 typealias JavaFxDuration = javafx.util.Duration
@@ -68,6 +78,59 @@ fun Node.onLeftClickIgnoringCount(action: () -> Unit) {
     setOnMouseClicked {
         if (it.button === MouseButton.PRIMARY) {
             action()
+        }
+    }
+}
+
+/**
+ * Input fields
+ */
+
+fun EventTarget.passwordFieldMaskable(initialMaskPassword: Boolean = true, op: PasswordField.() -> Unit = {}): StackPane {
+    val maskPasswordProperty = SimpleBooleanProperty(initialMaskPassword)
+
+    val passwordField = PasswordField().apply {
+        skin = object : TextFieldSkin(this) {
+            override fun maskText(originalText: String): String {
+                return if (maskPasswordProperty.value) {
+                    super.maskText(originalText)
+                } else {
+                    originalText
+                }
+            }
+        }
+    }
+
+    maskPasswordProperty.addListener(ChangeListener<Boolean> { _, _, _ ->
+        // Trigger "change" to re-apply the masking
+        passwordField.text = passwordField.text
+    })
+
+    return stackpane {
+        passwordField.attachTo(this, op)
+
+        stackpane {
+            alignment = Pos.CENTER_RIGHT
+            paddingRight = marginS.value
+
+            // Do not consume clicks of password field
+            isPickOnBounds = false
+
+            smallSVGIcon(Drawables.ICON_VISIBILITY) {
+                visibleWhen(maskPasswordProperty)
+
+                onLeftClick {
+                    maskPasswordProperty.value = false
+                }
+            }
+
+            smallSVGIcon(Drawables.ICON_VISIBILITY_OFF) {
+                hiddenWhen(maskPasswordProperty)
+
+                onLeftClick {
+                    maskPasswordProperty.value = true
+                }
+            }
         }
     }
 }

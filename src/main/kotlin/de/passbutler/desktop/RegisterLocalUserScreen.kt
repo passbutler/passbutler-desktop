@@ -22,6 +22,7 @@ import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.passwordFieldMaskable
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
@@ -40,7 +41,6 @@ import tornadofx.hbox
 import tornadofx.longpress
 import tornadofx.paddingAll
 import tornadofx.paddingTop
-import tornadofx.passwordfield
 import tornadofx.textfield
 
 class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_user_title"], navigationMenuItems = createDefaultNavigationMenu()), FormValidating, RequestSending {
@@ -141,7 +141,7 @@ class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_
 
     private fun Fieldset.setupMasterPasswordField() {
         field(messages["register_local_user_master_password_hint"], orientation = Orientation.VERTICAL) {
-            passwordfield {
+            passwordFieldMaskable {
                 bindInputOptional(this@RegisterLocalUserScreen, masterPassword)
 
                 validateWithRules(this) {

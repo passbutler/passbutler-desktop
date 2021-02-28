@@ -21,6 +21,7 @@ import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.passwordFieldMaskable
 import de.passbutler.desktop.ui.showFadeInOutAnimation
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
@@ -48,7 +49,6 @@ import tornadofx.onLeftClick
 import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.pane
-import tornadofx.passwordfield
 import tornadofx.px
 import tornadofx.stackpane
 import tornadofx.textfield
@@ -183,7 +183,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
 
     private fun Fieldset.setupMasterPasswordUrlField() {
         field(messages["login_master_password_hint"], orientation = Orientation.VERTICAL) {
-            passwordfield {
+            passwordFieldMaskable {
                 bindInputOptional(this@LoginScreen, masterPassword)
 
                 validateWithRules(this) {

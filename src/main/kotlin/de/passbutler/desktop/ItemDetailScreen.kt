@@ -25,6 +25,7 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.passwordFieldMaskable
 import de.passbutler.desktop.ui.setScrollSpeed
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBody1
@@ -49,7 +50,6 @@ import tornadofx.get
 import tornadofx.hbox
 import tornadofx.paddingAll
 import tornadofx.paddingTop
-import tornadofx.passwordfield
 import tornadofx.scrollpane
 import tornadofx.style
 import tornadofx.textarea
@@ -200,14 +200,10 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Fieldset.setupPasswordField() {
         field(messages["itemdetail_password_hint"], orientation = Orientation.VERTICAL) {
-            val inputField = if (viewModel.hidePasswordsEnabled) {
-                passwordfield()
-            } else {
-                textfield()
+            passwordFieldMaskable(viewModel.hidePasswordsEnabled) {
+                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
+                bindInput(this@ItemDetailScreen, viewModel.password)
             }
-
-            inputField.bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
-            inputField.bindInput(this@ItemDetailScreen, viewModel.password)
         }
     }
 
