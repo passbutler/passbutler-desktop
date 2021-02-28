@@ -199,7 +199,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                     fontWeight = FontWeight.BOLD
                 }
 
-                graphic = smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE.svgPath)
+                graphic = smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE)
                 graphicTextGap = marginS.value
 
                 onLeftClick {
@@ -229,7 +229,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                     fontWeight = FontWeight.BOLD
                 }
 
-                graphic = smallSVGIcon(Drawables.ICON_REFRESH.svgPath)
+                graphic = smallSVGIcon(Drawables.ICON_REFRESH)
                 graphicTextGap = marginS.value
 
                 onLeftClick(action = synchronizeDataAction)
@@ -453,7 +453,7 @@ fun Node.createGenericItemEntryView(listCell: ListCell<ItemEntry>, op: Node.() -
         alignment = Pos.CENTER_LEFT
         padding = insets(marginM.value, marginS.value)
 
-        smallSVGIcon(Drawables.ICON_TEXT_SNIPPET.svgPath)
+        smallSVGIcon(Drawables.ICON_TEXT_SNIPPET)
 
         vbox {
             paddingLeft = marginM.value

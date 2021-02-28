@@ -131,7 +131,7 @@ class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itema
             padding = insets(marginS.value, marginM.value, 0, marginM.value)
 
             val headlineView = textLabelHeadline1(listCell.itemProperty().select { it.titleProperty }) {
-                graphic = smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE.svgPath)
+                graphic = smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE)
                 graphicTextGap = marginM.value
             }
 

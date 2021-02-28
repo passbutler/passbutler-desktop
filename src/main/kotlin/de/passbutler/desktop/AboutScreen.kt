@@ -168,7 +168,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
             addClass(Theme.emphasizedCardStyle)
 
             val cardHeadline = textLabelHeadline1 {
-                graphic = smallSVGIcon(Drawables.ICON_VERIFIED.svgPath)
+                graphic = smallSVGIcon(Drawables.ICON_VERIFIED)
                 graphicTextGap = marginM.value
 
                 bindTextAndVisibility(this@AboutScreen, viewModel.premiumKey) { it?.name }

@@ -1,6 +1,7 @@
 package de.passbutler.desktop.ui
 
 import javafx.event.EventTarget
+import javafx.geometry.Pos
 import javafx.scene.layout.Pane
 import tornadofx.addClass
 import tornadofx.attachTo
@@ -10,19 +11,22 @@ import tornadofx.style
 /**
  * Custom implementation similar to `SVGIcon` but with theme based tinting via style.
  */
-class SmallSVGIcon(svgPath: String) : Pane() {
+class SmallSVGIcon(drawable: Drawable) : Pane() {
     init {
         addClass(Theme.iconStyle)
 
         style {
-            shape = svgPath
+            shape = drawable.svgPath
 
-            minWidth = 18.px
-            minHeight = 18.px
-            maxWidth = 18.px
-            maxHeight = 18.px
+            alignment = Pos.CENTER
+
+            minWidth = drawable.desiredWidthPixels.px
+            maxWidth = drawable.desiredWidthPixels.px
+
+            minHeight = drawable.desiredHeightPixels.px
+            maxHeight = drawable.desiredHeightPixels.px
         }
     }
 }
 
-fun EventTarget.smallSVGIcon(svgPath: String, op: SmallSVGIcon.() -> Unit = {}) = SmallSVGIcon(svgPath).attachTo(this, op)
+fun EventTarget.smallSVGIcon(drawable: Drawable, op: SmallSVGIcon.() -> Unit = {}) = SmallSVGIcon(drawable).attachTo(this, op)

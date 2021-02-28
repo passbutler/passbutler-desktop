@@ -81,7 +81,7 @@ interface NavigationMenuComponent : BaseUIComponent, NavigationMenuUsing {
         textLabelWrapped(title) {
             addClass(Theme.navigationViewItemStyle)
 
-            graphic = smallSVGIcon(icon.svgPath)
+            graphic = smallSVGIcon(icon)
             graphicTextGap = marginS.value
 
             onLeftClick(action = clickedAction)
