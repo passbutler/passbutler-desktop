@@ -58,6 +58,17 @@ Choose `/usr/lib/jvm/adoptopenjdk-14-hotspot-amd64/bin/jpackage`
 
 In IntelliJ, change the "Project SDK" to the AdoptOpenJDK 14 in File -> Project Structure -> Project Settings -> Project.
 
+### Clone project
+
+Clone repository:
+
+    $ git clone ssh://git@git.sicherheitskritisch.de/passbutler/passbutler-desktop.git
+
+Clone submodules:
+
+    $ cd ./passbutler-desktop/
+    $ git submodule update --init
+
 ### Packaging
 
 Currently only the distribution with "deb" package is supported!
