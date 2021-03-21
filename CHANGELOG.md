@@ -4,6 +4,7 @@
 
 ### Added
 - Password unmasking icon for password fields
+- Language hint text when importing CSV from KeePassX 2 / KeePassXC to be sure deleted entries are recognized as such
 
 ### Fixed
 - The case of items is ignored for sorting on item and item authorization screens
