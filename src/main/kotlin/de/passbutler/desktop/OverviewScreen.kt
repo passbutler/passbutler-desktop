@@ -34,6 +34,7 @@ import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
+import javafx.scene.control.TextField
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.StackPane
@@ -83,6 +84,8 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
     private var toolbarSynchronizationButton: Node? = null
     private var toolbarSynchronizationSubtitle: Label? = null
 
+    private var filterTextField: TextField? = null
+
     private var listView: ListView<ItemEntry>? = null
     private var emptyScreenView: Node? = null
 
@@ -118,6 +121,10 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
     init {
         setupRootView()
+
+        shortcut("ESC") {
+            filterTextField?.text = ""
+        }
     }
 
     override fun Node.setupMainContent() {
@@ -165,7 +172,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
         vbox {
             alignment = Pos.CENTER_LEFT
 
-            textfield {
+            filterTextField = textfield {
                 promptText = messages["general_search"]
 
                 textProperty().addListener { _, _, newValue ->
