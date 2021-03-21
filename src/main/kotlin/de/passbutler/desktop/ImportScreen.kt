@@ -57,6 +57,7 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
         setupImportSection(
             messages["import_keepassx2_header"],
             messages["import_keepassx2_description"],
+            messages["import_keepassx2_language_hint"],
             messages["import_keepassx2_button_text"],
             messages["import_keepassx2_file_extension_description"]
         ) { chosenFile ->
@@ -68,6 +69,7 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
         setupImportSection(
             messages["import_keepass2_header"],
             messages["import_keepass2_description"],
+            null,
             messages["import_keepass2_button_text"],
             messages["import_keepass2_file_extension_description"]
         ) { chosenFile ->
@@ -77,7 +79,8 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
 
     private fun Node.setupImportSection(
         header: String,
-        description: String,
+        description1: String,
+        description2: String?,
         buttonText: String,
         fileExtensionDescription: String,
         importBlock: suspend (File) -> Result<Int>
@@ -87,7 +90,14 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
 
             textLabelBody1 {
                 paddingTop = marginS.value
-                text = description
+                text = description1
+            }
+
+            if (description2 != null) {
+                textLabelBody1 {
+                    paddingTop = marginS.value
+                    text = description2
+                }
             }
 
             vbox {
