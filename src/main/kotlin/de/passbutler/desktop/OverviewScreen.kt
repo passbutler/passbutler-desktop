@@ -123,7 +123,13 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
         setupRootView()
 
         shortcut("ESC") {
-            filterTextField?.text = ""
+            if (filterTextField?.text != "") {
+                // For the first step reset filter text
+                filterTextField?.text = ""
+            } else {
+                // If the filter text was already reset, clear focus on filter text field
+                root.requestFocus()
+            }
         }
     }
 
