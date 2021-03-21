@@ -111,7 +111,7 @@ class RecycleBinScreen : NavigationMenuFragment(messages["recycle_bin_title"], n
                 itemEntries.setPredicate(newPredicate)
             }
 
-            shortcut("Ctrl+F") {
+            shortcut("Shortcut+F") {
                 requestFocus()
             }
         }

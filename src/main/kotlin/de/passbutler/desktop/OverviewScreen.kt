@@ -185,7 +185,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                     itemEntries.setPredicate(newPredicate)
                 }
 
-                shortcut("Ctrl+F") {
+                shortcut("Shortcut+F") {
                     requestFocus()
                 }
             }
@@ -246,7 +246,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                 paddingTop = marginS.value
             }
 
-            shortcut("Ctrl+R") {
+            shortcut("Shortcut+R") {
                 synchronizeDataAction.invoke()
             }
         }
@@ -269,15 +269,15 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                 }
             }
 
-            shortcut("CTRL+B") {
+            shortcut("Shortcut+B") {
                 copyUsernameOfSelectedItem()
             }
 
-            shortcut("CTRL+C") {
+            shortcut("Shortcut+C") {
                 copyPasswordOfSelectedItem()
             }
 
-            shortcut("CTRL+U") {
+            shortcut("Shortcut+U") {
                 openUrlOfSelectedItem()
             }
         }
@@ -365,7 +365,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                 }
             }
 
-            shortcut("Ctrl+N") {
+            shortcut("Shortcut+N") {
                 addItemAction.invoke()
             }
         }

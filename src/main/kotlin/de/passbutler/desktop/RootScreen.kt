@@ -138,13 +138,13 @@ class RootScreen : BaseView(), RequestSending {
     }
 
     private fun Menu.setupNewVaultItem() {
-        item(messages["menu_create_vault"], "CTRL+N").action {
+        item(messages["menu_create_vault"], "Shortcut+N").action {
             createVaultClicked()
         }
     }
 
     private fun Menu.setupOpenVaultItem() {
-        item(messages["menu_open_vault"], "CTRL+O").action {
+        item(messages["menu_open_vault"], "Shortcut+O").action {
             openVaultChooserClicked()
         }
     }
@@ -169,14 +169,14 @@ class RootScreen : BaseView(), RequestSending {
 
     private fun Menu.setupCloseVaultItem(rootScreenState: RootViewModel.RootScreenState?) {
         if (rootScreenState is RootViewModel.RootScreenState.LoggedIn) {
-            item(messages["menu_close_vault"], "CTRL+W").action {
+            item(messages["menu_close_vault"], "Shortcut+W").action {
                 closeVaultClicked()
             }
         }
     }
 
     private fun Menu.setupCloseApplicationItem() {
-        item(messages["menu_close_application"], "CTRL+Q").action {
+        item(messages["menu_close_application"], "Shortcut+Q").action {
             closeApplicationClicked()
         }
     }
