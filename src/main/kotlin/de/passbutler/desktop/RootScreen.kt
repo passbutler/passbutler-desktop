@@ -81,6 +81,20 @@ class RootScreen : BaseView(), RequestSending {
         }
     }
 
+    private fun StackPane.createProgressView(): Node {
+        return hbox(alignment = Pos.CENTER) {
+            addClass(Theme.scrimBackgroundStyle)
+
+            progressindicator()
+
+            isVisible = false
+        }
+    }
+
+    private fun StackPane.createBannerView(): BannerView {
+        return snackbarBannerView(this)
+    }
+
     override fun onDock() {
         super.onDock()
 
@@ -109,26 +123,6 @@ class RootScreen : BaseView(), RequestSending {
                 viewModel.restoreRecentVault()
             }
         }
-    }
-
-    override fun onUndock() {
-        super.onUndock()
-
-        Logger.debug("RootScreen was undocked")
-    }
-
-    private fun StackPane.createProgressView(): Node {
-        return hbox(alignment = Pos.CENTER) {
-            addClass(Theme.scrimBackgroundStyle)
-
-            progressindicator()
-
-            isVisible = false
-        }
-    }
-
-    private fun StackPane.createBannerView(): BannerView {
-        return snackbarBannerView(this)
     }
 
     private fun updateMenu(rootScreenState: RootViewModel.RootScreenState?, recentVaultFiles: List<File>) {
@@ -252,5 +246,11 @@ class RootScreen : BaseView(), RequestSending {
             // Show unanimated because when showing screens non-user-triggered very quickly, the transition animation gets out-of-sync
             showScreen(screenClass, userTriggered = false)
         }
+    }
+
+    override fun onUndock() {
+        super.onUndock()
+
+        Logger.debug("RootScreen was undocked")
     }
 }
