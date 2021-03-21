@@ -36,9 +36,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
         Logger.debug("Restore recent vault file '$recentVaultFile'")
 
         if (recentVaultFile != null) {
-            val openResult = openVault(recentVaultFile)
-
-            when (openResult) {
+            when (val openResult = openVault(recentVaultFile)) {
                 is Success -> {
                     Logger.debug("The recent vault file was opened")
                 }
@@ -84,9 +82,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
                 if (vaultFile.exists()) {
                     Failure(VaultFileAlreadyExistsException)
                 } else {
-                    val initializeResult = userViewModelProvidingViewModel.initializeUserManager(vaultFile, DatabaseInitializationMode.Create)
-
-                    when (initializeResult) {
+                    when (val initializeResult = userViewModelProvidingViewModel.initializeUserManager(vaultFile, DatabaseInitializationMode.Create)) {
                         is Success -> {
                             persistRecentVaultFile(vaultFile)
                             _rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
@@ -107,9 +103,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     suspend fun loginVault(serverUrlString: String?, username: String, masterPassword: String): Result<Unit> {
         Logger.debug("Login current vault")
 
-        val loginResult = userViewModelProvidingViewModel.loginUser(serverUrlString, username, masterPassword)
-
-        return when (loginResult) {
+        return when (val loginResult = userViewModelProvidingViewModel.loginUser(serverUrlString, username, masterPassword)) {
             is Success -> {
                 _rootScreenState.value = RootScreenState.LoggedIn.Unlocked
                 Success(Unit)
@@ -141,9 +135,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     suspend fun closeVault(): Result<Unit> {
         Logger.debug("Close current vault")
 
-        val logoutResult = userViewModelProvidingViewModel.logoutUser()
-
-        return when (logoutResult) {
+        return when (val logoutResult = userViewModelProvidingViewModel.logoutUser()) {
             is Success -> {
                 _rootScreenState.value = RootScreenState.LoggedOut.Welcome
                 Success(Unit)
@@ -171,9 +163,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
     private suspend fun closeVaultIfOpen(): Result<Unit> {
         Logger.debug("Close current vault if opened")
 
-        val logoutResult = userViewModelProvidingViewModel.logoutUser()
-
-        return when (logoutResult) {
+        return when (val logoutResult = userViewModelProvidingViewModel.logoutUser()) {
             is Success -> Success(Unit)
             is Failure -> {
                 // Ignore missing `UserManager` if it is tried to close vault initially when open/create vault
