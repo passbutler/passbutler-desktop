@@ -5,6 +5,7 @@ import de.passbutler.common.base.Result
 import de.passbutler.common.base.Success
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.tinylog.kotlin.Logger
 import tornadofx.ConfigProperties
 import tornadofx.Configurable
 
@@ -14,7 +15,12 @@ import tornadofx.Configurable
 suspend fun <T> Configurable.readConfigProperty(configPropertyGetter: ConfigProperties.() -> T?): Result<T> {
     return withContext(Dispatchers.IO) {
         val readValue = config.use {
-            configPropertyGetter(it)
+            try {
+                configPropertyGetter(it)
+            } catch (exception: Exception) {
+                Logger.warn(exception, "The configuration value could not be read!")
+                null
+            }
         }
 
         if (readValue != null) {
@@ -32,7 +38,11 @@ suspend fun Configurable.writeConfigProperty(configPropertySetter: ConfigPropert
     return try {
         withContext(Dispatchers.IO) {
             config.use {
-                configPropertySetter(it)
+                try {
+                    configPropertySetter(it)
+                } catch (exception: Exception) {
+                    Logger.warn(exception, "The configuration value could not be written!")
+                }
             }
         }
 
