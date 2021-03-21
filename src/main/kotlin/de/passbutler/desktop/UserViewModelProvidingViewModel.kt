@@ -39,9 +39,8 @@ class UserViewModelProvidingViewModel : ViewModel() {
 
     suspend fun restoreLoggedInUser(): Result<Unit> {
         val userManager = userManager ?: throw UserManagerUninitializedException
-        val restoreResult = userManager.restoreLoggedInUser()
 
-        return when (restoreResult) {
+        return when (val restoreResult = userManager.restoreLoggedInUser()) {
             is Success -> {
                 val loggedInUserResult = restoreResult.result
                 loggedInUserViewModel = UserViewModel(userManager, biometricsProvider, loggedInUserResult.loggedInUser)
@@ -65,9 +64,7 @@ class UserViewModelProvidingViewModel : ViewModel() {
                 val loggedInUserResult = loginResult.result
                 val newLoggedInUserViewModel = UserViewModel(userManager, biometricsProvider, loggedInUserResult.loggedInUser)
 
-                val decryptSensibleDataResult = newLoggedInUserViewModel.decryptSensibleData(masterPassword)
-
-                when (decryptSensibleDataResult) {
+                when (val decryptSensibleDataResult = newLoggedInUserViewModel.decryptSensibleData(masterPassword)) {
                     is Success -> {
                         loggedInUserViewModel = newLoggedInUserViewModel
                         Success(Unit)
@@ -86,9 +83,7 @@ class UserViewModelProvidingViewModel : ViewModel() {
         val userManager = userManager
 
         return if (userManager != null) {
-            val logoutResult = userManager.logoutUser(UserManager.LogoutBehaviour.KeepDatabase)
-
-            when (logoutResult) {
+            when (val logoutResult = userManager.logoutUser(UserManager.LogoutBehaviour.KeepDatabase)) {
                 is Success -> {
                     loggedInUserViewModel?.clearSensibleData()
                     loggedInUserViewModel?.cancelJobs()

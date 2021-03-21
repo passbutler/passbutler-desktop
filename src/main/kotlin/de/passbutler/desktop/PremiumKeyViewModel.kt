@@ -33,9 +33,7 @@ class PremiumKeyViewModel : ViewModel() {
         }.resultOrNull()
 
         if (premiumKeyJsonWebToken != null) {
-            val parseResult = PremiumKey.parse(premiumKeyJsonWebToken)
-
-            when (parseResult) {
+            when (val parseResult = PremiumKey.parse(premiumKeyJsonWebToken)) {
                 is Success -> {
                     val premiumKey = parseResult.result
                     Logger.debug("The premium key (id = '${premiumKey.id}') was parsed successfully")

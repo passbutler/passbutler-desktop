@@ -11,7 +11,7 @@ import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.ScrollSpeed
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.Theme.Companion.fontLight
-import de.passbutler.desktop.ui.addLifecycleObserver
+import de.passbutler.desktop.ui.bind
 import de.passbutler.desktop.ui.bindEnabled
 import de.passbutler.desktop.ui.bindInput
 import de.passbutler.desktop.ui.bindTextAndVisibility
@@ -375,16 +375,12 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     override fun onDock() {
         super.onDock()
 
-        viewModel.isNewItem.addLifecycleObserver(this, true) {
-            updateTitle()
-        }
-    }
-
-    private fun updateTitle() {
-        title = if (viewModel.isNewItem.value) {
-            messages["itemdetail_title_new"]
-        } else {
-            messages["itemdetail_title_edit"]
+        bind(this, viewModel.isNewItem) { isNewItem ->
+            title = if (isNewItem) {
+                messages["itemdetail_title_new"]
+            } else {
+                messages["itemdetail_title_edit"]
+            }
         }
     }
 }

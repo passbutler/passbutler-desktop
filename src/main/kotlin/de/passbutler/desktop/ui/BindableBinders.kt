@@ -8,12 +8,11 @@ import javafx.scene.control.CheckBox
 import javafx.scene.control.Label
 import javafx.scene.control.TextInputControl
 
-
 /**
  * General binders
  */
 
-fun <T> Node.bind(baseUIComponent: BaseUIComponent, bindable: Bindable<T>, block: (T) -> Unit) {
+fun <T> bind(baseUIComponent: BaseUIComponent, bindable: Bindable<T>, block: (T) -> Unit) {
     bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
         block(newValue)
     }
