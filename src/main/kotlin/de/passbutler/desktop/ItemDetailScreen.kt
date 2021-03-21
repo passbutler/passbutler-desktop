@@ -177,7 +177,6 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
                 promptText = messages["itemdetail_title_hint"]
 
-                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(this@ItemDetailScreen, viewModel.title)
 
                 validateWithRules(this) {
@@ -192,7 +191,6 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     private fun Fieldset.setupUsernameField() {
         field(messages["itemdetail_username_hint"], orientation = Orientation.VERTICAL) {
             textfield {
-                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(this@ItemDetailScreen, viewModel.username)
             }
         }
@@ -201,7 +199,6 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     private fun Fieldset.setupPasswordField() {
         field(messages["itemdetail_password_hint"], orientation = Orientation.VERTICAL) {
             passwordFieldMaskable(viewModel.hidePasswordsEnabled) {
-                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(this@ItemDetailScreen, viewModel.password)
             }
         }
@@ -210,7 +207,6 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     private fun Fieldset.setupUrlField() {
         field(messages["itemdetail_url_hint"], orientation = Orientation.VERTICAL) {
             textfield {
-                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(this@ItemDetailScreen, viewModel.url)
             }
         }
@@ -222,7 +218,6 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
             field(messages["itemdetail_notes_hint"], orientation = Orientation.VERTICAL) {
                 textarea {
-                    bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                     bindInput(this@ItemDetailScreen, viewModel.notes)
 
                     prefRowCount = 5
@@ -249,9 +244,8 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Node.setupSaveButton() {
         jfxButtonRaised(messages["itemdetail_save_button_title"]) {
-            isDefaultButton = true
-
-            bindEnabled(this@ItemDetailScreen, isItemModified, viewModel.isItemModificationAllowed)
+            bindVisibility(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
+            bindEnabled(this@ItemDetailScreen, isItemModified)
 
             action {
                 saveClicked()
@@ -352,16 +346,14 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
             textLabelHeadline1(messages["itemdetail_delete_header"])
             setupDeleteButton()
 
-            bindVisibility(this@ItemDetailScreen, viewModel.isNewItem) { isNewItem ->
-                !isNewItem
+            bindVisibility(this@ItemDetailScreen, viewModel.isNewItem, viewModel.isItemModificationAllowed) { isNewItem, isItemModificationAllowed ->
+                !isNewItem && isItemModificationAllowed
             }
         }
     }
 
     private fun Node.setupDeleteButton() {
         jfxButtonRaised(messages["itemdetail_delete_button_title"]) {
-            bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
-
             action {
                 deleteClicked()
             }

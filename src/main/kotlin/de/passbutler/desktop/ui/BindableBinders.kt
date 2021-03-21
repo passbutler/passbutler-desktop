@@ -31,6 +31,20 @@ fun <T> Node.bindVisibility(baseUIComponent: BaseUIComponent, bindable: Bindable
     }
 }
 
+fun <T1, T2> Node.bindVisibility(baseUIComponent: BaseUIComponent, bindable1: Bindable<T1>, bindable2: Bindable<T2>, block: (T1, T2) -> Boolean) {
+    bindable1.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        val newVisibleValue = block(newValue, bindable2.value)
+        isVisible = newVisibleValue
+        isManaged = newVisibleValue
+    }
+
+    bindable2.addLifecycleObserver(baseUIComponent, true) { newValue ->
+        val newVisibleValue = block(bindable1.value, newValue)
+        isVisible = newVisibleValue
+        isManaged = newVisibleValue
+    }
+}
+
 fun Node.bindVisibility(baseUIComponent: BaseUIComponent, bindable: Bindable<Boolean>) {
     bindable.addLifecycleObserver(baseUIComponent, true) { newValue ->
         isVisible = newValue

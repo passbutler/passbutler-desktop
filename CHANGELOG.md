@@ -7,6 +7,9 @@
 - Language hint text when importing CSV from KeePassX 2 / KeePassXC to be sure deleted entries are recognized as such
 - Pressing escape key on overview clears filter now
 
+## Changed
+- Allow to copy item details of read-only items (do not disable them anymore) - the save and delete button is hidden instead of disabled to avoid user confusion
+
 ### Fixed
 - The case of items is ignored for sorting on item and item authorization screens
 - Wrong locale of application menu (system default instead of configured locale)
