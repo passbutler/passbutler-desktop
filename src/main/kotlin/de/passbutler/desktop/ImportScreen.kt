@@ -39,7 +39,7 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
             spacing = marginL.value
 
             setupHeaderSection()
-            setupKeePass2XSection()
+            setupKeePassX2Section()
             setupKeePass2Section()
         }
     }
@@ -53,7 +53,7 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
         }
     }
 
-    private fun Node.setupKeePass2XSection() {
+    private fun Node.setupKeePassX2Section() {
         setupImportSection(
             messages["import_keepassx2_header"],
             messages["import_keepassx2_description"],
