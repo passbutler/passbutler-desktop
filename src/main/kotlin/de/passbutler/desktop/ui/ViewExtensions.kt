@@ -90,6 +90,9 @@ fun EventTarget.passwordFieldMaskable(initialMaskPassword: Boolean = true, op: P
     val maskPasswordProperty = SimpleBooleanProperty(initialMaskPassword)
 
     val passwordField = PasswordField().apply {
+
+        addClass(Theme.passwordFieldMaskableStyle)
+
         skin = object : TextFieldSkin(this) {
             override fun maskText(originalText: String): String {
                 return if (maskPasswordProperty.value) {

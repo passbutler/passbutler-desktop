@@ -135,11 +135,21 @@ abstract class Theme : Stylesheet(), ThemeColors {
          * Input styles
          */
 
-        textField {
+        val inputDefaultsMixin = mixin {
             textFill = textColorPrimary
             fontSize = textSizeMedium
 
             minHeight = 36.px
+        }
+
+        textField {
+            +inputDefaultsMixin
+
+            padding = box(marginS)
+        }
+
+        passwordFieldMaskableStyle {
+            padding = box(marginS, marginL, marginS, marginS)
         }
 
         checkBox {
@@ -148,10 +158,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         textArea {
-            textFill = textColorPrimary
-            fontSize = textSizeMedium
-
-            minHeight = 36.px
+            +inputDefaultsMixin
         }
 
         /**
@@ -427,6 +434,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val toolbarStyle by cssclass()
 
         val emphasizedCardStyle by cssclass()
+
+        val passwordFieldMaskableStyle by cssclass()
     }
 }
 
