@@ -18,6 +18,16 @@ fun <T> bind(baseUIComponent: BaseUIComponent, bindable: Bindable<T>, block: (T)
     }
 }
 
+fun <T1, T2> bind(baseUIComponent: BaseUIComponent, bindable1: Bindable<T1>, bindable2: Bindable<T2>, block: (T1, T2) -> Unit) {
+    bindable1.addLifecycleObserver(baseUIComponent, false) {
+        block(bindable1.value, bindable2.value)
+    }
+
+    bindable2.addLifecycleObserver(baseUIComponent, true) {
+        block(bindable1.value, bindable2.value)
+    }
+}
+
 /**
  * Visibility binders
  */

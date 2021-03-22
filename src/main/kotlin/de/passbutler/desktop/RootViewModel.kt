@@ -12,6 +12,7 @@ import de.passbutler.common.base.resultOrThrowException
 import de.passbutler.common.database.models.UserType
 import de.passbutler.desktop.base.ConfigProperty
 import de.passbutler.desktop.base.readConfigProperty
+import de.passbutler.desktop.base.toJavaxJsonArray
 import de.passbutler.desktop.base.writeConfigProperty
 import de.passbutler.desktop.database.DatabaseInitializationMode
 import de.passbutler.desktop.ui.VAULT_FILE_EXTENSION
@@ -21,22 +22,32 @@ import tornadofx.Component
 import tornadofx.FX
 import tornadofx.ViewModel
 import java.io.File
+import javax.json.JsonString
+import javax.json.JsonValue.EMPTY_JSON_ARRAY
 
 class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
     val rootScreenState: Bindable<RootScreenState?>
         get() = _rootScreenState
 
+    val recentVaultFiles: Bindable<List<File>>
+        get() = _recentVaultFiles
+
     private val _rootScreenState = MutableBindable<RootScreenState?>(null)
+    private val _recentVaultFiles = MutableBindable<List<File>>(emptyList())
 
     override val userViewModelProvidingViewModel by injectUserViewModelProvidingViewModel()
 
     suspend fun restoreRecentVault() {
-        val recentVaultFile = restoreRecentVaultFile()
-        Logger.debug("Restore recent vault file '$recentVaultFile'")
+        val recentVaultFiles = restoreRecentVaultFiles()
+        _recentVaultFiles.value = recentVaultFiles
 
-        if (recentVaultFile != null) {
-            when (val openResult = openVault(recentVaultFile)) {
+        // Only try existence of most recent file (don't filter non-existing) to avoid opening old/unexpected files
+        val mostRecentVaultFile = recentVaultFiles.firstOrNull()?.takeIf { it.exists() }
+        Logger.debug("Restore recent vault file '$mostRecentVaultFile'")
+
+        if (mostRecentVaultFile != null) {
+            when (val openResult = openVault(mostRecentVaultFile)) {
                 is Success -> {
                     Logger.debug("The recent vault file was opened")
                 }
@@ -45,9 +56,21 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
                 }
             }
         } else {
-            Logger.debug("No recent file available to open!")
+            Logger.debug("No recent file available to open")
             _rootScreenState.value = RootScreenState.LoggedOut.Welcome
         }
+    }
+
+    suspend fun resetRecentVaultFiles(): Result<Unit> {
+        val writeConfigurationResult = app.writeConfigProperty {
+            set(ConfigProperty.RECENT_VAULTS to EMPTY_JSON_ARRAY)
+        }
+
+        if (writeConfigurationResult is Success) {
+            _recentVaultFiles.value = emptyList()
+        }
+
+        return writeConfigurationResult
     }
 
     suspend fun openVault(selectedFile: File): Result<Unit> {
@@ -59,7 +82,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
                     userViewModelProvidingViewModel.initializeUserManager(selectedFile, DatabaseInitializationMode.Open).resultOrThrowException()
                     userViewModelProvidingViewModel.restoreLoggedInUser().resultOrThrowException()
 
-                    persistRecentVaultFile(selectedFile)
+                    persistRecentVaultFiles(selectedFile)
                     _rootScreenState.value = RootScreenState.LoggedIn.Locked
 
                     Success(Unit)
@@ -84,7 +107,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
                 } else {
                     when (val initializeResult = userViewModelProvidingViewModel.initializeUserManager(vaultFile, DatabaseInitializationMode.Create)) {
                         is Success -> {
-                            persistRecentVaultFile(vaultFile)
+                            persistRecentVaultFiles(vaultFile)
                             _rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
 
                             Success(Unit)
@@ -144,19 +167,33 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
         }
     }
 
-    private suspend fun restoreRecentVaultFile(): File? {
+    private suspend fun restoreRecentVaultFiles(): List<File> {
         return app.readConfigProperty {
-            string(ConfigProperty.RECENT_VAULT)
-        }.resultOrNull()?.let { File(it) }?.takeIf { it.exists() }
+            jsonArray(ConfigProperty.RECENT_VAULTS)
+                ?.getValuesAs(JsonString::getString)
+                ?.map { absolutePath ->
+                    File(absolutePath)
+                }
+        }.resultOrNull()?.take(MAXIMUM_RECENT_VAULT_FILES) ?: emptyList()
     }
 
-    private suspend fun persistRecentVaultFile(vaultFile: File) {
+    private suspend fun persistRecentVaultFiles(newVaultFile: File) {
+        val oldRecentVaultFiles = restoreRecentVaultFiles()
+
+        // Temporarily convert to set to remove duplicates
+        val newRecentVaultFiles = oldRecentVaultFiles.toMutableList().apply {
+            add(0, newVaultFile)
+        }.toSet().toList()
+
+        _recentVaultFiles.value = newRecentVaultFiles
+
         val persistResult = app.writeConfigProperty {
-            set(ConfigProperty.RECENT_VAULT to vaultFile.absolutePath)
+            val serializableRecentVaultFiles = newRecentVaultFiles.map { it.absolutePath }
+            set(ConfigProperty.RECENT_VAULTS to serializableRecentVaultFiles.toJavaxJsonArray())
         }
 
         if (persistResult is Failure) {
-            Logger.warn("The recent vault file '$vaultFile' could not be persisted!")
+            Logger.warn("The recent vault files could not be persisted!")
         }
     }
 
@@ -186,6 +223,10 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
             object OpeningVault : LoggedOut()
             object Welcome : LoggedOut()
         }
+    }
+
+    companion object {
+        private const val MAXIMUM_RECENT_VAULT_FILES = 10
     }
 }
 

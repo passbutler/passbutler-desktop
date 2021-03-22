@@ -56,6 +56,11 @@ dependencies {
     // TornadoFX
     implementation(files("lib/tornadofx-2.0.0-SNAPSHOT.jar"))
 
+    // TornadoFX dependencies
+    val javaxJsonVersion = "1.1.4"
+    implementation("javax.json:javax.json-api:$javaxJsonVersion")
+    implementation("org.glassfish:javax.json:$javaxJsonVersion")
+
     // TornadoFX depends on old version - explicitly use version matching the Kotlin version
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 

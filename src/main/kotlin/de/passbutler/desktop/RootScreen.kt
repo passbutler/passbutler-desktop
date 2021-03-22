@@ -8,6 +8,7 @@ import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.UIPresenter
 import de.passbutler.desktop.ui.addLifecycleObserver
+import de.passbutler.desktop.ui.bind
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
 import de.passbutler.desktop.ui.showSaveVaultFileChooser
@@ -33,6 +34,7 @@ import tornadofx.item
 import tornadofx.menu
 import tornadofx.menubar
 import tornadofx.progressindicator
+import tornadofx.separator
 import tornadofx.stackpane
 import tornadofx.top
 import java.io.File
@@ -74,7 +76,6 @@ class RootScreen : BaseView(), RequestSending {
                     effect = bottomDropShadow()
 
                     menuView = menu(messages["general_app_name"])
-                    updateMenu()
                 }
             }
         }
@@ -85,9 +86,13 @@ class RootScreen : BaseView(), RequestSending {
 
         uiPresentingDelegate = UIPresenter(this)
 
-        viewModel.rootScreenState.addLifecycleObserver(this, false) {
-            updateMenu()
-            updateRootScreen()
+        bind(this, viewModel.rootScreenState, viewModel.recentVaultFiles) { rootScreenState, recentVaultFiles ->
+            updateMenu(rootScreenState, recentVaultFiles)
+        }
+
+        // Do not notify-on-register because it's triggered when open/restore vault
+        viewModel.rootScreenState.addLifecycleObserver(this, false) { rootScreenState ->
+            updateRootScreen(rootScreenState)
         }
 
         launch {
@@ -126,27 +131,59 @@ class RootScreen : BaseView(), RequestSending {
         return snackbarBannerView(this)
     }
 
-    private fun updateMenu() {
+    private fun updateMenu(rootScreenState: RootViewModel.RootScreenState?, recentVaultFiles: List<File>) {
         menuView?.apply {
             items.clear()
 
-            item(messages["menu_create_vault"]).action {
-                createVaultClicked()
-            }
+            setupNewVaultItem()
+            setupOpenVaultItem()
+            setupRecentVaultsItem(recentVaultFiles)
+            setupCloseVaultItem(rootScreenState)
+            setupCloseApplicationItem()
+        }
+    }
 
-            item(messages["menu_open_vault"]).action {
-                openVaultClicked()
-            }
+    private fun Menu.setupNewVaultItem() {
+        item(messages["menu_create_vault"], "CTRL+N").action {
+            createVaultClicked()
+        }
+    }
 
-            if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn) {
-                item(messages["menu_close_vault"]).action {
-                    closeVaultClicked()
+    private fun Menu.setupOpenVaultItem() {
+        item(messages["menu_open_vault"], "CTRL+O").action {
+            openVaultChooserClicked()
+        }
+    }
+
+    private fun Menu.setupRecentVaultsItem(recentVaultFiles: List<File>) {
+        if (recentVaultFiles.isNotEmpty()) {
+            menu(messages["menu_recent_vaults"]) {
+                recentVaultFiles.forEach {
+                    item(it.absolutePath).action {
+                        openVaultClicked(it)
+                    }
+                }
+
+                separator()
+
+                item(messages["menu_recent_vaults_clear"]).action {
+                    resetRecentVaultFilesClicked()
                 }
             }
+        }
+    }
 
-            item(messages["menu_close_application"]).action {
-                closeApplicationClicked()
+    private fun Menu.setupCloseVaultItem(rootScreenState: RootViewModel.RootScreenState?) {
+        if (rootScreenState is RootViewModel.RootScreenState.LoggedIn) {
+            item(messages["menu_close_vault"], "CTRL+W").action {
+                closeVaultClicked()
             }
+        }
+    }
+
+    private fun Menu.setupCloseApplicationItem() {
+        item(messages["menu_close_application"], "CTRL+Q").action {
+            closeApplicationClicked()
         }
     }
 
@@ -167,13 +204,23 @@ class RootScreen : BaseView(), RequestSending {
         }
     }
 
-    private fun openVaultClicked() {
+    private fun openVaultChooserClicked() {
         showOpenVaultFileChooser(messages["menu_open_vault"]) { chosenFile ->
-            launchRequestSending(
-                handleFailure = { showError(messages["general_open_vault_failed_title"]) }
-            ) {
-                viewModel.openVault(chosenFile)
-            }
+            openVaultClicked(chosenFile)
+        }
+    }
+
+    private fun openVaultClicked(vaultFile: File) {
+        launchRequestSending(
+            handleFailure = { showError(messages["general_open_vault_failed_title"]) }
+        ) {
+            viewModel.openVault(vaultFile)
+        }
+    }
+
+    private fun resetRecentVaultFilesClicked() {
+        launch {
+            viewModel.resetRecentVaultFiles()
         }
     }
 
@@ -189,8 +236,7 @@ class RootScreen : BaseView(), RequestSending {
         Platform.exit()
     }
 
-    private fun updateRootScreen() {
-        val rootScreenState = viewModel.rootScreenState.value
+    private fun updateRootScreen(rootScreenState: RootViewModel.RootScreenState?) {
         Logger.debug("Show screen state '$rootScreenState'")
 
         when (rootScreenState) {
