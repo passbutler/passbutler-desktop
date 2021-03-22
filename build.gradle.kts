@@ -25,7 +25,7 @@ val mainClassPath = "de.passbutler.desktop.PassButlerApplicationKt"
 val javaVersion = JavaVersion.VERSION_14
 val javaFxVersion = "14.0.2.1"
 
-val kotlinVersion = "1.4.30"
+val kotlinVersion = "1.4.31"
 val kotlinJvmTargetVersion = "14"
 
 repositories {
@@ -40,7 +40,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     // Kotlin Coroutines for JavaFX
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.4.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.4.3")
 
     // TinyLog logger
     val tinylogVersion = "2.2.1"
@@ -68,10 +68,10 @@ dependencies {
     implementation("com.jfoenix:jfoenix:9.0.10")
 
     // JSON Web Token library
-    implementation("com.auth0:java-jwt:3.13.0")
+    implementation("com.auth0:java-jwt:3.14.0")
 
     // CSV library
-    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.0")
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.1")
 
     // JUnit 5
     val junitVersion = "5.7.1"
@@ -80,7 +80,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
     // Mockk.io
-    testImplementation("io.mockk:mockk:1.10.6")
+    testImplementation("io.mockk:mockk:1.11.0")
 }
 
 java {
