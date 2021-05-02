@@ -29,6 +29,7 @@ import de.passbutler.desktop.ui.textLabelHeadline1
 import javafx.application.Platform
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
+import javafx.collections.ListChangeListener
 import javafx.collections.transformation.FilteredList
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -269,6 +270,15 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                     createItemEntryView(this@cellFormat)
                 }
             }
+
+            items.addListener(ListChangeListener {
+                val shownItemSize = it.list.size
+
+                // Automatically focus first element if the filter is active
+                if (itemEntries.predicate != null && shownItemSize == 1) {
+                    selectionModel?.selectFirst()
+                }
+            })
 
             setOnKeyReleased { keyEvent: KeyEvent ->
                 if (keyEvent.code == KeyCode.ENTER) {
