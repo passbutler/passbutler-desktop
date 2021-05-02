@@ -26,6 +26,7 @@ import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
+import javafx.application.Platform
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.transformation.FilteredList
@@ -406,6 +407,10 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                 updateToolbarSubtitle()
                 delay(10_000)
             }
+        }
+
+        Platform.runLater {
+            filterTextField?.requestFocus()
         }
     }
 
