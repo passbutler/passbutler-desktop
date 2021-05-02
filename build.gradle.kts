@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.4.30"
+    val kotlinVersion = "1.4.32"
     id("org.jetbrains.kotlin.jvm") version kotlinVersion
 
     id("org.gradle.application")
@@ -25,7 +25,7 @@ val mainClassPath = "de.passbutler.desktop.PassButlerApplicationKt"
 val javaVersion = JavaVersion.VERSION_14
 val javaFxVersion = "14.0.2.1"
 
-val kotlinVersion = "1.4.31"
+val kotlinVersion = "1.4.32"
 val kotlinJvmTargetVersion = "14"
 
 repositories {
@@ -43,15 +43,15 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.4.3")
 
     // TinyLog logger
-    val tinylogVersion = "2.2.1"
+    val tinylogVersion = "2.3.1"
     implementation("org.tinylog:tinylog-api-kotlin:$tinylogVersion")
     implementation("org.tinylog:tinylog-impl:$tinylogVersion")
 
     // JSON library
-    implementation("org.json:json:20201115")
+    implementation("org.json:json:20210307")
 
     // SQLDelight
-    implementation("com.squareup.sqldelight:sqlite-driver:1.4.4")
+    implementation("com.squareup.sqldelight:sqlite-driver:1.5.0")
 
     // TornadoFX
     implementation(files("lib/tornadofx-2.0.0-SNAPSHOT.jar"))
@@ -68,10 +68,10 @@ dependencies {
     implementation("com.jfoenix:jfoenix:9.0.10")
 
     // JSON Web Token library
-    implementation("com.auth0:java-jwt:3.14.0")
+    implementation("com.auth0:java-jwt:3.15.0")
 
     // CSV library
-    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.1")
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.2")
 
     // JUnit 5
     val junitVersion = "5.7.1"
