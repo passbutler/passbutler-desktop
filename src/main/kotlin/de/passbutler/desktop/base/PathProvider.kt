@@ -3,8 +3,10 @@ package de.passbutler.desktop.base
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.tinylog.kotlin.Logger
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 interface DirectoryPathProviding {
     val homeDirectory: String
@@ -18,10 +20,14 @@ interface FilePathProviding {
 object PathProvider : DirectoryPathProviding, FilePathProviding {
 
     override val homeDirectory: String
-        get() = System.getProperty("user.home")
+        get() = getPropertyOrNull("user.home") ?: throw IllegalStateException("The home directory path could not be determined!")
 
     override val configurationDirectory: String
-        get() = "$homeDirectory/.config/PassButler"
+        get() = when (obtainOperatingSystem()) {
+            is OperatingSystem.Linux -> "$homeDirectory/.config/PassButler"
+            is OperatingSystem.MacOS -> "$homeDirectory/Library/Application Support/PassButler"
+            is OperatingSystem.Windows -> getEnvOrNull("APPDATA") ?: throw IllegalStateException("The configuration directory path could not be determined!")
+        }
 
     override val logFile: String
         get() = "$configurationDirectory/debug.log"
@@ -71,5 +77,43 @@ object PathProvider : DirectoryPathProviding, FilePathProviding {
         return runBlocking {
             obtainFile(filePathProviding)
         }
+    }
+
+    @Throws(IllegalStateException::class)
+    fun obtainOperatingSystem(): OperatingSystem {
+        return getPropertyOrNull("os.name", "unknown")?.let { operatingSystemName ->
+            val lowercasedOperatingSystemName = operatingSystemName.toLowerCase(Locale.ENGLISH)
+
+            when {
+                lowercasedOperatingSystemName.startsWith("linux") -> OperatingSystem.Linux(operatingSystemName)
+                lowercasedOperatingSystemName.startsWith("windows") -> OperatingSystem.Windows(operatingSystemName)
+                lowercasedOperatingSystemName.startsWith("mac os") -> OperatingSystem.MacOS(operatingSystemName)
+                else -> null
+            }
+        } ?: throw IllegalStateException("The operating system type could not be determined!")
+    }
+
+    private fun getPropertyOrNull(key: String, fallback: String? = null): String? {
+        return try {
+            System.getProperty(key, fallback)
+        } catch (exception: SecurityException) {
+            Logger.warn("The property '$key' could not be retrieved!")
+            null
+        }
+    }
+
+    private fun getEnvOrNull(name: String): String? {
+        return try {
+            System.getenv(name)
+        } catch (exception: SecurityException) {
+            Logger.warn("The environment variable '$name' could not be retrieved!")
+            null
+        }
+    }
+
+    sealed class OperatingSystem(val internalString: String) {
+        class Linux(internalString: String) : OperatingSystem(internalString)
+        class Windows(internalString: String) : OperatingSystem(internalString)
+        class MacOS(internalString: String) : OperatingSystem(internalString)
     }
 }

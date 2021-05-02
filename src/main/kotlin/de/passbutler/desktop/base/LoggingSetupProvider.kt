@@ -49,8 +49,9 @@ class DebugLoggingSetupProvider : LoggingSetupProviding {
 
         return buildString {
             appendLine("--------------------------------------------------------------------------------")
-            appendLine("App:         ${BuildConfig.APPLICATION_ID} $versionName-$versionCode (build on $formattedBuildTime from $gitShortHash)")
-            appendLine("Locale:      ${Locale.getDefault()}")
+            appendLine("App:              ${BuildConfig.APPLICATION_ID} $versionName-$versionCode (build on $formattedBuildTime from $gitShortHash)")
+            appendLine("Operating system: ${PathProvider.obtainOperatingSystem().internalString}")
+            appendLine("Locale:           ${Locale.getDefault()}")
             appendLine("--------------------------------------------------------------------------------")
         }
     }
