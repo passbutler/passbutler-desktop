@@ -73,7 +73,6 @@ import tornadofx.style
 import tornadofx.textfield
 import tornadofx.top
 import tornadofx.vbox
-import java.util.*
 
 class OverviewScreen : NavigationMenuView(messages["overview_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 
@@ -182,10 +181,11 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                 promptText = messages["general_search"]
 
                 textProperty().addListener { _, _, newValue ->
-                    val newPredicate: ((ItemEntry) -> Boolean)? = if (newValue.isNullOrEmpty()) {
-                        null
-                    } else {
+                    val filterTermAvailable = newValue.isNotEmpty()
+                    val newPredicate: ((ItemEntry) -> Boolean)? = if (filterTermAvailable) {
                         { it.itemViewModel.title?.contains(newValue, ignoreCase = true) ?: false }
+                    } else {
+                        null
                     }
 
                     itemEntries.setPredicate(newPredicate)
@@ -454,10 +454,10 @@ class ItemEntry(val itemViewModel: ItemViewModel) : ListItemIdentifiable, Compar
         get() = itemViewModel.id
 
     val titleProperty = SimpleStringProperty(itemViewModel.title)
-    val subtitleProperty = SimpleStringProperty(itemViewModel.itemData?.username?.takeIf { it.isNotEmpty() } ?: FX.messages["overview_item_subtitle_username_missing"])
+    val subtitleProperty = SimpleStringProperty(itemViewModel.itemData?.username?.takeIf { it.isNotEmpty() } ?: messages["overview_item_subtitle_username_missing"])
 
     override fun compareTo(other: ItemEntry): Int {
-        return compareValuesBy(this, other, { it.itemViewModel.title?.toLowerCase(FX.locale) })
+        return compareValuesBy(this, other) { it.itemViewModel.title?.toLowerCase(FX.locale) }
     }
 }
 
