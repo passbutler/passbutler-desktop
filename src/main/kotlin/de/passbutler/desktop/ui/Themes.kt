@@ -451,24 +451,24 @@ class LightTheme : Theme(), ThemeColors by Companion {
     }
 
     companion object : ThemeColors {
-        override val colorBackground = grey00
-        override val colorBackgroundEmphasized = grey04
-        override val colorSurface = grey00
-        override val colorPrimary = wineRed
-        override val colorPrimaryDark = wineRedDark
-        override val colorSecondary = pointRed
-        override val colorAccent = pointRed
-        override val colorOnPrimary = white
-        override val colorOnSecondary = white
-        override val colorOnSurface = grey80
-        override val scrimBackground = grey00Transparent
-        override val colorBackgroundImageTint = Color.web(black.css, 0.0)
-        override val listItemBackgroundEven = grey00
-        override val listItemBackgroundOdd = grey04
-        override val listItemBackgroundSelected = wineRedLight
-        override val colorDivider = grey10
-        override val textColorPrimary = black
-        override val textColorSecondary = blackTransparent
+        override val colorBackground: Color = grey00
+        override val colorBackgroundEmphasized: Color = grey04
+        override val colorSurface: Color = grey00
+        override val colorPrimary: Color = wineRed
+        override val colorPrimaryDark: Color = wineRedDark
+        override val colorSecondary: Color = pointRed
+        override val colorAccent: Color = pointRed
+        override val colorOnPrimary: Color = white
+        override val colorOnSecondary: Color = white
+        override val colorOnSurface: Color = grey80
+        override val scrimBackground: Color = grey00Transparent
+        override val colorBackgroundImageTint: Color = Color.web(black.css, 0.0)
+        override val listItemBackgroundEven: Color = grey00
+        override val listItemBackgroundOdd: Color = grey04
+        override val listItemBackgroundSelected: Color = wineRedLight
+        override val colorDivider: Color = grey10
+        override val textColorPrimary: Color = black
+        override val textColorSecondary: Color = blackTransparent
     }
 }
 
@@ -479,24 +479,24 @@ class DarkTheme : Theme(), ThemeColors by Companion {
     }
 
     companion object : ThemeColors {
-        override val colorBackground = grey80
-        override val colorBackgroundEmphasized = grey84
-        override val colorSurface = grey80
-        override val colorPrimary = wineRedLight
-        override val colorPrimaryDark = wineRed
-        override val colorSecondary = pointRed
-        override val colorAccent = pointRed
-        override val colorOnPrimary = white
-        override val colorOnSecondary = white
-        override val colorOnSurface = grey00
-        override val scrimBackground = grey80Transparent
-        override val colorBackgroundImageTint = Color.web(black.css, 0.3)
-        override val listItemBackgroundEven = grey80
-        override val listItemBackgroundOdd = grey84
-        override val listItemBackgroundSelected = wineRedLight
-        override val colorDivider = grey70
-        override val textColorPrimary = white
-        override val textColorSecondary = whiteTransparent
+        override val colorBackground: Color = grey80
+        override val colorBackgroundEmphasized: Color = grey84
+        override val colorSurface: Color = grey80
+        override val colorPrimary: Color = wineRedLight
+        override val colorPrimaryDark: Color = wineRed
+        override val colorSecondary: Color = pointRed
+        override val colorAccent: Color = pointRed
+        override val colorOnPrimary: Color = white
+        override val colorOnSecondary: Color = white
+        override val colorOnSurface: Color = grey00
+        override val scrimBackground: Color = grey80Transparent
+        override val colorBackgroundImageTint: Color = Color.web(black.css, 0.3)
+        override val listItemBackgroundEven: Color = grey80
+        override val listItemBackgroundOdd: Color = grey84
+        override val listItemBackgroundSelected: Color = wineRedLight
+        override val colorDivider: Color = grey70
+        override val textColorPrimary: Color = white
+        override val textColorSecondary: Color = whiteTransparent
     }
 }
 
@@ -527,7 +527,7 @@ enum class ThemeType(val kotlinClass: KClass<out Theme>) {
     companion object {
         fun valueOfOrNull(name: String): ThemeType? {
             return try {
-                ThemeType.valueOf(name)
+                valueOf(name)
             } catch (exception: Exception) {
                 null
             }

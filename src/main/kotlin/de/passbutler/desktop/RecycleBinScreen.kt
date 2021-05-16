@@ -33,7 +33,6 @@ import tornadofx.stackpane
 import tornadofx.textfield
 import tornadofx.top
 import tornadofx.vbox
-import java.util.*
 
 class RecycleBinScreen : NavigationMenuFragment(messages["recycle_bin_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
 

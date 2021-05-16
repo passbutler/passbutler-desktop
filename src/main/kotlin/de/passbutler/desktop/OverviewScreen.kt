@@ -472,7 +472,7 @@ class ItemEntry(val itemViewModel: ItemViewModel) : ListItemIdentifiable, Compar
     val subtitleProperty = SimpleStringProperty(itemViewModel.itemData?.username?.takeIf { it.isNotEmpty() } ?: messages["overview_item_subtitle_username_missing"])
 
     override fun compareTo(other: ItemEntry): Int {
-        return compareValuesBy(this, other) { it.itemViewModel.title?.toLowerCase(FX.locale) }
+        return compareValuesBy(this, other) { it.itemViewModel.title?.lowercase(FX.locale) }
     }
 }
 

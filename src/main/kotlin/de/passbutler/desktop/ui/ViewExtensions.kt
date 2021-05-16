@@ -22,6 +22,7 @@ import javafx.scene.layout.StackPane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Circle
 import tornadofx.ChangeListener
+import tornadofx.FX
 import tornadofx.addClass
 import tornadofx.attachTo
 import tornadofx.css
@@ -142,7 +143,7 @@ fun EventTarget.passwordFieldMaskable(initialMaskPassword: Boolean = true, op: P
  * Buttons
  */
 
-fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = JFXButton(text.toUpperCase()).attachTo(this, op) {
+fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = JFXButton(text.uppercase(FX.locale)).attachTo(this, op) {
     if (graphic != null) it.graphic = graphic
 }
 
@@ -229,7 +230,7 @@ fun Node.paneWithDropShadow(dropShadowEffect: Effect, op: Pane.() -> Unit) {
     stackpane {
         pane {
             addClass(Theme.backgroundStyle)
-            effect = bottomDropShadow()
+            effect = dropShadowEffect
         }
 
         op(this)

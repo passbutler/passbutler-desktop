@@ -82,7 +82,7 @@ object PathProvider : DirectoryPathProviding, FilePathProviding {
     @Throws(IllegalStateException::class)
     fun obtainOperatingSystem(): OperatingSystem {
         return getPropertyOrNull("os.name", "unknown")?.let { operatingSystemName ->
-            val lowercasedOperatingSystemName = operatingSystemName.toLowerCase(Locale.ENGLISH)
+            val lowercasedOperatingSystemName = operatingSystemName.lowercase(Locale.ENGLISH)
 
             when {
                 lowercasedOperatingSystemName.startsWith("linux") -> OperatingSystem.Linux(operatingSystemName)
