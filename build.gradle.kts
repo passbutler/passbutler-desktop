@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.4.32"
+    val kotlinVersion = "1.5.0"
     id("org.jetbrains.kotlin.jvm") version kotlinVersion
 
     id("org.gradle.application")
@@ -25,7 +25,7 @@ val mainClassPath = "de.passbutler.desktop.PassButlerApplicationKt"
 val javaVersion = JavaVersion.VERSION_14
 val javaFxVersion = "14.0.2.1"
 
-val kotlinVersion = "1.4.32"
+val kotlinVersion = "1.5.0"
 val kotlinJvmTargetVersion = "14"
 
 repositories {
@@ -40,7 +40,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     // Kotlin Coroutines for JavaFX
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.4.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.5.0")
 
     // TinyLog logger
     val tinylogVersion = "2.3.1"
