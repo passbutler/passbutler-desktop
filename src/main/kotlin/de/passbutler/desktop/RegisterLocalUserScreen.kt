@@ -22,10 +22,10 @@ import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.passwordFieldMaskable
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.unmaskablePasswordField
 import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.scene.Node
@@ -141,7 +141,7 @@ class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_
 
     private fun Fieldset.setupMasterPasswordField() {
         field(messages["register_local_user_master_password_hint"], orientation = Orientation.VERTICAL) {
-            passwordFieldMaskable {
+            unmaskablePasswordField {
                 bindInputOptional(this@RegisterLocalUserScreen, masterPassword)
 
                 validateWithRules(this) {

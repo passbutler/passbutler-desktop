@@ -16,10 +16,10 @@ import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.passwordFieldMaskable
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.unmaskablePasswordField
 import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.scene.Node
@@ -99,7 +99,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
 
     private fun Fieldset.setupOldPasswordField() {
         field(messages["change_master_password_old_master_password_hint"], orientation = Orientation.VERTICAL) {
-            passwordFieldMaskable {
+            unmaskablePasswordField {
                 bindInputOptional(this@ChangeMasterPasswordScreen, oldMasterPassword)
 
                 validateWithRules(this) {
@@ -113,7 +113,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
 
     private fun Fieldset.setupNewPasswordField() {
         field(messages["change_master_password_new_master_password_hint"], orientation = Orientation.VERTICAL) {
-            passwordFieldMaskable {
+            unmaskablePasswordField {
                 bindInputOptional(this@ChangeMasterPasswordScreen, newMasterPassword)
 
                 validateWithRules(this) {
@@ -128,7 +128,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
 
     private fun Fieldset.setupNewPasswordConfirmField() {
         field(messages["change_master_password_new_master_password_confirm_hint"], orientation = Orientation.VERTICAL) {
-            passwordFieldMaskable {
+            unmaskablePasswordField {
                 bindInputOptional(this@ChangeMasterPasswordScreen, newMasterPasswordConfirm)
 
                 validateWithRules(this) {

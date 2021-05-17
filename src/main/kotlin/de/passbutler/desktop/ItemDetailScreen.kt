@@ -25,13 +25,13 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.passwordFieldMaskable
 import de.passbutler.desktop.ui.setScrollSpeed
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBody1
 import de.passbutler.desktop.ui.textLabelBody2
 import de.passbutler.desktop.ui.textLabelHeadline1
 import de.passbutler.desktop.ui.textSizeLarge
+import de.passbutler.desktop.ui.unmaskablePasswordField
 import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
@@ -198,7 +198,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Fieldset.setupPasswordField() {
         field(messages["itemdetail_password_hint"], orientation = Orientation.VERTICAL) {
-            passwordFieldMaskable(viewModel.hidePasswordsEnabled) {
+            unmaskablePasswordField(viewModel.hidePasswordsEnabled) {
                 bindInput(this@ItemDetailScreen, viewModel.password)
             }
         }
