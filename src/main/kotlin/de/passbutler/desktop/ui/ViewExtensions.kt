@@ -91,7 +91,6 @@ fun EventTarget.passwordFieldMaskable(initialMaskPassword: Boolean = true, op: P
     val maskPasswordProperty = SimpleBooleanProperty(initialMaskPassword)
 
     val passwordField = PasswordField().apply {
-
         addClass(Theme.passwordFieldMaskableStyle)
 
         skin = object : TextFieldSkin(this) {
@@ -117,7 +116,7 @@ fun EventTarget.passwordFieldMaskable(initialMaskPassword: Boolean = true, op: P
             alignment = Pos.CENTER_RIGHT
             paddingRight = marginS.value
 
-            // Do not consume clicks of password field
+            // Do not consume clicks meant for the password field
             isPickOnBounds = false
 
             smallSVGIcon(Drawables.ICON_VISIBILITY) {
