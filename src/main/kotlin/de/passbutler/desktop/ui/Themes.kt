@@ -153,7 +153,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
             padding = box(marginS)
         }
 
-        passwordFieldMaskableStyle {
+        unmaskablePasswordFieldStyle {
             padding = box(marginS, marginL, marginS, marginS)
         }
 
@@ -437,7 +437,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         val emphasizedCardStyle by cssclass()
 
-        val passwordFieldMaskableStyle by cssclass()
+        val unmaskablePasswordFieldStyle by cssclass()
     }
 }
 
