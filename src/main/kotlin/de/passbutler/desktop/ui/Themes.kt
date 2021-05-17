@@ -135,11 +135,16 @@ abstract class Theme : Stylesheet(), ThemeColors {
          * Input styles
          */
 
+        val inputDimensionsMixin = mixin {
+            minHeight = 36.px
+            minWidth = 156.px
+        }
+
         val inputDefaultsMixin = mixin {
+            +inputDimensionsMixin
+
             textFill = textColorPrimary
             fontSize = textSizeMedium
-
-            minHeight = 36.px
         }
 
         textField {
@@ -311,14 +316,11 @@ abstract class Theme : Stylesheet(), ThemeColors {
          */
 
         button {
+            +inputDimensionsMixin
+
             backgroundColor = multi(colorPrimary)
             fontFamily = fontMedium
             fontSize = textSizeMedium
-
-            // Same minimum dimensions as input fields
-            minHeight = 36.px
-            minWidth = 156.px
-
             padding = box(marginS, marginM)
             textFill = colorOnPrimary
         }
