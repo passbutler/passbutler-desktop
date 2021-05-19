@@ -140,11 +140,14 @@ abstract class Theme : Stylesheet(), ThemeColors {
             minWidth = 156.px
         }
 
-        val inputDefaultsMixin = mixin {
-            +inputDimensionsMixin
-
+        val inputColorsMixin = mixin {
             textFill = textColorPrimary
             fontSize = textSizeMedium
+        }
+
+        val inputDefaultsMixin = mixin {
+            +inputDimensionsMixin
+            +inputColorsMixin
         }
 
         textField {
@@ -158,8 +161,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         checkBox {
-            textFill = textColorPrimary
-            fontSize = textSizeMedium
+            +inputColorsMixin
         }
 
         textArea {
