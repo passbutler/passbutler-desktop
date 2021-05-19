@@ -78,7 +78,7 @@ interface NavigationMenuComponent : BaseUIComponent, NavigationMenuUsing {
     }
 
     private fun Node.setupNavigationItem(title: String, icon: Drawable, clickedAction: () -> Unit) {
-        textLabelWrapped(title) {
+        textLabelBody1(title) {
             addClass(Theme.navigationViewItemStyle)
 
             graphic = smallSVGIcon(icon)

@@ -112,15 +112,15 @@ fun ToggleButton.toggle() {
 }
 
 /**
- * Labels
+ * Text labels
  */
 
-fun EventTarget.textLabelWrapped(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = label(text, graphic) {
+fun EventTarget.textLabelBase(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = label(text, graphic) {
     isWrapText = true
     op.invoke(this)
 }
 
-fun EventTarget.textLabelWrapped(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = label(observable) {
+fun EventTarget.textLabelBase(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = label(observable) {
     isWrapText = true
     op.invoke(this)
 }
@@ -129,17 +129,17 @@ fun EventTarget.textLabelWrapped(observable: ObservableValue<String>, op: Label.
  * Labels (headlines)
  */
 
-fun EventTarget.textLabelHeadline1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
+fun EventTarget.textLabelHeadline1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
     addClass(Theme.textHeadline1Style)
     op.invoke(this)
 }
 
-fun EventTarget.textLabelHeadline1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelWrapped(observable) {
+fun EventTarget.textLabelHeadline1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
     addClass(Theme.textHeadline1Style)
     op.invoke(this)
 }
 
-fun EventTarget.textLabelHeadline2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
+fun EventTarget.textLabelHeadline2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
     addClass(Theme.textHeadline2Style)
     op.invoke(this)
 }
@@ -148,17 +148,17 @@ fun EventTarget.textLabelHeadline2(text: String = "", graphic: Node? = null, op:
  * Labels (body texts)
  */
 
-fun EventTarget.textLabelBody1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
+fun EventTarget.textLabelBody1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
     addClass(Theme.textBody1Style)
     op.invoke(this)
 }
 
-fun EventTarget.textLabelBody1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelWrapped(observable) {
+fun EventTarget.textLabelBody1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
     addClass(Theme.textBody1Style)
     op.invoke(this)
 }
 
-fun EventTarget.textLabelBody2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelWrapped(text, graphic) {
+fun EventTarget.textLabelBody2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
     addClass(Theme.textBody2Style)
     op.invoke(this)
 }
