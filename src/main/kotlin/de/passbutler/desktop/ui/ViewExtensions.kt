@@ -77,8 +77,15 @@ fun Node.onLeftClickIgnoringCount(action: () -> Unit) {
  * Buttons
  */
 
-fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = JFXButton(text.uppercase(FX.locale)).attachTo(this, op) {
+fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = JFXButton().attachTo(this, op) {
     if (graphic != null) it.graphic = graphic
+
+    it.textProperty().addListener { _, _, newValue ->
+        it.text = newValue.uppercase(FX.locale)
+    }
+
+    // Initially trigger text listener above
+    it.text = text
 }
 
 fun EventTarget.jfxButtonRaised(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = jfxButtonBase(text, graphic) {
