@@ -65,14 +65,6 @@ fun JavaTimeDuration.toJavaFxDuration(): JavaFxDuration {
     return JavaFxDuration(toMillis().toDouble())
 }
 
-fun Node.onLeftClickIgnoringCount(action: () -> Unit) {
-    setOnMouseClicked {
-        if (it.button === MouseButton.PRIMARY) {
-            action()
-        }
-    }
-}
-
 /**
  * Buttons
  */
@@ -203,6 +195,14 @@ private fun dropShadow(): DropShadow {
 /**
  * Input events
  */
+
+fun Node.onLeftClickIgnoringCount(action: () -> Unit) {
+    setOnMouseClicked {
+        if (it.button === MouseButton.PRIMARY) {
+            action()
+        }
+    }
+}
 
 fun Node.onMouseBackClick(clickCount: Int = 1, action: () -> Unit) {
     setOnMouseClicked {
