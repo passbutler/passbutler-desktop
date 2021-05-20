@@ -11,8 +11,8 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import javafx.scene.Node
 import javafx.stage.FileChooser
 import tornadofx.FX.Companion.messages
@@ -48,8 +48,8 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
         vbox {
             spacing = marginS.value
 
-            textLabelHeadline1(messages["import_header"])
-            textLabelBody1(messages["import_description"])
+            textLabelHeadlineOrder1(messages["import_header"])
+            textLabelBodyOrder1(messages["import_description"])
         }
     }
 
@@ -86,15 +86,15 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
         importBlock: suspend (File) -> Result<Int>
     ) {
         vbox {
-            textLabelHeadline1(header)
+            textLabelHeadlineOrder1(header)
 
-            textLabelBody1 {
+            textLabelBodyOrder1 {
                 paddingTop = marginS.value
                 text = description1
             }
 
             if (description2 != null) {
-                textLabelBody1 {
+                textLabelBodyOrder1 {
                     paddingTop = marginS.value
                     text = description2
                 }

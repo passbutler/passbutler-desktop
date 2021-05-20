@@ -22,8 +22,8 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showFadeInOutAnimation
-import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
 import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
@@ -108,12 +108,12 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
                 setupDebugPresetsButton()
             }
 
-            textLabelHeadline1(messages["login_headline"]) {
+            textLabelHeadlineOrder1(messages["login_headline"]) {
                 paddingTop = marginM.value
                 textAlignment = TextAlignment.CENTER
             }
 
-            textLabelBody1(messages["login_description"]) {
+            textLabelBodyOrder1(messages["login_description"]) {
                 paddingTop = marginS.value
                 textAlignment = TextAlignment.CENTER
             }

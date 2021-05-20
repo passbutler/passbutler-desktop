@@ -1,5 +1,8 @@
 package de.passbutler.desktop.ui
 
+import de.passbutler.desktop.ui.ThemeConstants.OPACITY_DISABLED
+import de.passbutler.desktop.ui.ThemeConstants.OPACITY_PRESSED
+import de.passbutler.desktop.ui.ThemeConstants.TEXT_SIZE_MEDIUM
 import javafx.geometry.Pos
 import javafx.scene.layout.BackgroundRepeat
 import javafx.scene.layout.BackgroundSize
@@ -62,10 +65,10 @@ abstract class Theme : Stylesheet(), ThemeColors {
             focusColor = colorAccent
             faintFocusColor = transparent
 
-            fontFamily = fontRegular
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
             fontWeight = FontWeight.NORMAL
 
-            fontSize = BASE_FONT_SIZE.px
+            fontSize = FONT_SIZE_BASE.px
         }
 
         /**
@@ -100,29 +103,73 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         label {
             textFill = textColorPrimary
-            fontSize = textSizeMedium
+            fontSize = TEXT_SIZE_MEDIUM
         }
 
         textHeadline1Style {
-            fontFamily = fontLight
+            fontFamily = ThemeFonts.ROBOTO_LIGHT
             textFill = textColorSecondary
-            fontWeight = FontWeight.LIGHT
-            fontSize = textSizeLarge
+            fontSize = 96.sp
         }
 
         textHeadline2Style {
-            fontFamily = fontLight
+            fontFamily = ThemeFonts.ROBOTO_LIGHT
             textFill = textColorSecondary
-            fontWeight = FontWeight.LIGHT
-            fontSize = textSizeMedium
+            fontSize = 60.sp
+        }
+
+        textHeadline3Style {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            textFill = textColorSecondary
+            fontSize = 48.sp
+        }
+
+        textHeadline4Style {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            textFill = textColorSecondary
+            fontSize = 34.sp
+        }
+
+        textHeadline5Style {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            textFill = textColorPrimary
+            fontSize = 24.sp
+        }
+
+        textHeadline6Style {
+            fontFamily = ThemeFonts.ROBOTO_MEDIUM
+            textFill = textColorPrimary
+            fontSize = 20.sp
+        }
+
+        textSubtitle1Style {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            textFill = textColorPrimary
+            fontSize = TEXT_SIZE_MEDIUM
+        }
+
+        textSubtitle2Style {
+            fontFamily = ThemeFonts.ROBOTO_MEDIUM
+            textFill = textColorPrimary
+            fontSize = 14.sp
         }
 
         textBody1Style {
-            fontSize = textSizeMedium
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            textFill = textColorPrimary
+            fontSize = TEXT_SIZE_MEDIUM
         }
 
         textBody2Style {
-            fontSize = textSizeSmall
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            textFill = textColorPrimary
+            fontSize = 14.sp
+        }
+
+        textCaptionStyle {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            textFill = textColorSecondary
+            fontSize = 12.sp
         }
 
         hyperlink {
@@ -142,7 +189,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         val inputColorsMixin = mixin {
             textFill = textColorPrimary
-            fontSize = textSizeMedium
+            fontSize = TEXT_SIZE_MEDIUM
         }
 
         val inputDefaultsMixin = mixin {
@@ -321,8 +368,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
             +inputDimensionsMixin
 
             backgroundColor = multi(colorPrimary)
-            fontFamily = fontMedium
-            fontSize = textSizeMedium
+            fontFamily = ThemeFonts.ROBOTO_MEDIUM
+            fontSize = TEXT_SIZE_MEDIUM
             padding = box(marginS, marginM)
             textFill = colorOnPrimary
         }
@@ -398,16 +445,6 @@ abstract class Theme : Stylesheet(), ThemeColors {
     }
 
     companion object {
-        val fontMedium = loadFontFamily("/fonts/roboto/Roboto-Medium.ttf")
-        val fontRegular = loadFontFamily("/fonts/roboto/Roboto-Regular.ttf")
-        val fontLight = loadFontFamily("/fonts/roboto/Roboto-Light.ttf")
-        val fontBold = loadFontFamily("/fonts/roboto/Roboto-Bold.ttf")
-
-        // Value took from "modena.css"
-        const val OPACITY_DISABLED = 0.4
-
-        const val OPACITY_PRESSED = 0.8
-
         val backgroundStyle by cssclass()
         val abstractBackgroundStyle by cssclass()
         val abstractBackgroundOverlayStyle by cssclass()
@@ -417,8 +454,18 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         val textHeadline1Style by cssclass()
         val textHeadline2Style by cssclass()
+        val textHeadline3Style by cssclass()
+        val textHeadline4Style by cssclass()
+        val textHeadline5Style by cssclass()
+        val textHeadline6Style by cssclass()
+
+        val textSubtitle1Style by cssclass()
+        val textSubtitle2Style by cssclass()
+
         val textBody1Style by cssclass()
         val textBody2Style by cssclass()
+
+        val textCaptionStyle by cssclass()
 
         val iconStyle by cssclass()
         val navigationViewStyle by cssclass()
@@ -443,9 +490,25 @@ abstract class Theme : Stylesheet(), ThemeColors {
     }
 }
 
-private fun loadFontFamily(fontPath: String): String {
-    // Do not set proper font size because we only care about the family name
-    return loadFont(fontPath, 0)!!.family
+object ThemeFonts {
+    val ROBOTO_MEDIUM = loadFontFamily("/fonts/roboto/Roboto-Medium.ttf")
+    val ROBOTO_REGULAR = loadFontFamily("/fonts/roboto/Roboto-Regular.ttf")
+    val ROBOTO_LIGHT = loadFontFamily("/fonts/roboto/Roboto-Light.ttf")
+    val ROBOTO_BOLD = loadFontFamily("/fonts/roboto/Roboto-Bold.ttf")
+
+    private fun loadFontFamily(fontPath: String): String {
+        // Do not set proper font size because we only care about the family name
+        return loadFont(fontPath, 0)!!.family
+    }
+}
+
+object ThemeConstants {
+    val TEXT_SIZE_MEDIUM = 16.sp
+
+    // Value took from "modena.css"
+    const val OPACITY_DISABLED = 0.4
+
+    const val OPACITY_PRESSED = 0.8
 }
 
 class LightTheme : Theme(), ThemeColors by Companion {

@@ -24,8 +24,9 @@ import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.paneWithDropShadow
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.smallSVGIcon
-import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder2
+import de.passbutler.desktop.ui.textLabelSubtitleOrder1
 import javafx.application.Platform
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
@@ -207,7 +208,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             // Hidden by default
             isVisible = false
 
-            textLabelBody1(messages["drawer_header_usertype_local"]) {
+            textLabelBodyOrder1(messages["drawer_header_usertype_local"]) {
                 addClass(Theme.pressableBackgroundStyle)
 
                 style {
@@ -237,7 +238,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             // Hidden by default
             isVisible = false
 
-            toolbarSynchronizationButton = textLabelBody1(messages["overview_sync_button_title"]) {
+            toolbarSynchronizationButton = textLabelBodyOrder1(messages["overview_sync_button_title"]) {
                 addClass(Theme.pressableBackgroundStyle)
 
                 style {
@@ -250,7 +251,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                 onLeftClick(action = synchronizeDataAction)
             }
 
-            toolbarSynchronizationSubtitle = textLabelBody1 {
+            toolbarSynchronizationSubtitle = textLabelBodyOrder1 {
                 paddingTop = marginS.value
             }
 
@@ -486,8 +487,8 @@ fun Node.createGenericItemEntryView(listCell: ListCell<ItemEntry>, op: Node.() -
         vbox {
             paddingLeft = marginM.value
 
-            textLabelHeadline1(listCell.itemProperty().select { it.titleProperty })
-            textLabelBody1(listCell.itemProperty().select { it.subtitleProperty }) {
+            textLabelHeadlineOrder2(listCell.itemProperty().select { it.titleProperty })
+            textLabelSubtitleOrder1(listCell.itemProperty().select { it.subtitleProperty }) {
                 paddingTop = marginS.value
             }
         }

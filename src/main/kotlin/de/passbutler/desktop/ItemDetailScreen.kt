@@ -10,7 +10,7 @@ import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.ScrollSpeed
 import de.passbutler.desktop.ui.Theme
-import de.passbutler.desktop.ui.Theme.Companion.fontLight
+import de.passbutler.desktop.ui.ThemeFonts
 import de.passbutler.desktop.ui.bind
 import de.passbutler.desktop.ui.bindEnabled
 import de.passbutler.desktop.ui.bindInput
@@ -27,10 +27,11 @@ import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.setScrollSpeed
 import de.passbutler.desktop.ui.showScreenUnanimated
-import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelBody2
-import de.passbutler.desktop.ui.textLabelHeadline1
-import de.passbutler.desktop.ui.textSizeLarge
+import de.passbutler.desktop.ui.sp
+import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelBodyOrder2
+import de.passbutler.desktop.ui.textLabelCaption
+import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
 import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
@@ -133,14 +134,14 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Form.setupDetailsSection() {
         vbox {
-            textLabelHeadline1(titleProperty)
+            textLabelHeadlineOrder1(titleProperty)
 
             fieldset(labelPosition = Orientation.VERTICAL) {
                 paddingTop = marginM.value
                 setupTitleField()
             }
 
-            textLabelHeadline1(messages["itemdetail_details_header"]) {
+            textLabelHeadlineOrder1(messages["itemdetail_details_header"]) {
                 paddingTop = marginL.value
             }
 
@@ -170,9 +171,10 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     private fun Fieldset.setupTitleField() {
         field(orientation = Orientation.VERTICAL) {
             textfield {
+                // Same style as `Theme.textHeadline6Style`
                 style {
-                    fontSize = textSizeLarge
-                    fontFamily = fontLight
+                    fontSize = 20.sp
+                    fontFamily = ThemeFonts.ROBOTO_MEDIUM
                 }
 
                 promptText = messages["itemdetail_title_hint"]
@@ -233,7 +235,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                 }
             }
 
-            textLabelBody2 {
+            textLabelBodyOrder2 {
                 bindTextAndVisibility(this@ItemDetailScreen, viewModel.notes) { notesValue ->
                     val notesLength = notesValue.length.coerceIn(0, NOTES_MAXIMUM_CHARACTERS)
                     "$notesLength/$NOTES_MAXIMUM_CHARACTERS"
@@ -267,9 +269,9 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Node.setupItemAuthorizationsSection() {
         vbox {
-            textLabelHeadline1(messages["itemdetail_authorizations_header"])
+            textLabelHeadlineOrder1(messages["itemdetail_authorizations_header"])
 
-            textLabelBody1 {
+            textLabelBodyOrder1 {
                 paddingTop = marginS.value
 
                 bindTextAndVisibility(this@ItemDetailScreen, itemAuthorizationDescription)
@@ -290,7 +292,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                 bindVisibility(this@ItemDetailScreen, viewModel.isItemAuthorizationAllowed)
             }
 
-            textLabelBody2(messages["itemdetail_authorizations_footer_teaser"]) {
+            textLabelCaption(messages["itemdetail_authorizations_footer_teaser"]) {
                 paddingTop = marginS.value
 
                 bindVisibility(this@ItemDetailScreen, viewModel.isItemAuthorizationAllowed) { isItemAuthorizationAllowed ->
@@ -306,7 +308,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Node.setupInformationSection() {
         vbox {
-            textLabelHeadline1(messages["itemdetail_information_header"])
+            textLabelHeadlineOrder1(messages["itemdetail_information_header"])
 
             vbox {
                 paddingTop = marginS.value
@@ -343,7 +345,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
         vbox {
             spacing = marginM.value
 
-            textLabelHeadline1(messages["itemdetail_delete_header"])
+            textLabelHeadlineOrder1(messages["itemdetail_delete_header"])
             setupDeleteButton()
 
             bindVisibility(this@ItemDetailScreen, viewModel.isNewItem, viewModel.isItemModificationAllowed) { isNewItem, isItemModificationAllowed ->

@@ -16,8 +16,9 @@ import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.smallSVGIcon
-import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder2
 import javafx.scene.Node
 import javafx.scene.layout.VBox
 import tornadofx.FX
@@ -56,7 +57,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
 
     private fun Node.setupAboutSection() {
         vbox {
-            textLabelHeadline1(messages["about_header"])
+            textLabelHeadlineOrder1(messages["about_header"])
 
             textflow {
                 paddingTop = marginS.value
@@ -69,7 +70,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
                 val formattedTextBeforeGitHash = formattedText.substringBefore(gitShortHash)
                 val formattedTextAfterGitHash = formattedText.substringAfter(gitShortHash)
 
-                textLabelBody1(formattedTextBeforeGitHash)
+                textLabelBodyOrder1(formattedTextBeforeGitHash)
 
                 hyperlink(gitShortHash) {
                     action {
@@ -77,10 +78,10 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
                     }
                 }
 
-                textLabelBody1(formattedTextAfterGitHash)
+                textLabelBodyOrder1(formattedTextAfterGitHash)
             }
 
-            textLabelBody1(messages["about_passage_1"]) {
+            textLabelBodyOrder1(messages["about_passage_1"]) {
                 paddingTop = marginS.value
             }
         }
@@ -88,7 +89,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
 
     private fun VBox.setupPremiumKeySection() {
         vbox {
-            textLabelHeadline1(messages["premium_header"])
+            textLabelHeadlineOrder1(messages["premium_header"])
 
             vbox {
                 paddingTop = marginS.value
@@ -101,7 +102,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
 
     private fun Node.setupNoPremiumKeyView() {
         vbox {
-            textLabelBody1(messages["premium_description_no_premium_key"])
+            textLabelBodyOrder1(messages["premium_description_no_premium_key"])
 
             vbox {
                 paddingTop = marginM.value
@@ -142,7 +143,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
         vbox {
             spacing = marginM.value
 
-            textLabelBody1(messages["premium_description_available_premium_key"])
+            textLabelBodyOrder1(messages["premium_description_available_premium_key"])
 
             setupPremiumKeyCard()
 
@@ -167,7 +168,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
 
             addClass(Theme.emphasizedCardStyle)
 
-            val cardHeadline = textLabelHeadline1 {
+            val cardHeadline = textLabelHeadlineOrder2 {
                 graphic = smallSVGIcon(Drawables.ICON_VERIFIED)
                 graphicTextGap = marginM.value
 

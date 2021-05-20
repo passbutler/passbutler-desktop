@@ -117,41 +117,73 @@ fun EventTarget.textLabelBase(observable: ObservableValue<String>, op: Label.() 
     op.invoke(this)
 }
 
-/**
- * Labels (headlines)
- */
-
-fun EventTarget.textLabelHeadline1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
-    addClass(Theme.textHeadline1Style)
+fun EventTarget.textLabelHeadlineOrder1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
+    addClass(Theme.textHeadline5Style)
     op.invoke(this)
 }
 
-fun EventTarget.textLabelHeadline1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
-    addClass(Theme.textHeadline1Style)
+fun EventTarget.textLabelHeadlineOrder1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
+    addClass(Theme.textHeadline5Style)
     op.invoke(this)
 }
 
-fun EventTarget.textLabelHeadline2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
-    addClass(Theme.textHeadline2Style)
+fun EventTarget.textLabelHeadlineOrder2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
+    addClass(Theme.textHeadline6Style)
     op.invoke(this)
 }
 
-/**
- * Labels (body texts)
- */
+fun EventTarget.textLabelHeadlineOrder2(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
+    addClass(Theme.textHeadline6Style)
+    op.invoke(this)
+}
 
-fun EventTarget.textLabelBody1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
+fun EventTarget.textLabelSubtitleOrder1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
+    addClass(Theme.textSubtitle1Style)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelSubtitleOrder1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
+    addClass(Theme.textSubtitle1Style)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelSubtitleOrder2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
+    addClass(Theme.textSubtitle2Style)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelSubtitleOrder2(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
+    addClass(Theme.textSubtitle2Style)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelBodyOrder1(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
     addClass(Theme.textBody1Style)
     op.invoke(this)
 }
 
-fun EventTarget.textLabelBody1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
+fun EventTarget.textLabelBodyOrder1(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
     addClass(Theme.textBody1Style)
     op.invoke(this)
 }
 
-fun EventTarget.textLabelBody2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
+fun EventTarget.textLabelBodyOrder2(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
     addClass(Theme.textBody2Style)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelBodyOrder2(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
+    addClass(Theme.textBody2Style)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelCaption(text: String = "", graphic: Node? = null, op: Label.() -> Unit = {}) = textLabelBase(text, graphic) {
+    addClass(Theme.textCaptionStyle)
+    op.invoke(this)
+}
+
+fun EventTarget.textLabelCaption(observable: ObservableValue<String>, op: Label.() -> Unit = {}) = textLabelBase(observable) {
+    addClass(Theme.textCaptionStyle)
     op.invoke(this)
 }
 

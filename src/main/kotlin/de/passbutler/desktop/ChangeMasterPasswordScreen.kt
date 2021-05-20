@@ -17,8 +17,8 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showScreenUnanimated
-import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
 import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
@@ -61,13 +61,13 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
         form {
             paddingAll = marginM.value
 
-            textLabelHeadline1(messages["change_master_password_header"])
+            textLabelHeadlineOrder1(messages["change_master_password_header"])
 
-            textLabelBody1(messages["change_master_password_description"]) {
+            textLabelBodyOrder1(messages["change_master_password_description"]) {
                 paddingTop = marginS.value
             }
 
-            textLabelBody1(messages["change_master_password_disable_biometric_hint"]) {
+            textLabelBodyOrder1(messages["change_master_password_disable_biometric_hint"]) {
                 paddingTop = marginS.value
 
                 viewModel.loggedInUserViewModel?.biometricUnlockEnabled?.let { biometricUnlockEnabledBindable ->

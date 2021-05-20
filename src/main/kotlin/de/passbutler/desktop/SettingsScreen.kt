@@ -14,9 +14,9 @@ import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.onLeftClickIgnoringCount
 import de.passbutler.desktop.ui.showScreenUnanimated
-import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline1
-import de.passbutler.desktop.ui.textLabelHeadline2
+import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder2
 import de.passbutler.desktop.ui.toggle
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -50,7 +50,7 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
         vbox {
             paddingAll = marginM.value
 
-            textLabelHeadline1(messages["settings_title"])
+            textLabelHeadlineOrder1(messages["settings_title"])
 
             vbox {
                 paddingTop = marginM.value
@@ -109,7 +109,7 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
     }
 
     private fun Node.setupCategoryItem(title: String, categoryItemsSetup: Node.() -> Unit) {
-        textLabelHeadline2(title)
+        textLabelHeadlineOrder2(title)
 
         vbox {
             spacing = marginS.value
@@ -127,13 +127,13 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
                 alignment = Pos.CENTER_LEFT
                 padding = insets(0.px.value, marginS.value)
 
-                textLabelBody1(title) {
+                textLabelBodyOrder1(title) {
                     style {
                         fontWeight = FontWeight.BOLD
                     }
                 }
 
-                textLabelBody1(summary) {
+                textLabelBodyOrder1(summary) {
                     paddingTop = marginXS.value
                 }
             }
@@ -165,13 +165,13 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
             alignment = Pos.CENTER_LEFT
             padding = insets(0.px.value, marginS.value)
 
-            textLabelBody1(title) {
+            textLabelBodyOrder1(title) {
                 style {
                     fontWeight = FontWeight.BOLD
                 }
             }
 
-            textLabelBody1(summary) {
+            textLabelBodyOrder1(summary) {
                 paddingTop = marginXS.value
             }
 

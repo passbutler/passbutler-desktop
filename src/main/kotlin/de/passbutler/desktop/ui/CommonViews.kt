@@ -25,12 +25,12 @@ fun Node.createEmptyScreen(title: String, description: String): Node {
 
         smallSVGIcon(Drawables.ICON_LIST)
 
-        textLabelHeadline1(title) {
+        textLabelHeadlineOrder1(title) {
             paddingTop = marginM.value
             textAlignment = TextAlignment.CENTER
         }
 
-        textLabelBody1(description) {
+        textLabelBodyOrder1(description) {
             paddingTop = marginS.value
             textAlignment = TextAlignment.CENTER
         }
@@ -49,13 +49,13 @@ fun Node.createCancelButton(onAction: () -> Unit): Button {
 
 fun Node.createInformationView(title: String, valueSetup: Label.() -> Unit): VBox {
     return vbox {
-        textLabelBody1(title) {
+        textLabelBodyOrder1(title) {
             style {
                 fontWeight = FontWeight.BOLD
             }
         }
 
-        textLabelBody1 {
+        textLabelBodyOrder1 {
             paddingTop = marginXS.value
 
             valueSetup.invoke(this)

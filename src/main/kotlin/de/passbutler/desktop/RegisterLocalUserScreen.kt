@@ -23,8 +23,8 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showScreenUnanimated
-import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
 import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
@@ -69,11 +69,11 @@ class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_
         form {
             paddingAll = marginM.value
 
-            textLabelHeadline1(messages["register_local_user_header"]) {
+            textLabelHeadlineOrder1(messages["register_local_user_header"]) {
                 setupDebugPresetsButton()
             }
 
-            textLabelBody1(messages["register_local_user_description"]) {
+            textLabelBodyOrder1(messages["register_local_user_description"]) {
                 paddingTop = marginS.value
             }
 

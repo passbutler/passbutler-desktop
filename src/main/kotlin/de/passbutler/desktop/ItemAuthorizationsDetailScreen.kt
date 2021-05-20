@@ -20,8 +20,9 @@ import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.smallSVGIcon
-import de.passbutler.desktop.ui.textLabelBody1
-import de.passbutler.desktop.ui.textLabelHeadline1
+import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder2
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
@@ -100,9 +101,9 @@ class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itema
         vbox {
             paddingAll = marginM.value
 
-            textLabelHeadline1(messages["itemauthorizations_header"])
+            textLabelHeadlineOrder1(messages["itemauthorizations_header"])
 
-            textLabelBody1(messages["itemauthorizations_description"]) {
+            textLabelBodyOrder1(messages["itemauthorizations_description"]) {
                 paddingTop = marginS.value
             }
         }
@@ -130,7 +131,7 @@ class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itema
             // No bottom padding because the toggle buttons itself have a lot of padding
             padding = insets(marginS.value, marginM.value, 0, marginM.value)
 
-            val headlineView = textLabelHeadline1(listCell.itemProperty().select { it.titleProperty }) {
+            val headlineView = textLabelHeadlineOrder2(listCell.itemProperty().select { it.titleProperty }) {
                 graphic = smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE)
                 graphicTextGap = marginM.value
             }
