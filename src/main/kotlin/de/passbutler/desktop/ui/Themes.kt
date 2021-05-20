@@ -2,6 +2,8 @@ package de.passbutler.desktop.ui
 
 import de.passbutler.desktop.ui.ThemeConstants.OPACITY_DISABLED
 import de.passbutler.desktop.ui.ThemeConstants.OPACITY_PRESSED
+import de.passbutler.desktop.ui.ThemeConstants.RADIUS_MEDIUM
+import de.passbutler.desktop.ui.ThemeConstants.RADIUS_SMALL
 import de.passbutler.desktop.ui.ThemeConstants.TEXT_SIZE_MEDIUM
 import javafx.geometry.Pos
 import javafx.scene.layout.BackgroundRepeat
@@ -53,123 +55,68 @@ interface ThemeColors {
 
 abstract class Theme : Stylesheet(), ThemeColors {
 
-    private lateinit var colorSurfaceTransparent: Color
+    private val colorSurfaceTransparent by lazy {
+        Color.web(colorSurface.css, 0.65)
+    }
+
+    private val contextMenuMixin = mixin {
+        backgroundColor = multi(colorBackground)
+
+        label {
+            textFill = textColorPrimary
+        }
+
+        focused {
+            label {
+                textFill = colorOnPrimary
+            }
+        }
+    }
+
+    private val inputColorsMixin = mixin {
+        fontSize = TEXT_SIZE_MEDIUM
+        textFill = textColorPrimary
+    }
+
+    private val inputDimensionsMixin = mixin {
+        minHeight = 36.px
+        minWidth = 156.px
+    }
+
+    private val inputDefaultsMixin = mixin {
+        +inputColorsMixin
+        +inputDimensionsMixin
+    }
 
     protected fun applyStyles() {
-        colorSurfaceTransparent = Color.web(colorSurface.css, 0.65)
+        applyDefaultStyles()
+        applyCustomStyles()
+    }
 
-        root {
-            backgroundColor = multi(colorBackground)
-            baseColor = colorBackground
-            accentColor = colorAccent
-            focusColor = colorAccent
-            faintFocusColor = transparent
+    private fun applyDefaultStyles() {
+        button {
+            +inputDimensionsMixin
 
-            fontFamily = ThemeFonts.ROBOTO_REGULAR
-            fontWeight = FontWeight.NORMAL
-
-            fontSize = FONT_SIZE_BASE.px
+            backgroundColor = multi(colorPrimary)
+            fontFamily = ThemeFonts.ROBOTO_MEDIUM
+            fontSize = TEXT_SIZE_MEDIUM
+            padding = box(marginS, marginM)
+            textFill = colorOnPrimary
         }
 
-        /**
-         * Menu
-         */
-
-        menuBar {
-            backgroundColor = multi(colorBackground)
-        }
-
-        val contextMenuMixin = mixin {
-            backgroundColor = multi(colorBackground)
-
-            label {
-                textFill = textColorPrimary
-            }
-
-            focused {
-                label {
-                    textFill = colorOnPrimary
-                }
-            }
+        checkBox {
+            +inputColorsMixin
         }
 
         contextMenu {
             +contextMenuMixin
         }
 
-        /**
-         * Text styles
-         */
-
-        label {
-            textFill = textColorPrimary
-            fontSize = TEXT_SIZE_MEDIUM
-        }
-
-        textHeadline1Style {
-            fontFamily = ThemeFonts.ROBOTO_LIGHT
-            textFill = textColorSecondary
-            fontSize = 96.sp
-        }
-
-        textHeadline2Style {
-            fontFamily = ThemeFonts.ROBOTO_LIGHT
-            textFill = textColorSecondary
-            fontSize = 60.sp
-        }
-
-        textHeadline3Style {
-            fontFamily = ThemeFonts.ROBOTO_REGULAR
-            textFill = textColorSecondary
-            fontSize = 48.sp
-        }
-
-        textHeadline4Style {
-            fontFamily = ThemeFonts.ROBOTO_REGULAR
-            textFill = textColorSecondary
-            fontSize = 34.sp
-        }
-
-        textHeadline5Style {
-            fontFamily = ThemeFonts.ROBOTO_REGULAR
-            textFill = textColorPrimary
-            fontSize = 24.sp
-        }
-
-        textHeadline6Style {
-            fontFamily = ThemeFonts.ROBOTO_MEDIUM
-            textFill = textColorPrimary
-            fontSize = 20.sp
-        }
-
-        textSubtitle1Style {
-            fontFamily = ThemeFonts.ROBOTO_REGULAR
-            textFill = textColorPrimary
-            fontSize = TEXT_SIZE_MEDIUM
-        }
-
-        textSubtitle2Style {
-            fontFamily = ThemeFonts.ROBOTO_MEDIUM
-            textFill = textColorPrimary
-            fontSize = 14.sp
-        }
-
-        textBody1Style {
-            fontFamily = ThemeFonts.ROBOTO_REGULAR
-            textFill = textColorPrimary
-            fontSize = TEXT_SIZE_MEDIUM
-        }
-
-        textBody2Style {
-            fontFamily = ThemeFonts.ROBOTO_REGULAR
-            textFill = textColorPrimary
-            fontSize = 14.sp
-        }
-
-        textCaptionStyle {
-            fontFamily = ThemeFonts.ROBOTO_REGULAR
-            textFill = textColorSecondary
-            fontSize = 12.sp
+        form {
+            field {
+                // Remove extra spacing (space in set only via `spacing` of `fieldset`)
+                padding = box(0.px)
+            }
         }
 
         hyperlink {
@@ -178,85 +125,9 @@ abstract class Theme : Stylesheet(), ThemeColors {
             underline = true
         }
 
-        /**
-         * Input styles
-         */
-
-        val inputDimensionsMixin = mixin {
-            minHeight = 36.px
-            minWidth = 156.px
-        }
-
-        val inputColorsMixin = mixin {
-            textFill = textColorPrimary
+        label {
             fontSize = TEXT_SIZE_MEDIUM
-        }
-
-        val inputDefaultsMixin = mixin {
-            +inputDimensionsMixin
-            +inputColorsMixin
-        }
-
-        textField {
-            +inputDefaultsMixin
-
-            padding = box(marginS)
-        }
-
-        unmaskablePasswordFieldStyle {
-            padding = box(marginS, marginL, marginS, marginS)
-        }
-
-        checkBox {
-            +inputColorsMixin
-        }
-
-        textArea {
-            +inputDefaultsMixin
-        }
-
-        /**
-         * Background styles
-         */
-
-        backgroundStyle {
-            backgroundColor = multi(colorBackground)
-        }
-
-        abstractBackgroundStyle {
-            backgroundImage += URI("/drawables/background.jpg")
-            backgroundSize += BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
-            backgroundRepeat += Pair(BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT)
-        }
-
-        abstractBackgroundOverlayStyle {
-            backgroundColor = multi(colorBackgroundImageTint)
-        }
-
-        cardViewBackgroundStyle {
-            backgroundColor = multi(colorSurfaceTransparent)
-            backgroundRadius = multi(box(6.px))
-        }
-
-        scrimBackgroundStyle {
-            backgroundColor = multi(scrimBackground)
-        }
-
-        pressableBackgroundStyle {
-            and(pressed) {
-                opacity = OPACITY_PRESSED
-            }
-        }
-
-        /**
-         * List view styles
-         */
-
-        listView {
-            backgroundColor = multi(colorBackground)
-            backgroundInsets = multi(box(0.px))
-            borderInsets = multi(box(0.px))
-            padding = box(0.px)
+            textFill = textColorPrimary
         }
 
         listCell {
@@ -273,9 +144,114 @@ abstract class Theme : Stylesheet(), ThemeColors {
             padding = box(0.px)
         }
 
-        listViewVerticalDividerStyle {
+        listView {
+            backgroundColor = multi(colorBackground)
+            backgroundInsets = multi(box(0.px))
+            borderInsets = multi(box(0.px))
+            padding = box(0.px)
+        }
+
+        menuBar {
+            backgroundColor = multi(colorBackground)
+        }
+
+        root {
+            accentColor = colorAccent
+            backgroundColor = multi(colorBackground)
+            baseColor = colorBackground
+            faintFocusColor = transparent
+            focusColor = colorAccent
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            fontSize = FONT_SIZE_BASE.px
+            fontWeight = FontWeight.NORMAL
+        }
+
+        scrollBar {
+            // Remove default border
+            backgroundInsets = multi(box(0.px))
+        }
+
+        textArea {
+            +inputDefaultsMixin
+        }
+
+        textField {
+            +inputDefaultsMixin
+
+            padding = box(marginS)
+        }
+    }
+
+    private fun applyCustomStyles() {
+        backgroundAbstractStyle {
+            backgroundImage += URI("/drawables/background.jpg")
+            backgroundRepeat += Pair(BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT)
+            backgroundSize += BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
+        }
+
+        backgroundOverlayStyle {
+            backgroundColor = multi(colorBackgroundImageTint)
+        }
+
+        backgroundPressableStyle {
+            and(pressed) {
+                opacity = OPACITY_PRESSED
+            }
+        }
+
+        backgroundScrimStyle {
+            backgroundColor = multi(scrimBackground)
+        }
+
+        backgroundStyle {
+            backgroundColor = multi(colorBackground)
+        }
+
+        buttonFloatingActionStyle {
+            backgroundColor = multi(colorSecondary)
+            maxHeight = 45.px
+            maxWidth = 45.px
+            minHeight = 45.px
+            minWidth = 45.px
+        }
+
+        buttonSecondaryStyle {
+            backgroundColor = multi(transparent)
+            borderColor = multi(box(colorPrimary))
+            borderRadius = multi(box(RADIUS_SMALL))
+            borderWidth = multi(box(1.px))
+            textFill = colorPrimary
+        }
+
+        cardBackgroundStyle {
+            backgroundColor = multi(colorSurfaceTransparent)
+            backgroundRadius = multi(box(RADIUS_MEDIUM))
+        }
+
+        cardEmphasizedStyle {
+            backgroundColor = multi(colorBackgroundEmphasized)
             borderColor = multi(box(colorDivider))
-            borderWidth = multi(box(1.px, 0.px))
+            borderRadius = multi(box(RADIUS_SMALL))
+            borderWidth = multi(box(1.px))
+        }
+
+        iconStyle {
+            backgroundColor = multi(textColorPrimary)
+
+            and(disabled) {
+                opacity = OPACITY_DISABLED
+            }
+        }
+
+        listViewPressableCellStyle {
+            listCell {
+                // Apply pressed state only for filled, not for empty list cells
+                and(filled) {
+                    and(pressed) {
+                        opacity = OPACITY_PRESSED
+                    }
+                }
+            }
         }
 
         listViewSelectableCellStyle {
@@ -301,43 +277,15 @@ abstract class Theme : Stylesheet(), ThemeColors {
             }
         }
 
-        listViewPressableCellStyle {
-            listCell {
-                // Apply pressed state only for filled, not for empty list cells
-                and(filled) {
-                    and(pressed) {
-                        opacity = OPACITY_PRESSED
-                    }
-                }
-            }
-        }
-
         listViewStaticBackgroundStyle {
             listCell {
                 backgroundColor = multi(colorBackground)
             }
         }
 
-        /**
-         * Icons
-         */
-
-        iconStyle {
-            backgroundColor = multi(textColorPrimary)
-
-            and(disabled) {
-                opacity = OPACITY_DISABLED
-            }
-        }
-
-        /**
-         * Navigation drawer
-         */
-
-        navigationViewStyle {
-            spacing = marginS
-            prefWidth = 200.px
-            padding = box(marginM)
+        listViewVerticalDividerStyle {
+            borderColor = multi(box(colorDivider))
+            borderWidth = multi(box(1.px, 0.px))
         }
 
         navigationViewItemStyle {
@@ -348,68 +296,17 @@ abstract class Theme : Stylesheet(), ThemeColors {
             }
         }
 
-        /**
-         * Snackbar
-         */
-
-        snackbarLayoutStyle {
-            backgroundColor = multi(colorOnSurface)
-            backgroundRadius = multi(box(3.px))
-            textFill = colorSurface
-            padding = box(marginS, marginM)
-            opacity = 0.8
+        navigationViewStyle {
+            padding = box(marginM)
+            prefWidth = 200.px
+            spacing = marginS
         }
-
-        /**
-         * Buttons
-         */
-
-        button {
-            +inputDimensionsMixin
-
-            backgroundColor = multi(colorPrimary)
-            fontFamily = ThemeFonts.ROBOTO_MEDIUM
-            fontSize = TEXT_SIZE_MEDIUM
-            padding = box(marginS, marginM)
-            textFill = colorOnPrimary
-        }
-
-        floatingActionButtonStyle {
-            backgroundColor = multi(colorSecondary)
-            minWidth = 45.px
-            minHeight = 45.px
-            maxWidth = 45.px
-            maxHeight = 45.px
-        }
-
-        secondaryButtonStyle {
-            backgroundColor = multi(transparent)
-            borderColor = multi(box(colorPrimary))
-            borderRadius = multi(box(3.px))
-            borderWidth = multi(box(1.px))
-            textFill = colorPrimary
-        }
-
-        /**
-         * Form
-         */
-
-        form {
-            field {
-                // Remove extra spacing (space in set only via `spacing` of `fieldset`)
-                padding = box(0.px)
-            }
-        }
-
-        /**
-         * Scroll views
-         */
 
         // Do not apply to default style `scrollPane` to avoid affecting `TextArea`
         scrollPaneBorderlessStyle {
             // Remove default border
-            padding = box(0.px)
             backgroundInsets = multi(box(0.px))
+            padding = box(0.px)
 
             // Apply background color to scroll pane, see https://community.oracle.com/thread/3538169 or "modena.css"
             viewport {
@@ -417,76 +314,123 @@ abstract class Theme : Stylesheet(), ThemeColors {
             }
         }
 
-        scrollBar {
-            // Remove default border
-            backgroundInsets = multi(box(0.px))
+        snackbarLayoutStyle {
+            backgroundColor = multi(colorOnSurface)
+            backgroundRadius = multi(box(RADIUS_SMALL))
+            opacity = 0.8
+            padding = box(marginS, marginM)
+            textFill = colorSurface
         }
 
-        /**
-         * Toolbar
-         */
+        textBody1Style {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            fontSize = TEXT_SIZE_MEDIUM
+            textFill = textColorPrimary
+        }
+
+        textBody2Style {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            fontSize = 14.sp
+            textFill = textColorPrimary
+        }
+
+        textCaptionStyle {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            fontSize = 12.sp
+            textFill = textColorSecondary
+        }
+
+        textFieldUnmaskablePasswordStyle {
+            padding = box(marginS, marginL, marginS, marginS)
+        }
+
+        textHeadline1Style {
+            fontFamily = ThemeFonts.ROBOTO_LIGHT
+            fontSize = 96.sp
+            textFill = textColorSecondary
+        }
+
+        textHeadline2Style {
+            fontFamily = ThemeFonts.ROBOTO_LIGHT
+            fontSize = 60.sp
+            textFill = textColorSecondary
+        }
+
+        textHeadline3Style {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            fontSize = 48.sp
+            textFill = textColorSecondary
+        }
+
+        textHeadline4Style {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            fontSize = 34.sp
+            textFill = textColorSecondary
+        }
+
+        textHeadline5Style {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            fontSize = 24.sp
+            textFill = textColorPrimary
+        }
+
+        textHeadline6Style {
+            fontFamily = ThemeFonts.ROBOTO_MEDIUM
+            fontSize = 20.sp
+            textFill = textColorPrimary
+        }
+
+        textSubtitle1Style {
+            fontFamily = ThemeFonts.ROBOTO_REGULAR
+            fontSize = TEXT_SIZE_MEDIUM
+            textFill = textColorPrimary
+        }
+
+        textSubtitle2Style {
+            fontFamily = ThemeFonts.ROBOTO_MEDIUM
+            fontSize = 14.sp
+            textFill = textColorPrimary
+        }
 
         toolbarStyle {
             alignment = Pos.CENTER_LEFT
             minHeight = 60.px
             padding = box(marginS, marginM)
         }
-
-        /**
-         * Emphasized Card
-         */
-
-        emphasizedCardStyle {
-            backgroundColor = multi(colorBackgroundEmphasized)
-            borderColor = multi(box(colorDivider))
-            borderRadius = multi(box(3.px))
-            borderWidth = multi(box(1.px))
-        }
     }
 
     companion object {
+        val backgroundAbstractStyle by cssclass()
+        val backgroundOverlayStyle by cssclass()
+        val backgroundPressableStyle by cssclass()
+        val backgroundScrimStyle by cssclass()
         val backgroundStyle by cssclass()
-        val abstractBackgroundStyle by cssclass()
-        val abstractBackgroundOverlayStyle by cssclass()
-        val cardViewBackgroundStyle by cssclass()
-        val scrimBackgroundStyle by cssclass()
-        val pressableBackgroundStyle by cssclass()
-
+        val buttonFloatingActionStyle by cssclass()
+        val buttonSecondaryStyle by cssclass()
+        val cardBackgroundStyle by cssclass()
+        val cardEmphasizedStyle by cssclass()
+        val iconStyle by cssclass()
+        val listViewPressableCellStyle by cssclass()
+        val listViewSelectableCellStyle by cssclass()
+        val listViewStaticBackgroundStyle by cssclass()
+        val listViewVerticalDividerStyle by cssclass()
+        val navigationViewItemStyle by cssclass()
+        val navigationViewStyle by cssclass()
+        val scrollPaneBorderlessStyle by cssclass()
+        val snackbarLayoutStyle by cssclass()
+        val textBody1Style by cssclass()
+        val textBody2Style by cssclass()
+        val textCaptionStyle by cssclass()
+        val textFieldUnmaskablePasswordStyle by cssclass()
         val textHeadline1Style by cssclass()
         val textHeadline2Style by cssclass()
         val textHeadline3Style by cssclass()
         val textHeadline4Style by cssclass()
         val textHeadline5Style by cssclass()
         val textHeadline6Style by cssclass()
-
         val textSubtitle1Style by cssclass()
         val textSubtitle2Style by cssclass()
-
-        val textBody1Style by cssclass()
-        val textBody2Style by cssclass()
-
-        val textCaptionStyle by cssclass()
-
-        val iconStyle by cssclass()
-        val navigationViewStyle by cssclass()
-        val navigationViewItemStyle by cssclass()
-
-        val snackbarLayoutStyle by cssclass()
-        val floatingActionButtonStyle by cssclass()
-        val secondaryButtonStyle by cssclass()
-
-        val scrollPaneBorderlessStyle by cssclass()
-
-        val listViewVerticalDividerStyle by cssclass()
-        val listViewSelectableCellStyle by cssclass()
-        val listViewPressableCellStyle by cssclass()
-        val listViewStaticBackgroundStyle by cssclass()
-
         val toolbarStyle by cssclass()
-
-        val emphasizedCardStyle by cssclass()
-
-        val unmaskablePasswordFieldStyle by cssclass()
     }
 }
 
@@ -504,6 +448,9 @@ object ThemeFonts {
 
 object ThemeConstants {
     val TEXT_SIZE_MEDIUM = 16.sp
+
+    val RADIUS_SMALL = 3.px
+    val RADIUS_MEDIUM = 6.px
 
     // Value took from "modena.css"
     const val OPACITY_DISABLED = 0.4

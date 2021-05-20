@@ -86,7 +86,7 @@ fun EventTarget.jfxButtonRaised(text: String = "", graphic: Node? = null, op: JF
 }
 
 fun EventTarget.jfxFloatingActionButtonRaised(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = jfxButtonBase(text, graphic) {
-    addClass(Theme.floatingActionButtonStyle)
+    addClass(Theme.buttonFloatingActionStyle)
 
     buttonType = JFXButton.ButtonType.RAISED
     shape = Circle(1.px.value)

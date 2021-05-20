@@ -209,7 +209,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             isVisible = false
 
             textLabelBodyOrder1(messages["drawer_header_usertype_local"]) {
-                addClass(Theme.pressableBackgroundStyle)
+                addClass(Theme.backgroundPressableStyle)
 
                 style {
                     fontWeight = FontWeight.BOLD
@@ -239,7 +239,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             isVisible = false
 
             toolbarSynchronizationButton = textLabelBodyOrder1(messages["overview_sync_button_title"]) {
-                addClass(Theme.pressableBackgroundStyle)
+                addClass(Theme.backgroundPressableStyle)
 
                 style {
                     fontWeight = FontWeight.BOLD

@@ -77,11 +77,11 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
     private fun Node.setupRootView() {
         stackpane {
             pane {
-                addClass(Theme.abstractBackgroundStyle)
+                addClass(Theme.backgroundAbstractStyle)
             }
 
             pane {
-                addClass(Theme.abstractBackgroundOverlayStyle)
+                addClass(Theme.backgroundOverlayStyle)
             }
 
             onLeftClick {
@@ -98,7 +98,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
 
     private fun Node.setupCardViewContent() {
         form {
-            addClass(Theme.cardViewBackgroundStyle)
+            addClass(Theme.cardBackgroundStyle)
 
             alignment = Pos.CENTER
             paddingAll = marginM.value

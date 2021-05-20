@@ -43,7 +43,7 @@ class UnmaskablePasswordField(initialMaskPassword: Boolean, op: PasswordField.()
 
     private fun createUnmaskablePasswordField(): PasswordField {
         return PasswordField().apply {
-            addClass(Theme.unmaskablePasswordFieldStyle)
+            addClass(Theme.textFieldUnmaskablePasswordStyle)
 
             skin = object : TextFieldSkin(this) {
                 override fun maskText(originalText: String): String {

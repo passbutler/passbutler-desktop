@@ -67,11 +67,11 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
     private fun Node.setupContentView() {
         stackpane {
             pane {
-                addClass(Theme.abstractBackgroundStyle)
+                addClass(Theme.backgroundAbstractStyle)
             }
 
             pane {
-                addClass(Theme.abstractBackgroundOverlayStyle)
+                addClass(Theme.backgroundOverlayStyle)
             }
 
             onLeftClick {
@@ -88,7 +88,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
 
     private fun Node.setupCardViewContent() {
         form {
-            addClass(Theme.cardViewBackgroundStyle)
+            addClass(Theme.cardBackgroundStyle)
 
             alignment = Pos.CENTER
             paddingAll = marginM.value

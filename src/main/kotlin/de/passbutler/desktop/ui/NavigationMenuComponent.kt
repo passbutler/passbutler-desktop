@@ -47,13 +47,13 @@ interface NavigationMenuComponent : BaseUIComponent, NavigationMenuUsing {
     private fun Node.setupNavigationMenu() {
         stackpane {
             pane {
-                addClass(Theme.abstractBackgroundStyle)
+                addClass(Theme.backgroundAbstractStyle)
 
                 effect = endDropShadow()
             }
 
             pane {
-                addClass(Theme.abstractBackgroundOverlayStyle)
+                addClass(Theme.backgroundOverlayStyle)
             }
 
             vbox {

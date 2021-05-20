@@ -119,7 +119,7 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
 
     private fun Node.setupSwitchSettingItem(title: String, summary: String, initialSwitchEnabled: Boolean, switchEnabledChanged: ToggleButton.() -> Unit) {
         hbox {
-            addClass(Theme.pressableBackgroundStyle)
+            addClass(Theme.backgroundPressableStyle)
 
             alignment = Pos.CENTER_LEFT
 
@@ -160,7 +160,7 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
 
     private fun Node.setupTextSettingItem(title: String, summary: String, settingItemAction: () -> Unit) {
         vbox {
-            addClass(Theme.pressableBackgroundStyle)
+            addClass(Theme.backgroundPressableStyle)
 
             alignment = Pos.CENTER_LEFT
             padding = insets(0.px.value, marginS.value)

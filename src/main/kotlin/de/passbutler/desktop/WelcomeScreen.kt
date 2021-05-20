@@ -41,11 +41,11 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
     private fun Node.setupRootView() {
         stackpane {
             pane {
-                addClass(Theme.abstractBackgroundStyle)
+                addClass(Theme.backgroundAbstractStyle)
             }
 
             pane {
-                addClass(Theme.abstractBackgroundOverlayStyle)
+                addClass(Theme.backgroundOverlayStyle)
             }
 
             hbox(alignment = Pos.CENTER) {
@@ -102,7 +102,7 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
 
     private fun Node.setupCardView(title: String, description: String, buttonTitle: String, buttonAction: () -> Unit) {
         vbox {
-            addClass(Theme.cardViewBackgroundStyle)
+            addClass(Theme.cardBackgroundStyle)
 
             paddingAll = marginM.value
             prefWidth = 420.px.value

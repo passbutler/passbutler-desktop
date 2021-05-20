@@ -166,7 +166,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
             paddingAll = marginM.value
             spacing = marginS.value
 
-            addClass(Theme.emphasizedCardStyle)
+            addClass(Theme.cardEmphasizedStyle)
 
             val cardHeadline = textLabelHeadlineOrder2 {
                 graphic = smallSVGIcon(Drawables.ICON_VERIFIED)

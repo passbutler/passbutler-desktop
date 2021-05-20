@@ -83,7 +83,7 @@ class RootScreen : BaseView(), RequestSending {
 
     private fun StackPane.createProgressView(): Node {
         return hbox(alignment = Pos.CENTER) {
-            addClass(Theme.scrimBackgroundStyle)
+            addClass(Theme.backgroundScrimStyle)
 
             progressindicator()
 
