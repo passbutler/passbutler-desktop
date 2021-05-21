@@ -15,6 +15,7 @@ import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.onLeftClickIgnoringCount
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelBodyOrder2
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder2
 import de.passbutler.desktop.ui.toggle
@@ -133,7 +134,7 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
                     }
                 }
 
-                textLabelBodyOrder1(summary) {
+                textLabelBodyOrder2(summary) {
                     paddingTop = marginXS.value
                 }
             }
@@ -171,7 +172,7 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
                 }
             }
 
-            textLabelBodyOrder1(summary) {
+            textLabelBodyOrder2(summary) {
                 paddingTop = marginXS.value
             }
 
