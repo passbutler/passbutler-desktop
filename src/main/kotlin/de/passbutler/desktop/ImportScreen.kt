@@ -12,6 +12,7 @@ import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelBodyOrder2
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import javafx.scene.Node
 import javafx.stage.FileChooser
@@ -69,7 +70,7 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
         setupImportSection(
             messages["import_keepass2_header"],
             messages["import_keepass2_description"],
-            null,
+            messages["import_keepass2_export_format_hint"],
             messages["import_keepass2_button_text"],
             messages["import_keepass2_file_extension_description"]
         ) { chosenFile ->
@@ -80,7 +81,7 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
     private fun Node.setupImportSection(
         header: String,
         description1: String,
-        description2: String?,
+        description2: String,
         buttonText: String,
         fileExtensionDescription: String,
         importBlock: suspend (File) -> Result<Int>
@@ -93,11 +94,9 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
                 text = description1
             }
 
-            if (description2 != null) {
-                textLabelBodyOrder1 {
-                    paddingTop = marginS.value
-                    text = description2
-                }
+            textLabelBodyOrder2 {
+                paddingTop = marginS.value
+                text = description2
             }
 
             vbox {
