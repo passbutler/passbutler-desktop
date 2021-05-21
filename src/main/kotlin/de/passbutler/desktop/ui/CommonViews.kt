@@ -55,7 +55,7 @@ fun Node.createInformationView(title: String, valueSetup: Label.() -> Unit): VBo
             }
         }
 
-        textLabelBodyOrder1 {
+        textLabelBodyOrder2 {
             paddingTop = marginXS.value
 
             valueSetup.invoke(this)
