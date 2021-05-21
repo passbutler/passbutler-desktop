@@ -17,6 +17,7 @@ import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBodyOrder1
+import de.passbutler.desktop.ui.textLabelBodyOrder2
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder2
 import javafx.scene.Node
@@ -81,7 +82,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
                 textLabelBodyOrder1(formattedTextAfterGitHash)
             }
 
-            textLabelBodyOrder1(messages["about_passage_1"]) {
+            textLabelBodyOrder2(messages["about_passage_1"]) {
                 paddingTop = marginS.value
             }
         }
