@@ -169,15 +169,13 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     }
 
     private fun Fieldset.setupTitleField() {
-        field(orientation = Orientation.VERTICAL) {
+        field(messages["itemdetail_title_hint"], orientation = Orientation.VERTICAL) {
             textfield {
                 // Same style as `Theme.textHeadline6Style`
                 style {
                     fontSize = 20.sp
                     fontFamily = ThemeFonts.ROBOTO_MEDIUM
                 }
-
-                promptText = messages["itemdetail_title_hint"]
 
                 bindInput(this@ItemDetailScreen, viewModel.title)
 
