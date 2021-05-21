@@ -314,14 +314,6 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                 paddingTop = marginS.value
                 spacing = marginS.value
 
-                createInformationView(messages["itemdetail_id_title"]) {
-                    style {
-                        fontFamily = "monospace"
-                    }
-
-                    bindTextAndVisibility(this@ItemDetailScreen, viewModel.id)
-                }
-
                 createInformationView(messages["itemdetail_modified_title"]) {
                     bindTextAndVisibility(this@ItemDetailScreen, viewModel.modified) {
                         it?.formattedDateTime(FX.locale)
@@ -332,6 +324,14 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                     bindTextAndVisibility(this@ItemDetailScreen, viewModel.created) {
                         it?.formattedDateTime(FX.locale)
                     }
+                }
+
+                createInformationView(messages["itemdetail_id_title"]) {
+                    style {
+                        fontFamily = "monospace"
+                    }
+
+                    bindTextAndVisibility(this@ItemDetailScreen, viewModel.id)
                 }
             }
 
