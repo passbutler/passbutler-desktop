@@ -3,7 +3,7 @@ package de.passbutler.desktop.ui
 import tornadofx.Dimension
 
 const val FONT_SIZE_BASE = 14
-private const val FONT_SIZE_SCALING_FACTOR = 0.82
+private const val FONT_SIZE_SCALING_FACTOR = 1.0
 
 val Number.sp: Dimension<Dimension.LinearUnits>
     get() {
