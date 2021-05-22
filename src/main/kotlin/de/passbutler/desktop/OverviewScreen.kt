@@ -38,8 +38,6 @@ import javafx.scene.control.Label
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
 import javafx.scene.control.TextField
-import javafx.scene.input.KeyCode
-import javafx.scene.input.KeyEvent
 import javafx.scene.layout.StackPane
 import javafx.scene.text.FontWeight
 import kotlinx.coroutines.Job
@@ -281,10 +279,8 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                 }
             })
 
-            setOnKeyReleased { keyEvent: KeyEvent ->
-                if (keyEvent.code == KeyCode.ENTER) {
-                    showSelectedItem()
-                }
+            shortcut("ENTER") {
+                showSelectedItem()
             }
 
             shortcut("Shortcut+B") {
