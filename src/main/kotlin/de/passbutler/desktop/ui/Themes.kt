@@ -75,8 +75,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
     }
 
     private val inputDimensionsMixin = mixin {
-        minHeight = 36.px
-        minWidth = 156.px
+        minHeight = 40.px
+        minWidth = 160.px
     }
 
     private val inputDefaultsMixin = mixin {
