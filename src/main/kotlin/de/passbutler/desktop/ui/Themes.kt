@@ -455,8 +455,8 @@ object ThemeFonts {
 object ThemeConstants {
     val TEXT_SIZE_MEDIUM = 16.sp
 
-    val RADIUS_SMALL = 3.px
-    val RADIUS_MEDIUM = 6.px
+    val RADIUS_SMALL = 4.px
+    val RADIUS_MEDIUM = 8.px
 
     // Value took from "modena.css"
     const val OPACITY_DISABLED = 0.4
