@@ -244,6 +244,8 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Node.setupSaveButton() {
         jfxButtonRaised(messages["itemdetail_save_button_title"]) {
+            isDefaultButton = true
+
             bindVisibility(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
             bindEnabled(this@ItemDetailScreen, isItemModified)
 
