@@ -98,6 +98,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
             +inputDimensionsMixin
 
             backgroundColor = multi(colorPrimary)
+            backgroundRadius = multi(box(RADIUS_SMALL))
             fontFamily = ThemeFonts.ROBOTO_MEDIUM
             fontSize = TEXT_SIZE_MEDIUM
             padding = box(marginS, marginM)
