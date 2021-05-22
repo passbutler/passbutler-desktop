@@ -102,7 +102,7 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
 
     private fun Node.setupCardView(title: String, description: String, buttonTitle: String, buttonAction: () -> Unit) {
         vbox {
-            addClass(Theme.cardBackgroundStyle)
+            addClass(Theme.cardTranslucentStyle)
 
             paddingAll = marginM.value
             prefWidth = 420.px.value

@@ -98,7 +98,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
 
     private fun Node.setupCardViewContent() {
         form {
-            addClass(Theme.cardBackgroundStyle)
+            addClass(Theme.cardTranslucentStyle)
 
             alignment = Pos.CENTER
             paddingAll = marginM.value

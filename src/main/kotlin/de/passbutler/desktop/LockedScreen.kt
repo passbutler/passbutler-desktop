@@ -88,7 +88,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
 
     private fun Node.setupCardViewContent() {
         form {
-            addClass(Theme.cardBackgroundStyle)
+            addClass(Theme.cardTranslucentStyle)
 
             alignment = Pos.CENTER
             paddingAll = marginM.value

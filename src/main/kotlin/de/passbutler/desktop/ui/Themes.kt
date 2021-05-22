@@ -55,10 +55,6 @@ interface ThemeColors {
 
 abstract class Theme : Stylesheet(), ThemeColors {
 
-    private val colorSurfaceTransparent by lazy {
-        Color.web(colorSurface.css, 0.65)
-    }
-
     private val contextMenuMixin = mixin {
         backgroundColor = multi(colorBackground)
 
@@ -228,16 +224,16 @@ abstract class Theme : Stylesheet(), ThemeColors {
             textFill = colorPrimary
         }
 
-        cardBackgroundStyle {
-            backgroundColor = multi(colorSurfaceTransparent)
-            backgroundRadius = multi(box(RADIUS_MEDIUM))
-        }
-
         cardEmphasizedStyle {
             backgroundColor = multi(colorBackgroundEmphasized)
             borderColor = multi(box(colorDivider))
             borderRadius = multi(box(RADIUS_SMALL))
             borderWidth = multi(box(1.px))
+        }
+
+        cardTranslucentStyle {
+            backgroundColor = multi(Color.web(colorSurface.css, 0.65))
+            backgroundRadius = multi(box(RADIUS_MEDIUM))
         }
 
         iconStyle {
@@ -412,8 +408,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val backgroundStyle by cssclass()
         val buttonFloatingActionStyle by cssclass()
         val buttonSecondaryStyle by cssclass()
-        val cardBackgroundStyle by cssclass()
         val cardEmphasizedStyle by cssclass()
+        val cardTranslucentStyle by cssclass()
         val iconStyle by cssclass()
         val listViewPressableCellStyle by cssclass()
         val listViewSelectableCellStyle by cssclass()
