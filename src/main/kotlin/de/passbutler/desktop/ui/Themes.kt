@@ -210,10 +210,10 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         buttonFloatingActionStyle {
             backgroundColor = multi(colorSecondary)
-            maxHeight = 45.px
-            maxWidth = 45.px
-            minHeight = 45.px
-            minWidth = 45.px
+            fontSize = 28.sp
+            minHeight = 56.px
+            minWidth = 56.px
+            padding = box(marginS)
         }
 
         buttonSecondaryStyle {
