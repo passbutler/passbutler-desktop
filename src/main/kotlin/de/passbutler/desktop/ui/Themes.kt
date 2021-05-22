@@ -131,6 +131,10 @@ abstract class Theme : Stylesheet(), ThemeColors {
             textFill = textColorPrimary
         }
 
+        labelContainer {
+            fontSize = 12.sp
+        }
+
         listCell {
             backgroundColor = multi(colorBackground)
 
