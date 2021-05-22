@@ -44,13 +44,13 @@ class RootScreen : BaseView(), RequestSending {
 
     override val root = borderpane()
 
-    var contentContainer: Node? = null
+    lateinit var contentContainer: Node
         private set
 
-    var progressView: Node? = null
+    lateinit var progressView: Node
         private set
 
-    var bannerView: BannerView? = null
+    lateinit var bannerView: BannerView
         private set
 
     private var menuView: Menu? = null

@@ -7,6 +7,7 @@ import de.passbutler.common.ui.ProgressPresenting
 import de.passbutler.common.ui.SLIDE_TRANSITION_DURATION
 import de.passbutler.common.ui.TransitionType
 import de.passbutler.desktop.RootScreen
+import javafx.scene.Node
 import org.tinylog.kotlin.Logger
 import tornadofx.UIComponent
 import tornadofx.ViewTransition
@@ -19,8 +20,8 @@ import kotlin.reflect.KClass
 class UIPresenter(
     private val rootScreen: RootScreen
 ) : UIPresenting, DebouncedUIPresenting,
-    ProgressPresenting by ProgressPresenter(rootScreen),
-    BannerPresenting by BannerPresenter(rootScreen) {
+    ProgressPresenting by ProgressPresenter(rootScreen.progressView),
+    BannerPresenting by BannerPresenter(rootScreen.bannerView) {
 
     override var lastViewTransactionTime: Instant? = null
 
@@ -30,7 +31,7 @@ class UIPresenter(
         val debouncedViewTransactionEnsured = ensureDebouncedViewTransaction().takeIf { userTriggered } ?: true
 
         if (debouncedViewTransactionEnsured) {
-            rootScreen.contentContainer?.getChildList()?.apply {
+            rootScreen.contentContainer.getChildList()?.apply {
                 val screenInstance = find(screenClass, params = parameters)
                 rootScreen.titleProperty.bind(screenInstance.titleProperty)
 
@@ -71,19 +72,19 @@ class UIPresenter(
     }
 }
 
-class ProgressPresenter(private val rootScreen: RootScreen) : ProgressPresenting {
+class ProgressPresenter(private val progressView: Node) : ProgressPresenting {
     override fun showProgress() {
-        rootScreen.progressView?.showFadeInOutAnimation(true)
+        progressView.showFadeInOutAnimation(true)
     }
 
     override fun hideProgress() {
-        rootScreen.progressView?.showFadeInOutAnimation(false)
+        progressView.showFadeInOutAnimation(false)
     }
 }
 
-class BannerPresenter(private val rootScreen: RootScreen) : BannerPresenting {
+class BannerPresenter(private val bannerView: BannerView) : BannerPresenting {
     override fun showInformation(message: String) {
-        rootScreen.bannerView?.show(message)
+        bannerView.show(message)
     }
 
     override fun showError(message: String) {
