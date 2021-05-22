@@ -200,7 +200,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
             }
         }
 
-        backgroundScrimStyle {
+        backgroundScrimProgressStyle {
             backgroundColor = multi(scrimBackground)
         }
 
@@ -404,7 +404,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val backgroundAbstractStyle by cssclass()
         val backgroundOverlayStyle by cssclass()
         val backgroundPressableStyle by cssclass()
-        val backgroundScrimStyle by cssclass()
+        val backgroundScrimProgressStyle by cssclass()
         val backgroundStyle by cssclass()
         val buttonFloatingActionStyle by cssclass()
         val buttonSecondaryStyle by cssclass()
