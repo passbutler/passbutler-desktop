@@ -81,6 +81,11 @@ fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXB
     it.text = text
 }
 
+fun EventTarget.jfxButtonFlat(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = jfxButtonBase(text, graphic) {
+    buttonType = JFXButton.ButtonType.FLAT
+    op.invoke(this)
+}
+
 fun EventTarget.jfxButtonRaised(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = jfxButtonBase(text, graphic) {
     buttonType = JFXButton.ButtonType.RAISED
     op.invoke(this)

@@ -50,6 +50,7 @@ interface ThemeColors {
     val listItemBackgroundSelected: Color
 
     val colorDivider: Color
+    val colorWarning: Color
 
     val textColorPrimary: Color
     val textColorSecondary: Color
@@ -186,6 +187,34 @@ abstract class Theme : Stylesheet(), ThemeColors {
     }
 
     private fun applyCustomStyles() {
+        select(
+            alertDialogThemeDefault,
+            alertDialogThemeDangerous
+        ) {
+            backgroundColor = multi(colorSurface)
+            backgroundRadius = multi(box(RADIUS_SMALL))
+            minWidth = 350.px
+
+            alertDialogViewTextTitleStyle {
+                textFill = Color.web(colorOnSurface.css, 0.87)
+            }
+
+            alertDialogViewTextMessageStyle {
+                textFill = Color.web(colorOnSurface.css, 0.60)
+            }
+        }
+
+        alertDialogThemeDangerous {
+            alertDialogViewTextTitleStyle {
+                fontWeight = FontWeight.BOLD
+                textFill = colorWarning
+            }
+
+            alertDialogViewButtonPositiveStyle {
+                textFill = colorWarning
+            }
+        }
+
         backgroundAbstractStyle {
             backgroundImage += URI("/drawables/background.jpg")
             backgroundRepeat += Pair(BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT)
@@ -223,6 +252,17 @@ abstract class Theme : Stylesheet(), ThemeColors {
             borderColor = multi(box(colorPrimary))
             borderRadius = multi(box(RADIUS_SMALL))
             borderWidth = multi(box(1.px))
+            textFill = colorPrimary
+        }
+
+        buttonTextStyle {
+            backgroundColor = multi(transparent)
+            borderColor = multi(box(transparent))
+
+            // Reset derived value to only use padding
+            minWidth = 0.px
+
+            padding = box(marginM)
             textFill = colorPrimary
         }
 
@@ -413,6 +453,12 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
     companion object {
         // CSS classes
+        val alertDialogThemeDangerous by cssclass()
+        val alertDialogThemeDefault by cssclass()
+        val alertDialogViewButtonNegativeStyle by cssclass()
+        val alertDialogViewButtonPositiveStyle by cssclass()
+        val alertDialogViewTextMessageStyle by cssclass()
+        val alertDialogViewTextTitleStyle by cssclass()
         val backgroundAbstractStyle by cssclass()
         val backgroundOverlayStyle by cssclass()
         val backgroundPressableStyle by cssclass()
@@ -420,6 +466,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val backgroundStyle by cssclass()
         val buttonFloatingActionStyle by cssclass()
         val buttonSecondaryStyle by cssclass()
+        val buttonTextStyle by cssclass()
         val cardEmphasizedStyle by cssclass()
         val cardTranslucentStyle by cssclass()
         val jfxSpinner by cssclass("jfx-spinner")
@@ -499,6 +546,7 @@ class LightTheme : Theme(), ThemeColors by Companion {
         override val listItemBackgroundOdd: Color = grey04
         override val listItemBackgroundSelected: Color = wineRedLight
         override val colorDivider: Color = grey10
+        override val colorWarning: Color = brightRed
         override val textColorPrimary: Color = black
         override val textColorSecondary: Color = blackTransparent
     }
@@ -527,6 +575,7 @@ class DarkTheme : Theme(), ThemeColors by Companion {
         override val listItemBackgroundOdd: Color = grey84
         override val listItemBackgroundSelected: Color = wineRedLight
         override val colorDivider: Color = grey70
+        override val colorWarning: Color = brightRedTransparent
         override val textColorPrimary: Color = white
         override val textColorSecondary: Color = whiteTransparent
     }
