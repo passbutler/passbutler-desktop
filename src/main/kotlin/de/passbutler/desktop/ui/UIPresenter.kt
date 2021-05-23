@@ -2,15 +2,12 @@ package de.passbutler.desktop.ui
 
 import de.passbutler.common.ui.BannerPresenting
 import de.passbutler.common.ui.DebouncedUIPresenting
-import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import de.passbutler.common.ui.ProgressPresenting
-import de.passbutler.common.ui.SLIDE_TRANSITION_DURATION
 import de.passbutler.common.ui.TransitionType
 import de.passbutler.desktop.RootScreen
 import javafx.scene.Node
 import org.tinylog.kotlin.Logger
 import tornadofx.UIComponent
-import tornadofx.ViewTransition
 import tornadofx.find
 import tornadofx.getChildList
 import tornadofx.replaceWith
@@ -52,18 +49,6 @@ class UIPresenter(
             }
         } else {
             Logger.warn("The view transaction was ignored because a recent transaction was already done!")
-        }
-    }
-
-    private fun TransitionType.createViewTransition(): ViewTransition? {
-        return when (this) {
-            TransitionType.MODAL -> {
-                // Not supported at the moment
-                null
-            }
-            TransitionType.SLIDE -> ViewTransition.Slide(SLIDE_TRANSITION_DURATION.toJavaFxDuration())
-            TransitionType.FADE -> ViewTransition.Fade(FADE_TRANSITION_DURATION.toJavaFxDuration())
-            TransitionType.NONE -> null
         }
     }
 
