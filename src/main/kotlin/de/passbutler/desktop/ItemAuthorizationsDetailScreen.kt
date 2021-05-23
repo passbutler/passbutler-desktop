@@ -19,10 +19,10 @@ import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showScreenUnanimated
-import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder2
+import de.passbutler.desktop.ui.vectorDrawableIcon
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
@@ -132,7 +132,7 @@ class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itema
             padding = insets(marginS.value, marginM.value, 0, marginM.value)
 
             val headlineView = textLabelHeadlineOrder2(listCell.itemProperty().select { it.titleProperty }) {
-                graphic = smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE)
+                graphic = vectorDrawableIcon(Drawables.ICON_ACCOUNT_CIRCLE)
                 graphicTextGap = marginM.value
             }
 

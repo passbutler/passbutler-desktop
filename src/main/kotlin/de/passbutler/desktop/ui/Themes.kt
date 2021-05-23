@@ -236,14 +236,6 @@ abstract class Theme : Stylesheet(), ThemeColors {
             backgroundRadius = multi(box(RADIUS_MEDIUM))
         }
 
-        iconStyle {
-            backgroundColor = multi(textColorPrimary)
-
-            and(disabled) {
-                opacity = OPACITY_DISABLED
-            }
-        }
-
         listViewPressableCellStyle {
             listCell {
                 // Apply pressed state only for filled, not for empty list cells
@@ -270,7 +262,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
                             +contextMenuMixin
                         }
 
-                        iconStyle {
+                        vectorDrawableIcon {
                             backgroundColor = multi(colorOnPrimary)
                         }
                     }
@@ -398,6 +390,14 @@ abstract class Theme : Stylesheet(), ThemeColors {
             minHeight = 60.px
             padding = box(marginS, marginM)
         }
+
+        vectorDrawableIcon {
+            backgroundColor = multi(textColorPrimary)
+
+            and(disabled) {
+                opacity = OPACITY_DISABLED
+            }
+        }
     }
 
     companion object {
@@ -410,7 +410,6 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val buttonSecondaryStyle by cssclass()
         val cardEmphasizedStyle by cssclass()
         val cardTranslucentStyle by cssclass()
-        val iconStyle by cssclass()
         val listViewPressableCellStyle by cssclass()
         val listViewSelectableCellStyle by cssclass()
         val listViewStaticBackgroundStyle by cssclass()
@@ -432,6 +431,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val textSubtitle1Style by cssclass()
         val textSubtitle2Style by cssclass()
         val toolbarStyle by cssclass()
+        val vectorDrawableIcon by cssclass()
     }
 }
 

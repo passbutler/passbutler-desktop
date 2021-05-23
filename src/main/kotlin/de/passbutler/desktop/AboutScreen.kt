@@ -15,11 +15,11 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelBodyOrder2
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder2
+import de.passbutler.desktop.ui.vectorDrawableIcon
 import javafx.scene.Node
 import javafx.scene.layout.VBox
 import tornadofx.FX
@@ -170,7 +170,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
             addClass(Theme.cardEmphasizedStyle)
 
             val cardHeadline = textLabelHeadlineOrder2 {
-                graphic = smallSVGIcon(Drawables.ICON_VERIFIED)
+                graphic = vectorDrawableIcon(Drawables.ICON_VERIFIED)
                 graphicTextGap = marginM.value
 
                 bindTextAndVisibility(this@AboutScreen, viewModel.premiumKey) { it?.name }

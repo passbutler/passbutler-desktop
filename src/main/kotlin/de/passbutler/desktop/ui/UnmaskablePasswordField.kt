@@ -58,7 +58,7 @@ class UnmaskablePasswordField(initialMaskPassword: Boolean, op: PasswordField.()
     }
 
     private fun Node.setupShownIcon() {
-        smallSVGIcon(Drawables.ICON_VISIBILITY) {
+        vectorDrawableIcon(Drawables.ICON_VISIBILITY) {
             visibleWhen(maskPasswordProperty)
 
             onLeftClick {
@@ -68,7 +68,7 @@ class UnmaskablePasswordField(initialMaskPassword: Boolean, op: PasswordField.()
     }
 
     private fun Node.setupHiddenIcon() {
-        smallSVGIcon(Drawables.ICON_VISIBILITY_OFF) {
+        vectorDrawableIcon(Drawables.ICON_VISIBILITY_OFF) {
             hiddenWhen(maskPasswordProperty)
 
             onLeftClick {

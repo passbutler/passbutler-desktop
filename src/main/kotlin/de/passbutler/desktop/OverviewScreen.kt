@@ -23,10 +23,10 @@ import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.paneWithDropShadow
 import de.passbutler.desktop.ui.showScreenUnanimated
-import de.passbutler.desktop.ui.smallSVGIcon
 import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder2
 import de.passbutler.desktop.ui.textLabelSubtitleOrder1
+import de.passbutler.desktop.ui.vectorDrawableIcon
 import javafx.application.Platform
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
@@ -213,7 +213,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                     fontWeight = FontWeight.BOLD
                 }
 
-                graphic = smallSVGIcon(Drawables.ICON_ACCOUNT_CIRCLE)
+                graphic = vectorDrawableIcon(Drawables.ICON_ACCOUNT_CIRCLE)
                 graphicTextGap = marginS.value
 
                 onLeftClick {
@@ -243,7 +243,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                     fontWeight = FontWeight.BOLD
                 }
 
-                graphic = smallSVGIcon(Drawables.ICON_REFRESH)
+                graphic = vectorDrawableIcon(Drawables.ICON_REFRESH)
                 graphicTextGap = marginS.value
 
                 onLeftClick(action = synchronizeDataAction)
@@ -478,7 +478,7 @@ fun Node.createGenericItemEntryView(listCell: ListCell<ItemEntry>, op: Node.() -
         alignment = Pos.CENTER_LEFT
         padding = insets(marginM.value, marginS.value)
 
-        smallSVGIcon(Drawables.ICON_TEXT_SNIPPET)
+        vectorDrawableIcon(Drawables.ICON_TEXT_SNIPPET)
 
         vbox {
             paddingLeft = marginM.value

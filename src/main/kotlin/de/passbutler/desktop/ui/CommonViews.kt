@@ -23,7 +23,7 @@ fun Node.createEmptyScreen(title: String, description: String): Node {
         // Hidden by default to avoid initial flickering
         isVisible = false
 
-        smallSVGIcon(Drawables.ICON_LIST)
+        vectorDrawableIcon(Drawables.ICON_LIST)
 
         textLabelHeadlineOrder1(title) {
             paddingTop = marginM.value

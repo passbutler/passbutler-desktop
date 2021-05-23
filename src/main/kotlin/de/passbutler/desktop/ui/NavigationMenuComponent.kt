@@ -69,7 +69,7 @@ interface NavigationMenuComponent : BaseUIComponent, NavigationMenuUsing {
         }
     }
 
-    private fun Node.setupNavigationItem(title: String, icon: Drawable, screenClass: KClass<out UIComponent>) {
+    private fun Node.setupNavigationItem(title: String, icon: VectorDrawable, screenClass: KClass<out UIComponent>) {
         setupNavigationItem(title, icon) {
             if (!isScreenShown(screenClass)) {
                 showScreenUnanimated(screenClass)
@@ -77,11 +77,11 @@ interface NavigationMenuComponent : BaseUIComponent, NavigationMenuUsing {
         }
     }
 
-    private fun Node.setupNavigationItem(title: String, icon: Drawable, clickedAction: () -> Unit) {
+    private fun Node.setupNavigationItem(title: String, icon: VectorDrawable, clickedAction: () -> Unit) {
         textLabelBodyOrder2(title) {
             addClass(Theme.navigationViewItemStyle)
 
-            graphic = smallSVGIcon(icon)
+            graphic = vectorDrawableIcon(icon)
             graphicTextGap = marginS.value
 
             onLeftClick(action = clickedAction)
@@ -110,7 +110,7 @@ abstract class NavigationMenuView(
 interface NavigationMenuUsing {
     val navigationMenuItems: List<NavigationItem>
 
-    data class NavigationItem(val titleMessageKey: String, val icon: Drawable, val screenClass: KClass<out UIComponent>)
+    data class NavigationItem(val titleMessageKey: String, val icon: VectorDrawable, val screenClass: KClass<out UIComponent>)
 }
 
 fun createDefaultNavigationMenu(): List<NavigationMenuUsing.NavigationItem> {
