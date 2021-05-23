@@ -408,8 +408,6 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
         updateToolbarJob?.cancel()
         updateToolbarJob = launch {
             while (isActive) {
-                Logger.debug("Update relative time in toolbar subtitle")
-
                 // Update relative time in toolbar periodically
                 updateToolbarSubtitle()
                 delay(10_000)
