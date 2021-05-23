@@ -1,6 +1,7 @@
 package de.passbutler.desktop.ui
 
 import com.jfoenix.controls.JFXButton
+import com.jfoenix.controls.JFXSpinner
 import com.jfoenix.controls.JFXToggleButton
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import javafx.animation.Animation
@@ -102,6 +103,12 @@ fun EventTarget.jfxToggleButton(text: String? = null, op: JFXToggleButton.() -> 
 fun ToggleButton.toggle() {
     isSelected = !isSelected
 }
+
+/**
+ * Spinner
+ */
+
+fun EventTarget.jfxSpinner(op: JFXSpinner.() -> Unit = {}) = JFXSpinner().attachTo(this, op)
 
 /**
  * Text labels

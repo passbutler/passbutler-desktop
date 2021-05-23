@@ -10,10 +10,12 @@ import javafx.scene.layout.BackgroundRepeat
 import javafx.scene.layout.BackgroundSize
 import javafx.scene.paint.Color
 import javafx.scene.text.FontWeight
+import tornadofx.Dimension
 import tornadofx.Stylesheet
 import tornadofx.box
 import tornadofx.css
 import tornadofx.cssclass
+import tornadofx.cssproperty
 import tornadofx.importStylesheet
 import tornadofx.loadFont
 import tornadofx.mixin
@@ -236,6 +238,15 @@ abstract class Theme : Stylesheet(), ThemeColors {
             backgroundRadius = multi(box(RADIUS_MEDIUM))
         }
 
+        jfxSpinner {
+            jfxSpinnerRadius.set(24.px)
+
+            jfxSpinnerCircularIndicator {
+                stroke = colorSecondary
+                strokeWidth = 4.px
+            }
+        }
+
         listViewPressableCellStyle {
             listCell {
                 // Apply pressed state only for filled, not for empty list cells
@@ -401,6 +412,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
     }
 
     companion object {
+        // CSS classes
         val backgroundAbstractStyle by cssclass()
         val backgroundOverlayStyle by cssclass()
         val backgroundPressableStyle by cssclass()
@@ -410,6 +422,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val buttonSecondaryStyle by cssclass()
         val cardEmphasizedStyle by cssclass()
         val cardTranslucentStyle by cssclass()
+        val jfxSpinner by cssclass("jfx-spinner")
+        val jfxSpinnerCircularIndicator by cssclass("arc")
         val listViewPressableCellStyle by cssclass()
         val listViewSelectableCellStyle by cssclass()
         val listViewStaticBackgroundStyle by cssclass()
@@ -432,6 +446,9 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val textSubtitle2Style by cssclass()
         val toolbarStyle by cssclass()
         val vectorDrawableIcon by cssclass()
+
+        // CSS properties
+        val jfxSpinnerRadius by cssproperty<Dimension<Dimension.LinearUnits>>("-jfx-radius")
     }
 }
 

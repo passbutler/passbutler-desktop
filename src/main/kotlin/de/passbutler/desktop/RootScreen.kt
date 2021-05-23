@@ -10,6 +10,7 @@ import de.passbutler.desktop.ui.UIPresenter
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bind
 import de.passbutler.desktop.ui.bottomDropShadow
+import de.passbutler.desktop.ui.jfxSpinner
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
 import de.passbutler.desktop.ui.showSaveVaultFileChooser
 import de.passbutler.desktop.ui.snackbarBannerView
@@ -33,7 +34,6 @@ import tornadofx.hbox
 import tornadofx.item
 import tornadofx.menu
 import tornadofx.menubar
-import tornadofx.progressindicator
 import tornadofx.separator
 import tornadofx.stackpane
 import tornadofx.top
@@ -85,7 +85,7 @@ class RootScreen : BaseView(), RequestSending {
         return hbox(alignment = Pos.CENTER) {
             addClass(Theme.backgroundScrimProgressStyle)
 
-            progressindicator()
+            jfxSpinner()
 
             isVisible = false
         }
