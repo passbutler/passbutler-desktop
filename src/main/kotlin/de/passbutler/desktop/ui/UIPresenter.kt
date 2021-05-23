@@ -16,7 +16,8 @@ import kotlin.reflect.KClass
 
 class UIPresenter(
     private val rootScreen: RootScreen
-) : UIPresenting, DebouncedUIPresenting,
+) : UIPresenting,
+    DebouncedUIPresenting,
     ProgressPresenting by ProgressPresenter(rootScreen.progressView),
     BannerPresenting by BannerPresenter(rootScreen.bannerView) {
 
@@ -28,7 +29,7 @@ class UIPresenter(
         val debouncedViewTransactionEnsured = ensureDebouncedViewTransaction().takeIf { userTriggered } ?: true
 
         if (debouncedViewTransactionEnsured) {
-            rootScreen.contentContainer.getChildList()?.apply {
+            rootScreen.contentContainer.getChildList()?.let { contentContainerChildList ->
                 val screenInstance = find(screenClass, params = parameters)
                 rootScreen.titleProperty.bind(screenInstance.titleProperty)
 
@@ -37,12 +38,12 @@ class UIPresenter(
                     screenInstance.uiPresentingDelegate = this@UIPresenter
                 }
 
-                val existingScreen = lastOrNull()
+                val existingScreen = contentContainerChildList.lastOrNull()
 
                 if (existingScreen != null) {
                     existingScreen.replaceWith(screenInstance.root, transitionType.createViewTransition())
                 } else {
-                    add(screenInstance.root)
+                    contentContainerChildList.add(screenInstance.root)
                 }
 
                 shownScreenClass = screenClass
