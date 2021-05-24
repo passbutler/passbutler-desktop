@@ -54,11 +54,11 @@ class ImportViewModel : ViewModel(), UserViewModelUsingViewModel {
 
 object ImportFileEmptyException : IllegalStateException("The file to import seems to be empty!")
 
-private interface ImportProvider {
+interface ImportProvider {
     suspend fun import(file: File): Result<List<ItemEditingViewModel.ItemModel.Imported>>
 }
 
-private class KeePassX2ImportProvider : ImportProvider {
+class KeePassX2ImportProvider : ImportProvider {
     override suspend fun import(file: File): Result<List<ItemEditingViewModel.ItemModel.Imported>> {
         return withContext(Dispatchers.IO) {
             try {
@@ -91,9 +91,13 @@ private class KeePassX2ImportProvider : ImportProvider {
             }
         }
     }
+
+    companion object {
+        const val RECYCLE_BIN_NAME = "Recycle Bin"
+    }
 }
 
-private class KeePass2ImportProvider : ImportProvider {
+class KeePass2ImportProvider : ImportProvider {
     override suspend fun import(file: File): Result<List<ItemEditingViewModel.ItemModel.Imported>> {
         return withContext(Dispatchers.IO) {
             try {

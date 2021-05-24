@@ -5,6 +5,7 @@ import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.base.PathProvider
 import de.passbutler.desktop.ui.NavigationMenuFragment
+import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
@@ -20,10 +21,13 @@ import javafx.stage.FileChooser
 import tornadofx.FX.Companion.messages
 import tornadofx.FileChooserMode
 import tornadofx.action
+import tornadofx.addClass
 import tornadofx.chooseFile
 import tornadofx.get
+import tornadofx.hbox
 import tornadofx.paddingAll
 import tornadofx.paddingTop
+import tornadofx.putString
 import tornadofx.vbox
 import java.io.File
 
@@ -64,16 +68,28 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
                 text = messages["import_keepassx2_description"]
             }
 
+            val recycleBinName = KeePassX2ImportProvider.RECYCLE_BIN_NAME
+
             textLabelBodyOrder2 {
                 paddingTop = marginS.value
-                text = messages["import_keepassx2_language_hint"]
+                text = messages["import_keepassx2_language_hint"].format(recycleBinName)
             }
 
-            vbox {
+            hbox {
                 paddingTop = marginM.value
+                spacing = marginM.value
 
                 setupImportButton(messages["import_keepassx2_button_text"], messages["import_keepassx2_file_extension_description"]) { chosenFile ->
                     viewModel.importKeePass2X(chosenFile)
+                }
+
+                jfxButtonRaised(messages["general_copy_button_title"].format(recycleBinName)) {
+                    addClass(Theme.buttonSecondaryStyle)
+
+                    action {
+                        clipboard.putString(recycleBinName)
+                        showInformation(messages["general_copy_to_clipboard_successful_message"])
+                    }
                 }
             }
         }

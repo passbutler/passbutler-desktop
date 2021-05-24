@@ -9,6 +9,7 @@
 - Recent vault files menu
 - Support of other operating systems than Linux (different configuration directory locations)
 - Confirmation dialogs for destructive actions (close vault and item deletion)
+- Button to copy recycle bin name string to clipboard in the import KeePassX 2 section
 
 ## Changed
 - Allow to copy item details of read-only items (do not disable them anymore) - the save and delete button is hidden instead of disabled to avoid user confusion
