@@ -14,6 +14,7 @@ import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelBodyOrder2
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
+import de.passbutler.desktop.ui.textLabelHeadlineOrder2
 import javafx.scene.Node
 import javafx.stage.FileChooser
 import tornadofx.FX.Companion.messages
@@ -55,64 +56,69 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
     }
 
     private fun Node.setupKeePassX2Section() {
-        setupImportSection(
-            messages["import_keepassx2_header"],
-            messages["import_keepassx2_description"],
-            messages["import_keepassx2_language_hint"],
-            messages["import_keepassx2_button_text"],
-            messages["import_keepassx2_file_extension_description"]
-        ) { chosenFile ->
-            viewModel.importKeePass2X(chosenFile)
-        }
-    }
-
-    private fun Node.setupKeePass2Section() {
-        setupImportSection(
-            messages["import_keepass2_header"],
-            messages["import_keepass2_description"],
-            messages["import_keepass2_export_format_hint"],
-            messages["import_keepass2_button_text"],
-            messages["import_keepass2_file_extension_description"]
-        ) { chosenFile ->
-            viewModel.importKeePass2(chosenFile)
-        }
-    }
-
-    private fun Node.setupImportSection(
-        header: String,
-        description1: String,
-        description2: String,
-        buttonText: String,
-        fileExtensionDescription: String,
-        importBlock: suspend (File) -> Result<Int>
-    ) {
         vbox {
-            textLabelHeadlineOrder1(header)
+            textLabelHeadlineOrder2(messages["import_keepassx2_header"])
 
             textLabelBodyOrder1 {
                 paddingTop = marginS.value
-                text = description1
+                text = messages["import_keepassx2_description"]
             }
 
             textLabelBodyOrder2 {
                 paddingTop = marginS.value
-                text = description2
+                text = messages["import_keepassx2_language_hint"]
             }
 
             vbox {
                 paddingTop = marginM.value
 
-                jfxButtonRaised(buttonText) {
-                    action {
-                        val extensionFilter = createFileChooserExtensionFilter(fileExtensionDescription)
-
-                        showImportFileChooser(buttonText, extensionFilter) { chosenFile ->
-                            importChosenFile(chosenFile, importBlock)
-                        }
-                    }
+                setupImportButton(messages["import_keepassx2_button_text"], messages["import_keepassx2_file_extension_description"]) { chosenFile ->
+                    viewModel.importKeePass2X(chosenFile)
                 }
             }
         }
+    }
+
+    private fun Node.setupKeePass2Section() {
+        vbox {
+            textLabelHeadlineOrder2(messages["import_keepass2_header"])
+
+            textLabelBodyOrder1 {
+                paddingTop = marginS.value
+                text = messages["import_keepass2_description"]
+            }
+
+            textLabelBodyOrder2 {
+                paddingTop = marginS.value
+                text = messages["import_keepass2_export_format_hint"]
+            }
+
+            vbox {
+                paddingTop = marginM.value
+
+                setupImportButton(messages["import_keepass2_button_text"], messages["import_keepass2_file_extension_description"]) { chosenFile ->
+                    viewModel.importKeePass2(chosenFile)
+                }
+            }
+        }
+    }
+
+    private fun Node.setupImportButton(buttonText: String, fileExtensionDescription: String, importBlock: suspend (File) -> Result<Int>) {
+        jfxButtonRaised(buttonText) {
+            action {
+                val extensionFilter = createFileChooserExtensionFilter(fileExtensionDescription)
+
+                showImportFileChooser(buttonText, extensionFilter) { chosenFile ->
+                    importChosenFile(chosenFile, importBlock)
+                }
+            }
+        }
+    }
+
+    private fun createFileChooserExtensionFilter(userFacingFileExtensionDescription: String): Array<FileChooser.ExtensionFilter> {
+        val userFacingFileExtensionPattern = "*.csv"
+        val extensionFilter = FileChooser.ExtensionFilter("$userFacingFileExtensionDescription ($userFacingFileExtensionPattern)", userFacingFileExtensionPattern)
+        return arrayOf(extensionFilter)
     }
 
     private fun showImportFileChooser(title: String, extensionFilter: Array<FileChooser.ExtensionFilter>, chosenFileBlock: (File) -> Unit) {
@@ -121,12 +127,6 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
         chooseFile(title, extensionFilter, initialDirectory = homeDirectory, mode = FileChooserMode.Single).firstOrNull()?.let {
             chosenFileBlock(it)
         }
-    }
-
-    private fun createFileChooserExtensionFilter(userFacingFileExtensionDescription: String): Array<FileChooser.ExtensionFilter> {
-        val userFacingFileExtensionPattern = "*.csv"
-        val extensionFilter = FileChooser.ExtensionFilter("$userFacingFileExtensionDescription ($userFacingFileExtensionPattern)", userFacingFileExtensionPattern)
-        return arrayOf(extensionFilter)
     }
 
     private fun importChosenFile(chosenFile: File, importBlock: suspend (File) -> Result<Int>) {
