@@ -33,6 +33,7 @@ import tornadofx.hyperlink
 import tornadofx.paddingAll
 import tornadofx.paddingLeft
 import tornadofx.paddingTop
+import tornadofx.stackpane
 import tornadofx.textflow
 import tornadofx.vbox
 import java.io.File
@@ -90,9 +91,9 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
 
     private fun VBox.setupPremiumKeySection() {
         vbox {
-            textLabelHeadlineOrder1(messages["premium_header"])
+            textLabelHeadlineOrder2(messages["premium_header"])
 
-            vbox {
+            stackpane {
                 paddingTop = marginS.value
 
                 setupNoPremiumKeyView()
