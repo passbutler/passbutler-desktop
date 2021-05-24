@@ -11,6 +11,7 @@ import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bind
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.jfxSpinner
+import de.passbutler.desktop.ui.showDangerousConfirmDialog
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
 import de.passbutler.desktop.ui.showSaveVaultFileChooser
 import de.passbutler.desktop.ui.snackbarBannerView
@@ -53,6 +54,9 @@ class RootScreen : BaseView(), RequestSending {
     lateinit var bannerView: BannerView
         private set
 
+    lateinit var dialogContainerView: StackPane
+        private set
+
     private var menuView: Menu? = null
 
     private val viewModel by injectRootViewModel()
@@ -64,6 +68,7 @@ class RootScreen : BaseView(), RequestSending {
                     contentContainer = stackpane()
                     progressView = createProgressView()
                     bannerView = createBannerView()
+                    dialogContainerView = createDialogContainerView()
                 }
             }
 
@@ -93,6 +98,14 @@ class RootScreen : BaseView(), RequestSending {
 
     private fun StackPane.createBannerView(): BannerView {
         return snackbarBannerView(this)
+    }
+
+    private fun StackPane.createDialogContainerView(): StackPane {
+        return stackpane {
+            addClass(Theme.backgroundScrimDialogStyle)
+
+            isVisible = false
+        }
     }
 
     override fun onDock() {
@@ -154,7 +167,7 @@ class RootScreen : BaseView(), RequestSending {
             menu(messages["menu_recent_vaults"]) {
                 recentVaultFiles.forEach {
                     item(it.absolutePath).action {
-                        openVaultClicked(it)
+                        openRecentVaultClicked(it)
                     }
                 }
 
@@ -182,6 +195,20 @@ class RootScreen : BaseView(), RequestSending {
     }
 
     private fun createVaultClicked() {
+        if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn) {
+            showDangerousConfirmDialog(
+                title = messages["general_close_vault_confirmation_title"],
+                positiveActionTitle = messages["general_confirm"],
+                positiveClickAction = {
+                    createVault()
+                }
+            )
+        } else {
+            createVault()
+        }
+    }
+
+    private fun createVault() {
         showSaveVaultFileChooser(messages["menu_create_vault"]) { chosenFile ->
             launchRequestSending(
                 handleFailure = {
@@ -199,16 +226,44 @@ class RootScreen : BaseView(), RequestSending {
     }
 
     private fun openVaultChooserClicked() {
-        showOpenVaultFileChooser(messages["menu_open_vault"]) { chosenFile ->
-            openVaultClicked(chosenFile)
+        if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn) {
+            showDangerousConfirmDialog(
+                title = messages["general_close_vault_confirmation_title"],
+                positiveActionTitle = messages["general_confirm"],
+                positiveClickAction = {
+                    chooseVault()
+                }
+            )
+        } else {
+            chooseVault()
         }
     }
 
-    private fun openVaultClicked(vaultFile: File) {
+    private fun chooseVault() {
+        showOpenVaultFileChooser(messages["menu_open_vault"]) { chosenFile ->
+            openVault(chosenFile)
+        }
+    }
+
+    private fun openVault(vaultFile: File) {
         launchRequestSending(
             handleFailure = { showError(messages["general_open_vault_failed_title"]) }
         ) {
             viewModel.openVault(vaultFile)
+        }
+    }
+
+    private fun openRecentVaultClicked(vaultFile: File) {
+        if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn) {
+            showDangerousConfirmDialog(
+                title = messages["general_close_vault_confirmation_title"],
+                positiveActionTitle = messages["general_confirm"],
+                positiveClickAction = {
+                    openVault(vaultFile)
+                }
+            )
+        } else {
+            openVault(vaultFile)
         }
     }
 
@@ -219,6 +274,17 @@ class RootScreen : BaseView(), RequestSending {
     }
 
     private fun closeVaultClicked() {
+        // Menu item is only shown if logged-in, so no check necessary
+        showDangerousConfirmDialog(
+            title = messages["general_close_vault_confirmation_title"],
+            positiveActionTitle = messages["general_confirm"],
+            positiveClickAction = {
+                closeVault()
+            }
+        )
+    }
+
+    private fun closeVault() {
         launchRequestSending(
             handleFailure = { showError(messages["overview_logout_failed_title"]) }
         ) {

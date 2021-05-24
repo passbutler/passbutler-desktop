@@ -22,30 +22,48 @@ interface BaseUIComponent : UIPresenting, CoroutineScope {
     var uiPresentingDelegate: UIPresenting?
 
     override fun <T : UIComponent> showScreen(screenClass: KClass<T>, parameters: Map<*, Any?>?, userTriggered: Boolean, transitionType: TransitionType) {
-        uiPresentingDelegate?.showScreen(screenClass, parameters, userTriggered, transitionType)
+        requireUIPresentingDelegate().showScreen(screenClass, parameters, userTriggered, transitionType)
     }
 
     override fun <T : UIComponent> isScreenShown(screenClass: KClass<T>): Boolean {
-        return uiPresentingDelegate?.isScreenShown(screenClass) ?: false
+        return requireUIPresentingDelegate().isScreenShown(screenClass)
+    }
+
+    override fun shownScreen(): UIComponent {
+        return requireUIPresentingDelegate().shownScreen()
     }
 
     override fun showProgress() {
-        uiPresentingDelegate?.showProgress()
+        requireUIPresentingDelegate().showProgress()
     }
 
     override fun hideProgress() {
-        uiPresentingDelegate?.hideProgress()
+        requireUIPresentingDelegate().hideProgress()
     }
 
     override fun showInformation(message: String) {
-        uiPresentingDelegate?.showInformation(message)
+        requireUIPresentingDelegate().showInformation(message)
     }
 
     override fun showError(message: String) {
-        uiPresentingDelegate?.showError(message)
+        requireUIPresentingDelegate().showError(message)
+    }
+
+    override fun showDialog(dialog: Dialog) {
+        requireUIPresentingDelegate().showDialog(dialog)
+    }
+
+    override fun dismissDialog() {
+        requireUIPresentingDelegate().dismissDialog()
     }
 
     fun addUndockedObserver(observer: () -> Unit)
+
+    private fun requireUIPresentingDelegate(): UIPresenting {
+        return uiPresentingDelegate ?: throw UIPresentingDelegateUninitializedException
+    }
+
+    object UIPresentingDelegateUninitializedException : IllegalStateException("The UIPresenting delegate is not initialized!")
 }
 
 /**

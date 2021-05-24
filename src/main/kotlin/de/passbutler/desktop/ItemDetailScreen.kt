@@ -26,6 +26,7 @@ import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.setScrollSpeed
+import de.passbutler.desktop.ui.showConfirmDialog
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.sp
 import de.passbutler.desktop.ui.textLabelBodyOrder1
@@ -357,12 +358,22 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     private fun Node.setupDeleteButton() {
         jfxButtonRaised(messages["itemdetail_delete_button_title"]) {
             action {
-                deleteClicked()
+                deleteItemClicked()
             }
         }
     }
 
-    private fun deleteClicked() {
+    private fun deleteItemClicked() {
+        showConfirmDialog(
+            title = messages["itemdetail_delete_confirmation_title"],
+            positiveActionTitle = messages["itemdetail_delete_confirmation_button_title"],
+            positiveClickAction = {
+                deleteItem()
+            }
+        )
+    }
+
+    private fun deleteItem() {
         launchRequestSending(
             handleSuccess = {
                 showInformation(messages["itemdetail_delete_successful_message"])

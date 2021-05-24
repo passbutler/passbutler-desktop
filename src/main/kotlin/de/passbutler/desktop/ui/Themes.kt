@@ -231,6 +231,10 @@ abstract class Theme : Stylesheet(), ThemeColors {
             }
         }
 
+        backgroundScrimDialogStyle {
+            backgroundColor = multi(Color.web(colorOnSurface.css, 0.32))
+        }
+
         backgroundScrimProgressStyle {
             backgroundColor = multi(scrimBackground)
         }
@@ -462,6 +466,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val backgroundAbstractStyle by cssclass()
         val backgroundOverlayStyle by cssclass()
         val backgroundPressableStyle by cssclass()
+        val backgroundScrimDialogStyle by cssclass()
         val backgroundScrimProgressStyle by cssclass()
         val backgroundStyle by cssclass()
         val buttonFloatingActionStyle by cssclass()

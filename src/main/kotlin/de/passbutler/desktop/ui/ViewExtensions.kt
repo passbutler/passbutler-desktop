@@ -40,7 +40,7 @@ var Node.isEnabled: Boolean
         isDisable = !value
     }
 
-fun Node.showFadeInOutAnimation(shouldShow: Boolean) {
+fun Node.showFadeInOutAnimation(shouldShow: Boolean, finishedCallback: (() -> Unit)? = null) {
     val animationProperty = "de.passbutler.desktop.ui.showFadeInOutAnimation"
 
     // Cancel previous animation if any is running to avoid produce out-of-sync view state
@@ -50,13 +50,16 @@ fun Node.showFadeInOutAnimation(shouldShow: Boolean) {
         isVisible = true
         opacity = 0.0
         properties[animationProperty] = fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 1.0).apply {
-            onFinished = null
+            setOnFinished {
+                finishedCallback?.invoke()
+            }
         }
     } else {
         opacity = 1.0
         properties[animationProperty] = fade(FADE_TRANSITION_DURATION.toJavaFxDuration(), 0.0).apply {
             setOnFinished {
                 isVisible = false
+                finishedCallback?.invoke()
             }
         }
     }
