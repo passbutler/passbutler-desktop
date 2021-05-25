@@ -15,6 +15,7 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.showConfirmDialog
 import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelBodyOrder2
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
@@ -195,6 +196,17 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
     }
 
     private fun removePremiumKeyClicked() {
+        showConfirmDialog(
+            title = messages["premium_remove_premium_key_confirmation_title"],
+            message = messages["premium_remove_premium_key_confirmation_message"],
+            positiveActionTitle = messages["general_remove"],
+            positiveClickAction = {
+                removePremiumKey()
+            }
+        )
+    }
+
+    private fun removePremiumKey() {
         launchRequestSending(
             handleSuccess = { showInformation(messages["premium_remove_premium_key_successful_message"]) },
             handleFailure = { showError(messages["premium_remove_premium_key_failed_general_title"]) }
