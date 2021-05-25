@@ -13,7 +13,7 @@
 - Confirmation dialog for remove Premium Key action
 
 ## Changed
-- Allow to copy item details of read-only items (do not disable them anymore) - the save and delete button is hidden instead of disabled to avoid user confusion
+- Allow copying item details of read-only items (do not disable them anymore) - the save and delete button is hidden instead of disabled to avoid user confusion
 - The filter view is focused automatically on overview
 - Automatically focus first element if the filter is active
 
