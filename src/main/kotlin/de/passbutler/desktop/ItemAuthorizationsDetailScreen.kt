@@ -18,6 +18,7 @@ import de.passbutler.desktop.ui.jfxButtonRaised
 import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.showConfirmDialog
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
@@ -78,7 +79,27 @@ class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itema
     }
 
     private fun showPreviousScreen() {
-        showScreenUnanimated(ItemDetailScreen::class, parameters = params)
+        val showPreviousScreenAction = {
+            showScreenUnanimated(OverviewScreen::class)
+        }
+
+        if (viewModel.itemAuthorizationEditingViewModelsModified.value) {
+            showDiscardChangesConfirmDialog {
+                showPreviousScreenAction()
+            }
+        } else {
+            showPreviousScreenAction()
+        }
+    }
+
+    override fun onNavigationItemClicked(clickedAction: () -> Unit) {
+        if (viewModel.itemAuthorizationEditingViewModelsModified.value) {
+            showDiscardChangesConfirmDialog {
+                super.onNavigationItemClicked(clickedAction)
+            }
+        } else {
+            super.onNavigationItemClicked(clickedAction)
+        }
     }
 
     override fun Node.setupMainContent() {
@@ -198,6 +219,15 @@ class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itema
         launch {
             viewModel.initializeItemAuthorizationEditingViewModels()
         }
+    }
+
+    private fun showDiscardChangesConfirmDialog(positiveClickAction: () -> Unit) {
+        showConfirmDialog(
+            title = messages["itemauthorizations_discard_changes_confirmation_title"],
+            message = messages["itemauthorizations_discard_changes_confirmation_message"],
+            positiveActionTitle = messages["general_discard"],
+            positiveClickAction = positiveClickAction
+        )
     }
 }
 

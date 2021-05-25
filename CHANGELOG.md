@@ -11,6 +11,7 @@
 - Confirmation dialogs for destructive actions (close vault and item deletion)
 - Button to copy recycle bin name string to clipboard in the import KeePassX 2 section
 - Confirmation dialog for remove Premium Key action
+- Confirmation dialog for discard item and item authorization changes action
 
 ## Changed
 - Allow copying item details of read-only items (do not disable them anymore) - the save and delete button is hidden instead of disabled to avoid user confusion

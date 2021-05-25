@@ -112,7 +112,27 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     }
 
     private fun showPreviousScreen() {
-        showScreenUnanimated(OverviewScreen::class)
+        val showPreviousScreenAction = {
+            showScreenUnanimated(OverviewScreen::class)
+        }
+
+        if (isItemModified.value) {
+            showDiscardChangesConfirmDialog {
+                showPreviousScreenAction()
+            }
+        } else {
+            showPreviousScreenAction()
+        }
+    }
+
+    override fun onNavigationItemClicked(clickedAction: () -> Unit) {
+        if (isItemModified.value) {
+            showDiscardChangesConfirmDialog {
+                super.onNavigationItemClicked(clickedAction)
+            }
+        } else {
+            super.onNavigationItemClicked(clickedAction)
+        }
     }
 
     override fun Node.setupMainContent() {
@@ -395,5 +415,14 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                 messages["itemdetail_title_edit"]
             }
         }
+    }
+
+    private fun showDiscardChangesConfirmDialog(positiveClickAction: () -> Unit) {
+        showConfirmDialog(
+            title = messages["itemdetail_discard_changes_confirmation_title"],
+            message = messages["itemdetail_discard_changes_confirmation_message"],
+            positiveActionTitle = messages["general_discard"],
+            positiveClickAction = positiveClickAction
+        )
     }
 }

@@ -84,8 +84,14 @@ interface NavigationMenuComponent : BaseUIComponent, NavigationMenuUsing {
             graphic = vectorDrawableIcon(icon)
             graphicTextGap = marginS.value
 
-            onLeftClick(action = clickedAction)
+            onLeftClick {
+                onNavigationItemClicked(clickedAction)
+            }
         }
+    }
+
+    fun onNavigationItemClicked(clickedAction: () -> Unit) {
+        clickedAction.invoke()
     }
 
     fun Node.setupMainContent()
