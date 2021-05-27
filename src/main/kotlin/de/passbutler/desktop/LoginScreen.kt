@@ -19,6 +19,7 @@ import de.passbutler.desktop.ui.bindChecked
 import de.passbutler.desktop.ui.bindInputOptional
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.jfxCheckBox
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showFadeInOutAnimation
@@ -37,7 +38,6 @@ import tornadofx.Fieldset
 import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
-import tornadofx.checkbox
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
@@ -196,7 +196,7 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
     }
 
     private fun Node.setupLocalLoginCheckbox() {
-        checkbox(messages["login_local_login_label"]) {
+        jfxCheckBox(messages["login_local_login_label"]) {
             bindChecked(this@LoginScreen, isLocalLogin)
         }
     }

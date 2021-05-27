@@ -1,6 +1,7 @@
 package de.passbutler.desktop.ui
 
 import com.jfoenix.controls.JFXButton
+import com.jfoenix.controls.JFXCheckBox
 import com.jfoenix.controls.JFXSpinner
 import com.jfoenix.controls.JFXToggleButton
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
@@ -68,6 +69,12 @@ fun Node.showFadeInOutAnimation(shouldShow: Boolean, finishedCallback: (() -> Un
 fun JavaTimeDuration.toJavaFxDuration(): JavaFxDuration {
     return JavaFxDuration(toMillis().toDouble())
 }
+
+/**
+ * Checkbox
+ */
+
+fun EventTarget.jfxCheckBox(text: String = "", op: JFXCheckBox.() -> Unit = {}) = JFXCheckBox(text).attachTo(this, op)
 
 /**
  * Buttons

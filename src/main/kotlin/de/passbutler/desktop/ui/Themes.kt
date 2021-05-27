@@ -107,6 +107,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         checkBox {
             +inputColorsMixin
+
+            fontSize = 14.sp
         }
 
         contextMenu {
@@ -282,6 +284,10 @@ abstract class Theme : Stylesheet(), ThemeColors {
         cardTranslucentStyle {
             backgroundColor = multi(Color.web(colorSurface.css, 0.65))
             backgroundRadius = multi(box(RADIUS_MEDIUM))
+        }
+
+        jfxCheckBox {
+            jfxCheckBoxCheckedColor.set(colorSecondary)
         }
 
         jfxSpinner {
@@ -480,6 +486,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val buttonTextStyle by cssclass()
         val cardEmphasizedStyle by cssclass()
         val cardTranslucentStyle by cssclass()
+        val jfxCheckBox by cssclass("jfx-check-box")
         val jfxSpinner by cssclass("jfx-spinner")
         val jfxSpinnerCircularIndicator by cssclass("arc")
         val jfxToggleButton by cssclass("jfx-toggle-button")
@@ -507,6 +514,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val vectorDrawableIcon by cssclass()
 
         // CSS properties
+        val jfxCheckBoxCheckedColor by cssproperty<Paint>("-jfx-checked-color")
         val jfxSpinnerRadius by cssproperty<Dimension<Dimension.LinearUnits>>("-jfx-radius")
         val jfxToggleButtonColor by cssproperty<Paint>("-jfx-toggle-color")
     }
