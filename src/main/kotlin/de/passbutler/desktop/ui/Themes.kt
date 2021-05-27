@@ -9,6 +9,7 @@ import javafx.geometry.Pos
 import javafx.scene.layout.BackgroundRepeat
 import javafx.scene.layout.BackgroundSize
 import javafx.scene.paint.Color
+import javafx.scene.paint.Paint
 import javafx.scene.text.FontWeight
 import tornadofx.Dimension
 import tornadofx.Stylesheet
@@ -292,6 +293,10 @@ abstract class Theme : Stylesheet(), ThemeColors {
             }
         }
 
+        jfxToggleButton {
+            jfxToggleButtonColor.set(colorSecondary)
+        }
+
         listViewPressableCellStyle {
             listCell {
                 // Apply pressed state only for filled, not for empty list cells
@@ -477,6 +482,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val cardTranslucentStyle by cssclass()
         val jfxSpinner by cssclass("jfx-spinner")
         val jfxSpinnerCircularIndicator by cssclass("arc")
+        val jfxToggleButton by cssclass("jfx-toggle-button")
         val listViewPressableCellStyle by cssclass()
         val listViewSelectableCellStyle by cssclass()
         val listViewStaticBackgroundStyle by cssclass()
@@ -502,6 +508,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         // CSS properties
         val jfxSpinnerRadius by cssproperty<Dimension<Dimension.LinearUnits>>("-jfx-radius")
+        val jfxToggleButtonColor by cssproperty<Paint>("-jfx-toggle-color")
     }
 }
 
