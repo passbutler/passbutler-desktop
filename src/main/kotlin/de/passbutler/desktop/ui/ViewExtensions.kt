@@ -80,31 +80,20 @@ fun EventTarget.jfxCheckBox(text: String = "", op: JFXCheckBox.() -> Unit = {}) 
  * Buttons
  */
 
-fun EventTarget.jfxButtonBase(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = JFXButton().attachTo(this, op) {
-    if (graphic != null) it.graphic = graphic
-
-    it.textProperty().addListener { _, _, newValue ->
-        it.text = newValue.uppercase(FX.locale)
+fun EventTarget.jfxButton(text: String = "", op: JFXButton.() -> Unit = {}) = JFXButton().attachTo(this) {
+    textProperty().addListener { _, _, newValue ->
+        this.text = newValue.uppercase(FX.locale)
     }
 
     // Initially trigger text listener above
-    it.text = text
-}
+    this.text = text
 
-fun EventTarget.jfxButtonFlat(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = jfxButtonBase(text, graphic) {
-    buttonType = JFXButton.ButtonType.FLAT
     op.invoke(this)
 }
 
-fun EventTarget.jfxButtonRaised(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = jfxButtonBase(text, graphic) {
-    buttonType = JFXButton.ButtonType.RAISED
-    op.invoke(this)
-}
-
-fun EventTarget.jfxFloatingActionButtonRaised(text: String = "", graphic: Node? = null, op: JFXButton.() -> Unit = {}) = jfxButtonBase(text, graphic) {
+fun EventTarget.jfxFloatingActionButton(text: String = "", op: JFXButton.() -> Unit = {}) = jfxButton(text) {
     addClass(Theme.buttonFloatingActionStyle)
 
-    buttonType = JFXButton.ButtonType.RAISED
     shape = Circle(1.px.value)
 
     op.invoke(this)

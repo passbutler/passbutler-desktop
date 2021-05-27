@@ -14,7 +14,7 @@ import de.passbutler.desktop.ui.createCancelButton
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createEmptyScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
-import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.jfxToggleButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
@@ -192,7 +192,9 @@ class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itema
     }
 
     private fun Node.setupSaveButton() {
-        jfxButtonRaised(messages["itemauthorizations_save_button_title"]) {
+        jfxButton(messages["itemauthorizations_save_button_title"]) {
+            addClass(Theme.buttonPrimaryStyle)
+
             isDefaultButton = true
 
             bindEnabled(this@ItemAuthorizationsDetailScreen, viewModel.itemAuthorizationEditingViewModelsModified)

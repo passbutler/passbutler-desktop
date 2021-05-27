@@ -18,7 +18,7 @@ import de.passbutler.desktop.ui.bind
 import de.passbutler.desktop.ui.bindChecked
 import de.passbutler.desktop.ui.bindInputOptional
 import de.passbutler.desktop.ui.injectWithPrivateScope
-import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.jfxCheckBox
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
@@ -202,7 +202,9 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
     }
 
     private fun Node.setupLoginButton() {
-        jfxButtonRaised(messages["login_button_text"]) {
+        jfxButton(messages["login_button_text"]) {
+            addClass(Theme.buttonPrimaryStyle)
+
             useMaxWidth = true
             isDefaultButton = true
 

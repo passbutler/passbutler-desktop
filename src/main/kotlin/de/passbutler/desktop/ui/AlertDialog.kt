@@ -50,13 +50,13 @@ class AlertDialog(
                         paddingTop = marginM.value
                         spacing = marginM.value
 
-                        negativeButton = jfxButtonFlat {
+                        negativeButton = jfxButton {
                             addClass(Theme.buttonTextStyle)
                             addClass(Theme.alertDialogViewButtonNegativeStyle)
                             isCancelButton = true
                         }
 
-                        positiveButton = jfxButtonFlat {
+                        positiveButton = jfxButton {
                             addClass(Theme.buttonTextStyle)
                             addClass(Theme.alertDialogViewButtonPositiveStyle)
                             isDefaultButton = true

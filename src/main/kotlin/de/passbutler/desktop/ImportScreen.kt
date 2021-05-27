@@ -8,7 +8,7 @@ import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
-import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
@@ -83,7 +83,7 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
                     viewModel.importKeePass2X(chosenFile)
                 }
 
-                jfxButtonRaised(messages["general_copy_button_title"].format(recycleBinName)) {
+                jfxButton(messages["general_copy_button_title"].format(recycleBinName)) {
                     addClass(Theme.buttonSecondaryStyle)
 
                     action {
@@ -120,7 +120,9 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
     }
 
     private fun Node.setupImportButton(buttonText: String, fileExtensionDescription: String, importBlock: suspend (File) -> Result<Int>) {
-        jfxButtonRaised(buttonText) {
+        jfxButton(buttonText) {
+            addClass(Theme.buttonPrimaryStyle)
+
             action {
                 val extensionFilter = createFileChooserExtensionFilter(fileExtensionDescription)
 

@@ -4,7 +4,7 @@ import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.BaseFragment
 import de.passbutler.desktop.ui.Theme
-import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
@@ -116,7 +116,9 @@ class WelcomeScreen : BaseFragment(messages["welcome_title"]), RequestSending {
             vbox {
                 paddingTop = marginM.value
 
-                jfxButtonRaised(buttonTitle) {
+                jfxButton(buttonTitle) {
+                    addClass(Theme.buttonPrimaryStyle)
+
                     action(buttonAction)
                 }
             }

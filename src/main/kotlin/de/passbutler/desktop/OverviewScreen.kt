@@ -18,7 +18,7 @@ import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createEmptyScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
-import de.passbutler.desktop.ui.jfxFloatingActionButtonRaised
+import de.passbutler.desktop.ui.jfxFloatingActionButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.paneWithDropShadow
@@ -373,7 +373,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             // Do not consume clicks on lower panes
             isPickOnBounds = false
 
-            jfxFloatingActionButtonRaised("＋") {
+            jfxFloatingActionButton("＋") {
                 setOnAction {
                     addItemAction.invoke()
                 }

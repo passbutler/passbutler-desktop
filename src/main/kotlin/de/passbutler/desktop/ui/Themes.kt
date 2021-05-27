@@ -1,5 +1,6 @@
 package de.passbutler.desktop.ui
 
+import com.jfoenix.controls.JFXButton
 import de.passbutler.desktop.ui.ThemeConstants.OPACITY_DISABLED
 import de.passbutler.desktop.ui.ThemeConstants.OPACITY_PRESSED
 import de.passbutler.desktop.ui.ThemeConstants.RADIUS_MEDIUM
@@ -250,9 +251,14 @@ abstract class Theme : Stylesheet(), ThemeColors {
         buttonFloatingActionStyle {
             backgroundColor = multi(colorSecondary)
             fontSize = 28.sp
+            jfxButtonType.set(JFXButton.ButtonType.RAISED.toString())
             minHeight = 56.px
             minWidth = 56.px
             padding = box(marginS)
+        }
+
+        buttonPrimaryStyle {
+            jfxButtonType.set(JFXButton.ButtonType.RAISED.toString())
         }
 
         buttonSecondaryStyle {
@@ -260,16 +266,15 @@ abstract class Theme : Stylesheet(), ThemeColors {
             borderColor = multi(box(colorPrimary))
             borderRadius = multi(box(RADIUS_SMALL))
             borderWidth = multi(box(1.px))
+            jfxButtonType.set(JFXButton.ButtonType.FLAT.toString())
             textFill = colorPrimary
         }
 
         buttonTextStyle {
             backgroundColor = multi(transparent)
             borderColor = multi(box(transparent))
-
-            // Reset derived value to only use padding
-            minWidth = 0.px
-
+            jfxButtonType.set(JFXButton.ButtonType.FLAT.toString())
+            minWidth = 0.px // Reset derived value to only use padding
             padding = box(marginM)
             textFill = colorPrimary
         }
@@ -482,6 +487,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val backgroundScrimProgressStyle by cssclass()
         val backgroundStyle by cssclass()
         val buttonFloatingActionStyle by cssclass()
+        val buttonPrimaryStyle by cssclass()
         val buttonSecondaryStyle by cssclass()
         val buttonTextStyle by cssclass()
         val cardEmphasizedStyle by cssclass()
@@ -514,6 +520,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val vectorDrawableIcon by cssclass()
 
         // CSS properties
+        val jfxButtonType by cssproperty<String>("-jfx-button-type")
         val jfxCheckBoxCheckedColor by cssproperty<Paint>("-jfx-checked-color")
         val jfxSpinnerRadius by cssproperty<Dimension<Dimension.LinearUnits>>("-jfx-radius")
         val jfxToggleButtonColor by cssproperty<Paint>("-jfx-toggle-color")

@@ -14,7 +14,7 @@ import de.passbutler.desktop.ui.LONGPRESS_DURATION
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.bindInputOptional
 import de.passbutler.desktop.ui.injectWithPrivateScope
-import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBodyOrder1
@@ -143,7 +143,9 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
     }
 
     private fun Node.setupUnlockWithPasswordButton() {
-        jfxButtonRaised(messages["locked_screen_button_password_text"]) {
+        jfxButton(messages["locked_screen_button_password_text"]) {
+            addClass(Theme.buttonPrimaryStyle)
+
             useMaxWidth = true
             isDefaultButton = true
 

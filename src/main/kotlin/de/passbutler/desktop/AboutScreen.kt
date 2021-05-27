@@ -11,7 +11,7 @@ import de.passbutler.desktop.ui.bindTextAndVisibility
 import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createInformationView
-import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
@@ -110,7 +110,9 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
             vbox {
                 paddingTop = marginM.value
 
-                jfxButtonRaised(messages["premium_register_premium_key_button_text"]) {
+                jfxButton(messages["premium_register_premium_key_button_text"]) {
+                    addClass(Theme.buttonPrimaryStyle)
+
                     action {
                         registerPremiumKeyClicked()
                     }
@@ -151,7 +153,9 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
             setupPremiumKeyCard()
 
             vbox {
-                jfxButtonRaised(messages["premium_remove_premium_key_button_text"]) {
+                jfxButton(messages["premium_remove_premium_key_button_text"]) {
+                    addClass(Theme.buttonPrimaryStyle)
+
                     action {
                         removePremiumKeyClicked()
                     }

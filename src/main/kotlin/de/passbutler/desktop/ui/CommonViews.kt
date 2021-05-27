@@ -38,7 +38,7 @@ fun Node.createEmptyScreen(title: String, description: String): Node {
 }
 
 fun Node.createCancelButton(onAction: () -> Unit): Button {
-    return jfxButtonRaised(FX.messages["general_cancel"]) {
+    return jfxButton(FX.messages["general_cancel"]) {
         addClass(Theme.buttonSecondaryStyle)
 
         setOnAction {

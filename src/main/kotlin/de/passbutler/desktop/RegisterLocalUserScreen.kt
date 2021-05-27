@@ -15,11 +15,12 @@ import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.LONGPRESS_DURATION
 import de.passbutler.desktop.ui.NavigationMenuFragment
+import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.bindInputOptional
 import de.passbutler.desktop.ui.createCancelButton
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
-import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showScreenUnanimated
@@ -33,6 +34,7 @@ import tornadofx.FX.Companion.messages
 import tornadofx.Fieldset
 import tornadofx.ValidationContext
 import tornadofx.action
+import tornadofx.addClass
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
@@ -154,7 +156,9 @@ class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_
     }
 
     private fun Node.setupRegisterButton() {
-        jfxButtonRaised(messages["register_local_user_button_text"]) {
+        jfxButton(messages["register_local_user_button_text"]) {
+            addClass(Theme.buttonPrimaryStyle)
+
             isDefaultButton = true
 
             action {

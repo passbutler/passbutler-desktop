@@ -8,12 +8,13 @@ import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuFragment
+import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.bindInputOptional
 import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.createCancelButton
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
-import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showScreenUnanimated
@@ -27,6 +28,7 @@ import tornadofx.FX.Companion.messages
 import tornadofx.Fieldset
 import tornadofx.ValidationContext
 import tornadofx.action
+import tornadofx.addClass
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
@@ -141,7 +143,9 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
     }
 
     private fun Node.setupChangeButton() {
-        jfxButtonRaised(messages["change_master_password_button_text"]) {
+        jfxButton(messages["change_master_password_button_text"]) {
+            addClass(Theme.buttonPrimaryStyle)
+
             isDefaultButton = true
 
             action {

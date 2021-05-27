@@ -21,7 +21,7 @@ import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createInformationView
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.isEnabled
-import de.passbutler.desktop.ui.jfxButtonRaised
+import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
@@ -264,7 +264,9 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     }
 
     private fun Node.setupSaveButton() {
-        jfxButtonRaised(messages["itemdetail_save_button_title"]) {
+        jfxButton(messages["itemdetail_save_button_title"]) {
+            addClass(Theme.buttonPrimaryStyle)
+
             isDefaultButton = true
 
             bindVisibility(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
@@ -301,7 +303,9 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
             vbox {
                 paddingTop = marginM.value
 
-                jfxButtonRaised(messages["itemdetail_authorizations_button_text"]) {
+                jfxButton(messages["itemdetail_authorizations_button_text"]) {
+                    addClass(Theme.buttonPrimaryStyle)
+
                     isEnabled = viewModel.isItemAuthorizationAvailable
 
                     action {
@@ -376,7 +380,9 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     }
 
     private fun Node.setupDeleteButton() {
-        jfxButtonRaised(messages["itemdetail_delete_button_title"]) {
+        jfxButton(messages["itemdetail_delete_button_title"]) {
+            addClass(Theme.buttonPrimaryStyle)
+
             action {
                 deleteItemClicked()
             }
