@@ -7,7 +7,6 @@ import javafx.scene.layout.StackPane
 import tornadofx.CssRule
 import tornadofx.addClass
 import tornadofx.hbox
-import tornadofx.insets
 import tornadofx.paddingTop
 import tornadofx.vbox
 
@@ -32,8 +31,6 @@ class AlertDialog(
             vbox(alignment = Pos.CENTER) {
                 vbox(alignment = Pos.CENTER_LEFT) {
                     addClass(alertDialogTheme)
-
-                    padding = insets(marginM.value, marginM.value, marginS.value, marginM.value)
 
                     titleLabel = textLabelSubtitleOrder1 {
                         addClass(Theme.alertDialogViewTextTitleStyle)

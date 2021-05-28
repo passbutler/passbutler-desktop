@@ -199,6 +199,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
             backgroundRadius = multi(box(RADIUS_SMALL))
             minWidth = 350.px
             maxWidth = 560.px
+            padding = box(marginM, marginM, marginS, marginM)
 
             alertDialogViewTextTitleStyle {
                 textFill = Color.web(colorOnSurface.css, 0.87)
