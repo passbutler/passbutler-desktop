@@ -125,8 +125,21 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         hyperlink {
             borderWidth = multi(box(0.px))
+            fontSize = TEXT_SIZE_MEDIUM
             padding = box(0.px)
             underline = true
+
+            and(armed) {
+                textFill = textColorPrimary
+            }
+
+            and(visited) {
+                textFill = colorAccent
+
+                and(armed) {
+                    textFill = textColorPrimary
+                }
+            }
         }
 
         label {
