@@ -92,7 +92,7 @@ class BannerPresenter(private val bannerView: BannerView) : BannerPresenting {
 
 class DialogPresenter(private val dialogContainerView: Pane, private val screenPresenting: ScreenPresenting) : DialogPresenting {
 
-    private var acceleratorsCopy: Map<KeyCombination, () -> Unit>? = null
+    private var acceleratorsSnapshot: Map<KeyCombination, () -> Unit>? = null
 
     override fun showDialog(dialog: Dialog) {
         // If a previous dialog is still shown, restore accelerators and remove view first
@@ -123,7 +123,7 @@ class DialogPresenter(private val dialogContainerView: Pane, private val screenP
         val presentingScreen = screenPresenting.shownScreen()
 
         // Deep copy the current accelerators from `UIComponent`
-        acceleratorsCopy = presentingScreen.accelerators.toMap()
+        acceleratorsSnapshot = presentingScreen.accelerators.toMap()
 
         presentingScreen.accelerators.clear()
     }
@@ -131,10 +131,10 @@ class DialogPresenter(private val dialogContainerView: Pane, private val screenP
     private fun restoreAccelerators() {
         val presentingScreen = screenPresenting.shownScreen()
 
-        acceleratorsCopy?.let {
+        acceleratorsSnapshot?.let {
             presentingScreen.accelerators.putAll(it)
         }
 
-        acceleratorsCopy = null
+        acceleratorsSnapshot = null
     }
 }

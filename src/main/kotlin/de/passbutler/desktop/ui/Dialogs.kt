@@ -47,14 +47,18 @@ private fun DialogPresenting.createDialog(
 
         positiveButton.text = positiveActionTitle
         positiveButton.action {
-            positiveClickAction.invoke()
+            // Dismiss dialog first to be sure the `DialogPresenter` restores the accelerators snapshot to the correct screen
             dismissDialog()
+
+            positiveClickAction.invoke()
         }
 
         negativeButton.text = FX.messages["general_cancel"]
         negativeButton.action {
-            negativeClickAction?.invoke()
+            // Dismiss dialog first to be sure the `DialogPresenter` restores the accelerators snapshot to the correct screen
             dismissDialog()
+
+            negativeClickAction?.invoke()
         }
     }
 }
