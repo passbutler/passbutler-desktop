@@ -8,6 +8,7 @@ import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuFragment
+import de.passbutler.desktop.ui.PasswordGeneratorDialog
 import de.passbutler.desktop.ui.ScrollSpeed
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.ThemeFonts
@@ -38,6 +39,7 @@ import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
 import tornadofx.FX
 import tornadofx.Fieldset
@@ -50,12 +52,15 @@ import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
 import tornadofx.hbox
+import tornadofx.hyperlink
 import tornadofx.paddingAll
+import tornadofx.paddingBottom
 import tornadofx.paddingTop
 import tornadofx.scrollpane
 import tornadofx.style
 import tornadofx.textarea
 import tornadofx.textfield
+import tornadofx.textflow
 import tornadofx.vbox
 
 class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefaultNavigationMenu()), FormValidating, RequestSending {
@@ -102,6 +107,8 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
             ).any { it.isModified }
         }
     }
+
+    private lateinit var passwordField: TextField
 
     init {
         setupRootView()
@@ -172,6 +179,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
                 setupUsernameField()
                 setupPasswordField()
+                setupPasswordGeneratorText()
                 setupUrlField()
                 setupNotesField()
             }
@@ -219,10 +227,47 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Fieldset.setupPasswordField() {
         field(messages["itemdetail_password_hint"], orientation = Orientation.VERTICAL) {
-            unmaskablePasswordField(viewModel.hidePasswordsEnabled) {
+            val unmaskablePasswordField = unmaskablePasswordField(viewModel.hidePasswordsEnabled) {
                 bindInput(this@ItemDetailScreen, viewModel.password)
             }
+
+            passwordField = unmaskablePasswordField.wrappedPasswordField
         }
+    }
+
+    private fun Fieldset.setupPasswordGeneratorText() {
+        textflow {
+            // Add some extra spacing to separate from next field
+            paddingBottom = marginS.value
+
+            val generateWord = messages["itemdetail_password_generator_generate_word"]
+            hyperlink(generateWord) {
+                action {
+                    showPasswordGeneratorDialog()
+                }
+            }
+
+            val formattedText = messages["itemdetail_password_generator_text"].format(generateWord)
+            val formattedTextAfterGenerateWord = formattedText.substringAfter(generateWord)
+            textLabelBodyOrder1(formattedTextAfterGenerateWord)
+        }
+    }
+
+    private fun showPasswordGeneratorDialog() {
+        val passwordGeneratorDialog = PasswordGeneratorDialog(this).apply {
+            positiveButtonClicked = { newPassword ->
+                dismissDialog()
+
+                viewModel.password.value = newPassword
+                passwordField.requestFocus()
+            }
+
+            negativeButtonClicked = {
+                dismissDialog()
+            }
+        }
+
+        showDialog(passwordGeneratorDialog)
     }
 
     private fun Fieldset.setupUrlField() {

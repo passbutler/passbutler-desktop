@@ -2,6 +2,7 @@ package de.passbutler.desktop.ui
 
 import com.jfoenix.controls.JFXButton
 import com.jfoenix.controls.JFXCheckBox
+import com.jfoenix.controls.JFXSlider
 import com.jfoenix.controls.JFXSpinner
 import com.jfoenix.controls.JFXToggleButton
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
@@ -107,6 +108,14 @@ fun EventTarget.jfxToggleButton(text: String? = null, op: JFXToggleButton.() -> 
 fun ToggleButton.toggle() {
     isSelected = !isSelected
 }
+
+/**
+ * Slider
+ */
+
+fun EventTarget.jfxSlider(min: Double, max: Double, value: Double, op: JFXSlider.() -> Unit = {}) = JFXSlider(min, max, value).attachTo(this, op)
+
+fun EventTarget.jfxSlider(range: IntRange, value: Int, op: JFXSlider.() -> Unit = {}) = jfxSlider(range.first.toDouble(), range.last.toDouble(), value.toDouble(), op)
 
 /**
  * Spinner

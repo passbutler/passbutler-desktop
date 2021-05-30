@@ -60,6 +60,14 @@ interface ThemeColors {
 
 abstract class Theme : Stylesheet(), ThemeColors {
 
+    private val alertDialogThemeMixin = mixin {
+        backgroundColor = multi(colorSurface)
+        backgroundRadius = multi(box(RADIUS_SMALL))
+        maxWidth = 560.px
+        minWidth = 350.px
+        padding = box(marginM, marginM, marginS, marginM)
+    }
+
     private val contextMenuMixin = mixin {
         backgroundColor = multi(colorBackground)
 
@@ -204,15 +212,15 @@ abstract class Theme : Stylesheet(), ThemeColors {
     }
 
     private fun applyCustomStyles() {
-        select(
-            alertDialogThemeDefault,
-            alertDialogThemeDangerous
-        ) {
-            backgroundColor = multi(colorSurface)
-            backgroundRadius = multi(box(RADIUS_SMALL))
-            minWidth = 350.px
-            maxWidth = 560.px
-            padding = box(marginM, marginM, marginS, marginM)
+        alertDialogPasswordGeneratorTheme {
+            +alertDialogThemeMixin
+
+            // Limit max width to min width to avoid jumping layout when changing password length
+            maxWidth = minWidth
+        }
+
+        alertDialogThemeDefault {
+            +alertDialogThemeMixin
 
             alertDialogViewTextTitleStyle {
                 textFill = Color.web(colorOnSurface.css, 0.87)
@@ -224,6 +232,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         alertDialogThemeDangerous {
+            +alertDialogThemeMixin
+
             alertDialogViewTextTitleStyle {
                 fontWeight = FontWeight.BOLD
                 textFill = colorWarning
@@ -307,6 +317,20 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         jfxCheckBox {
             jfxCheckBoxCheckedColor.set(colorSecondary)
+        }
+
+        jfxSlider {
+            jfxSliderThumbColor.set(colorSecondary)
+
+            thumb {
+                // Do not change the color on minimum
+                backgroundColor = multi(colorSecondary)
+            }
+
+            jfxSliderAnimatedThumb {
+                // Do not change the color on minimum
+                backgroundColor = multi(colorSecondary)
+            }
         }
 
         jfxSpinner {
@@ -488,6 +512,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
     companion object {
         // CSS classes
+        val alertDialogPasswordGeneratorTheme by cssclass()
         val alertDialogThemeDangerous by cssclass()
         val alertDialogThemeDefault by cssclass()
         val alertDialogViewButtonNegativeStyle by cssclass()
@@ -507,6 +532,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val cardEmphasizedStyle by cssclass()
         val cardTranslucentStyle by cssclass()
         val jfxCheckBox by cssclass("jfx-check-box")
+        val jfxSlider by cssclass("jfx-slider")
+        val jfxSliderAnimatedThumb by cssclass("animated-thumb")
         val jfxSpinner by cssclass("jfx-spinner")
         val jfxSpinnerCircularIndicator by cssclass("arc")
         val jfxToggleButton by cssclass("jfx-toggle-button")
@@ -536,6 +563,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         // CSS properties
         val jfxButtonType by cssproperty<String>("-jfx-button-type")
         val jfxCheckBoxCheckedColor by cssproperty<Paint>("-jfx-checked-color")
+        val jfxSliderThumbColor by cssproperty<Paint>("-jfx-default-thumb")
         val jfxSpinnerRadius by cssproperty<Dimension<Dimension.LinearUnits>>("-jfx-radius")
         val jfxToggleButtonColor by cssproperty<Paint>("-jfx-toggle-color")
     }
@@ -639,6 +667,14 @@ object ThemeManager {
                         importStylesheet(DarkTheme::class)
                     }
                 }
+            }
+        }
+
+    val themeColors: ThemeColors
+        get() {
+            return when (themeType) {
+                ThemeType.LIGHT -> LightTheme
+                ThemeType.DARK -> DarkTheme
             }
         }
 }

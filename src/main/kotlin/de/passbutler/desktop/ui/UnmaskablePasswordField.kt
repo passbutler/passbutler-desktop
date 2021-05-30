@@ -17,17 +17,20 @@ import tornadofx.stackpane
 import tornadofx.visibleWhen
 
 class UnmaskablePasswordField(initialMaskPassword: Boolean, op: PasswordField.() -> Unit) : StackPane() {
+
+    val wrappedPasswordField: PasswordField
+
     private val maskPasswordProperty = SimpleBooleanProperty(initialMaskPassword)
 
     init {
-        val passwordField = createUnmaskablePasswordField()
+        wrappedPasswordField = createUnmaskablePasswordField()
 
         maskPasswordProperty.addListener(ChangeListener<Boolean> { _, _, _ ->
             // Trigger "change" to re-apply the masking
-            passwordField.text = passwordField.text
+            wrappedPasswordField.text = wrappedPasswordField.text
         })
 
-        passwordField.attachTo(this, op)
+        wrappedPasswordField.attachTo(this, op)
 
         stackpane {
             alignment = Pos.CENTER_RIGHT
