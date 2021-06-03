@@ -254,18 +254,18 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     }
 
     private fun showPasswordGeneratorDialog() {
-        val passwordGeneratorDialog = PasswordGeneratorDialog(this).apply {
-            positiveButtonClicked = { newPassword ->
+        val passwordGeneratorDialog = PasswordGeneratorDialog(
+            presentingFragment = this,
+            positiveClickAction = { newPassword ->
                 dismissDialog()
 
                 viewModel.password.value = newPassword
                 passwordField.requestFocus()
-            }
-
-            negativeButtonClicked = {
+            },
+            negativeClickAction = {
                 dismissDialog()
             }
-        }
+        )
 
         showDialog(passwordGeneratorDialog)
     }

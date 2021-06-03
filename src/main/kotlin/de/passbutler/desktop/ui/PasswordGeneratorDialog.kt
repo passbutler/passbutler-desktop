@@ -28,13 +28,12 @@ import tornadofx.vbox
 import kotlin.math.round
 
 class PasswordGeneratorDialog(
-    private val presentingFragment: BaseFragment
+    private val presentingFragment: BaseFragment,
+    private val positiveClickAction: (newPassword: String) -> Unit,
+    private val negativeClickAction: (() -> Unit)? = null
 ) : StackPane(),
     CoroutineScope by presentingFragment,
     CharacterTypeExtensions {
-
-    var positiveButtonClicked: ((newPassword: String) -> Unit)? = null
-    var negativeButtonClicked: (() -> Unit)? = null
 
     private lateinit var generatedPasswordTextLabel: Label
     private lateinit var lengthSlider: Slider
@@ -148,7 +147,7 @@ class PasswordGeneratorDialog(
                 isCancelButton = true
 
                 action {
-                    negativeButtonClicked?.invoke()
+                    negativeClickAction?.invoke()
                 }
             }
 
@@ -161,7 +160,7 @@ class PasswordGeneratorDialog(
                     val generatePassword = generatePassword
 
                     if (generatePassword != null) {
-                        positiveButtonClicked?.invoke(generatePassword)
+                        positiveClickAction.invoke(generatePassword)
                     } else {
                         Logger.warn("The generated password is null!")
                     }
