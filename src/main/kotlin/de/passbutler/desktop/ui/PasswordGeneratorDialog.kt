@@ -214,10 +214,10 @@ class PasswordGeneratorDialog(
 interface CharacterTypeExtensions {
     fun PasswordGenerator.CharacterType.userfacingText(presentingFragment: BaseFragment): String {
         val stringKey = when (this) {
-            Lowercase -> "passwordgenerator_dialog_character_type_uppercase"
-            Uppercase -> "passwordgenerator_dialog_character_type_symbols"
-            Digits -> "passwordgenerator_dialog_character_type_lowercase"
-            Symbols -> "passwordgenerator_dialog_character_type_digits"
+            Lowercase -> "passwordgenerator_dialog_character_type_lowercase"
+            Uppercase -> "passwordgenerator_dialog_character_type_uppercase"
+            Digits -> "passwordgenerator_dialog_character_type_digits"
+            Symbols -> "passwordgenerator_dialog_character_type_symbols"
         }
 
         return presentingFragment.messages[stringKey]
