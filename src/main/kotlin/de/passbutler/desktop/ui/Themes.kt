@@ -320,14 +320,19 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         jfxSlider {
-            jfxSliderThumbColor.set(colorSecondary)
+            jfxSliderThumbColor.set(colorPrimary)
+            jfxSliderTrackColor.set(Color.web(colorPrimary.css, 0.24))
 
             thumb {
                 // Do not change the color on minimum
-                backgroundColor = multi(colorSecondary)
+                backgroundColor = multi(colorPrimary)
             }
 
-            jfxSliderAnimatedThumb {
+            track {
+                prefHeight = 4.px
+            }
+
+            jfxSliderTooltip {
                 // Do not change the color on minimum
                 backgroundColor = multi(colorSecondary)
             }
@@ -533,7 +538,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val cardTranslucentStyle by cssclass()
         val jfxCheckBox by cssclass("jfx-check-box")
         val jfxSlider by cssclass("jfx-slider")
-        val jfxSliderAnimatedThumb by cssclass("animated-thumb")
+        val jfxSliderTooltip by cssclass("animated-thumb")
         val jfxSpinner by cssclass("jfx-spinner")
         val jfxSpinnerCircularIndicator by cssclass("arc")
         val jfxToggleButton by cssclass("jfx-toggle-button")
@@ -564,6 +569,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val jfxButtonType by cssproperty<String>("-jfx-button-type")
         val jfxCheckBoxCheckedColor by cssproperty<Paint>("-jfx-checked-color")
         val jfxSliderThumbColor by cssproperty<Paint>("-jfx-default-thumb")
+        val jfxSliderTrackColor by cssproperty<Paint>("-jfx-default-track")
         val jfxSpinnerRadius by cssproperty<Dimension<Dimension.LinearUnits>>("-jfx-radius")
         val jfxToggleButtonColor by cssproperty<Paint>("-jfx-toggle-color")
     }
