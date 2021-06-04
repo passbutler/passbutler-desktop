@@ -84,7 +84,7 @@ class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itema
 
     private fun showPreviousScreen() {
         val showPreviousScreenAction = {
-            showScreenUnanimated(OverviewScreen::class)
+            showScreenUnanimated(ItemDetailScreen::class, parameters = params)
         }
 
         if (viewModel.itemAuthorizationEditingViewModelsModified.value) {
