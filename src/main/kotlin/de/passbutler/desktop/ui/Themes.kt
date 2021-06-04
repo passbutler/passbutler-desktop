@@ -33,6 +33,7 @@ interface ThemeColors {
     val colorBackgroundEmphasized: Color
     val colorBackgroundImageTint: Color
     val colorDivider: Color
+    val colorError: Color
     val colorOnPrimary: Color
     val colorOnSecondary: Color
     val colorOnSurface: Color
@@ -40,7 +41,6 @@ interface ThemeColors {
     val colorPrimaryDark: Color
     val colorSecondary: Color
     val colorSurface: Color
-    val colorWarning: Color
     val listItemBackgroundEven: Color
     val listItemBackgroundOdd: Color
     val listItemBackgroundSelected: Color
@@ -227,11 +227,11 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
             alertDialogViewTextTitleStyle {
                 fontWeight = FontWeight.BOLD
-                textFill = colorWarning
+                textFill = colorError
             }
 
             alertDialogViewButtonPositiveStyle {
-                textFill = colorWarning
+                textFill = colorError
             }
         }
 
@@ -602,6 +602,7 @@ class LightTheme : Theme(), ThemeColors by Companion {
         override val colorBackgroundEmphasized: Color = grey04
         override val colorBackgroundImageTint: Color = Color.web(black.css, 0.0)
         override val colorDivider: Color = grey10
+        override val colorError: Color = brightRedDark
         override val colorOnPrimary: Color = white
         override val colorOnSecondary: Color = white
         override val colorOnSurface: Color = grey80
@@ -609,7 +610,6 @@ class LightTheme : Theme(), ThemeColors by Companion {
         override val colorPrimaryDark: Color = wineRedDark
         override val colorSecondary: Color = pointRed
         override val colorSurface: Color = grey00
-        override val colorWarning: Color = brightRed
         override val listItemBackgroundEven: Color = grey00
         override val listItemBackgroundOdd: Color = grey04
         override val listItemBackgroundSelected: Color = wineRedLight
@@ -631,6 +631,7 @@ class DarkTheme : Theme(), ThemeColors by Companion {
         override val colorBackgroundEmphasized: Color = grey84
         override val colorBackgroundImageTint: Color = Color.web(black.css, 0.3)
         override val colorDivider: Color = grey70
+        override val colorError: Color = brightRedLight
         override val colorOnPrimary: Color = white
         override val colorOnSecondary: Color = white
         override val colorOnSurface: Color = grey00
@@ -638,7 +639,6 @@ class DarkTheme : Theme(), ThemeColors by Companion {
         override val colorPrimaryDark: Color = wineRed
         override val colorSecondary: Color = pointRed
         override val colorSurface: Color = grey80
-        override val colorWarning: Color = brightRedTransparent
         override val listItemBackgroundEven: Color = grey80
         override val listItemBackgroundOdd: Color = grey84
         override val listItemBackgroundSelected: Color = wineRedLight

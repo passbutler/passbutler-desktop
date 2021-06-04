@@ -197,7 +197,7 @@ class PasswordGeneratorDialog(
                 generatePassword = null
 
                 generatedPasswordTextLabel.text = presentingFragment.messages["passwordgenerator_dialog_missing_character_types_error"]
-                generatedPasswordTextLabel.textFill = ThemeManager.themeColors.colorWarning
+                generatedPasswordTextLabel.textFill = ThemeManager.themeColors.colorError
 
                 positiveButton.isEnabled = false
             }
