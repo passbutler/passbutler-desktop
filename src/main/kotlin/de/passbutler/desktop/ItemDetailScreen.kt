@@ -116,6 +116,10 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
         shortcut("ESC") {
             showPreviousScreen()
         }
+
+        shortcut("Shortcut+S") {
+            saveClicked()
+        }
     }
 
     private fun showPreviousScreen() {

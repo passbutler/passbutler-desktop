@@ -76,6 +76,10 @@ class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itema
         shortcut("ESC") {
             showPreviousScreen()
         }
+
+        shortcut("Shortcut+S") {
+            saveClicked()
+        }
     }
 
     private fun showPreviousScreen() {
