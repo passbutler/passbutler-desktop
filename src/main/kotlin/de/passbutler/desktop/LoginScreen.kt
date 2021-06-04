@@ -7,8 +7,7 @@ import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.base.DebugConstants
-import de.passbutler.desktop.base.isHttpsUrl
-import de.passbutler.desktop.base.isNetworkUrl
+import de.passbutler.desktop.base.UrlExtensions
 import de.passbutler.desktop.ui.BaseFragment
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
@@ -159,8 +158,8 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
                 validateWithRules(this) {
                     listOfNotNull(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_serverurl_validation_error_empty"]),
-                        FormFieldValidatorRule({ !isNetworkUrl(it) }, messages["form_serverurl_validation_error_invalid"]),
-                        FormFieldValidatorRule({ !isHttpsUrl(it) }, messages["form_serverurl_validation_error_invalid_scheme"]).takeIf { BuildInformationProvider.buildType == BuildType.Release }
+                        FormFieldValidatorRule({ !UrlExtensions.isNetworkUrl(it) }, messages["form_serverurl_validation_error_invalid"]),
+                        FormFieldValidatorRule({ !UrlExtensions.isHttpsUrl(it) }, messages["form_serverurl_validation_error_invalid_scheme"]).takeIf { BuildInformationProvider.buildType == BuildType.Release }
                     ).takeIf { !isLocalLogin.value }
                 }
             }
