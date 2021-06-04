@@ -291,6 +291,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                     bindInput(this@ItemDetailScreen, viewModel.notes)
 
                     prefRowCount = 5
+                    isWrapText = true
 
                     textFormatter = TextFormatter<String> { change: TextFormatter.Change ->
                         if (change.controlNewText.length > NOTES_MAXIMUM_CHARACTERS) {
