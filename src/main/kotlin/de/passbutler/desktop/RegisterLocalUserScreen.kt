@@ -5,6 +5,7 @@ import de.passbutler.common.base.BuildType
 import de.passbutler.common.base.MutableBindable
 import de.passbutler.common.database.RequestConflictedException
 import de.passbutler.common.database.RequestForbiddenException
+import de.passbutler.common.database.RequestUnauthorizedException
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.base.BuildInformationProvider
@@ -187,6 +188,7 @@ class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_
             handleFailure = {
                 val errorStringResourceId = when (it) {
                     is DecryptMasterEncryptionKeyFailedException -> "register_local_user_failed_wrong_master_password_title"
+                    is RequestUnauthorizedException -> "register_local_user_failed_unauthorized_title"
                     is RequestForbiddenException -> "register_local_user_failed_forbidden_title"
                     is RequestConflictedException -> "register_local_user_failed_username_existing_title"
                     else -> "register_local_user_failed_general_title"
