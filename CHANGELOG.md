@@ -28,6 +28,9 @@
 - Warping of some icons
 - Non-working open URL action on Linux if the URL scheme was missing because `xdg-open` interpreted the URL as a local file
 
+### Known issues
+- If a screen has a default and cancel button (reacting to "ENTER" and "ESC") and a dialog is shown, the button behaviour of the screen buttons not working anymore after dismissing the dialog
+
 ## [1.0.0-Preview1] - 2021-02-02
 
 ### Added
