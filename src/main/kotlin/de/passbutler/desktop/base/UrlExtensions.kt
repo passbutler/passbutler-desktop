@@ -1,15 +1,34 @@
 package de.passbutler.desktop.base
 
+import org.tinylog.kotlin.Logger
+import java.net.URI
+
 object UrlExtensions {
     fun isNetworkUrl(url: String?): Boolean {
         return isHttpUrl(url) || isHttpsUrl(url)
     }
 
     fun isHttpUrl(url: String?): Boolean {
-        return url != null && url.length > 6 && url.substring(0, 7).equals("http://", true)
+        val scheme = obtainScheme(url)
+        return scheme != null && scheme.equals(URL_SCHEME_HTTP, true)
     }
 
     fun isHttpsUrl(url: String?): Boolean {
-        return url != null && url.length > 7 && url.substring(0, 8).equals("https://", true)
+        val scheme = obtainScheme(url)
+        return scheme != null && scheme.equals(URL_SCHEME_HTTPS, true)
     }
+
+    fun obtainScheme(url: String?): String? {
+        return url?.let {
+            try {
+                URI.create(it).scheme
+            } catch (exception: Exception) {
+                Logger.info("The given URL is not valid: ${exception.message}")
+                null
+            }
+        }
+    }
+
+    private const val URL_SCHEME_HTTP = "http"
+    private const val URL_SCHEME_HTTPS = "https"
 }

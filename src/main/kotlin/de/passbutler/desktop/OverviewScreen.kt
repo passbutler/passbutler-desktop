@@ -8,6 +8,7 @@ import de.passbutler.common.database.models.UserType
 import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.base.UrlExtensions
 import de.passbutler.desktop.base.createRelativeDateFormattingTranslations
 import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuView
@@ -353,10 +354,21 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
     private fun openUrlOfSelectedItem() {
         val url = listView?.selectedItem?.itemViewModel?.itemData?.url
 
-        if (url?.isNotBlank() == true) {
-            hostServices.showDocument(url)
-        } else {
-            showError(messages["overview_open_url_failed_title"])
+        when {
+            UrlExtensions.isNetworkUrl(url) -> {
+                Logger.debug("Open valid network URL: '$url'")
+                hostServices.showDocument(url)
+            }
+            url != null && UrlExtensions.obtainScheme(url) == null -> {
+                val fallbackScheme = "https://"
+                val correctedUrl = fallbackScheme + url
+
+                Logger.debug("Open incomplete network URL '$url' with corrected scheme: '$correctedUrl'")
+                hostServices.showDocument(correctedUrl)
+            }
+            else -> {
+                showError(messages["overview_open_url_failed_title"])
+            }
         }
     }
 

@@ -26,6 +26,7 @@
 - The case of items is ignored for sorting on item and item authorization screens
 - Wrong locale of application menu (system default instead of configured locale)
 - Warping of some icons
+- Non-working open URL action on Linux if the URL scheme was missing because `xdg-open` interpreted the URL as a local file
 
 ## [1.0.0-Preview1] - 2021-02-02
 
