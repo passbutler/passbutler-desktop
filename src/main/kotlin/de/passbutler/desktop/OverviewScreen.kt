@@ -373,7 +373,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             // Do not consume clicks on lower panes
             isPickOnBounds = false
 
-            jfxFloatingActionButton("＋") {
+            jfxFloatingActionButton("\uFF0B") {
                 setOnAction {
                     addItemAction.invoke()
                 }
