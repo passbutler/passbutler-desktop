@@ -15,7 +15,7 @@ Git is needed for a build task that generates the version information for the bu
 ### Install IntelliJ
 
 Recommended version:
-- IntelliJ IDEA 2021.1.1 (Community Edition)
+- IntelliJ IDEA 2021.2 (Community Edition)
 
 Required plugin:
 - TornadoFX (https://plugins.jetbrains.com/plugin/8339-tornadofx)
