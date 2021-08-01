@@ -124,7 +124,7 @@ tasks {
 
     jar {
         manifest {
-            attributes["Class-Path"] = configurations.compile.get().all.joinToString(" ") { it.name }
+            attributes["Class-Path"] = configurations.runtimeClasspath.get().files.joinToString(" ") { it.name }
             attributes["Main-Class"] = mainClassPath
         }
     }
