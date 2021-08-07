@@ -488,7 +488,9 @@ fun Node.createGenericItemEntryView(listCell: ListCell<ItemEntry>, op: Node.() -
         alignment = Pos.CENTER_LEFT
         padding = insets(marginM.value, marginS.value)
 
-        vectorDrawableIcon(Drawables.ICON_TEXT_SNIPPET)
+        vectorDrawableIcon(Drawables.ICON_TEXT_SNIPPET) {
+            addClass(Theme.vectorDrawableIconAccent)
+        }
 
         vbox {
             paddingLeft = marginM.value

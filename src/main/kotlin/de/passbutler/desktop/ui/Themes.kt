@@ -482,7 +482,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         textSubtitle1Style {
             fontFamily = ThemeFonts.ROBOTO_REGULAR
             fontSize = TEXT_SIZE_MEDIUM
-            textFill = textColorPrimary
+            textFill = textColorSecondary
         }
 
         textSubtitle2Style {
@@ -499,6 +499,14 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         vectorDrawableIcon {
             backgroundColor = multi(textColorPrimary)
+
+            and(disabled) {
+                opacity = OPACITY_DISABLED
+            }
+        }
+
+        vectorDrawableIconAccent {
+            backgroundColor = multi(colorAccent)
 
             and(disabled) {
                 opacity = OPACITY_DISABLED
@@ -555,6 +563,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val textSubtitle2Style by cssclass()
         val toolbarStyle by cssclass()
         val vectorDrawableIcon by cssclass()
+        val vectorDrawableIconAccent by cssclass()
 
         // CSS properties
         val jfxButtonType by cssproperty<String>("-jfx-button-type")

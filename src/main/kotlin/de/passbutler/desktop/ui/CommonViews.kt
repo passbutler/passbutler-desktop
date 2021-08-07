@@ -23,14 +23,16 @@ fun Node.createEmptyScreen(title: String, description: String): Node {
         // Hidden by default to avoid initial flickering
         isVisible = false
 
-        vectorDrawableIcon(Drawables.ICON_LIST)
+        vectorDrawableIcon(Drawables.ICON_LIST) {
+            addClass(Theme.vectorDrawableIconAccent)
+        }
 
         textLabelHeadlineOrder1(title) {
             paddingTop = marginM.value
             textAlignment = TextAlignment.CENTER
         }
 
-        textLabelBodyOrder1(description) {
+        textLabelSubtitleOrder1(description) {
             paddingTop = marginS.value
             textAlignment = TextAlignment.CENTER
         }
