@@ -121,7 +121,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
                 validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["change_master_password_new_master_password_validation_error_empty"]),
-                        FormFieldValidatorRule({ oldMasterPassword.value == it }, messages["change_master_password_new_master_password_validation_error_equal"])
+                        FormFieldValidatorRule({ it == oldMasterPassword.value }, messages["change_master_password_new_master_password_validation_error_equal"])
                     )
                 }
             }
@@ -135,7 +135,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
 
                 validateWithRules(this) {
                     listOf(
-                        FormFieldValidatorRule({ newMasterPassword.value != it }, messages["change_master_password_new_master_password_confirm_validation_error_different"])
+                        FormFieldValidatorRule({ it != newMasterPassword.value }, messages["change_master_password_new_master_password_confirm_validation_error_different"])
                     )
                 }
             }
