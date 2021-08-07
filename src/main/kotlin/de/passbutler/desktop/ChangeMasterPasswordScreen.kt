@@ -45,7 +45,6 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
 
     private val oldMasterPassword = MutableBindable<String?>(null)
     private val newMasterPassword = MutableBindable<String?>(null)
-    private val newMasterPasswordConfirm = MutableBindable<String?>(null)
 
     init {
         setupRootView()
@@ -131,8 +130,6 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
     private fun Fieldset.setupNewPasswordConfirmField() {
         field(messages["change_master_password_new_master_password_confirm_hint"], orientation = Orientation.VERTICAL) {
             unmaskablePasswordField {
-                bindInputOptional(this@ChangeMasterPasswordScreen, newMasterPasswordConfirm)
-
                 validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it != newMasterPassword.value }, messages["change_master_password_new_master_password_confirm_validation_error_different"])
