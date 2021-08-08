@@ -211,7 +211,7 @@ class RootScreen : BaseView(), RequestSending {
     }
 
     private fun openRecentVaultClicked(vaultFile: File) {
-        if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn) {
+        if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn.Unlocked) {
             showCloseVaultConfirmDialog {
                 openVault(vaultFile)
             }
