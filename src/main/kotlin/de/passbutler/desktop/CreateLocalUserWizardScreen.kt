@@ -23,8 +23,8 @@ import de.passbutler.desktop.ui.showFadeInOutAnimation
 import de.passbutler.desktop.ui.showSaveVaultFileChooser
 import de.passbutler.desktop.ui.showScreenFaded
 import de.passbutler.desktop.ui.textLabelBase
-import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelCaption
+import de.passbutler.desktop.ui.textLabelHeadlineOrder2
 import de.passbutler.desktop.ui.unmaskablePasswordField
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
@@ -144,7 +144,7 @@ class CreateLocalUserWizardScreen : BaseFragment(messages["create_local_user_ste
                 addClass(Theme.textHeadline4Style)
             }
 
-            textLabelBodyOrder1(messages["create_local_user_step_username_title"]) {
+            textLabelHeadlineOrder2(messages["create_local_user_step_username_headline"]) {
                 paddingTop = marginS.value
             }
 
@@ -213,7 +213,7 @@ class CreateLocalUserWizardScreen : BaseFragment(messages["create_local_user_ste
                 addClass(Theme.textHeadline4Style)
             }
 
-            textLabelBodyOrder1(messages["create_local_user_step_master_password_title"]) {
+            textLabelHeadlineOrder2(messages["create_local_user_step_master_password_headline"]) {
                 paddingTop = marginS.value
             }
 
@@ -295,7 +295,7 @@ class CreateLocalUserWizardScreen : BaseFragment(messages["create_local_user_ste
                 addClass(Theme.textHeadline4Style)
             }
 
-            textLabelBodyOrder1(messages["create_local_user_step_vault_file_title"]) {
+            textLabelHeadlineOrder2(messages["create_local_user_step_vault_file_headline"]) {
                 paddingTop = marginS.value
             }
 
