@@ -58,7 +58,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
 
     override fun Node.setupMainContent() {
         form {
-            textLabelHeadlineOrder1(messages["change_master_password_header"])
+            textLabelHeadlineOrder1(messages["change_master_password_headline"])
 
             textLabelBodyOrder1(messages["change_master_password_description"]) {
                 paddingTop = marginS.value

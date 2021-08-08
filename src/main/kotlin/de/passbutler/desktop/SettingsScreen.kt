@@ -49,7 +49,7 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
         vbox {
             paddingAll = marginM.value
 
-            textLabelHeadlineOrder1(messages["settings_title"])
+            textLabelHeadlineOrder1(messages["settings_headline"])
 
             vbox {
                 paddingTop = marginM.value
@@ -61,15 +61,15 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
     }
 
     private fun Node.setupCategories() {
-        setupCategoryItem(messages["settings_category_general_title"]) {
+        setupCategoryItem(messages["settings_category_general_headline"]) {
             setupDarkThemeItem()
         }
 
-        setupCategoryItem(messages["settings_category_security_title"]) {
+        setupCategoryItem(messages["settings_category_security_headline"]) {
             setupHidePasswordsItem()
         }
 
-        setupCategoryItem(messages["settings_category_account_title"]) {
+        setupCategoryItem(messages["settings_category_account_headline"]) {
             setupChangeMasterPasswordItem()
         }
     }

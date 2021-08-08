@@ -140,7 +140,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             center {
                 stackpane {
                     listView = createListView()
-                    emptyScreenView = createEmptyScreen(messages["overview_empty_screen_title"], messages["overview_empty_screen_description"])
+                    emptyScreenView = createEmptyScreen(messages["overview_empty_screen_headline"], messages["overview_empty_screen_description"])
 
                     setupAddButton()
                 }

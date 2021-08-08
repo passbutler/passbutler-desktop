@@ -54,14 +54,14 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
         vbox {
             spacing = marginS.value
 
-            textLabelHeadlineOrder1(messages["import_header"])
+            textLabelHeadlineOrder1(messages["import_headline"])
             textLabelBodyOrder1(messages["import_description"])
         }
     }
 
     private fun Node.setupKeePassX2Section() {
         vbox {
-            textLabelHeadlineOrder2(messages["import_keepassx2_header"])
+            textLabelHeadlineOrder2(messages["import_keepassx2_headline"])
 
             textLabelBodyOrder1 {
                 paddingTop = marginS.value
@@ -97,7 +97,7 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
 
     private fun Node.setupKeePass2Section() {
         vbox {
-            textLabelHeadlineOrder2(messages["import_keepass2_header"])
+            textLabelHeadlineOrder2(messages["import_keepass2_headline"])
 
             textLabelBodyOrder1 {
                 paddingTop = marginS.value

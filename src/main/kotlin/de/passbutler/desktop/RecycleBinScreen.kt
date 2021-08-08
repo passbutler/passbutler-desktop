@@ -68,7 +68,7 @@ class RecycleBinScreen : NavigationMenuFragment(messages["recycle_bin_title"], n
             center {
                 stackpane {
                     listView = createListView()
-                    emptyScreenView = createEmptyScreen(messages["recycle_bin_empty_screen_title"], messages["recycle_bin_empty_screen_description"])
+                    emptyScreenView = createEmptyScreen(messages["recycle_bin_empty_screen_headline"], messages["recycle_bin_empty_screen_description"])
                 }
             }
 

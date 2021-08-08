@@ -60,7 +60,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
 
     private fun Node.setupAboutSection() {
         vbox {
-            textLabelHeadlineOrder1(messages["about_header"])
+            textLabelHeadlineOrder1(messages["about_headline"])
 
             textflow {
                 paddingTop = marginS.value
@@ -92,7 +92,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
 
     private fun VBox.setupPremiumKeySection() {
         vbox {
-            textLabelHeadlineOrder2(messages["premium_header"])
+            textLabelHeadlineOrder2(messages["premium_headline"])
 
             stackpane {
                 paddingTop = marginS.value

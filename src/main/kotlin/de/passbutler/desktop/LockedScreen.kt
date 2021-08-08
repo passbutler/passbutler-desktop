@@ -95,7 +95,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
                 setupDebugPresetsButton()
             }
 
-            textLabelHeadlineOrder1(messages["locked_screen_header_normal"]) {
+            textLabelHeadlineOrder1(messages["locked_screen_headline_normal"]) {
                 paddingTop = marginM.value
                 textAlignment = TextAlignment.CENTER
             }

@@ -170,7 +170,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                 setupTitleField()
             }
 
-            textLabelHeadlineOrder1(messages["itemdetail_details_header"]) {
+            textLabelHeadlineOrder1(messages["itemdetail_details_headline"]) {
                 paddingTop = marginL.value
             }
 
@@ -339,7 +339,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Node.setupItemAuthorizationsSection() {
         vbox {
-            textLabelHeadlineOrder1(messages["itemdetail_authorizations_header"])
+            textLabelHeadlineOrder1(messages["itemdetail_authorizations_headline"])
 
             textLabelBodyOrder1 {
                 paddingTop = marginS.value
@@ -380,7 +380,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Node.setupInformationSection() {
         vbox {
-            textLabelHeadlineOrder1(messages["itemdetail_information_header"])
+            textLabelHeadlineOrder1(messages["itemdetail_information_headline"])
 
             vbox {
                 paddingTop = marginS.value
@@ -417,7 +417,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
         vbox {
             spacing = marginM.value
 
-            textLabelHeadlineOrder1(messages["itemdetail_delete_header"])
+            textLabelHeadlineOrder1(messages["itemdetail_delete_headline"])
             setupDeleteButton()
 
             bindVisibility(this@ItemDetailScreen, viewModel.isNewItem, viewModel.isItemModificationAllowed) { isNewItem, isItemModificationAllowed ->

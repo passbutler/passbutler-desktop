@@ -67,7 +67,7 @@ class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_
 
     override fun Node.setupMainContent() {
         form {
-            textLabelHeadlineOrder1(messages["register_local_user_header"]) {
+            textLabelHeadlineOrder1(messages["register_local_user_headline"]) {
                 setupDebugPresetsButton()
             }
 

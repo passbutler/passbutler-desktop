@@ -126,7 +126,7 @@ class ItemAuthorizationsDetailScreen : NavigationMenuFragment(FX.messages["itema
         vbox {
             paddingAll = marginM.value
 
-            textLabelHeadlineOrder1(messages["itemauthorizations_header"])
+            textLabelHeadlineOrder1(messages["itemauthorizations_headline"])
 
             textLabelBodyOrder1(messages["itemauthorizations_description"]) {
                 paddingTop = marginS.value

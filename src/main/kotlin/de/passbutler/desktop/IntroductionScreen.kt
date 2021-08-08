@@ -59,7 +59,7 @@ class IntroductionScreen : BaseFragment(messages["introduction_title"]) {
             }
 
             createIntroductionSection(
-                messages["introduction_create_user_title"],
+                messages["introduction_create_user_headline"],
                 messages["introduction_create_user_description"],
                 messages["introduction_create_user_button_text"],
                 Drawables.ICON_CHECK_CIRCLE
@@ -68,7 +68,7 @@ class IntroductionScreen : BaseFragment(messages["introduction_title"]) {
             }
 
             createIntroductionSection(
-                messages["introduction_login_user_title"],
+                messages["introduction_login_user_headline"],
                 messages["introduction_login_user_description"],
                 messages["introduction_login_user_button_text"],
                 Drawables.ICON_LOGIN
