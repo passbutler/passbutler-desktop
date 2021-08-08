@@ -20,7 +20,6 @@ import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
-import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -40,7 +39,6 @@ import tornadofx.hbox
 import tornadofx.imageview
 import tornadofx.longpress
 import tornadofx.onLeftClick
-import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.pane
 import tornadofx.px
@@ -52,7 +50,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
 
     override val root = stackpane()
 
-    override val validationContext = ValidationContext()
+    private val validationContext = ValidationContext()
 
     private val viewModel by injectWithPrivateScope<LockedScreenViewModel>()
 
@@ -91,7 +89,6 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
             addClass(Theme.cardTranslucentStyle)
 
             alignment = Pos.CENTER
-            paddingAll = marginM.value
             prefWidth = 320.px.value
 
             imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.px.value, true, true)) {
@@ -133,7 +130,7 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
             unmaskablePasswordField {
                 bindInputOptional(this@LockedScreen, masterPassword)
 
-                validateWithRules(this) {
+                validationContext.validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_master_password_validation_error_empty"])
                     )

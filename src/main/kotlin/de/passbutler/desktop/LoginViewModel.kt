@@ -7,7 +7,7 @@ class LoginViewModel : ViewModel() {
 
     private val rootViewModel by injectRootViewModel()
 
-    suspend fun loginUser(serverUrlString: String?, username: String, masterPassword: String): Result<Unit> {
+    suspend fun loginUser(serverUrlString: String, username: String, masterPassword: String): Result<Unit> {
         return rootViewModel.loginVault(serverUrlString, username, masterPassword)
     }
 }

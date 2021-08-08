@@ -35,7 +35,6 @@ import de.passbutler.desktop.ui.textLabelBodyOrder2
 import de.passbutler.desktop.ui.textLabelCaption
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
-import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -53,7 +52,6 @@ import tornadofx.form
 import tornadofx.get
 import tornadofx.hbox
 import tornadofx.hyperlink
-import tornadofx.paddingAll
 import tornadofx.paddingBottom
 import tornadofx.paddingTop
 import tornadofx.scrollpane
@@ -65,7 +63,7 @@ import tornadofx.vbox
 
 class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefaultNavigationMenu()), FormValidating, RequestSending {
 
-    override val validationContext = ValidationContext()
+    private val validationContext = ValidationContext()
 
     private val viewModel
         get() = viewModelWrapper.itemEditingViewModel
@@ -151,7 +149,6 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
             addClass(Theme.scrollPaneBorderlessStyle)
 
             form {
-                paddingAll = marginM.value
                 spacing = marginL.value
 
                 setupDetailsSection()
@@ -212,7 +209,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
                 bindInput(this@ItemDetailScreen, viewModel.title)
 
-                validateWithRules(this) {
+                validationContext.validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["itemdetail_title_validation_error_empty"])
                     )

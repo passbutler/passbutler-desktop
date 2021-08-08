@@ -88,6 +88,14 @@ abstract class Theme : Stylesheet(), ThemeColors {
         +inputDimensionsMixin
     }
 
+    private val buttonTextDefaultsMixin = mixin {
+        backgroundColor = multi(transparent)
+        borderColor = multi(box(transparent))
+        jfxButtonType.set(JFXButton.ButtonType.FLAT.toString())
+        minWidth = 0.px // Reset derived value to only use padding
+        padding = box(marginM)
+    }
+
     protected fun applyStyles() {
         applyDefaultStyles()
         applyCustomStyles()
@@ -101,8 +109,13 @@ abstract class Theme : Stylesheet(), ThemeColors {
             backgroundRadius = multi(box(RADIUS_SMALL))
             fontFamily = ThemeFonts.ROBOTO_MEDIUM
             fontSize = 14.sp
+            graphicTextGap = marginM
             padding = box(marginS, marginM)
             textFill = colorOnPrimary
+
+            vectorDrawableIcon {
+                backgroundColor = multi(colorOnPrimary)
+            }
         }
 
         checkBox {
@@ -116,6 +129,8 @@ abstract class Theme : Stylesheet(), ThemeColors {
         }
 
         form {
+            padding = box(marginM)
+
             field {
                 // Remove extra spacing (space in set only via `spacing` of `fieldset`)
                 padding = box(0.px)
@@ -198,7 +213,15 @@ abstract class Theme : Stylesheet(), ThemeColors {
         textField {
             +inputDefaultsMixin
 
+            backgroundColor = multi(transparent)
+            borderColor = multi(box(Color.web(colorOnSurface.css, 0.38)))
+            borderRadius = multi(box(RADIUS_SMALL))
+            borderWidth = multi(box(1.px))
             padding = box(marginS)
+
+            and(focused) {
+                borderColor = multi(box(colorPrimary))
+            }
         }
     }
 
@@ -283,14 +306,21 @@ abstract class Theme : Stylesheet(), ThemeColors {
             borderWidth = multi(box(1.px))
             jfxButtonType.set(JFXButton.ButtonType.FLAT.toString())
             textFill = colorPrimary
+
+            vectorDrawableIcon {
+                backgroundColor = multi(colorPrimary)
+            }
+        }
+
+        buttonTextOnSurfaceStyle {
+            +buttonTextDefaultsMixin
+
+            textFill = colorOnSurface
         }
 
         buttonTextStyle {
-            backgroundColor = multi(transparent)
-            borderColor = multi(box(transparent))
-            jfxButtonType.set(JFXButton.ButtonType.FLAT.toString())
-            minWidth = 0.px // Reset derived value to only use padding
-            padding = box(marginM)
+            +buttonTextDefaultsMixin
+
             textFill = colorPrimary
         }
 
@@ -532,6 +562,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val buttonFloatingActionStyle by cssclass()
         val buttonPrimaryStyle by cssclass()
         val buttonSecondaryStyle by cssclass()
+        val buttonTextOnSurfaceStyle by cssclass()
         val buttonTextStyle by cssclass()
         val cardEmphasizedStyle by cssclass()
         val cardTranslucentStyle by cssclass()

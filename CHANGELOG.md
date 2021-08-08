@@ -22,6 +22,7 @@
 - Disabled horizontal scrolling of notes text area
 - Show dedicated error for entering wrong invitation code when try to register user
 - Icon accent coloring to archive more beautiful list style
+- Introduction flow to be more understandable / user friendly
 
 ### Fixed
 - The case of items is ignored for sorting on item and item authorization screens

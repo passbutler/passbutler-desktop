@@ -13,43 +13,35 @@ import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.LONGPRESS_DURATION
 import de.passbutler.desktop.ui.Theme
-import de.passbutler.desktop.ui.bind
-import de.passbutler.desktop.ui.bindChecked
 import de.passbutler.desktop.ui.bindInputOptional
+import de.passbutler.desktop.ui.createTransparentSectionedLayout
+import de.passbutler.desktop.ui.createHeaderView
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButton
-import de.passbutler.desktop.ui.jfxCheckBox
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.showFadeInOutAnimation
+import de.passbutler.desktop.ui.showScreenFaded
+import de.passbutler.desktop.ui.textLabelBase
 import de.passbutler.desktop.ui.textLabelBodyOrder1
-import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
-import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
-import javafx.scene.image.Image
-import javafx.scene.image.ImageView
-import javafx.scene.text.TextAlignment
 import tornadofx.FX.Companion.messages
 import tornadofx.Fieldset
 import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
+import tornadofx.box
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
-import tornadofx.hbox
-import tornadofx.imageview
 import tornadofx.longpress
-import tornadofx.onLeftClick
-import tornadofx.paddingAll
 import tornadofx.paddingTop
-import tornadofx.pane
 import tornadofx.px
 import tornadofx.stackpane
+import tornadofx.style
 import tornadofx.textfield
 import tornadofx.useMaxWidth
 import tornadofx.vbox
@@ -58,145 +50,132 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
 
     override val root = stackpane()
 
-    override val validationContext = ValidationContext()
+    private val validationContext = ValidationContext()
 
     private val viewModel by injectWithPrivateScope<LoginViewModel>()
 
     private val serverUrl = MutableBindable<String?>(null)
     private val username = MutableBindable<String?>(null)
     private val masterPassword = MutableBindable<String?>(null)
-    private val isLocalLogin = MutableBindable(false)
 
     init {
         with(root) {
             setupRootView()
         }
+
+        shortcut("ESC") {
+            showPreviousScreen()
+        }
+    }
+
+    private fun showPreviousScreen() {
+        showScreenFaded(IntroductionScreen::class)
     }
 
     private fun Node.setupRootView() {
-        stackpane {
-            pane {
-                addClass(Theme.backgroundAbstractStyle)
+        createTransparentSectionedLayout(
+            topSetup = {
+                setupHeader()
+            },
+            centerSetup = {
+                setupContent()
+            },
+            bottomSetup = {
+                setupFooter()
             }
+        )
+    }
 
-            pane {
-                addClass(Theme.backgroundOverlayStyle)
-            }
-
-            onLeftClick {
-                requestFocus()
-            }
-
-            hbox(alignment = Pos.CENTER) {
-                vbox(alignment = Pos.CENTER) {
-                    setupCardViewContent()
-                }
-            }
+    private fun Node.setupHeader() {
+        createHeaderView {
+            setupDebugPresetsButton()
         }
     }
 
-    private fun Node.setupCardViewContent() {
-        form {
-            addClass(Theme.cardTranslucentStyle)
-
-            alignment = Pos.CENTER
-            paddingAll = marginM.value
-            prefWidth = 320.px.value
-
-            imageview(Image("/drawables/logo_elevated.png", 120.px.value, 0.0, true, true)) {
-                setupDebugPresetsButton()
-            }
-
-            textLabelHeadlineOrder1(messages["login_headline"]) {
-                paddingTop = marginM.value
-                textAlignment = TextAlignment.CENTER
-            }
-
-            textLabelBodyOrder1(messages["login_description"]) {
-                paddingTop = marginS.value
-                textAlignment = TextAlignment.CENTER
-            }
-
-            fieldset(labelPosition = Orientation.VERTICAL) {
-                paddingTop = marginM.value
-                spacing = marginS.value
-
-                setupServerUrlField()
-                setupUsernameUrlField()
-                setupMasterPasswordUrlField()
-                setupLocalLoginCheckbox()
-            }
-
-            vbox {
-                paddingTop = marginM.value
-                setupLoginButton()
-            }
-        }
-    }
-
-    private fun ImageView.setupDebugPresetsButton() {
+    private fun Node.setupDebugPresetsButton() {
         if (BuildInformationProvider.buildType == BuildType.Debug) {
             longpress(LONGPRESS_DURATION) {
                 serverUrl.value = DebugConstants.TEST_SERVERURL
                 username.value = DebugConstants.TEST_USERNAME
                 masterPassword.value = DebugConstants.TEST_PASSWORD
-                isLocalLogin.value = false
+            }
+        }
+    }
+
+    private fun Node.setupContent() {
+        vbox(alignment = Pos.CENTER_LEFT) {
+            textLabelBase(messages["login_headline"]) {
+                addClass(Theme.textHeadline4Style)
+            }
+
+            textLabelBodyOrder1(messages["login_description"]) {
+                paddingTop = marginS.value
+            }
+
+            form {
+                // Reset the default padding from theme style
+                style {
+                    padding = box(0.px)
+                }
+
+                fieldset(labelPosition = Orientation.VERTICAL) {
+                    paddingTop = marginM.value
+                    spacing = marginS.value
+
+                    setupServerUrlField()
+                    setupUsernameField()
+                    setupMasterPasswordField()
+                }
+
+                vbox {
+                    paddingTop = marginM.value
+                    setupLoginButton()
+                }
             }
         }
     }
 
     private fun Fieldset.setupServerUrlField() {
-        field(messages["login_serverurl_hint"], orientation = Orientation.VERTICAL) {
-            bind(this@LoginScreen, isLocalLogin) { isLocalLogin ->
-                val shouldShow = !isLocalLogin
-                showFadeInOutAnimation(shouldShow)
-            }
-
+        field(messages["general_serverurl_hint"], orientation = Orientation.VERTICAL) {
             textfield {
                 bindInputOptional(this@LoginScreen, serverUrl)
 
-                validateWithRules(this) {
+                validationContext.validateWithRules(this) {
                     listOfNotNull(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_serverurl_validation_error_empty"]),
                         FormFieldValidatorRule({ !UrlExtensions.isNetworkUrl(it) }, messages["form_serverurl_validation_error_invalid"]),
                         FormFieldValidatorRule({ !UrlExtensions.isHttpsUrl(it) }, messages["form_serverurl_validation_error_invalid_scheme"]).takeIf { BuildInformationProvider.buildType == BuildType.Release }
-                    ).takeIf { !isLocalLogin.value }
-                }
-            }
-        }
-    }
-
-    private fun Fieldset.setupUsernameUrlField() {
-        field(messages["login_username_hint"], orientation = Orientation.VERTICAL) {
-            textfield {
-                bindInputOptional(this@LoginScreen, username)
-
-                validateWithRules(this) {
-                    listOf(
-                        FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["login_username_validation_error_empty"])
                     )
                 }
             }
         }
     }
 
-    private fun Fieldset.setupMasterPasswordUrlField() {
-        field(messages["login_master_password_hint"], orientation = Orientation.VERTICAL) {
+    private fun Fieldset.setupUsernameField() {
+        field(messages["general_username_hint"], orientation = Orientation.VERTICAL) {
+            textfield {
+                bindInputOptional(this@LoginScreen, username)
+
+                validationContext.validateWithRules(this) {
+                    listOf(
+                        FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_username_validation_error_empty"])
+                    )
+                }
+            }
+        }
+    }
+
+    private fun Fieldset.setupMasterPasswordField() {
+        field(messages["general_master_password_hint"], orientation = Orientation.VERTICAL) {
             unmaskablePasswordField {
                 bindInputOptional(this@LoginScreen, masterPassword)
 
-                validateWithRules(this) {
+                validationContext.validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_master_password_validation_error_empty"])
                     )
                 }
             }
-        }
-    }
-
-    private fun Node.setupLocalLoginCheckbox() {
-        jfxCheckBox(messages["login_local_login_label"]) {
-            bindChecked(this@LoginScreen, isLocalLogin)
         }
     }
 
@@ -216,17 +195,16 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
     private fun loginClicked() {
         validationContext.validate()
 
-        val isLocalLoginValue = isLocalLogin.value
-        val serverUrlValue = serverUrl.value?.takeIf { !isLocalLoginValue }
+        val serverUrlValue = serverUrl.value
         val usernameValue = username.value
         val masterPasswordValue = masterPassword.value
 
-        if (validationContext.isValid && usernameValue != null && masterPasswordValue != null) {
+        if (validationContext.isValid && serverUrlValue != null && usernameValue != null && masterPasswordValue != null) {
             loginUser(serverUrlValue, usernameValue, masterPasswordValue)
         }
     }
 
-    private fun loginUser(serverUrl: String?, username: String, masterPassword: String) {
+    private fun loginUser(serverUrl: String, username: String, masterPassword: String) {
         launchRequestSending(
             handleFailure = {
                 val errorStringResourceId = when (it) {
@@ -239,6 +217,18 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
             isCancellable = false
         ) {
             viewModel.loginUser(serverUrl, username, masterPassword)
+        }
+    }
+
+    private fun Node.setupFooter() {
+        vbox(alignment = Pos.CENTER_LEFT) {
+            jfxButton(messages["general_back"]) {
+                addClass(Theme.buttonTextOnSurfaceStyle)
+
+                action {
+                    showPreviousScreen()
+                }
+            }
         }
     }
 }

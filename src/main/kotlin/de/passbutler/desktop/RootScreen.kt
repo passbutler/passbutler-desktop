@@ -13,7 +13,6 @@ import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.jfxSpinner
 import de.passbutler.desktop.ui.showDangerousConfirmDialog
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
-import de.passbutler.desktop.ui.showSaveVaultFileChooser
 import de.passbutler.desktop.ui.snackbarBannerView
 import javafx.application.Platform
 import javafx.geometry.Pos
@@ -142,17 +141,10 @@ class RootScreen : BaseView(), RequestSending {
         menuView?.apply {
             items.clear()
 
-            setupNewVaultItem()
             setupOpenVaultItem()
             setupRecentVaultsItem(recentVaultFiles)
             setupCloseVaultItem(rootScreenState)
             setupCloseApplicationItem()
-        }
-    }
-
-    private fun Menu.setupNewVaultItem() {
-        item(messages["menu_create_vault"], "Shortcut+N").action {
-            createVaultClicked()
         }
     }
 
@@ -194,36 +186,8 @@ class RootScreen : BaseView(), RequestSending {
         }
     }
 
-    private fun createVaultClicked() {
-        if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn) {
-            showCloseVaultConfirmDialog {
-                createVault()
-            }
-
-        } else {
-            createVault()
-        }
-    }
-
-    private fun createVault() {
-        showSaveVaultFileChooser(messages["menu_create_vault"]) { chosenFile ->
-            launchRequestSending(
-                handleFailure = {
-                    val errorStringResourceId = when (it) {
-                        is VaultFileAlreadyExistsException -> "general_create_vault_failed_already_existing_title"
-                        else -> "general_create_vault_failed_title"
-                    }
-
-                    showError(messages[errorStringResourceId])
-                }
-            ) {
-                viewModel.createVault(chosenFile)
-            }
-        }
-    }
-
     private fun openVaultChooserClicked() {
-        if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn) {
+        if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn.Unlocked) {
             showCloseVaultConfirmDialog {
                 chooseVault()
             }
@@ -263,8 +227,11 @@ class RootScreen : BaseView(), RequestSending {
     }
 
     private fun closeVaultClicked() {
-        // Menu item is only shown if logged-in, so no check necessary
-        showCloseVaultConfirmDialog {
+        if (viewModel.rootScreenState.value is RootViewModel.RootScreenState.LoggedIn.Unlocked) {
+            showCloseVaultConfirmDialog {
+                closeVault()
+            }
+        } else {
             closeVault()
         }
     }
@@ -287,8 +254,7 @@ class RootScreen : BaseView(), RequestSending {
         when (rootScreenState) {
             is RootViewModel.RootScreenState.LoggedIn.Locked -> showScreenIfNotShown(LockedScreen::class)
             is RootViewModel.RootScreenState.LoggedIn.Unlocked -> showScreenIfNotShown(OverviewScreen::class)
-            is RootViewModel.RootScreenState.LoggedOut.Welcome -> showScreenIfNotShown(WelcomeScreen::class)
-            is RootViewModel.RootScreenState.LoggedOut.OpeningVault -> showScreenIfNotShown(LoginScreen::class)
+            is RootViewModel.RootScreenState.LoggedOut.Introduction -> showScreenIfNotShown(IntroductionScreen::class)
         }
     }
 

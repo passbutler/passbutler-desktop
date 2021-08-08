@@ -27,7 +27,6 @@ import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
-import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.scene.Node
 import tornadofx.FX.Companion.messages
@@ -41,13 +40,12 @@ import tornadofx.form
 import tornadofx.get
 import tornadofx.hbox
 import tornadofx.longpress
-import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.textfield
 
 class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_user_title"], navigationMenuItems = createDefaultNavigationMenu()), FormValidating, RequestSending {
 
-    override val validationContext = ValidationContext()
+    private val validationContext = ValidationContext()
 
     private val viewModel by injectWithPrivateScope<RegisterLocalUserViewModel>()
 
@@ -69,8 +67,6 @@ class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_
 
     override fun Node.setupMainContent() {
         form {
-            paddingAll = marginM.value
-
             textLabelHeadlineOrder1(messages["register_local_user_header"]) {
                 setupDebugPresetsButton()
             }
@@ -112,11 +108,11 @@ class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_
     }
 
     private fun Fieldset.setupServerUrlField() {
-        field(messages["register_local_user_serverurl_hint"], orientation = Orientation.VERTICAL) {
+        field(messages["general_serverurl_hint"], orientation = Orientation.VERTICAL) {
             textfield {
                 bindInputOptional(this@RegisterLocalUserScreen, serverUrl)
 
-                validateWithRules(this) {
+                validationContext.validateWithRules(this) {
                     listOfNotNull(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_serverurl_validation_error_empty"]),
                         FormFieldValidatorRule({ !UrlExtensions.isNetworkUrl(it) }, messages["form_serverurl_validation_error_invalid"]),
@@ -132,7 +128,7 @@ class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_
             textfield {
                 bindInputOptional(this@RegisterLocalUserScreen, invitationCode)
 
-                validateWithRules(this) {
+                validationContext.validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["register_local_user_invitation_code_validation_error_empty"])
                     )
@@ -142,11 +138,11 @@ class RegisterLocalUserScreen : NavigationMenuFragment(messages["register_local_
     }
 
     private fun Fieldset.setupMasterPasswordField() {
-        field(messages["register_local_user_master_password_hint"], orientation = Orientation.VERTICAL) {
+        field(messages["general_master_password_hint"], orientation = Orientation.VERTICAL) {
             unmaskablePasswordField {
                 bindInputOptional(this@RegisterLocalUserScreen, masterPassword)
 
-                validateWithRules(this) {
+                validationContext.validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["form_master_password_validation_error_empty"])
                     )

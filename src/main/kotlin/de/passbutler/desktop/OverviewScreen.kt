@@ -19,6 +19,7 @@ import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createEmptyScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
+import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.jfxFloatingActionButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
@@ -168,7 +169,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
             right {
                 stackpane {
-                    toolbarRegistrationContainer = createToolbarRegistrationContainer()
+                    toolbarRegistrationContainer = createToolbarRegisterLocalUserContainer()
                     toolbarSynchronizationContainer = createToolbarSynchronizationContainer()
                 }
             }
@@ -200,24 +201,19 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
         }
     }
 
-    private fun Node.createToolbarRegistrationContainer(): Node {
+    private fun Node.createToolbarRegisterLocalUserContainer(): Node {
         return vbox {
             alignment = Pos.CENTER_RIGHT
 
             // Hidden by default
             isVisible = false
 
-            textLabelBodyOrder1(messages["drawer_header_usertype_local"]) {
-                addClass(Theme.backgroundPressableStyle)
+            jfxButton(messages["drawer_header_register_local_user_button_title"]) {
+                addClass(Theme.buttonSecondaryStyle)
 
-                style {
-                    fontWeight = FontWeight.BOLD
-                }
+                graphic = vectorDrawableIcon(Drawables.ICON_LOGIN)
 
-                graphic = vectorDrawableIcon(Drawables.ICON_ACCOUNT_CIRCLE)
-                graphicTextGap = marginS.value
-
-                onLeftClick {
+                action {
                     showScreenUnanimated(RegisterLocalUserScreen::class)
                 }
             }

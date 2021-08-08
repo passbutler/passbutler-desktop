@@ -15,15 +15,14 @@ import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.onLeftClickIgnoringCount
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBodyOrder1
-import de.passbutler.desktop.ui.textLabelBodyOrder2
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder2
+import de.passbutler.desktop.ui.textLabelSubtitleOrder1
 import de.passbutler.desktop.ui.toggle
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.ToggleButton
 import javafx.scene.layout.Priority
-import javafx.scene.text.FontWeight
 import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.addClass
@@ -36,7 +35,6 @@ import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.px
 import tornadofx.region
-import tornadofx.style
 import tornadofx.vbox
 
 class SettingsScreen : NavigationMenuFragment(messages["settings_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
@@ -69,6 +67,9 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
 
         setupCategoryItem(messages["settings_category_security_title"]) {
             setupHidePasswordsItem()
+        }
+
+        setupCategoryItem(messages["settings_category_account_title"]) {
             setupChangeMasterPasswordItem()
         }
     }
@@ -128,13 +129,9 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
                 alignment = Pos.CENTER_LEFT
                 padding = insets(0.px.value, marginS.value)
 
-                textLabelBodyOrder1(title) {
-                    style {
-                        fontWeight = FontWeight.BOLD
-                    }
-                }
+                textLabelBodyOrder1(title)
 
-                textLabelBodyOrder2(summary) {
+                textLabelSubtitleOrder1(summary) {
                     paddingTop = marginXS.value
                 }
             }
@@ -166,13 +163,9 @@ class SettingsScreen : NavigationMenuFragment(messages["settings_title"], naviga
             alignment = Pos.CENTER_LEFT
             padding = insets(0.px.value, marginS.value)
 
-            textLabelBodyOrder1(title) {
-                style {
-                    fontWeight = FontWeight.BOLD
-                }
-            }
+            textLabelBodyOrder1(title)
 
-            textLabelBodyOrder2(summary) {
+            textLabelSubtitleOrder1(summary) {
                 paddingTop = marginXS.value
             }
 

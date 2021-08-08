@@ -57,7 +57,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
             }
         } else {
             Logger.debug("No recent file available to open")
-            _rootScreenState.value = RootScreenState.LoggedOut.Welcome
+            _rootScreenState.value = RootScreenState.LoggedOut.Introduction
         }
     }
 
@@ -87,7 +87,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
                     Success(Unit)
                 } catch (exception: Exception) {
-                    _rootScreenState.value = RootScreenState.LoggedOut.Welcome
+                    _rootScreenState.value = RootScreenState.LoggedOut.Introduction
                     Failure(exception)
                 }
             }
@@ -95,7 +95,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
         }
     }
 
-    suspend fun createVault(selectedFile: File): Result<Unit> {
+    suspend fun createVault(username: String, masterPassword: String, selectedFile: File): Result<Unit> {
         Logger.debug("Create vault file '$selectedFile'")
 
         return when (val closeResult = closeVaultIfOpen()) {
@@ -107,13 +107,19 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
                 } else {
                     when (val initializeResult = userViewModelProvidingViewModel.initializeUserManager(vaultFile, DatabaseInitializationMode.Create)) {
                         is Success -> {
-                            persistRecentVaultFiles(vaultFile)
-                            _rootScreenState.value = RootScreenState.LoggedOut.OpeningVault
+                            val serverUrlString = null
 
-                            Success(Unit)
+                            when (val loginResult = userViewModelProvidingViewModel.loginUser(serverUrlString, username, masterPassword)) {
+                                is Success -> {
+                                    persistRecentVaultFiles(vaultFile)
+                                    _rootScreenState.value = RootScreenState.LoggedIn.Unlocked
+                                    Success(Unit)
+                                }
+                                is Failure -> Failure(loginResult.throwable)
+                            }
                         }
                         is Failure -> {
-                            _rootScreenState.value = RootScreenState.LoggedOut.Welcome
+                            _rootScreenState.value = RootScreenState.LoggedOut.Introduction
                             Failure(initializeResult.throwable)
                         }
                     }
@@ -123,7 +129,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
         }
     }
 
-    suspend fun loginVault(serverUrlString: String?, username: String, masterPassword: String): Result<Unit> {
+    suspend fun loginVault(serverUrlString: String, username: String, masterPassword: String): Result<Unit> {
         Logger.debug("Login current vault")
 
         return when (val loginResult = userViewModelProvidingViewModel.loginUser(serverUrlString, username, masterPassword)) {
@@ -160,7 +166,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
 
         return when (val logoutResult = userViewModelProvidingViewModel.logoutUser()) {
             is Success -> {
-                _rootScreenState.value = RootScreenState.LoggedOut.Welcome
+                _rootScreenState.value = RootScreenState.LoggedOut.Introduction
                 Success(Unit)
             }
             is Failure -> Failure(logoutResult.throwable)
@@ -220,8 +226,7 @@ class RootViewModel : ViewModel(), UserViewModelUsingViewModel {
         }
 
         sealed class LoggedOut : RootScreenState() {
-            object OpeningVault : LoggedOut()
-            object Welcome : LoggedOut()
+            object Introduction : LoggedOut()
         }
     }
 

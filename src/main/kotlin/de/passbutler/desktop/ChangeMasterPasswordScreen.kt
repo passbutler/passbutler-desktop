@@ -21,7 +21,6 @@ import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
-import de.passbutler.desktop.ui.validateWithRules
 import javafx.geometry.Orientation
 import javafx.scene.Node
 import tornadofx.FX.Companion.messages
@@ -34,12 +33,11 @@ import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
 import tornadofx.hbox
-import tornadofx.paddingAll
 import tornadofx.paddingTop
 
 class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_master_password_title"], navigationMenuItems = createDefaultNavigationMenu()), FormValidating, RequestSending {
 
-    override val validationContext = ValidationContext()
+    private val validationContext = ValidationContext()
 
     private val viewModel by injectWithPrivateScope<ChangeMasterPasswordViewModel>()
 
@@ -60,8 +58,6 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
 
     override fun Node.setupMainContent() {
         form {
-            paddingAll = marginM.value
-
             textLabelHeadlineOrder1(messages["change_master_password_header"])
 
             textLabelBodyOrder1(messages["change_master_password_description"]) {
@@ -103,7 +99,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
             unmaskablePasswordField {
                 bindInputOptional(this@ChangeMasterPasswordScreen, oldMasterPassword)
 
-                validateWithRules(this) {
+                validationContext.validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["change_master_password_old_master_password_validation_error_empty"])
                     )
@@ -117,7 +113,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
             unmaskablePasswordField {
                 bindInputOptional(this@ChangeMasterPasswordScreen, newMasterPassword)
 
-                validateWithRules(this) {
+                validationContext.validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it.isNullOrEmpty() }, messages["change_master_password_new_master_password_validation_error_empty"]),
                         FormFieldValidatorRule({ it == oldMasterPassword.value }, messages["change_master_password_new_master_password_validation_error_equal"])
@@ -130,7 +126,7 @@ class ChangeMasterPasswordScreen : NavigationMenuFragment(messages["change_maste
     private fun Fieldset.setupNewPasswordConfirmField() {
         field(messages["change_master_password_new_master_password_confirm_hint"], orientation = Orientation.VERTICAL) {
             unmaskablePasswordField {
-                validateWithRules(this) {
+                validationContext.validateWithRules(this) {
                     listOf(
                         FormFieldValidatorRule({ it != newMasterPassword.value }, messages["change_master_password_new_master_password_confirm_validation_error_different"])
                     )
