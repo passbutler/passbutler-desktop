@@ -86,6 +86,11 @@ abstract class Theme : Stylesheet(), ThemeColors {
     private val inputDefaultsMixin = mixin {
         +inputColorsMixin
         +inputDimensionsMixin
+
+        backgroundColor = multi(transparent)
+        borderColor = multi(box(Color.web(colorOnSurface.css, 0.38)))
+        borderRadius = multi(box(RADIUS_SMALL))
+        borderWidth = multi(box(1.px))
     }
 
     private val buttonTextDefaultsMixin = mixin {
@@ -208,15 +213,21 @@ abstract class Theme : Stylesheet(), ThemeColors {
 
         textArea {
             +inputDefaultsMixin
+
+            content {
+                backgroundColor = multi(transparent)
+                padding = box(marginS)
+            }
+
+            and(focused) {
+                backgroundColor = multi(transparent)
+                borderColor = multi(box(colorPrimary))
+            }
         }
 
         textField {
             +inputDefaultsMixin
 
-            backgroundColor = multi(transparent)
-            borderColor = multi(box(Color.web(colorOnSurface.css, 0.38)))
-            borderRadius = multi(box(RADIUS_SMALL))
-            borderWidth = multi(box(1.px))
             padding = box(marginS)
 
             and(focused) {
