@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.5.20"
+    val kotlinVersion = "1.5.30"
     id("org.jetbrains.kotlin.jvm") version kotlinVersion
 
     id("org.gradle.application")
@@ -25,7 +25,7 @@ val mainClassPath = "de.passbutler.desktop.PassButlerApplicationKt"
 val javaVersion = JavaVersion.VERSION_14
 val javaFxVersion = "14.0.2.1"
 
-val kotlinVersion = "1.5.20"
+val kotlinVersion = "1.5.30"
 val kotlinJvmTargetVersion = "14"
 
 repositories {
@@ -40,7 +40,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     // Kotlin Coroutines for JavaFX
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.5.2")
 
     // TinyLog logger
     val tinylogVersion = "2.3.2"
@@ -68,13 +68,13 @@ dependencies {
     implementation("com.jfoenix:jfoenix:9.0.10")
 
     // JSON Web Token library
-    implementation("com.auth0:java-jwt:3.18.1")
+    implementation("com.auth0:java-jwt:3.18.2")
 
     // CSV library
-    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.15.2")
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.1.0")
 
     // JUnit 5
-    val junitVersion = "5.7.2"
+    val junitVersion = "5.8.1"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
