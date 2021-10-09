@@ -116,7 +116,9 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
         }
 
         shortcut("Shortcut+S") {
-            saveClicked()
+            if (viewModel.isItemModificationAllowed.value && isItemModified.value) {
+                saveClicked()
+            }
         }
     }
 
