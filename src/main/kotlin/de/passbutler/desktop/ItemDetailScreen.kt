@@ -127,7 +127,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
             showScreenUnanimated(OverviewScreen::class)
         }
 
-        if (isItemModified.value) {
+        if (viewModel.isItemModificationAllowed.value && isItemModified.value) {
             showDiscardChangesConfirmDialog {
                 showPreviousScreenAction()
             }
@@ -137,7 +137,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     }
 
     override fun onNavigationItemClicked(clickedAction: () -> Unit) {
-        if (isItemModified.value) {
+        if (viewModel.isItemModificationAllowed.value && isItemModified.value) {
             showDiscardChangesConfirmDialog {
                 super.onNavigationItemClicked(clickedAction)
             }
