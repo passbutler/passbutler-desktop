@@ -9,7 +9,6 @@ import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.PasswordGeneratorDialog
-import de.passbutler.desktop.ui.ScrollSpeed
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.ThemeFonts
 import de.passbutler.desktop.ui.bind
@@ -26,7 +25,7 @@ import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
-import de.passbutler.desktop.ui.setScrollSpeed
+import de.passbutler.desktop.ui.scrollPane
 import de.passbutler.desktop.ui.showConfirmDialog
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.sp
@@ -54,7 +53,6 @@ import tornadofx.hbox
 import tornadofx.hyperlink
 import tornadofx.paddingBottom
 import tornadofx.paddingTop
-import tornadofx.scrollpane
 import tornadofx.style
 import tornadofx.textarea
 import tornadofx.textfield
@@ -147,9 +145,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
     }
 
     override fun Node.setupMainContent() {
-        scrollpane(fitToWidth = true, fitToHeight = false) {
-            addClass(Theme.scrollPaneBorderlessStyle)
-
+        scrollPane {
             form {
                 spacing = marginL.value
 
@@ -158,8 +154,6 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                 setupInformationSection()
                 setupDeleteSection()
             }
-        }.also {
-            it.setScrollSpeed(ScrollSpeed.MEDIUM)
         }
     }
 

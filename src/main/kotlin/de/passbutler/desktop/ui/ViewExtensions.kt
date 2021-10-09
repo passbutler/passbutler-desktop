@@ -27,6 +27,7 @@ import tornadofx.fade
 import tornadofx.label
 import tornadofx.pane
 import tornadofx.px
+import tornadofx.scrollpane
 import tornadofx.stackpane
 
 typealias JavaTimeDuration = java.time.Duration
@@ -267,7 +268,16 @@ fun Node.onMouseBackClick(clickCount: Int = 1, action: () -> Unit) {
  * ScrollPane
  */
 
-fun ScrollPane.setScrollSpeed(scrollSpeed: ScrollSpeed) {
+fun EventTarget.scrollPane(scrollSpeed: ScrollSpeed = ScrollSpeed.MEDIUM, op: ScrollPane.() -> Unit = {}): ScrollPane = scrollpane(fitToWidth = true, fitToHeight = false) {
+    addClass(Theme.scrollPaneBorderlessStyle)
+
+    op.invoke(this)
+
+    // Call after content initialisation to be sure the content is not null
+    setScrollSpeed(scrollSpeed)
+}
+
+private fun ScrollPane.setScrollSpeed(scrollSpeed: ScrollSpeed) {
     val scrollSpeedFactor = when (scrollSpeed) {
         ScrollSpeed.SLOW -> 0.001
         ScrollSpeed.MEDIUM -> 0.0025
