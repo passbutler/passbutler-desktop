@@ -348,7 +348,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
     }
 
     private fun openUrlOfSelectedItem() {
-        val url = listView?.selectedItem?.itemViewModel?.itemData?.url
+        val url = listView?.selectedItem?.itemViewModel?.itemData?.url?.takeIf { it.isNotEmpty() && it.isNotBlank() }
 
         when {
             UrlExtensions.isNetworkUrl(url) -> {
