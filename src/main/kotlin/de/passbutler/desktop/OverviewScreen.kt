@@ -24,6 +24,7 @@ import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.jfxFloatingActionButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.openBrowser
 import de.passbutler.desktop.ui.paneWithDropShadow
 import de.passbutler.desktop.ui.showScreenUnanimated
 import de.passbutler.desktop.ui.textLabelBodyOrder1
@@ -352,16 +353,16 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
         val url = listView?.selectedItem?.itemViewModel?.itemData?.url?.takeIf { it.isNotEmpty() && it.isNotBlank() }
 
         when {
-            UrlExtensions.isNetworkUrl(url) -> {
+            url != null && UrlExtensions.isNetworkUrl(url) -> {
                 Logger.debug("Open valid network URL: '$url'")
-                hostServices.showDocument(url)
+                openBrowser(url)
             }
             url != null && UrlExtensions.obtainScheme(url) == null -> {
                 val fallbackScheme = "https://"
                 val correctedUrl = fallbackScheme + url
 
                 Logger.debug("Open incomplete network URL '$url' with corrected scheme: '$correctedUrl'")
-                hostServices.showDocument(correctedUrl)
+                openBrowser(correctedUrl)
             }
             else -> {
                 showError(messages["overview_open_url_failed_title"])
