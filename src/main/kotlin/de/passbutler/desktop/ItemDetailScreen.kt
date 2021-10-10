@@ -5,6 +5,7 @@ import de.passbutler.common.base.DependentValueGetterBindable
 import de.passbutler.common.base.formattedDateTime
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.ItemEditingViewModelWrapper.Companion.PARAMETER_ITEM_ID
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuFragment
@@ -353,7 +354,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
                     action {
                         // Explicitly set the item ID to avoid `null` is passed for newly created item because `params` still does not contain an ID
-                        showScreenUnanimated(ItemAuthorizationsDetailScreen::class, parameters = mapOf("itemId" to viewModel.id.value))
+                        showScreenUnanimated(ItemAuthorizationsDetailScreen::class, parameters = mapOf(PARAMETER_ITEM_ID to viewModel.id.value))
                     }
                 }
 

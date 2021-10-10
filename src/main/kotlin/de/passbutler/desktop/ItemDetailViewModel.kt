@@ -16,4 +16,9 @@ class ItemEditingViewModelWrapper : ViewModel(), UserViewModelUsingViewModel {
 
         itemEditingViewModel
     }
+
+    companion object {
+        // Must the same name as property above
+        const val PARAMETER_ITEM_ID = "itemId"
+    }
 }

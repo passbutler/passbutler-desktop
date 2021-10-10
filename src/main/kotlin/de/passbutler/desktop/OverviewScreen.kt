@@ -8,6 +8,7 @@ import de.passbutler.common.database.models.UserType
 import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.ItemEditingViewModelWrapper.Companion.PARAMETER_ITEM_ID
 import de.passbutler.desktop.base.UrlExtensions
 import de.passbutler.desktop.base.createRelativeDateFormattingTranslations
 import de.passbutler.desktop.ui.Drawables
@@ -322,7 +323,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
     private fun showSelectedItem() {
         listView?.selectedItem?.let { selectedItem ->
-            showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to selectedItem.itemViewModel.id))
+            showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf(PARAMETER_ITEM_ID to selectedItem.itemViewModel.id))
         }
     }
 
@@ -370,7 +371,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
     private fun StackPane.setupAddButton() {
         val addItemAction = {
-            showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf("itemId" to null))
+            showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf(PARAMETER_ITEM_ID to null))
         }
 
         hbox {
