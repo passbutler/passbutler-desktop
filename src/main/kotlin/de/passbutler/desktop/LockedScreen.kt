@@ -31,6 +31,10 @@ import tornadofx.Fieldset
 import tornadofx.ValidationContext
 import tornadofx.action
 import tornadofx.addClass
+import tornadofx.addStylesheet
+import tornadofx.borderpane
+import tornadofx.bottom
+import tornadofx.center
 import tornadofx.field
 import tornadofx.fieldset
 import tornadofx.form
@@ -39,6 +43,7 @@ import tornadofx.hbox
 import tornadofx.imageview
 import tornadofx.longpress
 import tornadofx.onLeftClick
+import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.pane
 import tornadofx.px
@@ -58,11 +63,11 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
 
     init {
         with(root) {
-            setupContentView()
+            setupRootView()
         }
     }
 
-    private fun Node.setupContentView() {
+    private fun Node.setupRootView() {
         stackpane {
             pane {
                 addClass(Theme.backgroundAbstractStyle)
@@ -77,10 +82,16 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
             }
 
             hbox(alignment = Pos.CENTER) {
-                vbox(alignment = Pos.CENTER) {
-                    setupCardViewContent()
-                }
+                setupContent()
             }
+        }
+    }
+
+    private fun Node.setupContent() {
+        vbox(alignment = Pos.CENTER) {
+            paddingAll = marginM.value
+
+            setupCardViewContent()
         }
     }
 

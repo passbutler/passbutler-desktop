@@ -14,8 +14,8 @@ import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.LONGPRESS_DURATION
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.bindInputOptional
-import de.passbutler.desktop.ui.createTransparentSectionedLayout
 import de.passbutler.desktop.ui.createHeaderView
+import de.passbutler.desktop.ui.createTransparentSectionedLayout
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginM
@@ -38,6 +38,7 @@ import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
 import tornadofx.longpress
+import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.px
 import tornadofx.stackpane
@@ -88,6 +89,8 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
 
     private fun Node.setupHeader() {
         createHeaderView {
+            paddingAll = marginM.value
+
             setupDebugPresetsButton()
         }
     }
@@ -104,6 +107,8 @@ class LoginScreen : BaseFragment(messages["login_title"]), FormValidating, Reque
 
     private fun Node.setupContent() {
         vbox(alignment = Pos.CENTER_LEFT) {
+            paddingAll = marginM.value
+
             textLabelBase(messages["login_headline"]) {
                 addClass(Theme.textHeadline4Style)
             }

@@ -8,6 +8,7 @@ import de.passbutler.desktop.ui.createHeaderView
 import de.passbutler.desktop.ui.createTransparentSectionedLayout
 import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginL
+import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
 import de.passbutler.desktop.ui.showScreenFaded
 import de.passbutler.desktop.ui.textLabelBase
@@ -21,6 +22,7 @@ import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.addClass
 import tornadofx.get
+import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.stackpane
 import tornadofx.vbox
@@ -47,11 +49,14 @@ class IntroductionScreen : BaseFragment(messages["introduction_title"]) {
     }
 
     private fun Node.setupHeader() {
-        createHeaderView()
+        createHeaderView {
+            paddingAll = marginM.value
+        }
     }
 
     private fun Node.setupContent() {
         vbox(alignment = Pos.CENTER_LEFT) {
+            paddingAll = marginM.value
             spacing = marginL.value
 
             textLabelBase(messages["introduction_headline"]) {

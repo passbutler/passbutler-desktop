@@ -41,6 +41,7 @@ import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
 import tornadofx.longpress
+import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.px
 import tornadofx.stackpane
@@ -109,6 +110,8 @@ class CreateLocalUserWizardScreen : BaseFragment(messages["create_local_user_ste
 
     private fun Node.setupHeader() {
         createHeaderView {
+            paddingAll = marginM.value
+
             setupDebugPresetsButton()
         }
     }
@@ -124,6 +127,8 @@ class CreateLocalUserWizardScreen : BaseFragment(messages["create_local_user_ste
 
     private fun Node.setupContent() {
         stackpane {
+            paddingAll = marginM.value
+
             step1View = createStep1().apply {
                 isVisible = false
             }
