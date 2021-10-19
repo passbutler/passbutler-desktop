@@ -199,6 +199,7 @@ interface AboutScreenViewSetup {
 
             setupVersionInformation(presentingComponent)
             setupImprintSection(presentingComponent)
+            setupPrivacyPolicySection(presentingComponent)
         }
     }
 
@@ -239,6 +240,24 @@ interface AboutScreenViewSetup {
 
                 action {
                     presentingComponent.openBrowser(messages["about_imprint_url"])
+                }
+            }
+        }
+    }
+
+    private fun VBox.setupPrivacyPolicySection(presentingComponent: Component) {
+        textLabelHeadlineOrder1(messages["about_privacy_policy_headline"]) {
+            paddingTop = marginL.value
+        }
+
+        vbox {
+            paddingTop = marginS.value
+
+            jfxButton(messages["about_open_privacy_policy_button_text"]) {
+                addClass(Theme.buttonPrimaryStyle)
+
+                action {
+                    presentingComponent.openBrowser(messages["about_privacy_policy_url"])
                 }
             }
         }
