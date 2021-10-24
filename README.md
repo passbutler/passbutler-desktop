@@ -27,11 +27,11 @@ Recommended plugin:
 
 An open JDK in version 14 is recommended.
 
-Unfortunately, the the OpenJDK 14 available in Ubuntu repositories is broken in terms of packaging. There are already known issues [[1](https://bugs.launchpad.net/ubuntu/+source/openjdk-14/+bug/1868699), [2](https://github.com/AdoptOpenJDK/openjdk-support/issues/165)] for problems when using `jpackage`:
+Unfortunately, the OpenJDK 14 available in Ubuntu repositories is broken in terms of packaging. There are already known issues [[1](https://bugs.launchpad.net/ubuntu/+source/openjdk-14/+bug/1868699), [2](https://github.com/AdoptOpenJDK/openjdk-support/issues/165)] for problems when using `jpackage`:
 
     java.lang.module.FindException: Hash of jdk.management.jfr (e02522b71006de2e5f5cfb4b62b3ed4af7659bef52f6ec55df0c1abce130e286) differs to expected hash (9ac607490568ac60259af12ac34079b00adeac59f154d5bb90dd9e2ecc8f022f) recorded in java.base
 
-To workaround this, the [AdoptOpenJDK 14](https://adoptopenjdk.net) is used instead.
+To work around this, the [AdoptOpenJDK 14](https://adoptopenjdk.net) is used instead.
 
 Add APT repository:
 
@@ -71,7 +71,7 @@ Clone submodules:
 
 ### Packaging
 
-Currently only the distribution with "deb" package is supported!
+Currently, only the distribution with "deb" package is supported!
 
 #### Package for Debian/Ubuntu
 

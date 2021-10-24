@@ -10,7 +10,7 @@
 ### Fixed
 
 ### Known issues
-- If a screen has a default and cancel button (reacting to "ENTER" and "ESC") and a dialog is shown, the button behaviour of the screen buttons not working anymore after dismissing the dialog
+- If a screen has a default and cancel button (reacting to "ENTER" and "ESC") and a dialog is shown, the button behavior of the screen buttons not working anymore after dismissing the dialog
 - The "logged out" about screen is not yet scrollable
 
 ## [1.0.0-Preview2] - 2021-10-10
@@ -30,13 +30,13 @@
 - Imprint to about screen and buttons to show screen from multiple places
 
 ### Changed
-- Allow copying item details of read-only items (do not disable them anymore) - the save and delete button is hidden instead of disabled to avoid user confusion
+- Allow copying item details of read-only items (do not disable them anymore) – the save and delete button is hidden instead of disabled to avoid user confusion
 - The filter view is focused automatically on overview
 - Automatically focus first element if the filter is active
 - Disabled horizontal scrolling of notes text area
 - Show dedicated error for entering wrong invitation code when try to register user
 - Icon accent coloring to archive more beautiful list style
-- Introduction flow to be more understandable / user friendly
+- Introduction flow to be more understandable / user-friendly
 
 ### Fixed
 - The case of items is ignored for sorting on item and item authorization screens
@@ -45,7 +45,7 @@
 - Non-working open URL action on Linux if the URL scheme was missing because `xdg-open` interpreted the URL as a local file
 
 ### Known issues
-- If a screen has a default and cancel button (reacting to "ENTER" and "ESC") and a dialog is shown, the button behaviour of the screen buttons not working anymore after dismissing the dialog
+- If a screen has a default and cancel button (reacting to "ENTER" and "ESC") and a dialog is shown, the button behavior of the screen buttons not working anymore after dismissing the dialog
 
 ## [1.0.0-Preview1] - 2021-02-02
 
