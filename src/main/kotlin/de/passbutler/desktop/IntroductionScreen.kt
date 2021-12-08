@@ -1,5 +1,6 @@
 package de.passbutler.desktop
 
+import de.passbutler.desktop.AboutLoggedOutScreen.Companion.PARAMETER_PREVIOUS_SCREEN
 import de.passbutler.desktop.ui.BaseFragment
 import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.Theme
@@ -22,6 +23,7 @@ import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.addClass
 import tornadofx.get
+import tornadofx.hbox
 import tornadofx.paddingAll
 import tornadofx.paddingTop
 import tornadofx.stackpane
@@ -44,6 +46,9 @@ class IntroductionScreen : BaseFragment(messages["introduction_title"]) {
             },
             centerSetup = {
                 setupContent()
+            },
+            bottomSetup = {
+                setupFooter()
             }
         )
     }
@@ -100,6 +105,20 @@ class IntroductionScreen : BaseFragment(messages["introduction_title"]) {
                     graphic = vectorDrawableIcon(buttonIcon)
 
                     action(buttonAction)
+                }
+            }
+        }
+    }
+
+    private fun Node.setupFooter() {
+        hbox {
+            alignment = Pos.CENTER_RIGHT
+
+            jfxButton(messages["general_about"]) {
+                addClass(Theme.buttonTextOnSurfaceTinyStyle)
+
+                action {
+                    showScreenFaded(AboutLoggedOutScreen::class, parameters = mapOf(PARAMETER_PREVIOUS_SCREEN to this@IntroductionScreen.javaClass.kotlin))
                 }
             }
         }

@@ -329,6 +329,13 @@ abstract class Theme : Stylesheet(), ThemeColors {
             textFill = colorOnSurface
         }
 
+        buttonTextOnSurfaceTinyStyle {
+            +buttonTextDefaultsMixin
+
+            textFill = colorOnSurface
+            fontSize = 12.sp
+        }
+
         buttonTextStyle {
             +buttonTextDefaultsMixin
 
@@ -574,6 +581,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val buttonPrimaryStyle by cssclass()
         val buttonSecondaryStyle by cssclass()
         val buttonTextOnSurfaceStyle by cssclass()
+        val buttonTextOnSurfaceTinyStyle by cssclass()
         val buttonTextStyle by cssclass()
         val cardEmphasizedStyle by cssclass()
         val cardTranslucentStyle by cssclass()

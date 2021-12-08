@@ -14,6 +14,7 @@
 - Confirmation dialog for discard item and item authorization changes action
 - Password generator dialog on item screen
 - Shortcut for saving on item detail and item authorizations screen
+- Imprint to about screen and buttons to show screen from multiple places
 
 ## Changed
 - Allow copying item details of read-only items (do not disable them anymore) - the save and delete button is hidden instead of disabled to avoid user confusion

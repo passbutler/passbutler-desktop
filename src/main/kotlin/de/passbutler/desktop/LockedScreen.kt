@@ -5,9 +5,11 @@ import de.passbutler.common.base.BuildType
 import de.passbutler.common.base.MutableBindable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.AboutLoggedOutScreen.Companion.PARAMETER_PREVIOUS_SCREEN
 import de.passbutler.desktop.base.BuildInformationProvider
 import de.passbutler.desktop.base.DebugConstants
 import de.passbutler.desktop.ui.BaseFragment
+import de.passbutler.desktop.ui.DarkTheme
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.LONGPRESS_DURATION
@@ -17,6 +19,7 @@ import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.showScreenFaded
 import de.passbutler.desktop.ui.textLabelBodyOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
@@ -82,7 +85,15 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
             }
 
             hbox(alignment = Pos.CENTER) {
-                setupContent()
+                borderpane {
+                    center {
+                        setupContent()
+                    }
+
+                    bottom {
+                        setupFooter()
+                    }
+                }
             }
         }
     }
@@ -186,6 +197,21 @@ class LockedScreen : BaseFragment(messages["locked_screen_title"]), FormValidati
             isCancellable = false
         ) {
             viewModel.unlockScreenWithPassword(masterPassword)
+        }
+    }
+
+    private fun Node.setupFooter() {
+        hbox {
+            alignment = Pos.CENTER_RIGHT
+
+            jfxButton(messages["general_about"]) {
+                addStylesheet(DarkTheme::class)
+                addClass(Theme.buttonTextOnSurfaceTinyStyle)
+
+                action {
+                    showScreenFaded(AboutLoggedOutScreen::class, parameters = mapOf(PARAMETER_PREVIOUS_SCREEN to this@LockedScreen.javaClass.kotlin))
+                }
+            }
         }
     }
 }

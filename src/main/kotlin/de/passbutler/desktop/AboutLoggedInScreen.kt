@@ -15,14 +15,16 @@ import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.openBrowser
+import de.passbutler.desktop.ui.scrollPane
 import de.passbutler.desktop.ui.showConfirmDialog
 import de.passbutler.desktop.ui.textLabelBodyOrder1
-import de.passbutler.desktop.ui.textLabelBodyOrder2
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.textLabelHeadlineOrder2
 import de.passbutler.desktop.ui.vectorDrawableIcon
 import javafx.scene.Node
 import javafx.scene.layout.VBox
+import tornadofx.Component
 import tornadofx.FX
 import tornadofx.FX.Companion.messages
 import tornadofx.FileChooserMode
@@ -40,7 +42,7 @@ import tornadofx.vbox
 import java.io.File
 import java.time.Instant
 
-class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
+class AboutLoggedInScreen : NavigationMenuFragment(messages["about_title"], navigationMenuItems = createDefaultNavigationMenu()), AboutScreenViewSetup, RequestSending {
 
     private val viewModel by injectPremiumKeyViewModel()
 
@@ -49,50 +51,20 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
     }
 
     override fun Node.setupMainContent() {
-        vbox {
-            paddingAll = marginM.value
-            spacing = marginL.value
+        scrollPane {
+            vbox {
+                paddingAll = marginM.value
+                spacing = marginL.value
 
-            setupAboutSection()
-            setupPremiumKeySection()
-        }
-    }
-
-    private fun Node.setupAboutSection() {
-        vbox {
-            textLabelHeadlineOrder1(messages["about_headline"])
-
-            textflow {
-                paddingTop = marginS.value
-
-                val versionName = BuildConfig.VERSION_NAME
-                val formattedBuildTime = Instant.ofEpochMilli(BuildConfig.BUILD_TIMESTAMP).formattedDateTime(FX.locale)
-                val gitShortHash = BuildConfig.BUILD_REVISION_HASH
-
-                val formattedText = messages["about_subheader"].format(versionName, formattedBuildTime, gitShortHash)
-                val formattedTextBeforeGitHash = formattedText.substringBefore(gitShortHash)
-                val formattedTextAfterGitHash = formattedText.substringAfter(gitShortHash)
-
-                textLabelBodyOrder1(formattedTextBeforeGitHash)
-
-                hyperlink(gitShortHash) {
-                    action {
-                        hostServices.showDocument(GIT_PROJECT_URL.format(gitShortHash))
-                    }
-                }
-
-                textLabelBodyOrder1(formattedTextAfterGitHash)
-            }
-
-            textLabelBodyOrder2(messages["about_passage_1"]) {
-                paddingTop = marginS.value
+                setupAboutSection(this@AboutLoggedInScreen)
+                setupPremiumKeySection()
             }
         }
     }
 
     private fun VBox.setupPremiumKeySection() {
         vbox {
-            textLabelHeadlineOrder2(messages["premium_headline"])
+            textLabelHeadlineOrder1(messages["premium_headline"])
 
             stackpane {
                 paddingTop = marginS.value
@@ -119,7 +91,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
                 }
             }
 
-            bindVisibility(this@AboutScreen, viewModel.premiumKey) {
+            bindVisibility(this@AboutLoggedInScreen, viewModel.premiumKey) {
                 it == null
             }
         }
@@ -162,7 +134,7 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
                 }
             }
 
-            bindVisibility(this@AboutScreen, viewModel.premiumKey) {
+            bindVisibility(this@AboutLoggedInScreen, viewModel.premiumKey) {
                 it != null
             }
         }
@@ -179,20 +151,20 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
                 graphic = vectorDrawableIcon(Drawables.ICON_VERIFIED)
                 graphicTextGap = marginM.value
 
-                bindTextAndVisibility(this@AboutScreen, viewModel.premiumKey) { it?.name }
+                bindTextAndVisibility(this@AboutLoggedInScreen, viewModel.premiumKey) { it?.name }
             }
 
             // Width of the graphic + spacing
             val cardHeadlineIconOffset = 18.0 + cardHeadline.graphicTextGap
 
             createInformationView(messages["premium_card_premium_key_email"]) {
-                bindTextAndVisibility(this@AboutScreen, viewModel.premiumKey) { it?.email }
+                bindTextAndVisibility(this@AboutLoggedInScreen, viewModel.premiumKey) { it?.email }
             }.apply {
                 paddingLeft = cardHeadlineIconOffset
             }
 
             createInformationView(messages["premium_card_premium_key_id"]) {
-                bindTextAndVisibility(this@AboutScreen, viewModel.premiumKey) { it?.id }
+                bindTextAndVisibility(this@AboutLoggedInScreen, viewModel.premiumKey) { it?.id }
             }.apply {
                 paddingLeft = cardHeadlineIconOffset
             }
@@ -216,6 +188,59 @@ class AboutScreen : NavigationMenuFragment(messages["about_title"], navigationMe
             handleFailure = { showError(messages["premium_remove_premium_key_failed_general_title"]) }
         ) {
             viewModel.removePremiumKey()
+        }
+    }
+}
+
+interface AboutScreenViewSetup {
+    fun Node.setupAboutSection(presentingComponent: Component) {
+        vbox {
+            textLabelHeadlineOrder1(messages["about_headline"])
+
+            setupVersionInformation(presentingComponent)
+            setupImprintSection(presentingComponent)
+        }
+    }
+
+    private fun VBox.setupVersionInformation(presentingComponent: Component) {
+        textflow {
+            paddingTop = marginS.value
+
+            val versionName = BuildConfig.VERSION_NAME
+            val formattedBuildTime = Instant.ofEpochMilli(BuildConfig.BUILD_TIMESTAMP).formattedDateTime(FX.locale)
+            val gitShortHash = BuildConfig.BUILD_REVISION_HASH
+
+            val formattedText = messages["about_subheader"].format(versionName, formattedBuildTime, gitShortHash)
+            val formattedTextBeforeGitHash = formattedText.substringBefore(gitShortHash)
+            val formattedTextAfterGitHash = formattedText.substringAfter(gitShortHash)
+
+            textLabelBodyOrder1(formattedTextBeforeGitHash)
+
+            hyperlink(gitShortHash) {
+                action {
+                    presentingComponent.openBrowser(GIT_PROJECT_URL.format(gitShortHash))
+                }
+            }
+
+            textLabelBodyOrder1(formattedTextAfterGitHash)
+        }
+    }
+
+    private fun VBox.setupImprintSection(presentingComponent: Component) {
+        textLabelHeadlineOrder1(messages["about_imprint_headline"]) {
+            paddingTop = marginL.value
+        }
+
+        vbox {
+            paddingTop = marginS.value
+
+            jfxButton(messages["about_open_imprint_button_text"]) {
+                addClass(Theme.buttonPrimaryStyle)
+
+                action {
+                    presentingComponent.openBrowser(messages["about_imprint_url"])
+                }
+            }
         }
     }
 
