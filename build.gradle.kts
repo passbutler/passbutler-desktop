@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.5.30"
+    val kotlinVersion = "1.6.10"
     id("org.jetbrains.kotlin.jvm") version kotlinVersion
 
     id("org.gradle.application")
@@ -25,7 +25,7 @@ val mainClassPath = "de.passbutler.desktop.PassButlerApplicationKt"
 val javaVersion = JavaVersion.VERSION_14
 val javaFxVersion = "14.0.2.1"
 
-val kotlinVersion = "1.5.30"
+val kotlinVersion = "1.6.10"
 val kotlinJvmTargetVersion = "14"
 
 repositories {
@@ -40,18 +40,18 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     // Kotlin Coroutines for JavaFX
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.6.0")
 
     // TinyLog logger
-    val tinylogVersion = "2.3.2"
+    val tinylogVersion = "2.4.1"
     implementation("org.tinylog:tinylog-api-kotlin:$tinylogVersion")
     implementation("org.tinylog:tinylog-impl:$tinylogVersion")
 
     // JSON library
-    implementation("org.json:json:20210307")
+    implementation("org.json:json:20211205")
 
     // SQLDelight
-    implementation("com.squareup.sqldelight:sqlite-driver:1.5.1")
+    implementation("com.squareup.sqldelight:sqlite-driver:1.5.3")
 
     // TornadoFX
     implementation(files("lib/tornadofx-2.0.0-SNAPSHOT.jar"))
@@ -71,16 +71,16 @@ dependencies {
     implementation("com.auth0:java-jwt:3.18.2")
 
     // CSV library
-    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.1.0")
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.2.0")
 
     // JUnit 5
-    val junitVersion = "5.8.1"
+    val junitVersion = "5.8.2"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
     // Mockk.io
-    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("io.mockk:mockk:1.12.1")
 }
 
 java {

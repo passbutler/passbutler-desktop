@@ -255,6 +255,9 @@ class RootScreen : BaseView(), RequestSending {
             is RootViewModel.RootScreenState.LoggedIn.Locked -> showScreenIfNotShown(LockedScreen::class)
             is RootViewModel.RootScreenState.LoggedIn.Unlocked -> showScreenIfNotShown(OverviewScreen::class)
             is RootViewModel.RootScreenState.LoggedOut.Introduction -> showScreenIfNotShown(IntroductionScreen::class)
+            null -> {
+                // Nothing to do
+            }
         }
     }
 
