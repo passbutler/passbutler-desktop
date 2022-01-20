@@ -97,6 +97,6 @@ Build the package:
         --icon ./src/main/resources/drawables/logo.png \
         --file-associations ./file-associations.properties \
         --type deb \
-        --linux-package-name "pass-butler" \
+        --linux-package-name "passbutler" \
         --linux-deb-maintainer "bastian.raschke@posteo.de" \
         --linux-app-category "utils"
