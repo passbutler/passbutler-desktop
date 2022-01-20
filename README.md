@@ -62,7 +62,7 @@ In IntelliJ, change the "Project SDK" to the AdoptOpenJDK 14 in File -> Project 
 
 Clone repository:
 
-    $ git clone ssh://git@git.sicherheitskritisch.de/passbutler/passbutler-desktop.git
+    $ git clone ssh://git@github.com/passbutler/passbutler-desktop.git
 
 Clone submodules:
 
