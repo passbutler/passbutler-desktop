@@ -1,6 +1,25 @@
+<div align="center">
+    <img alt="Pass Butler – Private Cloud Password Manager" src="./projectcover.jpg" width="600">
+</div>
+
 # Pass Butler for desktop
 
 This repository contains the source code of Pass Butler for desktop platforms.
+
+## Installation
+
+Add APT repository:
+
+    $ echo "deb https://apt.passbutler.de bullseye main" | sudo tee /etc/apt/sources.list.d/passbutler.list
+
+Add APT repository signing key and update package index:
+
+    $ wget -q -O - https://apt.passbutler.de/signing-key.gpg | sudo apt-key add -
+    $ sudo apt update
+
+Install the package:
+
+    $ sudo apt install passbutler
 
 ## Development setup
 
@@ -39,7 +58,7 @@ Add APT repository:
 
 Add APT repository signing key and update package index:
 
-    $ wget -O - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
+    $ wget -q -O - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | sudo apt-key add -
     $ sudo apt update
 
 Install the package:
@@ -63,10 +82,10 @@ In IntelliJ, change the "Project SDK" to the AdoptOpenJDK 14 in File -> Project 
 Clone repository:
 
     $ git clone ssh://git@github.com/passbutler/passbutler-desktop.git
+    $ cd ./passbutler-desktop/
 
 Clone submodules:
 
-    $ cd ./passbutler-desktop/
     $ git submodule update --init
 
 ### Packaging
