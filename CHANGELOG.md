@@ -5,10 +5,6 @@
 ### Added
 - Privacy policy link on about screen
 
-### Changed
-
-### Fixed
-
 ### Known issues
 - If a screen has a default and cancel button (reacting to "ENTER" and "ESC") and a dialog is shown, the button behavior of the screen buttons not working anymore after dismissing the dialog
 - The "logged out" about screen is not yet scrollable
