@@ -67,7 +67,7 @@ interface BaseUIComponent : UIPresenting, CoroutineScope {
 }
 
 /**
- * A screen view that have only a single instance (the same instance will be used always if shown).
+ * A screen view that have only a single instance (the same instance will always be used if shown).
  */
 abstract class BaseView(title: String? = null, icon: Node? = null) : View(title, icon), BaseUIComponent {
 
@@ -86,7 +86,7 @@ abstract class BaseView(title: String? = null, icon: Node? = null) : View(title,
 }
 
 /**
- * A screen view that can have multiple instances (a new instance will be created always if shown).
+ * A screen view that can have multiple instances (a new instance will always be created if shown).
  */
 abstract class BaseFragment(title: String? = null, icon: Node? = null) : Fragment(title, icon), BaseUIComponent {
 
