@@ -11,7 +11,7 @@ import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bind
 import de.passbutler.desktop.ui.bottomDropShadow
 import de.passbutler.desktop.ui.jfxSpinner
-import de.passbutler.desktop.ui.showDangerousConfirmDialog
+import de.passbutler.desktop.ui.showConfirmDialog
 import de.passbutler.desktop.ui.showOpenVaultFileChooser
 import de.passbutler.desktop.ui.snackbarBannerView
 import javafx.application.Platform
@@ -275,7 +275,7 @@ class RootScreen : BaseView(), RequestSending {
     }
 
     private fun showCloseVaultConfirmDialog(positiveClickAction: () -> Unit) {
-        showDangerousConfirmDialog(
+        showConfirmDialog(
             title = messages["general_close_vault_confirmation_title"],
             message = messages["general_close_vault_confirmation_message"],
             positiveActionTitle = messages["general_confirm"],
