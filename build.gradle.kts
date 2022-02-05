@@ -68,7 +68,7 @@ dependencies {
     implementation("com.jfoenix:jfoenix:9.0.10")
 
     // JSON Web Token library
-    implementation("com.auth0:java-jwt:3.18.2")
+    implementation("com.auth0:java-jwt:3.18.3")
 
     // CSV library
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.2.0")
@@ -80,7 +80,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 
     // Mockk.io
-    testImplementation("io.mockk:mockk:1.12.1")
+    testImplementation("io.mockk:mockk:1.12.2")
 }
 
 java {
