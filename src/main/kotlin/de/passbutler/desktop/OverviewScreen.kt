@@ -94,7 +94,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
     private var emptyScreenView: Node? = null
 
     private val unfilteredItemEntries = observableArrayList<ItemEntry>()
-    private val itemEntries = FilteredList(unfilteredItemEntries)
+    private val filteredItemEntries = FilteredList(unfilteredItemEntries)
 
     private var updateToolbarJob: Job? = null
     private var synchronizeDataRequestSendingJob: Job? = null
@@ -193,7 +193,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                         null
                     }
 
-                    itemEntries.setPredicate(newPredicate)
+                    filteredItemEntries.setPredicate(newPredicate)
                 }
 
                 shortcut("Shortcut+F") {
@@ -259,7 +259,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
     }
 
     private fun Node.createListView(): ListView<ItemEntry> {
-        return listview(itemEntries) {
+        return listview(filteredItemEntries) {
             addClass(Theme.listViewSelectableCellStyle)
             addClass(Theme.listViewPressableCellStyle)
 
@@ -269,11 +269,12 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                 }
             }
 
-            items.addListener(ListChangeListener {
-                val shownItemSize = it.list.size
+            items.addListener(ListChangeListener { listChange ->
+                val newListItems = listChange.list
+                val shownItemSize = newListItems.size
 
                 // Automatically focus first element if the filter is active
-                if (itemEntries.predicate != null && shownItemSize == 1) {
+                if (filteredItemEntries.predicate != null && shownItemSize == 1) {
                     selectionModel?.selectFirst()
                 }
             })

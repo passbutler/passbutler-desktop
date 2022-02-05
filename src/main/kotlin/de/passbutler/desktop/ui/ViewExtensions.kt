@@ -259,8 +259,9 @@ fun Node.onLeftClickIgnoringCount(action: () -> Unit) {
 
 fun Node.onMouseBackClick(clickCount: Int = 1, action: () -> Unit) {
     setOnMouseClicked {
-        if (it.clickCount == clickCount && it.button === MouseButton.BACK)
+        if (it.clickCount == clickCount && it.button === MouseButton.BACK) {
             action()
+        }
     }
 }
 
