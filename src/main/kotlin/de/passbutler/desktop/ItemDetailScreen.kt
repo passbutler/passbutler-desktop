@@ -210,6 +210,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                     fontFamily = ThemeFonts.ROBOTO_MEDIUM
                 }
 
+                bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                 bindInput(this@ItemDetailScreen, viewModel.title)
 
                 validationContext.validateWithRules(this) {
@@ -226,6 +227,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
             hbox(alignment = Pos.CENTER, spacing = marginS.value) {
                 textfield {
                     hgrow = Priority.ALWAYS
+                    bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                     bindInput(this@ItemDetailScreen, viewModel.username)
                 }
 
@@ -244,6 +246,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
         field(messages["itemdetail_password_hint"], orientation = Orientation.VERTICAL) {
             hbox(alignment = Pos.CENTER, spacing = marginS.value) {
                 val unmaskablePasswordField = unmaskablePasswordField(viewModel.hidePasswordsEnabled) {
+                    bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                     bindInput(this@ItemDetailScreen, viewModel.password)
                 }
 
@@ -268,6 +271,8 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
         textflow {
             // Add some extra spacing to separate from next field
             paddingBottom = marginS.value
+
+            bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
 
             val generateWord = messages["itemdetail_password_generator_generate_word"]
             hyperlink(generateWord) {
@@ -304,6 +309,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
             hbox(alignment = Pos.CENTER, spacing = marginS.value) {
                 textfield {
                     hgrow = Priority.ALWAYS
+                    bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                     bindInput(this@ItemDetailScreen, viewModel.url)
                 }
 
@@ -324,6 +330,7 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
             field(messages["itemdetail_notes_hint"], orientation = Orientation.VERTICAL) {
                 textarea {
+                    bindEnabled(this@ItemDetailScreen, viewModel.isItemModificationAllowed)
                     bindInput(this@ItemDetailScreen, viewModel.notes)
 
                     prefRowCount = 5
