@@ -17,6 +17,7 @@ import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindVisibility
 import de.passbutler.desktop.ui.bottomDropShadow
+import de.passbutler.desktop.ui.copyToClipboard
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createEmptyScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
@@ -69,7 +70,6 @@ import tornadofx.paddingBottom
 import tornadofx.paddingLeft
 import tornadofx.paddingRight
 import tornadofx.paddingTop
-import tornadofx.putString
 import tornadofx.right
 import tornadofx.select
 import tornadofx.selectedItem
@@ -330,24 +330,15 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
     }
 
     private fun copyUsernameOfSelectedItem() {
-        copyItemInformationToClipboard(listView?.selectedItem?.itemViewModel?.itemData?.username)
+        copyToClipboard(this, listView?.selectedItem?.itemViewModel?.itemData?.username)
     }
 
     private fun copyPasswordOfSelectedItem() {
-        copyItemInformationToClipboard(listView?.selectedItem?.itemViewModel?.itemData?.password)
+        copyToClipboard(this, listView?.selectedItem?.itemViewModel?.itemData?.password)
     }
 
     private fun copyUrlOfSelectedItem() {
-        copyItemInformationToClipboard(listView?.selectedItem?.itemViewModel?.itemData?.url)
-    }
-
-    private fun copyItemInformationToClipboard(itemInformation: String?) {
-        if (itemInformation?.isNotBlank() == true) {
-            clipboard.putString(itemInformation)
-            showInformation(messages["overview_item_information_clipboard_successful_message"])
-        } else {
-            showError(messages["overview_item_information_clipboard_failed_empty_title"])
-        }
+        copyToClipboard(this, listView?.selectedItem?.itemViewModel?.itemData?.url)
     }
 
     private fun openUrlOfSelectedItem() {

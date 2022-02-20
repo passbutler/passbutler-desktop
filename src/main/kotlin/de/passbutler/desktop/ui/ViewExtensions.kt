@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXCheckBox
 import com.jfoenix.controls.JFXSlider
 import com.jfoenix.controls.JFXSpinner
 import com.jfoenix.controls.JFXToggleButton
+import de.passbutler.common.ui.BannerPresenting
 import de.passbutler.common.ui.FADE_TRANSITION_DURATION
 import javafx.animation.Animation
 import javafx.beans.value.ObservableValue
@@ -19,13 +20,16 @@ import javafx.scene.input.MouseButton
 import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
 import javafx.scene.shape.Circle
+import tornadofx.Component
 import tornadofx.FX
 import tornadofx.addClass
 import tornadofx.attachTo
 import tornadofx.css
 import tornadofx.fade
+import tornadofx.get
 import tornadofx.label
 import tornadofx.pane
+import tornadofx.putString
 import tornadofx.px
 import tornadofx.scrollpane
 import tornadofx.stackpane
@@ -295,4 +299,20 @@ enum class ScrollSpeed {
     SLOW,
     MEDIUM,
     FAST
+}
+
+/**
+ * Component
+ */
+
+fun Component.copyToClipboard(
+    bannerPresenting: BannerPresenting,
+    itemInformation: String?,
+) {
+    if (itemInformation?.isNotBlank() == true) {
+        clipboard.putString(itemInformation)
+        bannerPresenting.showInformation(messages["general_copy_to_clipboard_successful_message"])
+    } else {
+        bannerPresenting.showError(messages["general_copy_to_clipboard_failed_empty_title"])
+    }
 }

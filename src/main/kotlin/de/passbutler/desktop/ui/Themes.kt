@@ -560,6 +560,18 @@ abstract class Theme : Stylesheet(), ThemeColors {
                 opacity = OPACITY_DISABLED
             }
         }
+
+        vectorDrawableIconClickable {
+            backgroundColor = multi(textColorPrimary)
+
+            and(disabled) {
+                opacity = OPACITY_DISABLED
+            }
+
+            and(pressed) {
+                opacity = OPACITY_PRESSED
+            }
+        }
     }
 
     companion object {
@@ -614,6 +626,7 @@ abstract class Theme : Stylesheet(), ThemeColors {
         val toolbarStyle by cssclass()
         val vectorDrawableIcon by cssclass()
         val vectorDrawableIconAccent by cssclass()
+        val vectorDrawableIconClickable by cssclass()
 
         // CSS properties
         val jfxButtonType by cssproperty<String>("-jfx-button-type")

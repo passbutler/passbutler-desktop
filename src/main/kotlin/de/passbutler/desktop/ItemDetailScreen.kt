@@ -6,6 +6,7 @@ import de.passbutler.common.base.formattedDateTime
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ItemEditingViewModelWrapper.Companion.PARAMETER_ITEM_ID
+import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.FormFieldValidatorRule
 import de.passbutler.desktop.ui.FormValidating
 import de.passbutler.desktop.ui.NavigationMenuFragment
@@ -17,6 +18,7 @@ import de.passbutler.desktop.ui.bindEnabled
 import de.passbutler.desktop.ui.bindInput
 import de.passbutler.desktop.ui.bindTextAndVisibility
 import de.passbutler.desktop.ui.bindVisibility
+import de.passbutler.desktop.ui.copyToClipboard
 import de.passbutler.desktop.ui.createCancelButton
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createInformationView
@@ -35,11 +37,13 @@ import de.passbutler.desktop.ui.textLabelBodyOrder2
 import de.passbutler.desktop.ui.textLabelCaption
 import de.passbutler.desktop.ui.textLabelHeadlineOrder1
 import de.passbutler.desktop.ui.unmaskablePasswordField
+import de.passbutler.desktop.ui.vectorDrawableIcon
 import javafx.geometry.Orientation
 import javafx.geometry.Pos
 import javafx.scene.Node
 import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
+import javafx.scene.layout.Priority
 import tornadofx.FX
 import tornadofx.Fieldset
 import tornadofx.Form
@@ -51,7 +55,9 @@ import tornadofx.fieldset
 import tornadofx.form
 import tornadofx.get
 import tornadofx.hbox
+import tornadofx.hgrow
 import tornadofx.hyperlink
+import tornadofx.onLeftClick
 import tornadofx.paddingBottom
 import tornadofx.paddingTop
 import tornadofx.style
@@ -217,19 +223,44 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Fieldset.setupUsernameField() {
         field(messages["itemdetail_username_hint"], orientation = Orientation.VERTICAL) {
-            textfield {
-                bindInput(this@ItemDetailScreen, viewModel.username)
+            hbox(alignment = Pos.CENTER, spacing = marginS.value) {
+                textfield {
+                    hgrow = Priority.ALWAYS
+                    bindInput(this@ItemDetailScreen, viewModel.username)
+                }
+
+                vectorDrawableIcon(Drawables.ICON_CONTENT_COPY) {
+                    addClass(Theme.vectorDrawableIconClickable)
+
+                    onLeftClick {
+                        copyToClipboard(this@ItemDetailScreen, viewModel.username.value)
+                    }
+                }
             }
         }
     }
 
     private fun Fieldset.setupPasswordField() {
         field(messages["itemdetail_password_hint"], orientation = Orientation.VERTICAL) {
-            val unmaskablePasswordField = unmaskablePasswordField(viewModel.hidePasswordsEnabled) {
-                bindInput(this@ItemDetailScreen, viewModel.password)
-            }
+            hbox(alignment = Pos.CENTER, spacing = marginS.value) {
+                val unmaskablePasswordField = unmaskablePasswordField(viewModel.hidePasswordsEnabled) {
+                    bindInput(this@ItemDetailScreen, viewModel.password)
+                }
 
-            passwordField = unmaskablePasswordField.wrappedPasswordField
+                unmaskablePasswordField.apply {
+                    hgrow = Priority.ALWAYS
+                }
+
+                passwordField = unmaskablePasswordField.wrappedPasswordField
+
+                vectorDrawableIcon(Drawables.ICON_CONTENT_COPY) {
+                    addClass(Theme.vectorDrawableIconClickable)
+
+                    onLeftClick {
+                        copyToClipboard(this@ItemDetailScreen, viewModel.password.value)
+                    }
+                }
+            }
         }
     }
 
@@ -270,8 +301,19 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun Fieldset.setupUrlField() {
         field(messages["itemdetail_url_hint"], orientation = Orientation.VERTICAL) {
-            textfield {
-                bindInput(this@ItemDetailScreen, viewModel.url)
+            hbox(alignment = Pos.CENTER, spacing = marginS.value) {
+                textfield {
+                    hgrow = Priority.ALWAYS
+                    bindInput(this@ItemDetailScreen, viewModel.url)
+                }
+
+                vectorDrawableIcon(Drawables.ICON_CONTENT_COPY) {
+                    addClass(Theme.vectorDrawableIconClickable)
+
+                    onLeftClick {
+                        copyToClipboard(this@ItemDetailScreen, viewModel.url.value)
+                    }
+                }
             }
         }
     }

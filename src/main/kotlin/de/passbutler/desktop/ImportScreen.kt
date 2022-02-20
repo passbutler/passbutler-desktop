@@ -6,6 +6,7 @@ import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.base.PathProvider
 import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.Theme
+import de.passbutler.desktop.ui.copyToClipboard
 import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.jfxButton
@@ -27,7 +28,6 @@ import tornadofx.get
 import tornadofx.hbox
 import tornadofx.paddingAll
 import tornadofx.paddingTop
-import tornadofx.putString
 import tornadofx.vbox
 import java.io.File
 
@@ -87,8 +87,7 @@ class ImportScreen : NavigationMenuFragment(messages["import_title"], navigation
                     addClass(Theme.buttonSecondaryStyle)
 
                     action {
-                        clipboard.putString(recycleBinName)
-                        showInformation(messages["general_copy_to_clipboard_successful_message"])
+                        copyToClipboard(this@ImportScreen, recycleBinName)
                     }
                 }
             }
