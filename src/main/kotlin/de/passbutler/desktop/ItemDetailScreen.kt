@@ -1,6 +1,7 @@
 package de.passbutler.desktop
 
 import de.passbutler.common.ItemEditingViewModel.Companion.NOTES_MAXIMUM_CHARACTERS
+import de.passbutler.common.base.Bindable
 import de.passbutler.common.base.DependentValueGetterBindable
 import de.passbutler.common.base.formattedDateTime
 import de.passbutler.common.ui.RequestSending
@@ -28,6 +29,7 @@ import de.passbutler.desktop.ui.jfxButton
 import de.passbutler.desktop.ui.marginL
 import de.passbutler.desktop.ui.marginM
 import de.passbutler.desktop.ui.marginS
+import de.passbutler.desktop.ui.marginXS
 import de.passbutler.desktop.ui.scrollPane
 import de.passbutler.desktop.ui.showConfirmDialog
 import de.passbutler.desktop.ui.showScreenUnanimated
@@ -44,6 +46,8 @@ import javafx.scene.Node
 import javafx.scene.control.TextField
 import javafx.scene.control.TextFormatter
 import javafx.scene.layout.Priority
+import javafx.scene.layout.VBox
+import javafx.scene.text.FontWeight
 import tornadofx.FX
 import tornadofx.Fieldset
 import tornadofx.Form
@@ -444,17 +448,44 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                     }
                 }
 
-                createInformationView(messages["itemdetail_id_title"]) {
-                    style {
-                        fontFamily = "monospace"
-                    }
-
-                    bindTextAndVisibility(this@ItemDetailScreen, viewModel.id)
-                }
+                createInformationViewWithCopyIcon(messages["itemdetail_id_title"], viewModel.id)
             }
 
             bindVisibility(this@ItemDetailScreen, viewModel.isNewItem) { isNewItem ->
                 !isNewItem
+            }
+        }
+    }
+
+    private fun Node.createInformationViewWithCopyIcon(title: String, informationBindable: Bindable<String?>): VBox {
+        return vbox {
+            textLabelBodyOrder1(title) {
+                style {
+                    fontWeight = FontWeight.BOLD
+                }
+            }
+
+            hbox {
+                alignment = Pos.CENTER_LEFT
+                spacing = marginS.value
+
+                textLabelBodyOrder2 {
+                    paddingTop = marginXS.value
+
+                    style {
+                        fontFamily = "monospace"
+                    }
+
+                    bindTextAndVisibility(this@ItemDetailScreen, informationBindable)
+                }
+
+                vectorDrawableIcon(Drawables.ICON_CONTENT_COPY) {
+                    addClass(Theme.vectorDrawableIconClickable)
+
+                    onLeftClick {
+                        copyToClipboard(this@ItemDetailScreen, informationBindable.value)
+                    }
+                }
             }
         }
     }
