@@ -6,10 +6,12 @@
 - Icon button on item detail screen to quickly copy username, password or URL to clipboard without leaving the screen
 - Copy icon in the password generation dialog to get random passwords without applying them
 - Copy icon for the UUID of an item on the item detail screen
+- Delete context menu item on overview list
 
 ### Changed
 - Show a default confirm dialog for closing a vault because it's not a dangerous action
 - Disable item details of read-only items again (because copy button is available)
+- Allow editing items on recycling bin screen with new restore section
 
 ### Known issues
 - If a screen has a default and cancel button (reacting to "ENTER" and "ESC") and a dialog is shown, the button behavior of the screen buttons not working anymore after dismissing the dialog

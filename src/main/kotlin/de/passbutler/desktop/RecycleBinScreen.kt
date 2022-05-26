@@ -4,6 +4,8 @@ import de.passbutler.common.ItemViewModel
 import de.passbutler.common.base.BindableObserver
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
+import de.passbutler.desktop.ItemEditingViewModelWrapper.Companion.PARAMETER_ITEM_ID
+import de.passbutler.desktop.ItemListViewSetupping.ListConfiguration
 import de.passbutler.desktop.ui.NavigationMenuFragment
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
@@ -12,12 +14,13 @@ import de.passbutler.desktop.ui.createDefaultNavigationMenu
 import de.passbutler.desktop.ui.createEmptyScreen
 import de.passbutler.desktop.ui.injectWithPrivateScope
 import de.passbutler.desktop.ui.paneWithDropShadow
+import de.passbutler.desktop.ui.showScreenUnanimated
 import javafx.collections.FXCollections.observableArrayList
+import javafx.collections.ListChangeListener
 import javafx.collections.transformation.FilteredList
 import javafx.scene.Node
 import javafx.scene.control.ListCell
 import javafx.scene.control.ListView
-import org.tinylog.kotlin.Logger
 import tornadofx.FX.Companion.messages
 import tornadofx.action
 import tornadofx.addClass
@@ -28,35 +31,25 @@ import tornadofx.contextmenu
 import tornadofx.get
 import tornadofx.item
 import tornadofx.listview
+import tornadofx.onDoubleClick
 import tornadofx.selectedItem
 import tornadofx.stackpane
 import tornadofx.textfield
 import tornadofx.top
 import tornadofx.vbox
 
-class RecycleBinScreen : NavigationMenuFragment(messages["recycle_bin_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
+class RecycleBinScreen : NavigationMenuFragment(messages["recycle_bin_title"], navigationMenuItems = createDefaultNavigationMenu()), ItemListViewSetupping, RequestSending {
 
     private val viewModel by injectWithPrivateScope<RecycleBinViewModel>()
 
-    private var listView: ListView<ItemEntry>? = null
-    private var emptyScreenView: Node? = null
+    override var listView: ListView<ItemEntry>? = null
+    override var emptyScreenView: Node? = null
 
-    private val unfilteredItemEntries = observableArrayList<ItemEntry>()
-    private val itemEntries = FilteredList(unfilteredItemEntries)
+    override val unfilteredItemEntries = observableArrayList<ItemEntry>()
+    override val filteredItemEntries = FilteredList(unfilteredItemEntries)
 
-    private val itemViewModelsObserver: BindableObserver<List<ItemViewModel>> = { newUnfilteredItemViewModels ->
-        // Only show deleted items
-        val newItemViewModels = newUnfilteredItemViewModels.filter { it.deleted }
-        Logger.debug("newItemViewModels.size = ${newItemViewModels.size}")
-
-        val newItemEntries = newItemViewModels
-            .map { ItemEntry(it) }
-            .sorted()
-
-        unfilteredItemEntries.setAll(newItemEntries)
-
-        val showEmptyScreen = newItemEntries.isEmpty()
-        emptyScreenView?.isVisible = showEmptyScreen
+    override val itemViewModelsObserver: BindableObserver<List<ItemViewModel>> = { newUnfilteredItemViewModels ->
+        updateItemViewModels(newUnfilteredItemViewModels, ListConfiguration.ShowOnlyDeletedItems)
     }
 
     init {
@@ -101,13 +94,7 @@ class RecycleBinScreen : NavigationMenuFragment(messages["recycle_bin_title"], n
             promptText = messages["general_search"]
 
             textProperty().addListener { _, _, newValue ->
-                val newPredicate: ((ItemEntry) -> Boolean)? = if (newValue.isNullOrEmpty()) {
-                    null
-                } else {
-                    { it.itemViewModel.title?.contains(newValue, ignoreCase = true) ?: false }
-                }
-
-                itemEntries.setPredicate(newPredicate)
+                updateFilterPredicate(newValue)
             }
 
             shortcut("Shortcut+F") {
@@ -117,7 +104,8 @@ class RecycleBinScreen : NavigationMenuFragment(messages["recycle_bin_title"], n
     }
 
     private fun Node.createListView(): ListView<ItemEntry> {
-        return listview(itemEntries) {
+        return listview(filteredItemEntries) {
+            addClass(Theme.listViewSelectableCellStyle)
             addClass(Theme.listViewPressableCellStyle)
 
             cellFormat {
@@ -125,11 +113,23 @@ class RecycleBinScreen : NavigationMenuFragment(messages["recycle_bin_title"], n
                     createItemEntryView(this@cellFormat)
                 }
             }
+
+            items.addListener(ListChangeListener { listChange ->
+                onListChanged(listChange)
+            })
+
+            shortcut("ENTER") {
+                showSelectedItem()
+            }
         }
     }
 
     private fun Node.createItemEntryView(listCell: ListCell<ItemEntry>): Node {
         return createGenericItemEntryView(listCell) {
+            onDoubleClick {
+                showSelectedItem()
+            }
+
             contextmenu {
                 item(messages["recycle_bin_item_context_menu_restore"]).action {
                     restoreSelectedItem()
@@ -138,13 +138,19 @@ class RecycleBinScreen : NavigationMenuFragment(messages["recycle_bin_title"], n
         }
     }
 
+    override fun showSelectedItem() {
+        listView?.selectedItem?.let { selectedItem ->
+            showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf(PARAMETER_ITEM_ID to selectedItem.itemViewModel.id))
+        }
+    }
+
     private fun restoreSelectedItem() {
         listView?.selectedItem?.itemViewModel?.let { selectedItemViewModel ->
             val itemEditingViewModel = selectedItemViewModel.createEditingViewModel()
 
             launchRequestSending(
-                handleSuccess = { showInformation(messages["recycle_bin_restore_successful_message"]) },
-                handleFailure = { showError(messages["recycle_bin_restore_failed_general_title"]) }
+                handleSuccess = { showInformation(messages["itemdetail_restore_successful_message"]) },
+                handleFailure = { showError(messages["itemdetail_restore_failed_general_title"]) }
             ) {
                 itemEditingViewModel.restore()
             }

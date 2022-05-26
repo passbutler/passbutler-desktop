@@ -133,7 +133,13 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
 
     private fun showPreviousScreen() {
         val showPreviousScreenAction = {
-            showScreenUnanimated(OverviewScreen::class)
+            val screenClass = if (viewModel.deleted.value == true) {
+                RecycleBinScreen::class
+            } else {
+                OverviewScreen::class
+            }
+
+            showScreenUnanimated(screenClass)
         }
 
         if (viewModel.isItemModificationAllowed.value && isItemModified.value) {
@@ -163,7 +169,12 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
                 setupDetailsSection()
                 setupItemAuthorizationsSection()
                 setupInformationSection()
-                setupDeleteSection()
+
+                if (viewModel.deleted.value == true) {
+                    setupRestoreSection()
+                } else {
+                    setupDeleteSection()
+                }
             }
         }
     }
@@ -532,6 +543,51 @@ class ItemDetailScreen : NavigationMenuFragment(navigationMenuItems = createDefa
             handleFailure = { showError(messages["itemdetail_delete_failed_general_title"]) }
         ) {
             viewModel.delete()
+        }
+    }
+
+    private fun Node.setupRestoreSection() {
+        vbox {
+            spacing = marginM.value
+
+            textLabelHeadlineOrder1(messages["itemdetail_restore_headline"])
+            setupRestoreButton()
+
+            bindVisibility(this@ItemDetailScreen, viewModel.isNewItem, viewModel.isItemModificationAllowed) { isNewItem, isItemModificationAllowed ->
+                !isNewItem && isItemModificationAllowed
+            }
+        }
+    }
+
+    private fun Node.setupRestoreButton() {
+        jfxButton(messages["itemdetail_restore_button_title"]) {
+            addClass(Theme.buttonPrimaryStyle)
+
+            action {
+                restoreItemClicked()
+            }
+        }
+    }
+
+    private fun restoreItemClicked() {
+        showConfirmDialog(
+            title = messages["itemdetail_restore_confirmation_title"],
+            positiveActionTitle = messages["itemdetail_restore_confirmation_button_title"],
+            positiveClickAction = {
+                restoreItem()
+            }
+        )
+    }
+
+    private fun restoreItem() {
+        launchRequestSending(
+            handleSuccess = {
+                showInformation(messages["itemdetail_restore_successful_message"])
+                showPreviousScreen()
+            },
+            handleFailure = { showError(messages["itemdetail_restore_failed_general_title"]) }
+        ) {
+            viewModel.restore()
         }
     }
 

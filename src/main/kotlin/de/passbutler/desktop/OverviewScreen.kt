@@ -9,10 +9,12 @@ import de.passbutler.common.ui.ListItemIdentifiable
 import de.passbutler.common.ui.RequestSending
 import de.passbutler.common.ui.launchRequestSending
 import de.passbutler.desktop.ItemEditingViewModelWrapper.Companion.PARAMETER_ITEM_ID
+import de.passbutler.desktop.ItemListViewSetupping.ListConfiguration
 import de.passbutler.desktop.base.UrlExtensions
 import de.passbutler.desktop.base.createRelativeDateFormattingTranslations
 import de.passbutler.desktop.ui.Drawables
 import de.passbutler.desktop.ui.NavigationMenuView
+import de.passbutler.desktop.ui.ScreenPresenting
 import de.passbutler.desktop.ui.Theme
 import de.passbutler.desktop.ui.addLifecycleObserver
 import de.passbutler.desktop.ui.bindVisibility
@@ -36,6 +38,7 @@ import javafx.application.Platform
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.ListChangeListener
+import javafx.collections.ObservableList
 import javafx.collections.transformation.FilteredList
 import javafx.geometry.Pos
 import javafx.scene.Node
@@ -79,7 +82,7 @@ import tornadofx.textfield
 import tornadofx.top
 import tornadofx.vbox
 
-class OverviewScreen : NavigationMenuView(messages["overview_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending {
+class OverviewScreen : NavigationMenuView(messages["overview_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending, ItemListViewSetupping {
 
     private val viewModel by injectWithPrivateScope<OverviewViewModel>()
 
@@ -90,11 +93,11 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
     private var filterTextField: TextField? = null
 
-    private var listView: ListView<ItemEntry>? = null
-    private var emptyScreenView: Node? = null
+    override var listView: ListView<ItemEntry>? = null
+    override var emptyScreenView: Node? = null
 
-    private val unfilteredItemEntries = observableArrayList<ItemEntry>()
-    private val filteredItemEntries = FilteredList(unfilteredItemEntries)
+    override val unfilteredItemEntries = observableArrayList<ItemEntry>()
+    override val filteredItemEntries = FilteredList(unfilteredItemEntries)
 
     private var updateToolbarJob: Job? = null
     private var synchronizeDataRequestSendingJob: Job? = null
@@ -108,19 +111,8 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
 
     private var webservicesInitialized = false
 
-    private val itemViewModelsObserver: BindableObserver<List<ItemViewModel>> = { newUnfilteredItemViewModels ->
-        // Only show non-deleted items
-        val newItemViewModels = newUnfilteredItemViewModels.filter { !it.deleted }
-        Logger.debug("newItemViewModels.size = ${newItemViewModels.size}")
-
-        val newItemEntries = newItemViewModels
-            .map { ItemEntry(it) }
-            .sorted()
-
-        unfilteredItemEntries.setAll(newItemEntries)
-
-        val showEmptyScreen = newItemEntries.isEmpty()
-        emptyScreenView?.isVisible = showEmptyScreen
+    override val itemViewModelsObserver: BindableObserver<List<ItemViewModel>> = { newUnfilteredItemViewModels ->
+        updateItemViewModels(newUnfilteredItemViewModels, ListConfiguration.ShowOnlyNormalItems)
     }
 
     init {
@@ -186,14 +178,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                 promptText = messages["general_search"]
 
                 textProperty().addListener { _, _, newValue ->
-                    val filterTermAvailable = newValue.isNotEmpty()
-                    val newPredicate: ((ItemEntry) -> Boolean)? = if (filterTermAvailable) {
-                        { it.itemViewModel.title?.contains(newValue, ignoreCase = true) ?: false }
-                    } else {
-                        null
-                    }
-
-                    filteredItemEntries.setPredicate(newPredicate)
+                    updateFilterPredicate(newValue)
                 }
 
                 shortcut("Shortcut+F") {
@@ -270,13 +255,7 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             }
 
             items.addListener(ListChangeListener { listChange ->
-                val newListItems = listChange.list
-                val shownItemSize = newListItems.size
-
-                // Automatically focus first element if the filter is active
-                if (filteredItemEntries.predicate != null && shownItemSize == 1) {
-                    selectionModel?.selectFirst()
-                }
+                onListChanged(listChange)
             })
 
             shortcut("ENTER") {
@@ -319,11 +298,15 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
                 item(messages["overview_item_context_menu_open_url"]).action {
                     openUrlOfSelectedItem()
                 }
+
+                item(messages["overview_item_context_menu_delete"]).action {
+                    deleteSelectedItem()
+                }
             }
         }
     }
 
-    private fun showSelectedItem() {
+    override fun showSelectedItem() {
         listView?.selectedItem?.let { selectedItem ->
             showScreenUnanimated(ItemDetailScreen::class, parameters = mapOf(PARAMETER_ITEM_ID to selectedItem.itemViewModel.id))
         }
@@ -358,6 +341,19 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
             }
             else -> {
                 showError(messages["overview_open_url_failed_title"])
+            }
+        }
+    }
+
+    private fun deleteSelectedItem() {
+        listView?.selectedItem?.itemViewModel?.let { selectedItemViewModel ->
+            val itemEditingViewModel = selectedItemViewModel.createEditingViewModel()
+
+            launchRequestSending(
+                handleSuccess = { showInformation(messages["itemdetail_delete_successful_message"]) },
+                handleFailure = { showError(messages["itemdetail_delete_failed_general_title"]) }
+            ) {
+                itemEditingViewModel.delete()
             }
         }
     }
@@ -458,6 +454,63 @@ class OverviewScreen : NavigationMenuView(messages["overview_title"], navigation
         } else {
             Logger.debug("The synchronize data request is already running - skip call")
         }
+    }
+}
+
+interface ItemListViewSetupping : ScreenPresenting {
+    var listView: ListView<ItemEntry>?
+    var emptyScreenView: Node?
+
+    val unfilteredItemEntries: ObservableList<ItemEntry>
+    val filteredItemEntries: FilteredList<ItemEntry>
+
+    val itemViewModelsObserver: BindableObserver<List<ItemViewModel>>
+
+    fun updateItemViewModels(newUnfilteredItemViewModels: List<ItemViewModel>, listConfiguration: ListConfiguration) {
+        val newItemViewModels = newUnfilteredItemViewModels.filter {
+            when (listConfiguration) {
+                ListConfiguration.ShowOnlyNormalItems -> !it.deleted
+                ListConfiguration.ShowOnlyDeletedItems -> it.deleted
+            }
+        }
+        Logger.debug("newItemViewModels.size = ${newItemViewModels.size}")
+
+        val newItemEntries = newItemViewModels
+            .map { ItemEntry(it) }
+            .sorted()
+
+        unfilteredItemEntries.setAll(newItemEntries)
+
+        val showEmptyScreen = newItemEntries.isEmpty()
+        emptyScreenView?.isVisible = showEmptyScreen
+    }
+
+    fun updateFilterPredicate(newValue: String) {
+        val filterTermAvailable = newValue.isNotEmpty()
+        val newPredicate: ((ItemEntry) -> Boolean)? = if (filterTermAvailable) {
+            { it.itemViewModel.title?.contains(newValue, ignoreCase = true) ?: false }
+        } else {
+            null
+        }
+
+        filteredItemEntries.setPredicate(newPredicate)
+    }
+
+    fun ListView<*>.onListChanged(listChange: ListChangeListener.Change<*>) {
+        val newListItems = listChange.list
+        val shownItemSize = newListItems.size
+
+        // Automatically focus first element if the filter is active
+        if (filteredItemEntries.predicate != null && shownItemSize == 1) {
+            selectionModel?.selectFirst()
+        }
+    }
+
+    fun showSelectedItem()
+
+    enum class ListConfiguration {
+        ShowOnlyNormalItems,
+        ShowOnlyDeletedItems
     }
 }
 
