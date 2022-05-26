@@ -22,6 +22,7 @@ import tornadofx.addClass
 import tornadofx.get
 import tornadofx.hbox
 import tornadofx.hgrow
+import tornadofx.onLeftClick
 import tornadofx.paddingTop
 import tornadofx.region
 import tornadofx.vbox
@@ -45,7 +46,7 @@ class PasswordGeneratorDialog(
     private lateinit var negativeButton: Button
 
     private var generatePasswordJob: Job? = null
-    private var generatePassword: String? = null
+    private var generatedPassword: String? = null
 
     init {
         hbox(alignment = Pos.CENTER) {
@@ -85,6 +86,14 @@ class PasswordGeneratorDialog(
 
                 onLeftClickIgnoringCount {
                     regeneratePassword()
+                }
+            }
+
+            vectorDrawableIcon(Drawables.ICON_CONTENT_COPY) {
+                addClass(Theme.backgroundPressableStyle)
+
+                onLeftClick {
+                    presentingFragment.copyToClipboard(presentingFragment, generatedPassword)
                 }
             }
         }
@@ -157,10 +166,10 @@ class PasswordGeneratorDialog(
                 isDefaultButton = true
 
                 action {
-                    val generatePassword = generatePassword
+                    val generatedPassword = generatedPassword
 
-                    if (generatePassword != null) {
-                        positiveClickAction.invoke(generatePassword)
+                    if (generatedPassword != null) {
+                        positiveClickAction.invoke(generatedPassword)
                     } else {
                         Logger.warn("The generated password is null!")
                     }
@@ -181,20 +190,20 @@ class PasswordGeneratorDialog(
             ).takeIf { it.isNotEmpty() }
 
             if (passwordLength != null && characterTypes != null) {
-                val newGeneratePassword = PasswordGenerator.generatePassword(
+                val newGeneratedPassword = PasswordGenerator.generatePassword(
                     length = passwordLength,
                     characterTypes = characterTypes
                 )
 
-                generatePassword = newGeneratePassword
+                generatedPassword = newGeneratedPassword
 
-                generatedPasswordTextLabel.text = newGeneratePassword
+                generatedPasswordTextLabel.text = newGeneratedPassword
                 generatedPasswordTextLabel.textFill = ThemeManager.themeColors.textColorPrimary
 
                 positiveButton.isEnabled = true
 
             } else {
-                generatePassword = null
+                generatedPassword = null
 
                 generatedPasswordTextLabel.text = presentingFragment.messages["passwordgenerator_dialog_missing_character_types_error"]
                 generatedPasswordTextLabel.textFill = ThemeManager.themeColors.colorError

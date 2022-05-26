@@ -4,6 +4,7 @@
 
 ### Added
 - Icon button on item detail screen to quickly copy username, password or URL to clipboard without leaving the screen
+- Copy icon in the password generation dialog to get random passwords without applying them
 
 ### Changed
 - Show a default confirm dialog for closing a vault because it's not a dangerous action
