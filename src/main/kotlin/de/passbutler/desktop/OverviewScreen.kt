@@ -35,6 +35,7 @@ import de.passbutler.desktop.ui.textLabelHeadlineOrder2
 import de.passbutler.desktop.ui.textLabelSubtitleOrder1
 import de.passbutler.desktop.ui.vectorDrawableIcon
 import javafx.application.Platform
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections.observableArrayList
 import javafx.collections.ListChangeListener
@@ -67,6 +68,7 @@ import tornadofx.insets
 import tornadofx.item
 import tornadofx.left
 import tornadofx.listview
+import tornadofx.managedWhen
 import tornadofx.onDoubleClick
 import tornadofx.onLeftClick
 import tornadofx.paddingBottom
@@ -81,6 +83,7 @@ import tornadofx.style
 import tornadofx.textfield
 import tornadofx.top
 import tornadofx.vbox
+import tornadofx.visibleWhen
 
 class OverviewScreen : NavigationMenuView(messages["overview_title"], navigationMenuItems = createDefaultNavigationMenu()), RequestSending, ItemListViewSetupping {
 
@@ -520,6 +523,7 @@ class ItemEntry(val itemViewModel: ItemViewModel) : ListItemIdentifiable, Compar
 
     val titleProperty = SimpleStringProperty(itemViewModel.title)
     val subtitleProperty = SimpleStringProperty(itemViewModel.itemData?.username?.takeIf { it.isNotEmpty() } ?: messages["overview_item_subtitle_username_missing"])
+    val isSharedItemProperty = SimpleBooleanProperty(itemViewModel.isSharedItem)
 
     override fun compareTo(other: ItemEntry): Int {
         return compareValuesBy(this, other) { it.itemViewModel.title?.lowercase(FX.locale) }
@@ -533,6 +537,16 @@ fun Node.createGenericItemEntryView(listCell: ListCell<ItemEntry>, op: Node.() -
 
         vectorDrawableIcon(Drawables.ICON_TEXT_SNIPPET) {
             addClass(Theme.vectorDrawableIconAccent)
+
+            managedWhen(listCell.itemProperty().select { it.isSharedItemProperty.not() })
+            visibleWhen(listCell.itemProperty().select { it.isSharedItemProperty.not() })
+        }
+
+        vectorDrawableIcon(Drawables.ICON_GROUP) {
+            addClass(Theme.vectorDrawableIconAccent)
+
+            managedWhen(listCell.itemProperty().select { it.isSharedItemProperty })
+            visibleWhen(listCell.itemProperty().select { it.isSharedItemProperty })
         }
 
         vbox {

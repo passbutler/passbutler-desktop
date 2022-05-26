@@ -12,6 +12,7 @@
 - Show a default confirm dialog for closing a vault because it's not a dangerous action
 - Disable item details of read-only items again (because copy button is available)
 - Allow editing items on recycling bin screen with new restore section
+- Show different icon for items that were shared to the user
 
 ### Known issues
 - If a screen has a default and cancel button (reacting to "ENTER" and "ESC") and a dialog is shown, the button behavior of the screen buttons not working anymore after dismissing the dialog
